@@ -12,7 +12,7 @@ public class VariableJoystick : Joystick
 
     private Vector2 fixedPosition = Vector2.zero;
 
-    public void SetMode(JoystickType joystickType)
+    public virtual void SetMode(JoystickType joystickType)
     {
         this.joystickType = joystickType;
         if(joystickType == JoystickType.Fixed)
