@@ -9,8 +9,8 @@ using UnityEngine.UI;
 
 public class AttackJoystick : VariableJoystick
 {
-    public Player player;
     Vector3 attackVec;
+    public Player player;
 
     public bool nowAttackReady = false;
 
@@ -30,54 +30,22 @@ public class AttackJoystick : VariableJoystick
     float interval = 0.25f;
     float doubleClickedTime = -1.0f;
 
-    public RectTransform rush;
-    Image rushImage;
-    float rushRatio = 0;
-    float rushPower = 5;
+    public Action<Vector2> AttackAction;
+    public Action<Vector2> DashAction;
 
-    UnitaskUtility fillTask = new UnitaskUtility();
-
-    private async UniTaskVoid FillAttackPower()
-    {
-        fillTask.NowRunning = true;
-
-        while (rushRatio < 1)
-        {
-            await UniTask.Delay(TimeSpan.FromSeconds(0.01f), cancellationToken: fillTask.source.Token);
-            rushRatio += 0.01f;
-            rushImage.fillAmount = rushRatio;
-        }
-
-        if (rushRatio > 1) rushRatio = 1;
-
-        fillTask.NowRunning = false;
-    }
-
-    void EndRush()
-    {
-        rushRatio = 0;
-        rushImage.fillAmount = 0;
-    }
+    public AttackUIComponent attackUIComponent;
 
     protected override void Start()
     {
-        player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        player = PlayManager.Instance.player;
         joystickType = JoystickType.Floating;
         base.Start();
-
-        fillTask.cancelFn += EndRush;
-    }
-
-    private void Awake()
-    {
-        Application.targetFrameRate = 60;
-        rushImage = rush.GetComponent<Image>();
     }
 
     public override void SetMode(JoystickType joystickType)
     {
         base.SetMode(joystickType);
-        if (this.joystickType != JoystickType.Fixed) rush.gameObject.SetActive(false);
+        if (this.joystickType != JoystickType.Fixed) attackUIComponent.Rush.gameObject.SetActive(false);
     }
 
     public override void OnDrag(PointerEventData eventData)
@@ -91,16 +59,15 @@ public class AttackJoystick : VariableJoystick
         {
             nowAttackReady = true;
             player.Animator.SetBool("NowReady", true);
-            EndRush();
 
-            FillAttackPower().Forget();
+            attackUIComponent.FillAttackPower().Forget();
         }
         else if(ReturnNowDrag() == false && nowAttackReady == true)
         {
             nowAttackReady = false;
             player.Animator.SetBool("NowReady", false);
 
-            fillTask.CancelTask();
+            attackUIComponent.fillTask.CancelTask();
         }
     }
 
@@ -137,13 +104,14 @@ public class AttackJoystick : VariableJoystick
     {
         if (joystickType != JoystickType.Fixed)
         {
-            rush.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
-            rush.gameObject.SetActive(true);
+            attackUIComponent.Rush.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
+            attackUIComponent.Rush.gameObject.SetActive(true);
         }
         base.OnPointerDown(eventData);
 
         if (DoubleClickCheck() == true)
         {
+            DashAction(); //--> 밖에서 따로 연결
             player.Dash();
         }
     }
@@ -153,7 +121,7 @@ public class AttackJoystick : VariableJoystick
         if (ReturnNowDrag() == false)
         {
             if (joystickType != JoystickType.Fixed)
-                rush.gameObject.SetActive(false);
+                attackUIComponent.Rush.gameObject.SetActive(false);
             base.OnPointerUp(eventData);
             return; // 대쉬 상태
         }
@@ -162,32 +130,25 @@ public class AttackJoystick : VariableJoystick
 
         attackVec.Set(Horizontal, Vertical, 0);
 
+
+
+
+
         float rushStat = rushPower * rushRatio;
         Debug.Log(rushStat);
         Debug.Log(attackVec.normalized);
 
+
+
+        //AttackAction(); --> 밖에서 따로 연결
+
         player.Attack(attackVec.normalized * rushStat);
 
 
-        fillTask.CancelTask();
+        attackUIComponent.ReturnRushStat() * atta;
 
         if (joystickType != JoystickType.Fixed)
             rush.gameObject.SetActive(false);
         base.OnPointerUp(eventData);
-    }
-
-    private void OnDestroy()
-    {
-        fillTask.WhenDestroy();
-    }
-
-    private void OnDisable()
-    {
-        fillTask.WhenDisable();
-    }
-
-    private void OnEnable()
-    {
-        fillTask.WhenEnable();
     }
 }

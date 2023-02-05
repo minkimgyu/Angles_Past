@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System;
+
 
 public class Player : Entity
 {
@@ -32,6 +34,8 @@ public class Player : Entity
 
     float angle = 0;
 
+    public PlayerDash playerDash;
+
     public Animator Animator
     {
         get
@@ -44,6 +48,11 @@ public class Player : Entity
         }
     }
 
+    public Action UpdateAction;
+
+    public InputComponent inputComponent;
+    public Dash dash;
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -54,6 +63,7 @@ public class Player : Entity
     private void Update()
     {
         RotateUsingVelocity();
+        UpdateAction();
     }
 
     void RotateUsingVelocity()

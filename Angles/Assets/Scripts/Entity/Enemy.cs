@@ -10,6 +10,7 @@ public class Enemy : Entity
     Player player;
     Rigidbody2D playerRigid;
     bool nowStop = false;
+    float maxFollowDistance = 3f;
 
     CancellationTokenSource source = new();
 
@@ -81,6 +82,13 @@ public class Enemy : Entity
     public void MoveToPlayer()
     {
         if (nowStop == true) return;
+
+        float distance = Vector2.Distance(playerRigid.position, rigid.position);
+        if (distance < maxFollowDistance)
+        {
+            rigid.velocity = Vector2.zero;
+            return;
+        }
 
         Vector2 dirVec = playerRigid.position - rigid.position;
         Vector2 nextVec = dirVec.normalized * moveSpeed * Time.fixedDeltaTime;
