@@ -31,13 +31,13 @@ public class Enemy : Entity
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.collider.CompareTag("Wall"))
-        {
-            Debug.Log("OnCollisionEnter2D");
-        }
+        //if (col.collider.CompareTag("Wall"))
+        //{
+        //    Debug.Log("OnCollisionEnter2D");
+        //}
 
 
-        if(col.collider.CompareTag("Player") == true && player.nowAttack == true)
+        if(col.collider.CompareTag("Player") == true && player.PlayerMode == PlayerMode.Attack)
         {
             ExitMoveStopTask();
 
@@ -47,7 +47,7 @@ public class Enemy : Entity
             gameObject.SetActive(false);
         }
 
-        if (col.collider.CompareTag("Player") == true && player.nowDash == true)
+        if (col.collider.CompareTag("Player") == true && player.PlayerMode == PlayerMode.Attack)
         {
             ExitMoveStopTask();
 

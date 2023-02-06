@@ -5,25 +5,28 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using System;
 
-public class UnitaskUtility
+public class UnitaskUtility : MonoBehaviour
 {
-    protected bool nowRunning;
-    public bool NowRunning
+    bool nowRunning;
+    protected bool NowRunning
     {
         get { return nowRunning; }
         set { nowRunning = value; }
     }
 
-    protected float waitTIme = 0.01f;
+    float waitTIme = 0.01f;
 
-    public float WaitTIme
+    protected  float WaitTIme
     {
-        get { return WaitTIme; }
-        set { waitTIme = value; }
+        get { return waitTIme; }
+        set 
+        {
+            waitTIme = value;
+        }
     }
 
     public CancellationTokenSource source = new CancellationTokenSource();
-    public Action cancelFn;
+    protected Action cancelFn;
 
     public void CancelTask()
     {
@@ -31,23 +34,38 @@ public class UnitaskUtility
         {
             source.Cancel();
             source = new CancellationTokenSource();
-            cancelFn();
+            if(cancelFn != null) cancelFn();
             nowRunning = false;
         }
     }
 
-    public void WhenDestroy()
+    private void OnDestroy()
+    {
+        WhenDestroy();
+    }
+
+    protected virtual void OnDisable()
+    {
+        WhenDisable();
+    }
+
+    private void OnEnable()
+    {
+        WhenEnable();
+    }
+
+    void WhenDestroy()
     {
         source.Cancel();
         source.Dispose();
     }
 
-    public void WhenDisable()
+    void WhenDisable()
     {
         source.Cancel();
     }
 
-    public void WhenEnable()
+    void WhenEnable()
     {
         if (source != null) source.Dispose();
         source = new CancellationTokenSource();

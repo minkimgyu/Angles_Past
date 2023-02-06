@@ -64,8 +64,8 @@ public class JoystickEditor : Editor
 }
 
 
-[CustomEditor(typeof(AttackJoystick), true)]
-public class AttackJoystickEditor : Editor
+[CustomEditor(typeof(ActionJoystick), true)]
+public class ActionJoystickEditor : Editor
 {
     private SerializedProperty handleRange;
     private SerializedProperty deadZone;
@@ -75,6 +75,8 @@ public class AttackJoystickEditor : Editor
     protected SerializedProperty background;
     private SerializedProperty handle;
     private SerializedProperty rush;
+    private SerializedProperty actionComponent;
+    private SerializedProperty attackUIComponent;
 
     protected Vector2 center = new Vector2(0.5f, 0.5f);
 
@@ -88,6 +90,8 @@ public class AttackJoystickEditor : Editor
         background = serializedObject.FindProperty("background");
         handle = serializedObject.FindProperty("handle");
         rush = serializedObject.FindProperty("rush");
+        actionComponent = serializedObject.FindProperty("actionComponent");
+        attackUIComponent = serializedObject.FindProperty("attackUIComponent");
     }
 
     public override void OnInspectorGUI()
@@ -124,5 +128,73 @@ public class AttackJoystickEditor : Editor
         EditorGUILayout.ObjectField(background, new GUIContent("Background", "The background's RectTransform component."));
         EditorGUILayout.ObjectField(handle, new GUIContent("Handle", "The handle's RectTransform component."));
         EditorGUILayout.ObjectField(rush, new GUIContent("rush", "rush fill"));
+        EditorGUILayout.ObjectField(actionComponent, new GUIContent("actionComponent", ""));
+        EditorGUILayout.ObjectField(attackUIComponent, new GUIContent("attackUIComponent", ""));
+    }
+}
+
+[CustomEditor(typeof(MoveJoystick), true)]
+public class MoveJoystickEditor : Editor
+{
+    private SerializedProperty handleRange;
+    private SerializedProperty deadZone;
+    private SerializedProperty axisOptions;
+    private SerializedProperty snapX;
+    private SerializedProperty snapY;
+    protected SerializedProperty background;
+    private SerializedProperty handle;
+    private SerializedProperty dashUIComponent;
+    private SerializedProperty moveInputComponent;
+
+    protected Vector2 center = new Vector2(0.5f, 0.5f);
+
+    protected virtual void OnEnable()
+    {
+        handleRange = serializedObject.FindProperty("handleRange");
+        deadZone = serializedObject.FindProperty("deadZone");
+        axisOptions = serializedObject.FindProperty("axisOptions");
+        snapX = serializedObject.FindProperty("snapX");
+        snapY = serializedObject.FindProperty("snapY");
+        background = serializedObject.FindProperty("background");
+        handle = serializedObject.FindProperty("handle");
+        dashUIComponent = serializedObject.FindProperty("dashUIComponent");
+        moveInputComponent = serializedObject.FindProperty("moveInputComponent");
+    }
+
+    public override void OnInspectorGUI()
+    {
+        serializedObject.Update();
+
+        DrawValues();
+        EditorGUILayout.Space();
+        DrawComponents();
+
+        serializedObject.ApplyModifiedProperties();
+
+        if (handle != null)
+        {
+            RectTransform handleRect = (RectTransform)handle.objectReferenceValue;
+            handleRect.anchorMax = center;
+            handleRect.anchorMin = center;
+            handleRect.pivot = center;
+            handleRect.anchoredPosition = Vector2.zero;
+        }
+    }
+
+    protected virtual void DrawValues()
+    {
+        EditorGUILayout.PropertyField(handleRange, new GUIContent("Handle Range", "The distance the visual handle can move from the center of the joystick."));
+        EditorGUILayout.PropertyField(deadZone, new GUIContent("Dead Zone", "The distance away from the center input has to be before registering."));
+        EditorGUILayout.PropertyField(axisOptions, new GUIContent("Axis Options", "Which axes the joystick uses."));
+        EditorGUILayout.PropertyField(snapX, new GUIContent("Snap X", "Snap the horizontal input to a whole value."));
+        EditorGUILayout.PropertyField(snapY, new GUIContent("Snap Y", "Snap the vertical input to a whole value."));
+    }
+
+    protected virtual void DrawComponents()
+    {
+        EditorGUILayout.ObjectField(background, new GUIContent("Background", "The background's RectTransform component."));
+        EditorGUILayout.ObjectField(handle, new GUIContent("Handle", "The handle's RectTransform component."));
+        EditorGUILayout.ObjectField(moveInputComponent, new GUIContent("moveInputComponent", ""));
+        EditorGUILayout.ObjectField(dashUIComponent, new GUIContent("dashUIComponent", ""));
     }
 }

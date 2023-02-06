@@ -541,7 +541,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &822985318
 Transform:
   m_ObjectHideFlags: 0
@@ -669,52 +669,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 946817049}
   m_CullTransparentMesh: 1
---- !u!1 &978639407
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 978639409}
-  - component: {fileID: 978639408}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &978639408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 978639407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdc96f36d3babd14e9ff715a57b6e76b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveJoy: {fileID: 0}
-  attackJoy: {fileID: 0}
---- !u!4 &978639409
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 978639407}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1124306321
 GameObject:
   m_ObjectHideFlags: 0
@@ -3153,12 +3107,15 @@ GameObject:
   m_Component:
   - component: {fileID: 1496282905}
   - component: {fileID: 1496282904}
-  - component: {fileID: 1496282903}
-  - component: {fileID: 1496282909}
   - component: {fileID: 1496282902}
   - component: {fileID: 1496282906}
   - component: {fileID: 1496282907}
   - component: {fileID: 1496282908}
+  - component: {fileID: 1496282903}
+  - component: {fileID: 1496282912}
+  - component: {fileID: 1496282911}
+  - component: {fileID: 1496282910}
+  - component: {fileID: 1496282909}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -3201,16 +3158,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 4
   rigid: {fileID: 0}
-  attackThrust: 5
-  dashThrust: 20
-  nowAttack: 0
-  nowDash: 0
-  moveJoy: {fileID: 0}
-  attackJoy: {fileID: 3881087802019245288}
-  moveVec: {x: 0, y: 0, z: 0}
-  playerDash: {fileID: 1496282909}
-  inputComponent: {fileID: 0}
-  dash: {fileID: 0}
 --- !u!212 &1496282904
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3441,12 +3388,45 @@ MonoBehaviour:
   m_GameObject: {fileID: 1496282900}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75efd074c4e6585419f26a1f6606bd5e, type: 3}
+  m_Script: {fileID: 11500000, guid: 291dda4b3c2c01943bc1b400ba9966c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashImage: []
-  dashCount: 0
-  maxDashCount: 3
+--- !u!114 &1496282910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1496282900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ce801026af3c754b891058ac74cbaf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1496282911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1496282900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d027e2543d04f049aa088226bb854c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1496282912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1496282900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d98d8198417bfbf4db51e43cb2a68549, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1572170718
 GameObject:
   m_ObjectHideFlags: 0
@@ -10679,6 +10659,8 @@ GameObject:
   - component: {fileID: 3881087802019245280}
   - component: {fileID: 3881087802019245287}
   - component: {fileID: 3881087802019245288}
+  - component: {fileID: 3881087802019245290}
+  - component: {fileID: 3881087802019245289}
   m_Layer: 5
   m_Name: AttackJoystick
   m_TagString: Untagged
@@ -10759,9 +10741,33 @@ MonoBehaviour:
   handle: {fileID: 3881087802339873439}
   moveThreshold: 1
   joystickType: 0
-  player: {fileID: 0}
-  nowAttackReady: 0
+  attackUIComponent: {fileID: 3881087802019245289}
+  actionComponent: {fileID: 3881087802019245290}
   rush: {fileID: 946817050}
+--- !u!114 &3881087802019245289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3881087802019245284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d233e92ec5d6bf648a41c3634d0b768d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3881087802019245290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3881087802019245284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d4cdbe7a1ebc19499f9314d266cabc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!222 &3881087802284699800
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11134,6 +11140,8 @@ GameObject:
   - component: {fileID: 3881087803853418271}
   - component: {fileID: 3881087803853418264}
   - component: {fileID: 3881087803853418272}
+  - component: {fileID: 3881087803853418274}
+  - component: {fileID: 3881087803853418273}
   m_Layer: 5
   m_Name: MoveJoystick
   m_TagString: Untagged
@@ -11170,3 +11178,33 @@ MonoBehaviour:
   handle: {fileID: 3881087803792822624}
   moveThreshold: 1
   joystickType: 0
+  moveInputComponent: {fileID: 3881087803853418274}
+  dashUIComponent: {fileID: 3881087803853418273}
+--- !u!114 &3881087803853418273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3881087803853418267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abf64c559f2e7ce41a6f5cff3e51524f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashImage:
+  - {fileID: 30207039}
+  - {fileID: 1213365356}
+  - {fileID: 319490518}
+--- !u!114 &3881087803853418274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3881087803853418267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 208a1178c08208d4ba92ebcb3dc3e2db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

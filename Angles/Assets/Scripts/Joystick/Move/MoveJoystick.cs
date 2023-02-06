@@ -8,5 +8,13 @@ using System;
 
 public class MoveJoystick : VariableJoystick
 {
-    
+    public MoveInputComponent moveInputComponent;
+    public DashUIComponent dashUIComponent;
+
+    public Action fixedUpdateAction;
+
+    private void FixedUpdate()
+    {
+        fixedUpdateAction();
+    }
 }
