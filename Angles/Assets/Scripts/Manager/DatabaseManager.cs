@@ -14,6 +14,10 @@ public class DatabaseManager : Singleton<DatabaseManager>
     public int AttackThrust { get { return attackThrust; } set { attackThrust = value; } }
 
     [SerializeField]
+    int reflectAttackThrust = 2;
+    public int ReflectAttackThrust { get { return reflectAttackThrust; } set { reflectAttackThrust = value; } }
+
+    [SerializeField]
     float attackTime = 3f;
     public float AttackTime { get { return attackTime; } set { attackTime = value; } }
 
@@ -62,6 +66,11 @@ public class DatabaseManager : Singleton<DatabaseManager>
     [SerializeField]
     float readySpeed = 2; // ¿òÁ÷ÀÓ
     public float ReadySpeed { get { return readySpeed; } set { readySpeed = value; } }
+
+    [Header("Follow")]
+    [SerializeField]
+    float followSpeed = 5;
+    public float FollowSpeed { get { return followSpeed; } set { followSpeed = value; } }
 
     public bool CanUseDash()
     {

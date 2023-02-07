@@ -37,17 +37,7 @@ public class Enemy : Entity
         //}
 
 
-        if(col.collider.CompareTag("Player") == true && player.PlayerMode == PlayerMode.Attack)
-        {
-            ExitMoveStopTask();
-
-            nowStop = true;
-            MoveStop().Forget();
-            //MoveBack(col);
-            gameObject.SetActive(false);
-        }
-
-        if (col.collider.CompareTag("Player") == true && player.PlayerMode == PlayerMode.Attack)
+        if(col.collider.CompareTag("Player") == true && (player.PlayerMode == PlayerMode.Attack || player.PlayerMode == PlayerMode.Dash))
         {
             ExitMoveStopTask();
 

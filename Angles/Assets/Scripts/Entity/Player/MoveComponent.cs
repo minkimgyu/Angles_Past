@@ -8,6 +8,8 @@ public class MoveComponent : MonoBehaviour
     Player player;
     Rigidbody2D rigid;
 
+    Vector2 rotationVec = Vector2.zero;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,12 +19,11 @@ public class MoveComponent : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
     }
 
-    void RotateUsingVelocity()
+    public void RotateUsingVelocity()
     {
         float tempAngle = angle;
 
-        angle = Mathf.Atan2(rigid.velocity.y, rigid.velocity.x) * Mathf.Rad2Deg;
-
+        angle = Mathf.Atan2(rigid.velocity.normalized.y, rigid.velocity.normalized.x) * Mathf.Rad2Deg;
         if (angle == tempAngle) return;
 
         transform.rotation = Quaternion.Euler(0, 0, angle);
@@ -30,24 +31,22 @@ public class MoveComponent : MonoBehaviour
 
     void SubUpdate()
     {
-        RotateUsingVelocity();
-
         if (player.PlayerMode != PlayerMode.Idle) return;
-
         Move();
     }
 
     public void Move()
     {
+        RotateUsingVelocity();
         bool nowReady = PlayManager.Instance.actionJoy.actionComponent.Mode == ActionMode.AttackReady;
         
         if (nowReady == true)
         {
-            rigid.velocity = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec() * DatabaseManager.Instance.ReadySpeed;
+            rigid.velocity = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec().normalized * DatabaseManager.Instance.ReadySpeed;
         }
         else
         {
-            rigid.velocity = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec() * DatabaseManager.Instance.MoveSpeed;
+            rigid.velocity = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec().normalized * DatabaseManager.Instance.MoveSpeed;
         }
     }
 

@@ -8,11 +8,13 @@ using System;
 public class AttackComponent : UnitaskUtility
 {
     Player player;
+    MoveComponent moveComponent;
 
     // Start is called before the first frame update
     void Start()
     {
         player = GetComponent<Player>();
+        moveComponent = GetComponent<MoveComponent>();
         player.fixedUpdateAction += SubUpdate;
 
         PlayManager.Instance.actionJoy.actionComponent.aniAction += ResetReadyAni;
@@ -33,7 +35,7 @@ public class AttackComponent : UnitaskUtility
 
     public void PlayAttack(Vector2 attackDir)
     {
-        if (player.PlayerMode != PlayerMode.Idle) return;
+        if (player.PlayerMode != PlayerMode.Idle && player.PlayerMode != PlayerMode.Attack) return;
 
         player.rigid.velocity = Vector2.zero;
 
@@ -42,7 +44,10 @@ public class AttackComponent : UnitaskUtility
         ResetReadyAni(false);
         player.Animator.SetBool("NowAttack", true);
 
-        player.rigid.AddForce(-attackDir * DatabaseManager.Instance.AttackThrust, ForceMode2D.Impulse);
+        player.rigid.AddForce(attackDir, ForceMode2D.Impulse);
+
+        moveComponent.RotateUsingVelocity();
+
         player.PlayerMode = PlayerMode.Attack;
         WaitAttackEndTask().Forget();
     }

@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackThrust: 30
+  reflectAttackThrust: 15
   attackTime: 1
   attackCancelOffset: 0.2
   maxDashCount: 3

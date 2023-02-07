@@ -6,14 +6,12 @@ public class CollisionComponent : MonoBehaviour
 {
     Player player;
     AttackComponent attackComponent;
-    Rigidbody2D rigid;
 
     // Start is called before the first frame update
     void Start()
     {
         player = GetComponent<Player>();
         attackComponent = GetComponent<AttackComponent>();
-        rigid = GetComponent<Rigidbody2D>();
     }
 
 
@@ -26,10 +24,8 @@ public class CollisionComponent : MonoBehaviour
             WallColorChange colorChange = collision.gameObject.GetComponent<WallColorChange>();
             colorChange.ChangeTileColor(ReturnHitPosition(collision));
 
-            ReflectPlayer(collision.contacts[0].normal);
-
             attackComponent.CancelTask();
-            attackComponent.WaitAttackEndTask().Forget(); // 공격 멈추는 것 리셋
+            attackComponent.PlayAttack(ReflectPlayer(collision.contacts[0].normal) * DatabaseManager.Instance.ReflectAttackThrust);
         }
     }
 
@@ -45,10 +41,10 @@ public class CollisionComponent : MonoBehaviour
         return hitPosition;
     }
 
-    void ReflectPlayer(Vector2 hitPoint)
+    Vector2 ReflectPlayer(Vector2 hitPoint)
     {
-        Vector2 velocity = rigid.velocity;
+        Vector2 velocity = player.rigid.velocity;
         var dir = Vector2.Reflect(velocity.normalized, hitPoint);
-        rigid.velocity = dir * (DatabaseManager.Instance.AttackThrust / 2);
+        return dir;
     }
 }
