@@ -7,31 +7,16 @@ using System;
 
 public class Player : Entity
 {
-    PlayerMode playerMode;
-
-    public PlayerMode PlayerMode
+    SkillType skill;
+    public SkillType Skill
     {
         get
         {
-            return playerMode;
+            return skill;
         }
         set
         {
-            playerMode = value;
-        }
-    }
-
-    Animator animator;
-
-    public Animator Animator
-    {
-        get
-        {
-            return animator;
-        }
-        set
-        {
-            if (value != null) animator = value;
+            skill = value;
         }
     }
 
@@ -39,6 +24,10 @@ public class Player : Entity
     protected override void Start()
     {
         base.Start();
-        animator = GetComponent<Animator>();
+    }
+
+    public void ResetSkill(SkillType mode)
+    {
+        skill = mode;
     }
 }

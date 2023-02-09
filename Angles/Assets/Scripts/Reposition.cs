@@ -44,7 +44,6 @@ public class Reposition : MonoBehaviour
                 {
                     distance = newDistance;
                     index = i;
-                    Debug.Log(i);
                 }
             }
         }

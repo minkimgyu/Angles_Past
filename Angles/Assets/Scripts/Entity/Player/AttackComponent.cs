@@ -5,26 +5,25 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using System;
 
-public class AttackComponent : UnitaskUtility
+public class AttackComponent : ForceComponent
 {
-    Player player;
     MoveComponent moveComponent;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        player = GetComponent<Player>();
+        base.Start();
         moveComponent = GetComponent<MoveComponent>();
-        player.fixedUpdateAction += SubUpdate;
+        entity.fixedUpdateAction += SubUpdate;
 
         PlayManager.Instance.actionJoy.actionComponent.aniAction += ResetReadyAni;
-        PlayManager.Instance.actionJoy.actionComponent.attackAction += PlayAttack;
+        PlayManager.Instance.actionJoy.actionComponent.attackAction += AddForceUsingVec;
     }
-    void ResetReadyAni(bool nowReady) => player.Animator.SetBool("NowReady", nowReady);
+    void ResetReadyAni(bool nowReady) => entity.Animator.SetBool("NowReady", nowReady);
 
     void SubUpdate()
     {
-        if (player.PlayerMode != PlayerMode.Attack) return;
+        if (entity.PlayerMode != ActionMode.Attack) return;
 
         if (PlayManager.Instance.moveJoy.moveInputComponent.NowCancelAttack() == true) // 현재 공격을 취소해야할 경우
         {
@@ -33,46 +32,57 @@ public class AttackComponent : UnitaskUtility
         }
     }
 
-    public void PlayAttack(Vector2 attackDir)
+    public override void AddForceUsingVec(Vector2 attackDir)
     {
-        if (player.PlayerMode != PlayerMode.Idle && player.PlayerMode != PlayerMode.Attack) return;
+        if (entity.PlayerMode != ActionMode.Idle && entity.PlayerMode != ActionMode.Attack) return;
 
-        player.rigid.velocity = Vector2.zero;
+        StopEntity();
 
         PlayManager.Instance.moveJoy.moveInputComponent.SetLoadVec(); // 현재 벡터를 저장해둔다.
 
         ResetReadyAni(false);
-        player.Animator.SetBool("NowAttack", true);
+        entity.Animator.SetBool("NowAttack", true);
 
-        player.rigid.AddForce(attackDir, ForceMode2D.Impulse);
+        base.AddForceUsingVec(attackDir);
 
-        moveComponent.RotateUsingVelocity();
+        moveComponent.RotateUsingTransform(entity.rigid.velocity);
 
-        player.PlayerMode = PlayerMode.Attack;
+        entity.PlayerMode = ActionMode.Attack;
         WaitAttackEndTask().Forget();
     }
 
     public async UniTaskVoid WaitAttackEndTask()
     {
         NowRunning = true;
+        entity.rigid.freezeRotation = true;
 
         await UniTask.Delay(TimeSpan.FromSeconds(DatabaseManager.Instance.AttackTime), cancellationToken: source.Token);
         CancelAttack();
+        
         NowRunning = false;
     }
 
     public void CancelAttack()
     {
-        player.PlayerMode = PlayerMode.Idle;
-        player.Animator.SetBool("NowAttack", false);
+        entity.PlayerMode = ActionMode.Idle;
+        entity.Animator.SetBool("NowAttack", false);
+        entity.rigid.freezeRotation = false;
     }
 
-    protected override  void OnDisable()
+    public void QuickEndTask()
+    {
+        CancelTask();
+        CancelAttack();
+    }
+
+    protected override void OnDisable()
     {
         base.OnDisable();
 
-        player.fixedUpdateAction -= SubUpdate;
+        entity.fixedUpdateAction -= SubUpdate;
+        if (PlayManager.Instance == null) return;
+
         PlayManager.Instance.actionJoy.actionComponent.aniAction -= ResetReadyAni;
-        PlayManager.Instance.actionJoy.actionComponent.attackAction -= PlayAttack;
+        PlayManager.Instance.actionJoy.actionComponent.attackAction -= AddForceUsingVec;
     }
 }

@@ -20,8 +20,8 @@ public class BasicController
 
     public bool CheckCancelAttack(float offset)
     {
-        float xOffset = Mathf.Abs(loadVec.x - mainVec.x);
-        float yOffset = Mathf.Abs(loadVec.y - mainVec.y);
+        float xOffset = Mathf.Abs(loadVec.x - MainVec.x);
+        float yOffset = Mathf.Abs(loadVec.y - MainVec.y);
 
         if (xOffset >= offset || yOffset >= offset)
         {
