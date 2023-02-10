@@ -7,16 +7,31 @@ using System;
 
 public class Player : Entity
 {
-    SkillType skill;
-    public SkillType Skill
+    [SerializeField]
+    SkillData normalSkillData;
+    public SkillData NormalSkillData
     {
         get
         {
-            return skill;
+            return normalSkillData;
         }
         set
         {
-            skill = value;
+            normalSkillData = value;
+        }
+    }
+
+    [SerializeField]
+    SkillData skillData;
+    public SkillData SkillData
+    {
+        get
+        {
+            return skillData;
+        }
+        set
+        {
+            skillData = value;
         }
     }
 
@@ -24,10 +39,5 @@ public class Player : Entity
     protected override void Start()
     {
         base.Start();
-    }
-
-    public void ResetSkill(SkillType mode)
-    {
-        skill = mode;
     }
 }

@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class BattleComponent : MonoBehaviour
 {
-    public List<GameObject> entity;
+    public List<Collision2D> entity = new List<Collision2D>();
     Player player;
     AttackComponent attackComponent;
 
     public EntityTag entityTag;
-
-    public BasicSkill basicSkill;
 
     private void Start()
     {
@@ -23,53 +21,76 @@ public class BattleComponent : MonoBehaviour
 
     void AddToList(Collision2D col)
     {
-        if (col.gameObject == null) return;
+        if (col.gameObject.CompareTag(entityTag.ToString()) != true) return;
 
-        entity.Add(col.gameObject);
+        entity.Add(col);
         PlayWhenCollision();
     }
 
-    void RemoveToList(Collision2D col) => entity.Remove(col.gameObject);
+    void RemoveToList(Collision2D col) => entity.Remove(col);
+
+    BasicSkill GetSkillUsingType(SkillName skillName)
+    {
+        BasicSkill skill = ObjectPooler.SpawnFromPool(skillName.ToString()).GetComponent<BasicSkill>();
+        return skill;
+    }
+
+    bool NowContactEnemy()
+    {
+        return entity.Count > 0;
+    }
+
+    void UseSkill(SkillUseType skillUseType)
+    {
+        bool canUseSkill = player.SkillData.CanUseSkill(skillUseType);
+
+        // 스킬을 사용할 수 있는 경우 스킬 사용
+        if (canUseSkill == true)
+        {
+            BasicSkill skill = GetSkillUsingType(player.SkillData.Name);
+            if (skill == null) return;
+
+            //Debug.Log(transform.position);
+
+            skill.Init(transform, player.rigid.velocity, entity);
+            player.SkillData.ResetSkill();
+        }
+        else // 스킬을 사용할 수 없는 경우 기본 스킬을 사용하게 한다.
+        {
+            BasicSkill normalSkill = GetSkillUsingType(player.NormalSkillData.Name);
+            if (normalSkill == null) return;
+
+            //Debug.Log(transform.position);
+
+            //for (int i = 0; i < entity.Count; i++)
+            //{
+            //    print(entity[i].gameObject.name);
+            //}
+
+            normalSkill.Init(transform, player.rigid.velocity, entity);
+        }
+    }
     
     void PlayWhenCollision()
     {
+        if (NowContactEnemy() == false) return; // 적과 접촉하고 있지 않은 경우 리턴
         if (player.PlayerMode != ActionMode.Attack) return;
 
-        bool nowAttackEnemy = false;
-        // 공격 시에만 적용
+        UseSkill(SkillUseType.Contact);
 
-        for (int i = 0; i < entity.Count; i++)
-        {
-            if (entity[i].CompareTag(entityTag.ToString()))
-            {
-                if(nowAttackEnemy == false) nowAttackEnemy = true;
-                entity[i].GetComponent<FollowComponent>().WaitFollow();
-            }
-        }
-
-        if (nowAttackEnemy == true)
-        {
-            basicSkill.PlaySkillWhenCollision();
-            attackComponent.QuickEndTask();
-        }
+        attackComponent.QuickEndTask(); // 공격 리셋해주기
     }
 
     void PlayWhenAttackStart(Vector2 dir)
     {
-        Debug.Log(entity.Count);
+        PlayWhenCollision(); // 한번 체크
 
-        if (entity.Count != 0) // 현재 닿아있는 오브젝트가 존재할 때
-        {
-            Debug.Log(entity.Count);
-            PlayWhenCollision();
-        }
-
-        basicSkill.PlaySkillWhenAttackStart();
+        UseSkill(SkillUseType.Start);
     }
 
-    void PlayWhenGet()
+    public void PlayWhenGet()
     {
-        basicSkill.PlaySkillWhenGet();
+        UseSkill(SkillUseType.Get);
     }
 
     private void OnDisable()

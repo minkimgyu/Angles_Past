@@ -59,9 +59,9 @@ public class Spawner : MonoBehaviour
         for (int i = 0; i < spawnCount; i++)
         {
             Vector3 spawnPos = spawnPoints[spawnIndex].position;
-            GameObject entity = ObjectPooler.SpawnFromPool(spawnEntityName, spawnPos);
+            GameObject entity = ObjectPooler.SpawnFromPool(spawnEntityName);
             entity.GetComponent<Entity>().Init(ReturnEntityData("Player"));
-    }
+        }
     }
 
     EntityData ReturnEntityData(string name)

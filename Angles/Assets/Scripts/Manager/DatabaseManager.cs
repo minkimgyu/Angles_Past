@@ -1,12 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
-public enum SkillType { KnockBack }
+[System.Serializable]
+public class SkillData
+{
+    [SerializeField]
+    SkillName name;
+    public SkillName Name { get{ return name; } set{ name = value; }}
+
+    [SerializeField]
+    SkillUseType type;
+    public SkillUseType Type { get { return type; } set { type = value; } }
+
+    public bool CanUseSkill(SkillUseType type)
+    {
+        return Name != SkillName.None && Type == type;
+    }
+
+    public void ResetSkill()
+    {
+        Name = SkillName.None;
+        Type = SkillUseType.None;
+    }
+}
+
 public enum ActionMode { Idle, AttackReady, Attack, Dash, Follow, Hit }; // 동작 상태 모음
 
-public enum SkillMode { KnockBack, }; // 동작 상태 모음
+public enum SkillName { None, NormalKnockBack, KnockBack, RotationBall, BigImpact }; // 동작 상태 모음
+
+public enum SkillUseType { None, Contact, Get, Start }
 
 public enum EntityTag { Player, Enemy, Wall };
 

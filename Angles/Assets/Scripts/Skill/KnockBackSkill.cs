@@ -9,12 +9,8 @@ public class KnockBackSkill : BasicSkill
     public float boxHeight;
     public Vector3 distanceFromPlayer;
 
-    public override void PlaySkillWhenCollision()
+    public override void PlaySkill(Transform tr, Vector2 dir, List<Collision2D> entity)
     {
-        Debug.Log("PlayWhenCollision");
-
-        base.PlaySkillWhenCollision();
-
         RaycastHit2D[] hit = Physics2D.BoxCastAll(transform.position, new Vector2(boxWidth, boxHeight), 
             transform.rotation.z, Vector2.right, distanceFromPlayer.x, LayerMask.GetMask("Enemy"));
 
@@ -23,10 +19,11 @@ public class KnockBackSkill : BasicSkill
             if (hit[i].transform.CompareTag("Enemy"))
             {
                 hit[i].collider.GetComponent<FollowComponent>().WaitFollow();
-                hit[i].collider.GetComponent<BasicReflectComponent>().KnockBack(-(transform.position - hit[i].transform.position).normalized * 2);
-                PlayEffect();
+                hit[i].collider.GetComponent<BasicReflectComponent>().KnockBack(dir.normalized * 2);
             }
         }
+
+        GetEffectUsingName(transform.position, transform.rotation);
     }
 
     void OnDrawGizmos()

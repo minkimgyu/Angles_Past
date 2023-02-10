@@ -38,6 +38,20 @@ public class FollowComponent : UnitaskUtility
         NowRunning = false;
     }
 
+    private void OnCollisionStay2D(Collision2D col)
+    {
+        if (col.gameObject.CompareTag("Enemy"))
+        {
+            if(NowRunning == true)
+            {
+                Vector2 backDir = col.transform.position - transform.position;
+
+                col.gameObject.GetComponent<FollowComponent>().WaitFollow();
+                col.gameObject.GetComponent<BasicReflectComponent>().KnockBack(backDir * 3);
+            }
+        }
+    }
+
     public void MoveToPlayer()
     {
         if (NowRunning == true)
