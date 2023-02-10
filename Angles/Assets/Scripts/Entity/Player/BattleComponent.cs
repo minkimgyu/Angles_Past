@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class BattleComponent : MonoBehaviour
 {
-    public List<Collision2D> entity = new List<Collision2D>();
+    List<Collision2D> entity = new List<Collision2D>();
     Player player;
     AttackComponent attackComponent;
+
+    [SerializeField]
+    List<BasicSkill> loadSkill = new List<BasicSkill>();
+    // <-- null이면 스킬 데이터를 플레이어에서 불러와서 사용, 아니면 저장되어 있는 객체에 playskill 실행해준다.
+    // count 변수를 만들어서 0이면 리스트에서 삭제, 1 이상일 경우 하나씩 빼주면서 사용
 
     public EntityTag entityTag;
 
@@ -17,6 +22,24 @@ public class BattleComponent : MonoBehaviour
         player.collisionEnterAction += AddToList;
         player.collisionExitAction += RemoveToList;
         PlayManager.Instance.actionJoy.actionComponent.attackAction += PlayWhenAttackStart;
+    }
+
+    public void RemoveSkillFromLoad(BasicSkill skill)
+    {
+        loadSkill.Remove(skill);
+    }
+
+    public void AddSkillToLoad(BasicSkill skill)
+    {
+        loadSkill.Add(skill);
+    }
+
+    public void UseSkillInList()
+    {
+        for (int i = 0; i < loadSkill.Count; i++)
+        {
+            loadSkill[i].PlaySkill(player.rigid.velocity.normalized, entity);
+        }
     }
 
     void AddToList(Collision2D col)
@@ -50,9 +73,9 @@ public class BattleComponent : MonoBehaviour
             BasicSkill skill = GetSkillUsingType(player.SkillData.Name);
             if (skill == null) return;
 
-            //Debug.Log(transform.position);
+            skill.Init(transform, this);
 
-            skill.Init(transform, player.rigid.velocity, entity);
+            AddSkillToLoad(skill); // 먹어서 사용하는 스킬은 넣고
             player.SkillData.ResetSkill();
         }
         else // 스킬을 사용할 수 없는 경우 기본 스킬을 사용하게 한다.
@@ -60,15 +83,10 @@ public class BattleComponent : MonoBehaviour
             BasicSkill normalSkill = GetSkillUsingType(player.NormalSkillData.Name);
             if (normalSkill == null) return;
 
-            //Debug.Log(transform.position);
-
-            //for (int i = 0; i < entity.Count; i++)
-            //{
-            //    print(entity[i].gameObject.name);
-            //}
-
-            normalSkill.Init(transform, player.rigid.velocity, entity);
+            normalSkill.Init(transform, this); // 기본 스킬은 안 넣어도 될 듯
         }
+
+        UseSkillInList(); // 리스트에 들어간 모든 오브젝트를 조건부로 실행해줌
     }
     
     void PlayWhenCollision()

@@ -32,10 +32,14 @@ public class BasicSkill : UnitaskUtility
         }
     }
 
-    protected Transform moveTr;
+    protected int skillUseCount = 1;
 
-    protected virtual void OnEnable()
+    protected Transform moveTr;
+    protected BattleComponent loadBattle;
+
+    protected override void OnEnable()
     {
+        base.OnEnable();
         Invoke("DisableObject", 5f);
     }
 
@@ -49,31 +53,26 @@ public class BasicSkill : UnitaskUtility
         base.OnDisable();
     }
 
-    protected BasicEffect GetEffectUsingName(Vector3 pos, Quaternion rotation, Transform tr = null)
+    protected GameObject GetEffectUsingName(Vector3 pos, Quaternion rotation, Transform tr = null)
     {
-        BasicEffect skill = ObjectPooler.SpawnFromPool(SkillName.ToString() + "Effect", pos, rotation, tr).GetComponent<BasicEffect>();
-        return skill;
+        return ObjectPooler.SpawnFromPool(SkillName.ToString() + "Effect", pos, rotation, tr);
     }
 
-    public virtual void Init(Transform tr, Vector2 dir, List<Collision2D> entity)
+    public virtual void Init(Transform tr, BattleComponent battleComponent)
     {
         moveTr = tr;
+        loadBattle = battleComponent;
         transform.position = tr.position;
         transform.rotation = tr.rotation;
-
-        PlaySkill(tr, dir, entity);
     }
 
-    //private void Update()
-    //{
-    //    if (moveTr == null) return;
-
-    //    transform.position = moveTr.position;
-    //    transform.rotation = moveTr.rotation;
-    //}
-
-    public virtual void PlaySkill(Transform tr, Vector2 dir, List<Collision2D> entity)
+    public virtual void PlaySkill(Vector2 dir, List<Collision2D> entity)
     {
 
+        skillUseCount -= 1;
+        if(skillUseCount < 1)
+        {
+            loadBattle.RemoveSkillFromLoad(this);
+        }
     }
 }

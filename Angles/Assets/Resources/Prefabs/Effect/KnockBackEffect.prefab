@@ -14683,6 +14683,7 @@ MonoBehaviour:
   - {fileID: 2226657640553974055}
   - {fileID: 2776979007313965092}
   time: 3
+  canOffOverTime: 1
 --- !u!1 &8046005918502822198
 GameObject:
   m_ObjectHideFlags: 0

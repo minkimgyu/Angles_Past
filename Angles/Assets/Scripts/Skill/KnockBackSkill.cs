@@ -9,7 +9,7 @@ public class KnockBackSkill : BasicSkill
     public float boxHeight;
     public Vector3 distanceFromPlayer;
 
-    public override void PlaySkill(Transform tr, Vector2 dir, List<Collision2D> entity)
+    public override void PlaySkill(Vector2 dir, List<Collision2D> entity)
     {
         RaycastHit2D[] hit = Physics2D.BoxCastAll(transform.position, new Vector2(boxWidth, boxHeight), 
             transform.rotation.z, Vector2.right, distanceFromPlayer.x, LayerMask.GetMask("Enemy"));
@@ -24,6 +24,7 @@ public class KnockBackSkill : BasicSkill
         }
 
         GetEffectUsingName(transform.position, transform.rotation);
+        base.PlaySkill(dir, entity);
     }
 
     void OnDrawGizmos()

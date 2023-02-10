@@ -2,12 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BigImpactSkill : BasicSkill
+public class ExplosionEffect : BasicEffect
 {
     public Color color;
     public float radius;
+    public Transform explodeTr;
 
-    public override void PlaySkill(Vector2 dir, List<Collision2D> entity)
+    protected override void OnEnable()
+    {
+        if (canOffOverTime == false) Invoke("DisableObject", time);
+        Invoke("InvokeEffect", 2f);
+    }
+
+    public void SetExplodePos(Transform tr)
+    {
+        explodeTr = tr;
+    }
+
+    void InvokeEffect()
+    {
+        transform.position = explodeTr.position;
+        PlayEffect();
+        DamageToRange();
+    }
+
+    public void DamageToRange()
     {
         RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.up, 0, LayerMask.GetMask("Enemy"));
 
@@ -15,15 +34,10 @@ public class BigImpactSkill : BasicSkill
         {
             if (hit[i].transform.CompareTag("Enemy"))
             {
-               
-
                 hit[i].collider.GetComponent<FollowComponent>().WaitFollow();
-                hit[i].collider.GetComponent<BasicReflectComponent>().KnockBack((hit[i].transform.position - moveTr.position).normalized * 6);
+                hit[i].collider.GetComponent<BasicReflectComponent>().KnockBack((hit[i].transform.position - transform.position).normalized * 2);
             }
         }
-
-        GetEffectUsingName(transform.position, transform.rotation);
-        base.PlaySkill(dir, entity);
     }
 
     void OnDrawGizmos()

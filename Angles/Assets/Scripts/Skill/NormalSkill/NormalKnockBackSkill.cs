@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NormalKnockBackSkill : BasicSkill
 {
-    public override void PlaySkill(Transform tr, Vector2 dir, List<Collision2D> entity)
+    public override void PlaySkill(Vector2 dir, List<Collision2D> entity)
     {
         for (int i = 0; i < entity.Count; i++)
         {

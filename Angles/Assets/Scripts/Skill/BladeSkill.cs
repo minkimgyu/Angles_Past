@@ -1,16 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using System;
 
 public class BladeSkill : BasicSkill
 {
     public Color color;
     public float radius;
+    float damageTime = 5f;
+    float damagePerTime = 0.5f; // 10
+    BasicEffect basicEffect;
 
+    public async UniTaskVoid SkillTask(Transform tr)
+    {
+        NowRunning = true;
+        int damageTic = 0;
 
+        int maxDamageTic = (int)(damageTime / damagePerTime);
 
+        while (damageTic < maxDamageTic)
+        {
+            AttackCircleRange(tr);
+            await UniTask.Delay(TimeSpan.FromSeconds(damagePerTime), cancellationToken: source.Token);
+            damageTic += 1;
+        }
 
-    public override void PlaySkill(Transform tr, Vector2 dir, List<Collision2D> entity)
+        NowRunning = false;
+
+        DisableObject();
+        // 이펙트를 꺼주는 코드 추가
+    }
+
+    private void Update()
+    {
+        if (moveTr == null) return;
+
+        transform.position = moveTr.position;
+        transform.rotation = moveTr.rotation;
+    }
+
+    protected override void DisableObject()
+    {
+        ObjectPooler.ReturnToPool(basicEffect.gameObject, true);
+        basicEffect.gameObject.SetActive(false);
+
+        gameObject.SetActive(false);
+    }
+
+    void AttackCircleRange(Transform tr)
     {
         RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.up, 0, LayerMask.GetMask("Enemy"));
 
@@ -22,8 +61,14 @@ public class BladeSkill : BasicSkill
                 hit[i].collider.GetComponent<BasicReflectComponent>().KnockBack((hit[i].transform.position - tr.position).normalized * 1.5f);
             }
         }
+    }
 
-        GetEffectUsingName(transform.position, transform.rotation);
+    public override void PlaySkill(Vector2 dir, List<Collision2D> entity)
+    {
+        SkillTask(moveTr).Forget();
+        GetEffectUsingName(transform.position, transform.rotation, transform);
+
+        base.PlaySkill(dir, entity);
     }
 
     void OnDrawGizmos()

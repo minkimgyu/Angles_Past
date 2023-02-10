@@ -6,10 +6,11 @@ public class BasicEffect : MonoBehaviour
 {
     public ParticleSystem[] particles;
     public float time = 3;
+    public bool canOffOverTime = false; // true면 일정 시간 후, 이펙트 회수
 
     protected virtual void OnEnable()
     {
-        Invoke("DisableObject", time);
+        if(canOffOverTime == true) Invoke("DisableObject", time);
         PlayEffect();
     }
 

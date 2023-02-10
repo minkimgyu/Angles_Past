@@ -50,7 +50,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -4935,7 +4935,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -9625,7 +9625,8 @@ MonoBehaviour:
   particles:
   - {fileID: 4841566999175702100}
   - {fileID: 555134731679693108}
-  time: 15
+  time: 0
+  canOffOverTime: 0
 --- !u!58 &4304879794313535450
 CircleCollider2D:
   m_ObjectHideFlags: 0

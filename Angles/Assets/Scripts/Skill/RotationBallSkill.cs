@@ -22,10 +22,11 @@ public class RotationBallSkill : BasicSkill
     }
 
 
-    public override void PlaySkill(Transform tr, Vector2 dir, List<Collision2D> entity)
+    public override void PlaySkill(Vector2 dir, List<Collision2D> entity)
     {
         Debug.Log("PlaySkill");
         InitBall();
+        base.PlaySkill(dir, entity);
     }
 
     protected override void DisableObject()
@@ -48,7 +49,8 @@ public class RotationBallSkill : BasicSkill
             Quaternion rotation = Quaternion.Euler(0, 0, angle);
             Vector3 rotatedOffset = rotation * offset;
 
-            BasicEffect basicEffect = GetEffectUsingName(transform.position, Quaternion.identity, transform);
+            GameObject effectGo = GetEffectUsingName(transform.position, Quaternion.identity, transform);
+            BasicEffect basicEffect = effectGo.GetComponent<BasicEffect>();
             basicEffect.transform.localPosition = rotatedOffset;
 
             basicEffects.Add(basicEffect);

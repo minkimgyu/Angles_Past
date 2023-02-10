@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class BallEffect : BasicEffect
 {
-    protected override void OnEnable()
-    {
-        PlayEffect();
-    }
-
     private void OnTriggerEnter2D(Collider2D col)
     {
         print(col.gameObject.name); // 이펙트로 공격 - 방어 같이 진행

@@ -49,7 +49,7 @@ public class UnitaskUtility : MonoBehaviour
         WhenDisable();
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         WhenEnable();
     }
