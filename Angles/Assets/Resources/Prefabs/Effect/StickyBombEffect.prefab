@@ -9489,7 +9489,7 @@ GameObject:
   - component: {fileID: 1242598178962854101}
   - component: {fileID: 1242598178962854103}
   m_Layer: 0
-  m_Name: ExplosionEffect
+  m_Name: StickyBombEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14203,7 +14203,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5de87c6db5a91947acf0aec5f9a4918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particles: []
+  particles:
+  - {fileID: 1242598178962854100}
+  - {fileID: 1242598178626652651}
+  - {fileID: 1242598178698602911}
+  - {fileID: 1242598179281287273}
   time: 7
   canOffOverTime: 1
   color: {r: 0.4203366, g: 1, b: 0.3820755, a: 1}

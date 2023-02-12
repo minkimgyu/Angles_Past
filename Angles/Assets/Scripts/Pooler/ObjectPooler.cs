@@ -21,25 +21,40 @@ public class ObjectPoolerEditor : Editor
 }
 #endif
 
+[Serializable]
+public class Pool
+{
+	public string tag;
+	public GameObject prefab;
+	public int size;
+
+	public Pool(string _tag, GameObject _prefab, int _size)
+	{
+		tag = _tag;
+		prefab = _prefab;
+		size = _size;
+	}
+}
+
 public class ObjectPooler : MonoBehaviour
 {
 	static ObjectPooler inst;
 	void Awake() => inst = this;
 
-	[Serializable]
-	public class Pool
-	{
-		public string tag;
-		public GameObject prefab;
-		public int size;
-	}
+	Action initAction;
+	public static Action InitAction { get; set; }
 
-	[SerializeField] Pool[] pools;
+    [SerializeField] List<Pool> pools = new List<Pool>();
 	List<GameObject> spawnObjects;
 	Dictionary<string, Queue<GameObject>> poolDictionary;
 	readonly string INFO = " 오브젝트에 다음을 적으세요 \nvoid OnDisable()\n{\n" +
 		"    ObjectPooler.ReturnToPool(gameObject);    // 한 객체에 한번만 \n" +
 		"    CancelInvoke();    // Monobehaviour에 Invoke가 있다면 \n}";
+
+	public static void AddPool(Pool pool) =>
+		inst.AddToPool(pool);
+
+	void AddToPool(Pool pool) => pools.Add(pool);
 
 	public static GameObject SpawnFromPool(string tag) =>
 		inst._SpawnFromPool(tag, Vector3.zero, Quaternion.identity, inst.transform);
@@ -148,7 +163,7 @@ public class ObjectPooler : MonoBehaviour
 		Queue<GameObject> poolQueue = poolDictionary[tag];
 		if (poolQueue.Count <= 0)
 		{
-			Pool pool = Array.Find(pools, x => x.tag == tag);
+			Pool pool = pools.Find(x => x.tag == tag);
 			var obj = CreateNewObject(pool.tag, pool.prefab);
 			ArrangePool(obj);
 		}
@@ -166,6 +181,8 @@ public class ObjectPooler : MonoBehaviour
 
 	void Start()
 	{
+		//if(initAction != null) InitAction();
+
 		spawnObjects = new List<GameObject>();
 		poolDictionary = new Dictionary<string, Queue<GameObject>>();
 

@@ -5,6 +5,9 @@ using UnityEngine;
 public class BasicSkill : UnitaskUtility
 {
     [SerializeField]
+    SkillData skillData;
+
+    [SerializeField]
     SkillName skillName;
     public SkillName SkillName
     {

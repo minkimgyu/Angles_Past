@@ -34,11 +34,14 @@ public class BattleComponent : MonoBehaviour
         loadSkill.Add(skill);
     }
 
-    public void UseSkillInList()
+    public void UseSkillInList(SkillUseType useType)
     {
         for (int i = 0; i < loadSkill.Count; i++)
         {
-            loadSkill[i].PlaySkill(player.rigid.velocity.normalized, entity);
+            if(loadSkill[i].SkillUseType == useType)
+            {
+                loadSkill[i].PlaySkill(player.rigid.velocity.normalized, entity);
+            }
         }
     }
 
@@ -76,7 +79,7 @@ public class BattleComponent : MonoBehaviour
             skill.Init(transform, this);
 
             AddSkillToLoad(skill); // 먹어서 사용하는 스킬은 넣고
-            player.SkillData.ResetSkill();
+            player.SkillData.ResetSkill(); // 플레이어 보유 스킬은 리셋
         }
         else // 스킬을 사용할 수 없는 경우 기본 스킬을 사용하게 한다.
         {
@@ -86,7 +89,7 @@ public class BattleComponent : MonoBehaviour
             normalSkill.Init(transform, this); // 기본 스킬은 안 넣어도 될 듯
         }
 
-        UseSkillInList(); // 리스트에 들어간 모든 오브젝트를 조건부로 실행해줌
+        UseSkillInList(skillUseType); // 리스트에 들어간 모든 오브젝트를 조건부로 실행해줌
     }
     
     void PlayWhenCollision()

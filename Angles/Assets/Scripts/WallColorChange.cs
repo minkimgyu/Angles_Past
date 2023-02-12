@@ -7,18 +7,17 @@ using Cysharp.Threading.Tasks;
 using System;
 using DG.Tweening;
 
-public class WallColorChange : MonoBehaviour
+public class WallColorChange : UnitaskUtility
 {
     public Tilemap changeTilemap;
     Tilemap tilemap;
-    CancellationTokenSource source = new();
+
     public Color startColor = new Color(1, 1, 1);
     public Color endColor = new Color(102f / 255f, 102f / 255f, 102f / 255f);
-
     public Color basicColor = new Color(255f / 255f, 255f / 255f, 255f / 255f);
 
     float duration = 0.5f;
-    float smoothness = 0.05f;
+    float smoothness = 0.01f;
 
     List<Vector3Int> ColorChangeTileList = new List<Vector3Int>();
 
@@ -26,17 +25,13 @@ public class WallColorChange : MonoBehaviour
     void Start()
     {
         tilemap = GetComponent<Tilemap>();
-        //tilemap.color = endColor;
-        check();
+        SetHaloInvisible();
     }
 
 
-    void check()
+    void SetHaloInvisible()
     {
-        //changeTilemap.CompressBounds();
-
         BoundsInt bounds = changeTilemap.cellBounds;
-        //TileBase[] allTiles = changeTilemap.GetTilesBlock(bounds);
 
         for (int x = bounds.min.x; x < bounds.max.x; x++)
         {
@@ -44,14 +39,10 @@ public class WallColorChange : MonoBehaviour
             {
                 Vector3Int pos = new Vector3Int(x, y, 0);
                 TileBase tileBase = changeTilemap.GetTile(pos);
-                if(tileBase == null)
-                {
-                    continue;
-                }
 
+                if(tileBase == null) continue;
                 if(tileBase.name == "WallTileHalo")
                 {
-                    Debug.Log(pos);
                     changeTilemap.SetColor(pos, basicColor);
                 }
             }
@@ -60,97 +51,70 @@ public class WallColorChange : MonoBehaviour
 
     public void ChangeTileColor(Vector3 hitPosition)
     {
-        ColorChange(hitPosition).Forget();
+        Vector3Int tilePos = tilemap.WorldToCell(hitPosition);
+        CheckAround(tilePos);
     }
 
-    void CheckAround(Vector3Int pos, Color color)
+    void CheckAround(Vector3Int pos)
     {
         Vector3Int right = new Vector3Int(pos.x + 1, pos.y, 0);
         Vector3Int left = new Vector3Int(pos.x - 1, pos.y, 0);
         Vector3Int up = new Vector3Int(pos.x, pos.y + 1, 0);
         Vector3Int down = new Vector3Int(pos.x, pos.y - 1, 0);
 
-        if (tilemap.GetSprite(right) != null)
-        {
-            if (tilemap.GetSprite(right).name.Contains("Corner")) changeTilemap.SetColor(right, color);
-        }
+        ColorChange(pos).Forget();
 
-        if (tilemap.GetSprite(left) != null)
+        if (tilemap.GetSprite(right) != null && tilemap.GetSprite(right).name.Contains("Corner"))
         {
-            if (tilemap.GetSprite(left).name.Contains("Corner")) changeTilemap.SetColor(left, color);
+            if (ColorChangeTileList.Contains(right) == false) ColorChange(right).Forget();
         }
-
-        if (tilemap.GetSprite(up) != null)
+        if (tilemap.GetSprite(left) != null && tilemap.GetSprite(left).name.Contains("Corner"))
         {
-            if (tilemap.GetSprite(up).name.Contains("Corner")) changeTilemap.SetColor(up, color);
+            if (ColorChangeTileList.Contains(right) == false) ColorChange(left).Forget();
         }
-
-        if (tilemap.GetSprite(down) != null)
+        if (tilemap.GetSprite(up) != null && tilemap.GetSprite(up).name.Contains("Corner"))
         {
-            if(tilemap.GetSprite(down).name.Contains("Corner")) changeTilemap.SetColor(down, color);
+            if (ColorChangeTileList.Contains(right) == false) ColorChange(up).Forget();
+        }
+        if (tilemap.GetSprite(down) != null && tilemap.GetSprite(down).name.Contains("Corner"))
+        {
+            if (ColorChangeTileList.Contains(right) == false) ColorChange(down).Forget();
         }
     }
 
-    private async UniTaskVoid ColorChange(Vector3 hitPosition)
+    private async UniTaskVoid ColorChange(Vector3Int pos)
     {
+        NowRunning = true;
         float progress = 0;
-
         float increment = smoothness / duration;
 
-        Vector3Int tilePos = tilemap.WorldToCell(hitPosition);
+        ColorChangeTileList.Add(pos);
 
-        if (ColorChangeTileList.Contains(tilePos) == true)
-        {
-            return;
-        }
-
-        ColorChangeTileList.Add(tilePos);
-
-        changeTilemap.SetTileFlags(tilePos, TileFlags.None);
+        changeTilemap.SetTileFlags(pos, TileFlags.None);
         while (progress < 1)
         {
             Color currentColor = Color.Lerp(startColor, endColor, progress);
-            changeTilemap.SetColor(tilePos, currentColor);
-            CheckAround(tilePos, currentColor);
+            changeTilemap.SetColor(pos, currentColor);
 
             progress += increment;
             await UniTask.Delay(TimeSpan.FromSeconds(smoothness), cancellationToken: source.Token);
         }
 
         progress = 0;
-        changeTilemap.SetColor(tilePos, endColor);
-        CheckAround(tilePos, endColor);
+        changeTilemap.SetColor(pos, endColor);
 
         while (progress < 1)
         {
             Color currentColor = Color.Lerp(endColor, startColor, progress);
-            changeTilemap.SetColor(tilemap.WorldToCell(hitPosition), currentColor);
-            CheckAround(tilePos, currentColor);
+            changeTilemap.SetColor(pos, currentColor);
 
             progress += increment;
             await UniTask.Delay(TimeSpan.FromSeconds(smoothness), cancellationToken: source.Token);
         }
 
-        changeTilemap.SetColor(tilemap.WorldToCell(hitPosition), startColor);
-        CheckAround(tilePos, startColor);
+        changeTilemap.SetColor(pos, startColor);
 
-        ColorChangeTileList.Remove(tilePos);
-    }
-
-    private void OnDestroy()
-    {
-        source.Cancel();
-        source.Dispose();
-    }
-
-    private void OnDisable()
-    {
-        source.Cancel();
-    }
-
-    private void OnEnable()
-    {
-        if (source != null) source.Dispose();
-        source = new CancellationTokenSource();
+        ColorChangeTileList.Remove(pos);
+        NowRunning = false;
     }
 }

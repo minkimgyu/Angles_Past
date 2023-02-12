@@ -10,7 +10,7 @@ public class ExplosionEffect : BasicEffect
 
     protected override void OnEnable()
     {
-        if (canOffOverTime == false) Invoke("DisableObject", time);
+        if (canOffOverTime == true) Invoke("DisableObject", time);
         Invoke("InvokeEffect", 2f);
     }
 
@@ -19,9 +19,15 @@ public class ExplosionEffect : BasicEffect
         explodeTr = tr;
     }
 
+    protected override void OnDisable()
+    {
+        explodeTr = null;
+        base.OnDisable();
+    }
+
     void InvokeEffect()
     {
-        transform.position = explodeTr.position;
+        if(explodeTr != null) transform.position = explodeTr.position;
         PlayEffect();
         DamageToRange();
     }

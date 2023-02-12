@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 970975254498306074}
   m_Layer: 0
   m_Name: BladeItem
-  m_TagString: Untagged
+  m_TagString: DropItem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

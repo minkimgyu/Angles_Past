@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 1995157711026584331}
   m_Layer: 0
   m_Name: BigImpactItem
-  m_TagString: Untagged
+  m_TagString: DropItem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
