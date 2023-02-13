@@ -49,7 +49,7 @@ public class RotationBallSkill : BasicSkill
             Quaternion rotation = Quaternion.Euler(0, 0, angle);
             Vector3 rotatedOffset = rotation * offset;
 
-            GameObject effectGo = GetEffectUsingName(transform.position, Quaternion.identity, transform);
+            GameObject effectGo = GetEffectUsingName("RotationBallEffect" ,transform.position, Quaternion.identity, transform);
             BasicEffect basicEffect = effectGo.GetComponent<BasicEffect>();
             basicEffect.transform.localPosition = rotatedOffset;
 

@@ -65,7 +65,7 @@ public class UnitaskUtility : MonoBehaviour
         source.Cancel();
     }
 
-    void WhenEnable()
+    protected void WhenEnable()
     {
         if (source != null) source.Dispose();
         source = new CancellationTokenSource();

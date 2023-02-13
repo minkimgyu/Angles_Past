@@ -13,8 +13,10 @@ public class NormalKnockBackSkill : BasicSkill
             print(entity[i].gameObject.name);
 
             entity[i].gameObject.GetComponent<FollowComponent>().WaitFollow();
-            entity[i].gameObject.GetComponent<BasicReflectComponent>().KnockBack(dirToEnemy.normalized * 4);
-            GetEffectUsingName(entity[i].contacts[0].point, Quaternion.identity);
+            entity[i].gameObject.GetComponent<BasicReflectComponent>().KnockBack(dirToEnemy.normalized * 1);
+            GetEffectUsingName("NormalKnockBackEffect", entity[i].contacts[0].point, Quaternion.identity);
         }
+
+        base.PlaySkill(dir, entity);
     }
 }

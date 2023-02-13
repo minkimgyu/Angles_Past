@@ -11,9 +11,9 @@ public class ForceComponent : UnitaskUtility
         entity = GetComponent<Entity>();
     }
 
-    public virtual void AddForceUsingVec(Vector2 dir)
+    public virtual void AddForceUsingVec(Vector2 dir, ForceMode2D forceMode = ForceMode2D.Impulse)
     {
-        entity.rigid.AddForce(dir, ForceMode2D.Impulse);
+        entity.rigid.AddForce(dir, forceMode);
     }
 
     protected virtual void StopEntity()

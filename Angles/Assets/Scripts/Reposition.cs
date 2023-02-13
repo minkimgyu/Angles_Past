@@ -5,58 +5,45 @@ using UnityEngine;
 public class Reposition : MonoBehaviour
 {
     Player player;
+    float movePos = 10;
 
-    public Transform[] spawnPoints;
-
-    private void OnTriggerExit2D(Collider2D col)
+    private void Start()
     {
-        if(col.transform.CompareTag("Enemy") == true)
-        {
-            if(col.enabled == true)
-            {
-                Vector3 tempVec = FindClosePoint();
-
-                float xPos = Random.Range(-2, 2);
-                float yPos = Random.Range(-2, 2);
-
-                Vector3 spawnPos = new Vector3(tempVec.x + xPos, tempVec.y + yPos, 0);
-                col.transform.position = spawnPos;
-            }
-        }
+        player = PlayManager.Instance.player;
     }
 
-    public Vector3 FindClosePoint()
+    public bool CanMove(float diffX, float diffY)
     {
-        float distance = -1;
-        int index = 0;
+        return diffX >= movePos || diffY >= movePos;
+    }
+    private void FixedUpdate()
+    {
+        Vector3 playerPos = player.transform.position;
+        Vector3 myPos = transform.position;
 
-        for (int i = 0; i < spawnPoints.Length; i++)
+        float diffX = Mathf.Abs(playerPos.x - myPos.x);
+        float diffY = Mathf.Abs(playerPos.y - myPos.y);
+
+        if (CanMove(diffX, diffY) == false) return;
+
+        float dirX = playerPos.x - myPos.x;
+        float dirY = playerPos.y - myPos.y;
+
+        if (dirX < 0) dirX = -1;
+        else if (dirX > 0) dirX = 1;
+
+        if (dirY < 0) dirY = -1;
+        else if (dirY > 0) dirY = 1;
+
+
+        if (diffX >= movePos)
         {
-            if (i == 0)
-            {
-                distance = Vector2.Distance(spawnPoints[i].transform.position, player.transform.position);
-            }
-            else
-            {
-                float newDistance = Vector2.Distance(spawnPoints[i].transform.position, player.transform.position);
-
-                if (newDistance < distance)
-                {
-                    distance = newDistance;
-                    index = i;
-                }
-            }
+            transform.Translate(dirX * movePos * 2, 0, 0);
         }
 
-
-
-        return spawnPoints[index].position;
-    }
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        if (diffY >= movePos)
+        {
+            transform.Translate(0, dirY * movePos * 2, 0);
+        }
     }
 }

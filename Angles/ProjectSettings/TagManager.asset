@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - FxTemporaire
   - DropItem
+  - Area
+  - Ground
   layers:
   - Default
   - TransparentFX

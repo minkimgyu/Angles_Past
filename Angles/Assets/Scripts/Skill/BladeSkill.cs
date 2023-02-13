@@ -66,7 +66,7 @@ public class BladeSkill : BasicSkill
     public override void PlaySkill(Vector2 dir, List<Collision2D> entity)
     {
         SkillTask(moveTr).Forget();
-        GetEffectUsingName(transform.position, transform.rotation, transform);
+        GetEffectUsingName("BladeEffect", transform.position, transform.rotation, transform);
 
         base.PlaySkill(dir, entity);
     }

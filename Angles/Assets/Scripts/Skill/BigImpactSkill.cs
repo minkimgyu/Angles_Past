@@ -22,7 +22,7 @@ public class BigImpactSkill : BasicSkill
             }
         }
 
-        GetEffectUsingName(transform.position, transform.rotation);
+        GetEffectUsingName("BigImpactEffect", transform.position, transform.rotation);
         base.PlaySkill(dir, entity);
     }
 

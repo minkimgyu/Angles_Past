@@ -11,7 +11,7 @@ public class ActionComponent : MonoBehaviour
     float interval = 0.25f;
     float doubleClickedTime = -1.0f;
 
-    public Action<Vector2> attackAction;
+    public Action<Vector2, ForceMode2D> attackAction;
     public Action<Vector2> dashAction;
     public Action<bool> aniAction;
 
@@ -103,7 +103,7 @@ public class ActionComponent : MonoBehaviour
         {
             rushVec.Set(horizontal, vertical);
 
-            attackAction(-rushVec.normalized * uIComponent.RushRatio * DatabaseManager.Instance.AttackThrust); // Ratio客 开规氢 绊妨
+            attackAction(-rushVec.normalized * uIComponent.RushRatio * DatabaseManager.Instance.AttackThrust, ForceMode2D.Impulse); // Ratio客 开规氢 绊妨
             mode = ActionMode.Idle;
             uIComponent.CancelTask();
         }

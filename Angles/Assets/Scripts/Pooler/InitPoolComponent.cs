@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InitPoolComponent : MonoBehaviour
 {
-    private void Start()
+    private void Awake()
     {
         ObjectPooler.InitAction += Init;
     }

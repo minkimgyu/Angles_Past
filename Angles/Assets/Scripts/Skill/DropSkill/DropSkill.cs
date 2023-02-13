@@ -15,6 +15,7 @@ public class SkillData
 
     [SerializeField]
     int skillUseCount = 1;
+    public int SkillUseCount { get { return skillUseCount; } set { skillUseCount = value; } }
 
     public bool CanUseSkill(SkillUseType type)
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum ActionMode { Idle, AttackReady, Attack, Dash, Follow, Hit }; // 동작 상태 모음
 
-public enum SkillName { None, NormalKnockBack, KnockBack, RotationBall, BigImpact, Blade, StickyBomb }; // 동작 상태 모음
+public enum SkillName { None, NormalKnockBack, KnockBack, RotationBall, BigImpact, Blade, StickyBomb, GravitationalField }; // 동작 상태 모음
 
 public enum SkillUseType { None, Contact, Get, Start }
 

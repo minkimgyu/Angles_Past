@@ -19523,7 +19523,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7691631650525947228}
   m_Layer: 0
-  m_Name: Effect
+  m_Name: KnockBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

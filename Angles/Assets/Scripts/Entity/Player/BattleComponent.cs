@@ -38,7 +38,7 @@ public class BattleComponent : MonoBehaviour
     {
         for (int i = 0; i < loadSkill.Count; i++)
         {
-            if(loadSkill[i].SkillUseType == useType)
+            if(loadSkill[i].SkillData.Type == useType)
             {
                 loadSkill[i].PlaySkill(player.rigid.velocity.normalized, entity);
             }
@@ -48,6 +48,8 @@ public class BattleComponent : MonoBehaviour
     void AddToList(Collision2D col)
     {
         if (col.gameObject.CompareTag(entityTag.ToString()) != true) return;
+
+        print(col);
 
         entity.Add(col);
         PlayWhenCollision();
@@ -84,9 +86,12 @@ public class BattleComponent : MonoBehaviour
         else // 스킬을 사용할 수 없는 경우 기본 스킬을 사용하게 한다.
         {
             BasicSkill normalSkill = GetSkillUsingType(player.NormalSkillData.Name);
+            Debug.Log(normalSkill);
+
             if (normalSkill == null) return;
 
             normalSkill.Init(transform, this); // 기본 스킬은 안 넣어도 될 듯
+            AddSkillToLoad(normalSkill); // 먹어서 사용하는 스킬은 넣고
         }
 
         UseSkillInList(skillUseType); // 리스트에 들어간 모든 오브젝트를 조건부로 실행해줌
@@ -102,7 +107,7 @@ public class BattleComponent : MonoBehaviour
         attackComponent.QuickEndTask(); // 공격 리셋해주기
     }
 
-    void PlayWhenAttackStart(Vector2 dir)
+    void PlayWhenAttackStart(Vector2 dir, ForceMode2D forceMode = ForceMode2D.Impulse)
     {
         PlayWhenCollision(); // 한번 체크
 

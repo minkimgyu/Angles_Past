@@ -47,7 +47,7 @@ public class FollowComponent : UnitaskUtility
                 Vector2 backDir = col.transform.position - transform.position;
 
                 col.gameObject.GetComponent<FollowComponent>().WaitFollow();
-                col.gameObject.GetComponent<BasicReflectComponent>().KnockBack(backDir * 3);
+                col.gameObject.GetComponent<BasicReflectComponent>().KnockBack(backDir * 1.3f);
             }
         }
     }

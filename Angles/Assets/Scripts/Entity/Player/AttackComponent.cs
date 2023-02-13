@@ -32,7 +32,7 @@ public class AttackComponent : ForceComponent
         }
     }
 
-    public override void AddForceUsingVec(Vector2 attackDir)
+    public override void AddForceUsingVec(Vector2 attackDir, ForceMode2D forceMode = ForceMode2D.Impulse)
     {
         if (entity.PlayerMode != ActionMode.Idle && entity.PlayerMode != ActionMode.Attack) return;
 

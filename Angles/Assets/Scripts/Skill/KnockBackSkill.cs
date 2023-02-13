@@ -23,7 +23,7 @@ public class KnockBackSkill : BasicSkill
             }
         }
 
-        GetEffectUsingName(transform.position, transform.rotation);
+        GetEffectUsingName("KnockBackEffect", transform.position, transform.rotation);
         base.PlaySkill(dir, entity);
     }
 

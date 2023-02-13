@@ -7,35 +7,17 @@ public class BasicSkill : UnitaskUtility
     [SerializeField]
     SkillData skillData;
 
-    [SerializeField]
-    SkillName skillName;
-    public SkillName SkillName
+    public SkillData SkillData
     {
         get
         {
-            return skillName;
+            return skillData;
         }
         set
         {
-            skillName = value;
+            skillData = value;
         }
     }
-
-    [SerializeField]
-    SkillUseType skillUseType;
-    public SkillUseType SkillUseType
-    {
-        get
-        {
-            return skillUseType;
-        }
-        set
-        {
-            skillUseType = value;
-        }
-    }
-
-    protected int skillUseCount = 1;
 
     protected Transform moveTr;
     protected BattleComponent loadBattle;
@@ -56,9 +38,9 @@ public class BasicSkill : UnitaskUtility
         base.OnDisable();
     }
 
-    protected GameObject GetEffectUsingName(Vector3 pos, Quaternion rotation, Transform tr = null)
+    protected GameObject GetEffectUsingName(string name, Vector3 pos, Quaternion rotation, Transform tr = null)
     {
-        return ObjectPooler.SpawnFromPool(SkillName.ToString() + "Effect", pos, rotation, tr);
+        return ObjectPooler.SpawnFromPool(name, pos, rotation, tr);
     }
 
     public virtual void Init(Transform tr, BattleComponent battleComponent)
@@ -72,8 +54,8 @@ public class BasicSkill : UnitaskUtility
     public virtual void PlaySkill(Vector2 dir, List<Collision2D> entity)
     {
 
-        skillUseCount -= 1;
-        if(skillUseCount < 1)
+        skillData.SkillUseCount -= 1;
+        if(skillData.SkillUseCount < 1)
         {
             loadBattle.RemoveSkillFromLoad(this);
         }

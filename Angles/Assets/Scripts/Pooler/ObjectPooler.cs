@@ -181,7 +181,9 @@ public class ObjectPooler : MonoBehaviour
 
 	void Start()
 	{
-		//if(initAction != null) InitAction();
+		print(InitAction);
+
+		if(InitAction != null) InitAction();
 
 		spawnObjects = new List<GameObject>();
 		poolDictionary = new Dictionary<string, Queue<GameObject>>();
