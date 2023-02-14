@@ -6,13 +6,15 @@ public class MapSpawner : MonoBehaviour
 {
     public Transform parent;
     public List<GameObject> mapPrefab = new List<GameObject>();
-    public List<GameObject> additionalMap = new List<GameObject>();
+    public List<GameObject> mapAround = new List<GameObject>();
+
+    public List<Vector3> mapPos = new List<Vector3>();
 
     // 기본적으로 1개의 맵 + 플레이어 위치에 따라서 추가로 1개의 맵이 존재해야함
     public Transform basicTr;
 
     Player player;
-    float movePos = 10;
+    float movePos = 40;
 
     public int mapXIndex = 0;
     public int mapYIndex = 0;
@@ -21,13 +23,14 @@ public class MapSpawner : MonoBehaviour
     {
         player = PlayManager.Instance.player;
 
-        for (int i = 0; i < mapPrefab.Count; i++)
+        for (int i = 0; i < mapPos.Count; i++)
         {
-            GameObject go = Instantiate(mapPrefab[i]);
+            int index = Random.Range(0, mapPrefab.Count);
+            GameObject go = Instantiate(mapPrefab[index]);
             go.transform.SetParent(parent);
+            go.transform.position = mapPos[i];
 
-            additionalMap.Add(go);
-            additionalMap[i].SetActive(false);
+            mapAround.Add(go);
         }
     }
 
@@ -43,16 +46,21 @@ public class MapSpawner : MonoBehaviour
 
     void ShowNextMap(Vector3 pos)
     {
-        for (int i = 0; i < additionalMap.Count; i++)
+        for (int i = 0; i < mapAround.Count; i++)
         {
-            additionalMap[i].SetActive(false);
+            int xDistance = (int)Mathf.Abs(basicTr.position.x - mapAround[i].transform.position.x);
+            int yDistance = (int)Mathf.Abs(basicTr.position.y - mapAround[i].transform.position.y);
+
+            if(xDistance >= movePos * 2)
+            {
+                mapAround[i].transform.position = new Vector3(pos.x, mapAround[i].transform.position.y, 0);
+            }
+
+            if (yDistance >= movePos * 2)
+            {
+                mapAround[i].transform.position = new Vector3(mapAround[i].transform.position.x, pos.y, 0);
+            }
         }
-
-        if (mapXIndex == 0 && mapYIndex == 0) return;
-
-        int random = Random.Range(0, additionalMap.Count);
-        additionalMap[random].SetActive(true);
-        additionalMap[random].transform.position = pos;
     }
 
     bool CheckPos(int temp)
@@ -92,10 +100,7 @@ public class MapSpawner : MonoBehaviour
             if (dirX > 0) mapXIndex += 1;
             else if (dirX < 0) mapXIndex -= 1;
 
-            if (CheckPos((int)originX) == true)
-            {
-                ShowNextMap(basicTr.position + pos);
-            }
+            ShowNextMap(basicTr.position + pos);
         }
 
         if (diffY >= movePos)
@@ -107,10 +112,7 @@ public class MapSpawner : MonoBehaviour
             if (dirY > 0) mapYIndex += 1;
             else if (dirY < 0) mapYIndex -= 1;
 
-            if (CheckPos((int)originY) == true)
-            {
-                ShowNextMap(basicTr.position + pos);
-            }
+            ShowNextMap(basicTr.position + pos);
         }
     }
 }

@@ -10,10 +10,22 @@ public class NormalKnockBackSkill : BasicSkill
         {
             Vector2 dirToEnemy = entity[i].transform.position - transform.position;
 
-            print(entity[i].gameObject.name);
+            if (entity[i].gameObject.name == "Player") return;
 
-            entity[i].gameObject.GetComponent<FollowComponent>().WaitFollow();
-            entity[i].gameObject.GetComponent<BasicReflectComponent>().KnockBack(dirToEnemy.normalized * 1);
+            FollowComponent followComponent = entity[i].gameObject.GetComponent<FollowComponent>();
+            
+            followComponent.nowHit = true;
+            followComponent.WaitFollow();
+
+            if(followComponent.closeEnemy.Count == 0)
+            {
+                entity[i].gameObject.GetComponent<BasicReflectComponent>().KnockBack(dirToEnemy.normalized);
+            }
+            else
+            {
+                entity[i].gameObject.GetComponent<BasicReflectComponent>().KnockBack(dirToEnemy.normalized * followComponent.closeEnemy.Count * 3);
+            }
+
             GetEffectUsingName("NormalKnockBackEffect", entity[i].contacts[0].point, Quaternion.identity);
         }
 

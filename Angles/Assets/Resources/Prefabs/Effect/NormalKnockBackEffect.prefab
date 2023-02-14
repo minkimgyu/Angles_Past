@@ -50,7 +50,7 @@ MonoBehaviour:
   - {fileID: 6469839276959642630}
   - {fileID: 6469839276534036736}
   - {fileID: 6469839277609650731}
-  time: 3
+  time: 1
   canOffOverTime: 1
 --- !u!1 &6469839276534036741
 GameObject:
