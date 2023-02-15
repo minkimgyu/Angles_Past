@@ -53,9 +53,6 @@ public class Entity : MonoBehaviour
     public Rigidbody2D rigid;
     public Action fixedUpdateAction;
 
-    public Action<Collision2D> collisionEnterAction;
-    public Action<Collision2D> collisionExitAction;
-
     [SerializeField]
     private EntityData entityData;
 
@@ -79,15 +76,5 @@ public class Entity : MonoBehaviour
     protected virtual void Die()
     {
         
-    }
-
-    private void OnCollisionEnter2D(Collision2D col)
-    {
-        if (collisionEnterAction != null) collisionEnterAction(col);
-    }
-
-    private void OnCollisionExit2D(Collision2D col)
-    {
-        if (collisionExitAction != null) collisionExitAction(col);
     }
 }
