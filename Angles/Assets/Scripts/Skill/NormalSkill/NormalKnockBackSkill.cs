@@ -8,6 +8,12 @@ public class NormalKnockBackSkill : BasicSkill
     {
         for (int i = 0; i < entity.Count; i++)
         {
+            print(entity[i].gameObject.name);
+        }
+
+
+        for (int i = 0; i < entity.Count; i++)
+        {
             Vector2 dirToEnemy = entity[i].transform.position - transform.position;
 
             if (entity[i].gameObject.name == "Player") return;

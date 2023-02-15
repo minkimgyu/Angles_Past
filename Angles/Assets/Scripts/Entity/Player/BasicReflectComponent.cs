@@ -12,7 +12,11 @@ public class BasicReflectComponent : MonoBehaviour
     {
         entity = GetComponent<Entity>();
         forceComponent = GetComponent<ForceComponent>();
-        entity.collisionEnterAction += ReflectEntity;
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        ReflectEntity(col);
     }
 
     public virtual void ReflectEntity(Collision2D col)
@@ -24,11 +28,5 @@ public class BasicReflectComponent : MonoBehaviour
     {
         forceComponent.CancelTask();
         forceComponent.AddForceUsingVec(dir);
-    }
-
-    private void OnDisable()
-    {
-        if (entity == null) return;
-        entity.collisionEnterAction -= ReflectEntity;
     }
 }

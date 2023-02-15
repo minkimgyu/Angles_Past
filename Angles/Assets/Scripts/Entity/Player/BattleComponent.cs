@@ -19,9 +19,19 @@ public class BattleComponent : MonoBehaviour
     {
         player = GetComponent<Player>();
         attackComponent = GetComponent<AttackComponent>();
-        player.collisionEnterAction += AddToList;
-        player.collisionExitAction += RemoveToList;
         PlayManager.Instance.actionJoy.actionComponent.attackAction += PlayWhenAttackStart;
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        print(col.gameObject.name);
+        AddToList(col);
+    }
+
+    private void OnCollisionExit2D(Collision2D col)
+    {
+        print(col.gameObject.name);
+        RemoveToList(col);
     }
 
     public void RemoveSkillFromLoad(BasicSkill skill)
@@ -36,6 +46,12 @@ public class BattleComponent : MonoBehaviour
 
     public void UseSkillInList(SkillUseType useType)
     {
+        for (int j = 0; j < entity.Count; j++)
+        {
+            print("entity name                           " + entity[j].gameObject.name);
+
+        }
+
         for (int i = 0; i < loadSkill.Count; i++)
         {
             if(loadSkill[i].SkillData.Type == useType)
@@ -49,13 +65,16 @@ public class BattleComponent : MonoBehaviour
     {
         if (col.gameObject.CompareTag(entityTag.ToString()) != true) return;
 
-        print(col);
-
         entity.Add(col);
         PlayWhenCollision();
     }
 
-    void RemoveToList(Collision2D col) => entity.Remove(col);
+    void RemoveToList(Collision2D col) 
+    {
+        if (col.gameObject.CompareTag(entityTag.ToString()) != true) return;
+
+        entity.Remove(col); 
+    }
 
     BasicSkill GetSkillUsingType(SkillName skillName)
     {
@@ -117,12 +136,5 @@ public class BattleComponent : MonoBehaviour
     public void PlayWhenGet()
     {
         UseSkill(SkillUseType.Get);
-    }
-
-    private void OnDisable()
-    {
-        if (player == null) return;
-        player.collisionEnterAction -= AddToList;
-        player.collisionExitAction -= RemoveToList;
     }
 }

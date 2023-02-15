@@ -21,6 +21,7 @@ public class BasicSkill : UnitaskUtility
 
     protected Transform moveTr;
     protected BattleComponent loadBattle;
+    protected int skillUseCount = 0;
 
     protected override void OnEnable()
     {
@@ -47,6 +48,7 @@ public class BasicSkill : UnitaskUtility
     {
         moveTr = tr;
         loadBattle = battleComponent;
+        skillUseCount = skillData.SkillUseCount;
         transform.position = tr.position;
         transform.rotation = tr.rotation;
     }
@@ -54,8 +56,8 @@ public class BasicSkill : UnitaskUtility
     public virtual void PlaySkill(Vector2 dir, List<Collision2D> entity)
     {
 
-        skillData.SkillUseCount -= 1;
-        if(skillData.SkillUseCount < 1)
+        skillUseCount -= 1;
+        if(skillUseCount < 1)
         {
             loadBattle.RemoveSkillFromLoad(this);
         }
