@@ -18,7 +18,7 @@ public class DashComponent : UnitaskUtility
 
     public void PlayDash(Vector2 dir)
     {
-        if (player.PlayerMode != PlayerMode.Idle) return;
+        if (player.PlayerMode != ActionMode.Idle) return;
 
         DatabaseManager.Instance.SubtractRatio(); // 대쉬 사용한 만큼 빼준다.
         DashTask(dir).Forget();
@@ -27,18 +27,20 @@ public class DashComponent : UnitaskUtility
     private async UniTaskVoid DashTask(Vector2 dir)
     {
         NowRunning = true;
-        player.PlayerMode = PlayerMode.Dash;
+        player.PlayerMode = ActionMode.Dash;
 
         player.rigid.AddForce(dir * DatabaseManager.Instance.DashThrust, ForceMode2D.Impulse);
         await UniTask.Delay(TimeSpan.FromSeconds(DatabaseManager.Instance.DashTime), cancellationToken: source.Token);
 
-        player.PlayerMode = PlayerMode.Idle;
+        player.PlayerMode = ActionMode.Idle;
         NowRunning = false;
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
+        if (PlayManager.Instance == null) return;
+
         PlayManager.Instance.actionJoy.actionComponent.dashAction -= PlayDash;
     }
 }

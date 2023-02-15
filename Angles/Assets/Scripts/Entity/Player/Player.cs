@@ -7,45 +7,37 @@ using System;
 
 public class Player : Entity
 {
-    PlayerMode playerMode;
-
-    public PlayerMode PlayerMode
+    [SerializeField]
+    SkillData normalSkillData;
+    public SkillData NormalSkillData
     {
         get
         {
-            return playerMode;
+            return normalSkillData;
         }
         set
         {
-            playerMode = value;
+            normalSkillData = value;
         }
     }
 
-    Animator animator;
-
-    public Animator Animator
+    [SerializeField]
+    SkillData skillData;
+    public SkillData SkillData
     {
         get
         {
-            return animator;
+            return skillData;
         }
         set
         {
-            if (value != null) animator = value;
+            skillData = value;
         }
     }
-
-    public Action fixedUpdateAction;
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
-        animator = GetComponent<Animator>();
-    }
-
-    private void FixedUpdate()
-    {
-        fixedUpdateAction();
     }
 }

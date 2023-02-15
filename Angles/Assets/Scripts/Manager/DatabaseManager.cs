@@ -2,16 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ActionMode { Idle, AttackReady }; // 기본 상태와 공격준비 상태
+public enum ActionMode { Idle, AttackReady, Attack, Dash, Follow, Hit }; // 동작 상태 모음
 
-public enum PlayerMode { Idle, Attack, Dash }; // 기본, 공격, 대쉬 상태
+public enum SkillName { None, NormalKnockBack, KnockBack, RotationBall, BigImpact, Blade, StickyBomb, GravitationalField }; // 동작 상태 모음
+
+public enum SkillUseType { None, Contact, Get, Start }
+
+public enum EntityTag { Player, Enemy, Wall };
 
 public class DatabaseManager : Singleton<DatabaseManager>
 {
+    #region 변수 모음
+
     [Header("Attack")]
     [SerializeField]
     int attackThrust = 5;
     public int AttackThrust { get { return attackThrust; } set { attackThrust = value; } }
+
+    [SerializeField]
+    int reflectAttackThrust = 2;
+    public int ReflectAttackThrust { get { return reflectAttackThrust; } set { reflectAttackThrust = value; } }
 
     [SerializeField]
     float attackTime = 3f;
@@ -62,6 +72,31 @@ public class DatabaseManager : Singleton<DatabaseManager>
     [SerializeField]
     float readySpeed = 2; // 움직임
     public float ReadySpeed { get { return readySpeed; } set { readySpeed = value; } }
+
+    [Header("Follow")]
+    [SerializeField]
+    float followSpeed = 3;
+    public float FollowSpeed { get { return followSpeed; } set { followSpeed = value; } }
+
+    [SerializeField]
+    float minFollowDistance = 5;
+    public float MinFollowDistance { get { return minFollowDistance; } set { minFollowDistance = value; } }
+
+    [SerializeField]
+    float waitTime = 5;
+    public float WaitTime { get { return waitTime; } set { waitTime = value; } }
+
+    [Header("Damage")]
+    [SerializeField]
+    float attackDamage = 5;
+    public float AttackDamage { get { return attackDamage; } set { attackDamage = value; } }
+
+    #endregion
+
+    [Header("EntityDB")]
+    [SerializeField]
+    EntityDB entityDB;
+    public EntityDB EntityDB { get { return entityDB; } set { entityDB = value; } }
 
     public bool CanUseDash()
     {

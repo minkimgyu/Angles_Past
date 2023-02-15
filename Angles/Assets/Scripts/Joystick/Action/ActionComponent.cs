@@ -11,7 +11,7 @@ public class ActionComponent : MonoBehaviour
     float interval = 0.25f;
     float doubleClickedTime = -1.0f;
 
-    public Action<Vector2> attackAction;
+    public Action<Vector2, ForceMode2D> attackAction;
     public Action<Vector2> dashAction;
     public Action<bool> aniAction;
 
@@ -55,7 +55,6 @@ public class ActionComponent : MonoBehaviour
                 uIComponent.FillAttackPower().Forget();
 
                 aniAction(true);
-                //PlayManager.Instance.player.Animator.SetBool("NowReady", true);
             }
         }
         else
@@ -67,7 +66,6 @@ public class ActionComponent : MonoBehaviour
                 Debug.Log("NowCancel");
 
                 aniAction(false);
-                //PlayManager.Instance.player.Animator.SetBool("NowReady", false);
             }
         }
     }
@@ -94,7 +92,7 @@ public class ActionComponent : MonoBehaviour
 
         if (NowDoubleClick() == true && DatabaseManager.Instance.CanUseDash() == true && moveJoy.moveInputComponent.NowCanDash() == true)
         {
-            dashAction(moveJoy.moveInputComponent.ReturnMoveVec()); // 대쉬 값을 받아와서 진행
+            dashAction(moveJoy.moveInputComponent.ReturnMoveVec().normalized); // 대쉬 값을 받아와서 진행
             moveJoy.dashUIComponent.ReFillDashRatio();
         }
     }
@@ -105,7 +103,7 @@ public class ActionComponent : MonoBehaviour
         {
             rushVec.Set(horizontal, vertical);
 
-            attackAction(rushVec * uIComponent.RushRatio); // 곱해서 넘겨줌
+            attackAction(-rushVec.normalized * uIComponent.RushRatio * DatabaseManager.Instance.AttackThrust, ForceMode2D.Impulse); // Ratio와 역방향 고려
             mode = ActionMode.Idle;
             uIComponent.CancelTask();
         }

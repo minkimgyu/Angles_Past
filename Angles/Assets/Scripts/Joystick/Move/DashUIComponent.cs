@@ -12,7 +12,7 @@ public class DashUIComponent : UnitaskUtility
 
     private void Start()
     {
-        WaitTIme = 0.1f;
+        WaitTIme = 0.05f;
     }
 
     public void ReFillDashRatio()
@@ -21,36 +21,37 @@ public class DashUIComponent : UnitaskUtility
 
         FillDashRatio().Forget();
     }
-    void FillDashIcon(float ratio)
+    void FillDashIcon(float ratio) /// 0.66435
     {
-        float perImage = 1 / DatabaseManager.Instance.MaxDashCount; // ex) 이미지가 3개인 경우 각각 0.333
-        bool fillComplete = false;
+        float perImage = 1 / DatabaseManager.Instance.MaxDashCount;
+        bool nowFillComplete = false;
 
-        // ratio가 0.7일 경우, 2개 채우고 나머지 1개 0.03333만큼만 채우기
 
-        for (int i = 1; i < DatabaseManager.Instance.MaxDashCount - 1; i++)
+        for (int i = 1; i < dashImage.Length + 1; i++)
         {
-            if (fillComplete == true)
+            int indexOfImage = i - 1;
+
+
+            if(nowFillComplete == true)
             {
-                dashImage[i].fillAmount = 0;
+                dashImage[indexOfImage].fillAmount = 0;
                 continue;
             }
 
+            float perImageRatio = perImage * i;
 
-            // 0, 1, 2 --> 0.333333, 0.6666666, 0.999999
-            if (ratio > perImage * i)
+            if (ratio > perImageRatio)
             {
-                Debug.Log(perImage * i);
-                Debug.Log(ratio);
-                if (dashImage[i].fillAmount != 1) dashImage[i].fillAmount = 1;
+                dashImage[indexOfImage].fillAmount = 1;
             }
-            else if (ratio < perImage * i)
+            else
             {
-                Debug.Log(perImage * i);
+                int lastIndex = i - 1;
+                if (lastIndex < 0) lastIndex = 0;
 
-                float lastFill = ratio - (perImage * i - 1); // 현 레이트 값에서 이전 필 레이트를 빼면 채워야 할 값이 나옴
-                dashImage[i].fillAmount = lastFill * DatabaseManager.Instance.MaxDashCount;
-                fillComplete = true;
+                float lastPerImageRatio = ratio - (perImage * (lastIndex));
+                dashImage[indexOfImage].fillAmount = lastPerImageRatio * DatabaseManager.Instance.MaxDashCount;
+                nowFillComplete = true;
             }
         }
     }

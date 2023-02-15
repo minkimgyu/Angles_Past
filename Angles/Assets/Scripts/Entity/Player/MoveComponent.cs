@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class MoveComponent : MonoBehaviour
 {
-    float angle = 0;
     Player player;
     Rigidbody2D rigid;
+
+    Vector2 rotationVec = Vector2.zero;
 
     // Start is called before the first frame update
     void Start()
@@ -17,24 +18,46 @@ public class MoveComponent : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
     }
 
-    void RotateUsingVelocity()
+    float CheckCanRotate(Vector2 vec)
     {
-        float tempAngle = angle;
+        return Mathf.Atan2(vec.y, vec.x) * Mathf.Rad2Deg;
+    }
 
-        angle = Mathf.Atan2(rigid.velocity.y, rigid.velocity.x) * Mathf.Rad2Deg;
+    public void RotateUsingVelocity(Vector2 vec)
+    {
+        //float lerpAngle = Mathf.Lerp(rigid.rotation, CheckCanRotate(vec), Time.deltaTime * 3);
+        rigid.MoveRotation(CheckCanRotate(vec));
+    }
 
-        if (angle == tempAngle) return;
+    public void RotateUsingTransform(Vector2 vec)
+    {
+        //float lerpAngle = Mathf.Lerp(rigid.rotation, CheckCanRotate(vec), Time.deltaTime * 3);
+        transform.rotation = Quaternion.Euler(0, 0, CheckCanRotate(vec));
+    }
 
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+    void RotationPlayer()
+    {
+        bool isAttackReady = PlayManager.Instance.actionJoy.actionComponent.Mode == ActionMode.AttackReady;
+        if (isAttackReady == true)
+        {
+            rotationVec.Set(PlayManager.Instance.actionJoy.Horizontal, PlayManager.Instance.actionJoy.Vertical);
+        }
+        else
+        {
+            bool nowPlayerMove = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec() == Vector2.zero;
+            if (nowPlayerMove == true) return;
+
+            rotationVec.Set(rigid.velocity.x, rigid.velocity.y);
+        }
+
+        RotateUsingVelocity(rotationVec.normalized);
     }
 
     void SubUpdate()
     {
-        RotateUsingVelocity();
-
-        if (player.PlayerMode != PlayerMode.Idle) return;
-
+        if (player.PlayerMode != ActionMode.Idle) return;
         Move();
+        RotationPlayer();
     }
 
     public void Move()
@@ -43,11 +66,11 @@ public class MoveComponent : MonoBehaviour
         
         if (nowReady == true)
         {
-            rigid.velocity = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec() * DatabaseManager.Instance.ReadySpeed;
+            rigid.velocity = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec().normalized * DatabaseManager.Instance.ReadySpeed;
         }
         else
         {
-            rigid.velocity = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec() * DatabaseManager.Instance.MoveSpeed;
+            rigid.velocity = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec().normalized * DatabaseManager.Instance.MoveSpeed;
         }
     }
 
