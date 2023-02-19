@@ -7,23 +7,23 @@ public class BigImpactSkill : BasicSkill
     public Color color;
     public float radius;
 
-    public override void PlaySkill(Vector2 dir, List<Collision2D> entity)
+    public override void PlaySkill(SkillSupportData skillSupportData)
     {
-        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+        effect.PlayEffect();
 
+        transform.position = skillSupportData.player.transform.position; // 위치 초기화
+
+        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.up, 0, LayerMask.GetMask("Enemy"));
         for (int i = 0; i < hit.Length; i++)
         {
             if (hit[i].transform.CompareTag("Enemy"))
             {
-               
-
                 hit[i].collider.GetComponent<FollowComponent>().WaitFollow();
-                hit[i].collider.GetComponent<BasicReflectComponent>().KnockBack((hit[i].transform.position - moveTr.position).normalized * 6);
+                hit[i].collider.GetComponent<BasicReflectComponent>().KnockBack((hit[i].transform.position - transform.position).normalized * 6);
             }
         }
 
-        GetEffectUsingName("BigImpactEffect", transform.position, transform.rotation);
-        base.PlaySkill(dir, entity);
+        base.PlaySkill(skillSupportData);
     }
 
     void OnDrawGizmos()

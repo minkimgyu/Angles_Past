@@ -14,18 +14,39 @@ public class SkillData
     public SkillUseType Type { get { return type; } set { type = value; } }
 
     [SerializeField]
-    int skillUseCount = 1;
-    public int SkillUseCount { get { return skillUseCount; } set { skillUseCount = value; } }
+    int count = 1;
+    public int Count { get { return count; } set { count = value; } }
 
-    public bool CanUseSkill(SkillUseType type)
+    public SkillData(SkillName skillName, SkillUseType skillType, int skillUseCount = 1)
     {
-        return Name != SkillName.None && Type == type;
+        name = skillName;
+        type = skillType;
+        count = skillUseCount;
+    }
+
+    public bool CanUseSkill(SkillUseType skillType)
+    {
+        return Name != SkillName.None && Type == skillType && Count >= 1;
+    }
+
+    public void UseSkill(List<SkillData> skillDatas)
+    {
+        if (CanUseSkill(type) == false) return;
+
+        count -= 1;
+        if(count <= 0) skillDatas.Remove(this);
+    }
+
+    public SkillData CopyData()
+    {
+        return new SkillData(name, type, count);
     }
 
     public void ResetSkill()
     {
         Name = SkillName.None;
         Type = SkillUseType.None;
+        count = 0;
     }
 }
 

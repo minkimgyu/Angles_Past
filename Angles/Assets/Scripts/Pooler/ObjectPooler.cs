@@ -39,7 +39,13 @@ public class Pool
 public class ObjectPooler : MonoBehaviour
 {
 	static ObjectPooler inst;
-	void Awake() => inst = this;
+	void Awake() 
+	{ 
+		inst = this;
+		tr = transform;
+	}
+
+	public static Transform tr;
 
 	Action initAction;
 	public static Action InitAction { get; set; }
@@ -55,6 +61,8 @@ public class ObjectPooler : MonoBehaviour
 		inst.AddToPool(pool);
 
 	void AddToPool(Pool pool) => pools.Add(pool);
+
+	public static void ReturnToTransform(Transform tr) => inst._ReturnToTranstorm(tr);
 
 	public static GameObject SpawnFromPool(string tag) =>
 		inst._SpawnFromPool(tag, Vector3.zero, Quaternion.identity, inst.transform);
@@ -134,14 +142,12 @@ public class ObjectPooler : MonoBehaviour
 		return objects.ConvertAll(x => x.GetComponent<T>());
 	}
 
-	public static void ReturnToPool(GameObject obj, bool backToParent = false)
+	public static void ReturnToPool(GameObject obj)
 	{
 		if (!inst.poolDictionary.ContainsKey(obj.name))
 			throw new Exception($"Pool with tag {obj.name} doesn't exist.");
 
 		inst.poolDictionary[obj.name].Enqueue(obj);
-
-		if(backToParent == true && obj.gameObject.activeSelf == true) obj.transform.SetParent(inst.transform);
 	}
 
 	[ContextMenu("GetSpawnObjectsInfo")]
@@ -154,10 +160,19 @@ public class ObjectPooler : MonoBehaviour
 		}
 	}
 
+
+	void _ReturnToTranstorm(Transform tr)
+    {
+		tr.SetParent(transform);
+	}
+
 	GameObject _SpawnFromPool(string tag, Vector3 position, Quaternion rotation, Transform transform)
 	{
 		if (!poolDictionary.ContainsKey(tag))
-			throw new Exception($"Pool with tag {tag} doesn't exist.");
+        {
+			//throw new Exception($"Pool with tag {tag} doesn't exist.");
+			return null;
+		}
 
 		// 큐에 없으면 새로 추가
 		Queue<GameObject> poolQueue = poolDictionary[tag];
@@ -181,8 +196,6 @@ public class ObjectPooler : MonoBehaviour
 
 	void Start()
 	{
-		print(InitAction);
-
 		if(InitAction != null) InitAction();
 
 		spawnObjects = new List<GameObject>();

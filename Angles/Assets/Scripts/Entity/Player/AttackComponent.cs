@@ -8,12 +8,14 @@ using System;
 public class AttackComponent : ForceComponent
 {
     MoveComponent moveComponent;
+    BattleComponent battleComponent;
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
         moveComponent = GetComponent<MoveComponent>();
+        battleComponent = GetComponent<BattleComponent>();
         entity.fixedUpdateAction += SubUpdate;
 
         PlayManager.Instance.actionJoy.actionComponent.aniAction += ResetReadyAni;

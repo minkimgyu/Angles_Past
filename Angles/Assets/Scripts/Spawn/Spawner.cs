@@ -7,7 +7,6 @@ public class SpawnData
 {
     public float levelUpTime;
     public string spawnEntityName;
-    public int spawnIndex;
     public int spawnCount;
 
     public bool NowCanSpawn(float time)
@@ -48,18 +47,58 @@ public class Spawner : MonoBehaviour
         bool nowCanSpawn = spawnDatas[level].NowCanSpawn(time);
         if (nowCanSpawn == true)
         {
-            Spawn(spawnDatas[level].spawnIndex, spawnDatas[level].spawnCount, spawnDatas[level].spawnEntityName);
+            List<Transform> spawnPoints = PlayManager.Instance.player.SpawnAssistant.FindSpawnPoint();
+            if(spawnPoints.Count > 0)
+            {
+                Vector3 pos = spawnPoints[Random.Range(0, spawnPoints.Count)].position;
+                Spawn(pos, spawnDatas[level].spawnCount, spawnDatas[level].spawnEntityName);
+            }
+           
             // 여기에 스폰 데이터 넣기
             level += 1;
         }
     }
 
-    public void Spawn(int spawnIndex, int spawnCount, string spawnEntityName)
+    Vector3 ReturnRandomPos(Vector2 pos) 
     {
+        int xDistance = Random.Range(0, 4);
+        int yDistance = Random.Range(0, 4);
+
+        return new Vector3(pos.x + xDistance, pos.y + yDistance);
+    }
+
+    Vector3 SpawnNotOverlap(Vector3 pos, List<Vector3> loadPos)
+    {
+        bool findNotOverlapVar = true;
+        Vector3 changePos = Vector3.zero;
+
+        if(loadPos.Count > 0)
+        {
+            while (findNotOverlapVar == true)
+            {
+                changePos = ReturnRandomPos(pos);
+                findNotOverlapVar = loadPos.Contains(changePos); // 포함 안하면 false로 반환 --> 루프 벗어남
+            }
+        }
+        else
+        {
+            changePos = ReturnRandomPos(pos);
+        }
+
+        loadPos.Add(changePos);
+        return changePos;
+    }
+
+    public void Spawn(Vector3 pos, int spawnCount, string spawnEntityName)
+    {
+        List<Vector3> loadSpawnPos = new List<Vector3>();
+
         for (int i = 0; i < spawnCount; i++)
         {
-            Vector3 spawnPos = spawnPoints[spawnIndex].position;
             GameObject entity = ObjectPooler.SpawnFromPool(spawnEntityName);
+            Vector3 resetPos = SpawnNotOverlap(pos, loadSpawnPos);
+
+            entity.transform.position = resetPos;
             entity.GetComponent<Entity>().Init(ReturnEntityData("Player"));
         }
     }

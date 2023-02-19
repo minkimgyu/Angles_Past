@@ -1,16 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using System;
 
 public class GravitationalFieldSkill : BasicSkill
 {
     [SerializeField]
     List<ForceComponent> forceComponents = new List<ForceComponent>();
 
+    float damageTime = 5f;
+    float damagePerTime = 0.1f; // 10
+
     protected override void OnEnable()
     {
         WhenEnable();
-        Invoke("DisableObject", 15f);
     }
 
     private void OnTriggerEnter2D(Collider2D col)
@@ -27,7 +32,7 @@ public class GravitationalFieldSkill : BasicSkill
         if (col.CompareTag("Enemy")) forceComponents.Remove(col.GetComponent<ForceComponent>());
     }
 
-    private void Update()
+    void SetGravity()
     {
         for (int i = 0; i < forceComponents.Count; i++)
         {
@@ -36,9 +41,29 @@ public class GravitationalFieldSkill : BasicSkill
         }
     }
 
-    public override void PlaySkill(Vector2 dir, List<Collision2D> entity)
+    public async UniTaskVoid SkillTask()
     {
-        GetEffectUsingName("GravitationalFieldEffect", transform.position, transform.rotation);
-        base.PlaySkill(dir, entity);
+        effect.PlayEffect();
+        NowRunning = true;
+
+        int damageTic = 0;
+        int maxDamageTic = (int)(damageTime / damagePerTime);
+
+        while (damageTic < maxDamageTic)
+        {
+            SetGravity();
+            await UniTask.Delay(TimeSpan.FromSeconds(damagePerTime), cancellationToken: source.Token);
+            damageTic += 1;
+        }
+
+        NowRunning = false;
+        effect.StopEffect();
+    }
+
+    public override void PlaySkill(SkillSupportData skillSupportData)
+    {
+        transform.position = skillSupportData.player.transform.position;
+        base.PlaySkill(skillSupportData);
+        SkillTask().Forget();
     }
 }

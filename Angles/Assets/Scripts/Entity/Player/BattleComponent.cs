@@ -2,123 +2,165 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class SkillSupportData
+{
+    public List<Vector3> contactPos;
+    public List<Entity> contactEntity;
+    public Vector3 playerDir;
+    public Entity player;
+
+    public SkillSupportData(Entity player, Vector3 playerDir, List<Entity> contactEntity, List<Vector3> contactPos)
+    {
+        this.player = player;
+        this.playerDir = playerDir;
+        this.contactEntity = contactEntity;
+        this.contactPos = contactPos;
+    }
+}
+
+[System.Serializable]
+public struct ContactData
+{
+    public GameObject go;
+    public Vector3 pos;
+
+    public ContactData(GameObject go, Vector3 pos)
+    {
+        this.go = go;
+        this.pos = pos;
+    }
+}
+
 public class BattleComponent : MonoBehaviour
 {
-    List<Collision2D> entity = new List<Collision2D>();
-    Player player;
+    public List<ContactData> contactDatas = new List<ContactData>();
+
+    Entity player;
     AttackComponent attackComponent;
 
     [SerializeField]
-    List<BasicSkill> loadSkill = new List<BasicSkill>();
+    SkillData normalSkillData;
+    public SkillData NormalSkillData { get { return normalSkillData; } set { normalSkillData = value; } }
+
+    [SerializeField]
+    SkillData skillData;
+    public SkillData SkillData { get { return skillData; } set { skillData = value; } }
+
+    [SerializeField]
+    List<BasicSkill> haveSkill = new List<BasicSkill>();
     // <-- null이면 스킬 데이터를 플레이어에서 불러와서 사용, 아니면 저장되어 있는 객체에 playskill 실행해준다.
     // count 변수를 만들어서 0이면 리스트에서 삭제, 1 이상일 경우 하나씩 빼주면서 사용
 
-    public EntityTag entityTag;
+    [SerializeField]
+    List<SkillData> loadSkillDatas = new List<SkillData>();
+
+    public EntityTag contactTag;
+    public Transform skillParent;
 
     private void Start()
     {
-        player = GetComponent<Player>();
+        player = GetComponent<Entity>();
         attackComponent = GetComponent<AttackComponent>();
         PlayManager.Instance.actionJoy.actionComponent.attackAction += PlayWhenAttackStart;
     }
 
+    #region 주변의 적 체크
+
     private void OnCollisionEnter2D(Collision2D col)
     {
-        print(col.gameObject.name);
-        AddToList(col);
+        if (col.gameObject.CompareTag(contactTag.ToString()) == false) return;
+
+        ContactData contactData = new ContactData(col.gameObject, col.contacts[0].point);
+        contactDatas.Add(contactData);
+        PlayWhenCollision();
     }
 
     private void OnCollisionExit2D(Collision2D col)
     {
-        print(col.gameObject.name);
-        RemoveToList(col);
-    }
+        if (col.gameObject.CompareTag(contactTag.ToString()) == false) return;
 
-    public void RemoveSkillFromLoad(BasicSkill skill)
-    {
-        loadSkill.Remove(skill);
-    }
-
-    public void AddSkillToLoad(BasicSkill skill)
-    {
-        loadSkill.Add(skill);
-    }
-
-    public void UseSkillInList(SkillUseType useType)
-    {
-        for (int j = 0; j < entity.Count; j++)
+        for (int i = 0; i < contactDatas.Count; i++)
         {
-            print("entity name                           " + entity[j].gameObject.name);
-
-        }
-
-        for (int i = 0; i < loadSkill.Count; i++)
-        {
-            if(loadSkill[i].SkillData.Type == useType)
+            if(contactDatas[i].go == col.gameObject)
             {
-                loadSkill[i].PlaySkill(player.rigid.velocity.normalized, entity);
+                contactDatas.RemoveAt(i);
+                return;
             }
         }
     }
 
-    void AddToList(Collision2D col)
-    {
-        if (col.gameObject.CompareTag(entityTag.ToString()) != true) return;
+    #endregion
 
-        entity.Add(col);
-        PlayWhenCollision();
+    SkillSupportData ReturnContactEntity()
+    {
+        List<Vector3> pos = new List<Vector3>();
+        List<Entity> entity = new List<Entity>();
+
+        Vector3 dir = player.rigid.velocity.normalized;
+
+        for (int i = 0; i < contactDatas.Count; i++)
+        {
+           pos.Add(contactDatas[i].pos);
+           entity.Add(contactDatas[i].go.GetComponent<Entity>());
+        }
+
+        SkillSupportData supportData = new SkillSupportData(player, dir, entity, pos);
+        return supportData;
     }
 
-    void RemoveToList(Collision2D col) 
+    public void UseSkillInList(SkillUseType useType)
     {
-        if (col.gameObject.CompareTag(entityTag.ToString()) != true) return;
+        SkillSupportData supportData = ReturnContactEntity();
 
-        entity.Remove(col); 
+        for (int i = 0; i < loadSkillDatas.Count; i++)
+        {
+            if (loadSkillDatas[i].CanUseSkill(useType) == false) continue;
+
+            BasicSkill skill = GetSkillUsingName(loadSkillDatas[i].Name.ToString(), transform.position, Quaternion.identity);
+            if (skill == null) continue;
+
+            skill.PlaySkill(supportData);
+            loadSkillDatas[i].UseSkill(loadSkillDatas);
+        }
     }
-
-    BasicSkill GetSkillUsingType(SkillName skillName)
+    protected BasicSkill GetSkillUsingName(string name, Vector3 pos, Quaternion rotation, Transform tr = null)
     {
-        BasicSkill skill = ObjectPooler.SpawnFromPool(skillName.ToString()).GetComponent<BasicSkill>();
+        GameObject go = ObjectPooler.SpawnFromPool(name, pos, rotation, tr);
+        if (go == null) return null;
+
+        BasicSkill skill = go.GetComponent<BasicSkill>();
         return skill;
     }
 
     bool NowContactEnemy()
     {
-        return entity.Count > 0;
+        return contactDatas.Count > 0;
     }
 
     void UseSkill(SkillUseType skillUseType)
     {
-        bool canUseSkill = player.SkillData.CanUseSkill(skillUseType);
+        SkillData data;
 
         // 스킬을 사용할 수 있는 경우 스킬 사용
-        if (canUseSkill == true)
+        if (SkillData.CanUseSkill(skillUseType) == true)
         {
-            BasicSkill skill = GetSkillUsingType(player.SkillData.Name);
-            if (skill == null) return;
+            data = SkillData.CopyData();
+            SkillData.ResetSkill(); // 플레이어 보유 스킬은 리셋
 
-            skill.Init(transform, this);
-
-            AddSkillToLoad(skill); // 먹어서 사용하는 스킬은 넣고
-            player.SkillData.ResetSkill(); // 플레이어 보유 스킬은 리셋
+            loadSkillDatas.Add(data);
+            UseSkillInList(skillUseType); // 리스트에 들어간 모든 오브젝트를 조건부로 실행해줌
         }
-        else // 스킬을 사용할 수 없는 경우 기본 스킬을 사용하게 한다.
+        else if(NormalSkillData.CanUseSkill(skillUseType) == true) // 스킬을 사용할 수 없는 경우 기본 스킬을 사용하게 한다.
         {
-            BasicSkill normalSkill = GetSkillUsingType(player.NormalSkillData.Name);
-            Debug.Log(normalSkill);
+            data = NormalSkillData.CopyData();
 
-            if (normalSkill == null) return;
-
-            normalSkill.Init(transform, this); // 기본 스킬은 안 넣어도 될 듯
-            AddSkillToLoad(normalSkill); // 먹어서 사용하는 스킬은 넣고
+            loadSkillDatas.Add(data);
+            UseSkillInList(skillUseType); // 리스트에 들어간 모든 오브젝트를 조건부로 실행해줌
         }
-
-        UseSkillInList(skillUseType); // 리스트에 들어간 모든 오브젝트를 조건부로 실행해줌
     }
     
     void PlayWhenCollision()
     {
-        if (NowContactEnemy() == false) return; // 적과 접촉하고 있지 않은 경우 리턴
         if (player.PlayerMode != ActionMode.Attack) return;
 
         UseSkill(SkillUseType.Contact);
@@ -126,11 +168,15 @@ public class BattleComponent : MonoBehaviour
         attackComponent.QuickEndTask(); // 공격 리셋해주기
     }
 
-    void PlayWhenAttackStart(Vector2 dir, ForceMode2D forceMode = ForceMode2D.Impulse)
+    void PlayWhenAttackStart(Vector2 dir, ForceMode2D forceMode)
     {
-        PlayWhenCollision(); // 한번 체크
+        if (NowContactEnemy() == true) PlayWhenCollision(); // 접촉 시, 충돌 함수 실행
+    }
 
-        UseSkill(SkillUseType.Start);
+    private void OnDisable()
+    {
+        if(PlayManager.Instance != null)
+            PlayManager.Instance.actionJoy.actionComponent.attackAction -= PlayWhenAttackStart;
     }
 
     public void PlayWhenGet()

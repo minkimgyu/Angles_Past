@@ -297,6 +297,7 @@ MonoBehaviour:
   once: 0
   nowHit: 0
   closeEnemy: []
+  doNotClose: {fileID: 2469773267261216803}
 --- !u!114 &424120340829889288
 MonoBehaviour:
   m_ObjectHideFlags: 0

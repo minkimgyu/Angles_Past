@@ -12,9 +12,12 @@ public class BladeSkill : BasicSkill
     float damageTime = 5f;
     float damagePerTime = 0.5f; // 10
     BasicEffect basicEffect;
+    Transform playerTr = null;
 
-    public async UniTaskVoid SkillTask(Transform tr)
+    public async UniTaskVoid SkillTask()
     {
+        effect.PlayEffect();
+
         NowRunning = true;
         int damageTic = 0;
 
@@ -22,34 +25,24 @@ public class BladeSkill : BasicSkill
 
         while (damageTic < maxDamageTic)
         {
-            AttackCircleRange(tr);
+            AttackCircleRange();
             await UniTask.Delay(TimeSpan.FromSeconds(damagePerTime), cancellationToken: source.Token);
             damageTic += 1;
         }
 
         NowRunning = false;
 
-        DisableObject();
-        // 이펙트를 꺼주는 코드 추가
+        effect.StopEffect();
     }
 
     private void Update()
     {
-        if (moveTr == null) return;
+        if (playerTr == null) return;
 
-        transform.position = moveTr.position;
-        transform.rotation = moveTr.rotation;
+        transform.position = playerTr.position;
     }
 
-    protected override void DisableObject()
-    {
-        ObjectPooler.ReturnToPool(basicEffect.gameObject, true);
-        basicEffect.gameObject.SetActive(false);
-
-        gameObject.SetActive(false);
-    }
-
-    void AttackCircleRange(Transform tr)
+    void AttackCircleRange()
     {
         RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.up, 0, LayerMask.GetMask("Enemy"));
 
@@ -58,17 +51,16 @@ public class BladeSkill : BasicSkill
             if (hit[i].transform.CompareTag("Enemy"))
             {
                 hit[i].collider.GetComponent<FollowComponent>().WaitFollow();
-                hit[i].collider.GetComponent<BasicReflectComponent>().KnockBack((hit[i].transform.position - tr.position).normalized * 1.5f);
+                hit[i].collider.GetComponent<BasicReflectComponent>().KnockBack((hit[i].transform.position - transform.position).normalized * 1.5f);
             }
         }
     }
 
-    public override void PlaySkill(Vector2 dir, List<Collision2D> entity)
+    public override void PlaySkill(SkillSupportData skillSupportData)
     {
-        SkillTask(moveTr).Forget();
-        basicEffect = GetEffectUsingName("BladeEffect", transform.position, transform.rotation, transform).GetComponent<BasicEffect>();
-
-        base.PlaySkill(dir, entity);
+        playerTr = skillSupportData.player.transform; // 위치 초기화
+        SkillTask().Forget();
+        base.PlaySkill(skillSupportData);
     }
 
     void OnDrawGizmos()

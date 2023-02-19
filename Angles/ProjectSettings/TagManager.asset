@@ -15,15 +15,15 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - Enemy
   - Test
   - DoNotClose
-  - 
-  - 
-  - 
+  - OutWall
+  - SpawnPoint
+  - RepositionEntity
   - 
   - 
   - 

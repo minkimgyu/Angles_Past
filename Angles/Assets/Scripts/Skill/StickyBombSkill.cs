@@ -1,26 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using System;
 
 public class StickyBombSkill : BasicSkill
 {
-    protected override void OnEnable()
+    public Color color;
+    public float radius;
+    public float explosionTime = 2f;
+
+    Transform explosionTr;
+    Vector3 dirOnContact;
+
+    public async UniTaskVoid SkillTask()
     {
-        base.OnEnable();
-        SkillData.SkillUseCount = 2; // »ç¿ëÈ½¼ö 2¹ø
+        NowRunning = true;
+        await UniTask.Delay(TimeSpan.FromSeconds(explosionTime), cancellationToken: source.Token);
+        DamageToRange();
+        effect.PlayEffect();
+
+        NowRunning = false;
     }
 
-    public override void PlaySkill(Vector2 dir, List<Collision2D> entity)
+    public override void PlaySkill(SkillSupportData skillSupportData)
     {
-        print(entity.Count);
-        for (int i = 0; i < entity.Count; i++)
+        dirOnContact = skillSupportData.contactPos[0] - skillSupportData.contactEntity[0].transform.position;
+        SkillTask().Forget();
+    }
+
+    public void DamageToRange()
+    {
+        Vector3 contactPos = transform.position + dirOnContact;
+
+        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+
+        for (int i = 0; i < hit.Length; i++)
         {
-            print(entity[i]);
+            if (hit[i].transform.CompareTag("Enemy"))
+            {
+                hit[i].collider.GetComponent<FollowComponent>().WaitFollow();
+                hit[i].collider.GetComponent<BasicReflectComponent>().KnockBack((hit[i].transform.position - contactPos).normalized * 2);
+            }
         }
+    }
 
-        GameObject effectGo = GetEffectUsingName("StickyBombEffect", transform.position, transform.rotation);
-        effectGo.GetComponent<ExplosionEffect>().SetExplodePos(entity[0].transform);
-
-        base.PlaySkill(dir, entity);
+    void OnDrawGizmos()
+    {
+        Gizmos.color = color;
+        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
+        Gizmos.DrawWireSphere(Vector3.zero, radius);
     }
 }

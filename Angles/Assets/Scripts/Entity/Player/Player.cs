@@ -8,31 +8,18 @@ using System;
 public class Player : Entity
 {
     [SerializeField]
-    SkillData normalSkillData;
-    public SkillData NormalSkillData
+    SpawnAssistant spawnAssistant;
+    public SpawnAssistant SpawnAssistant
     {
         get
         {
-            return normalSkillData;
-        }
-        set
-        {
-            normalSkillData = value;
+            return spawnAssistant;
         }
     }
 
-    [SerializeField]
-    SkillData skillData;
-    public SkillData SkillData
+    private void Awake()
     {
-        get
-        {
-            return skillData;
-        }
-        set
-        {
-            skillData = value;
-        }
+        spawnAssistant = GetComponentInChildren<SpawnAssistant>();
     }
 
     // Start is called before the first frame update

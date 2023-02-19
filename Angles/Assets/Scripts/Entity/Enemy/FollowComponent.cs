@@ -16,6 +16,8 @@ public class FollowComponent : UnitaskUtility
 
     public List<GameObject> closeEnemy = new List<GameObject>();
 
+    public GameObject doNotClose;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +37,7 @@ public class FollowComponent : UnitaskUtility
     public async UniTaskVoid WaitFollowTask()
     {
         NowRunning = true;
+        doNotClose.SetActive(false);
         entity.PlayerMode = ActionMode.Hit;
 
         entity.rigid.velocity = Vector2.zero;
@@ -43,6 +46,7 @@ public class FollowComponent : UnitaskUtility
         entity.PlayerMode = ActionMode.Follow;
         nowHit = false;
         once = false;
+        doNotClose.SetActive(true);
         NowRunning = false;
     }
 
@@ -94,13 +98,6 @@ public class FollowComponent : UnitaskUtility
         {
             return; // 루틴 돌아가는 동안, 사용 금지
         }
-
-        //float distance = Vector2.Distance(player.transform.position, entity.transform.position);
-
-        //if (distance < DatabaseManager.Instance.MinFollowDistance) { entity.PlayerMode = ActionMode.Idle; }
-        //else { entity.PlayerMode = ActionMode.Follow; }
-
-        //if (entity.PlayerMode == ActionMode.Idle || entity.PlayerMode == ActionMode.Hit) return;
 
         Vector2 dirVec = player.transform.position - entity.transform.position;
         Vector2 nextVec = dirVec.normalized * DatabaseManager.Instance.FollowSpeed * Time.fixedDeltaTime * ratio;

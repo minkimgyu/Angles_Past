@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class BallEffect : BasicEffect
 {
+
+
     private void OnTriggerEnter2D(Collider2D col)
     {
         print(col.gameObject.name); // 이펙트로 공격 - 방어 같이 진행
-        ObjectPooler.ReturnToPool(gameObject, true);    // 한 객체에 한번만
-        DisableObject();
+
+        ObjectPooler.ReturnToTransform(transform);
+        gameObject.SetActive(false);
     }
 
-
-    protected override void OnDisable()
+    private void OnDisable()
     {
-        ObjectPooler.ReturnToPool(gameObject, true);    // 한 객체에 한번만 
-        CancelInvoke();    // Monobehaviour에 Invoke가 있다면
+        ObjectPooler.ReturnToPool(gameObject);
     }
 }

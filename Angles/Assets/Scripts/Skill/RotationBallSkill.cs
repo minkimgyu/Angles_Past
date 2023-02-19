@@ -9,39 +9,23 @@ public class RotationBallSkill : BasicSkill
     int speed = 70;
 
     int ballCount = 3;
-    public int BallCount 
-    {
-        get
-        {
-            return ballCount;
-        }
-        set 
-        {
-            if(value > 0) ballCount = value;
-        } 
-    }
 
+    Transform playerTr = null;
 
-    public override void PlaySkill(Vector2 dir, List<Collision2D> entity)
+    public int BallCount { get { return ballCount; } set { if (value > 0) ballCount = value; } }
+
+    public override void PlaySkill(SkillSupportData skillSupportData)
     {
+        playerTr = skillSupportData.player.transform;
+
         Debug.Log("PlaySkill");
         InitBall();
-        base.PlaySkill(dir, entity);
-    }
-
-    protected override void DisableObject()
-    {
-        for (int i = 0; i < basicEffects.Count; i++)
-        {
-            ObjectPooler.ReturnToPool(basicEffects[i].gameObject, true);
-            basicEffects[i].gameObject.SetActive(false); // 꺼주면 안에 있는 함수로 알아서 원래 부모로 돌아감
-        }
-        gameObject.SetActive(false);
+        base.PlaySkill(skillSupportData);
     }
 
     void InitBall()
     {
-        for (int i = 0; i < ballCount; i++)
+        for (int i = 0; i < BallCount; i++)
         {
             float angle = (360.0f * i) / ballCount;
 
@@ -49,8 +33,9 @@ public class RotationBallSkill : BasicSkill
             Quaternion rotation = Quaternion.Euler(0, 0, angle);
             Vector3 rotatedOffset = rotation * offset;
 
-            GameObject effectGo = GetEffectUsingName("RotationBallEffect" ,transform.position, Quaternion.identity, transform);
-            BasicEffect basicEffect = effectGo.GetComponent<BasicEffect>();
+            GameObject go = ObjectPooler.SpawnFromPool("Orb", transform.position, Quaternion.identity, transform);
+            BallEffect basicEffect = go.GetComponent<BallEffect>();
+            basicEffect.PlayEffect();
             basicEffect.transform.localPosition = rotatedOffset;
 
             basicEffects.Add(basicEffect);
@@ -60,8 +45,8 @@ public class RotationBallSkill : BasicSkill
     // Update is called once per frame
     void Update()
     {
-        transform.RotateAround(transform.position, Vector3.forward, Time.deltaTime * speed);
+        if (playerTr != null) transform.position = playerTr.position;
 
-        if (moveTr != null) transform.position = moveTr.position;
+        transform.RotateAround(transform.position, Vector3.forward, Time.deltaTime * speed);
     }
 }

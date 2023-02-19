@@ -16,17 +16,16 @@ public class InitPoolComponent : MonoBehaviour
 
     void Init()
     {
-        AddToPool("Enemy", "Prefabs/" + "Entity/" + "Enemy", 2);
+        AddToPool("Enemy", "Prefabs/" + "Entity/" + "Enemy", 5);
+
+        AddToPool("Orb", "Prefabs/Skill/Orb", 3);
 
         foreach (SkillName skillName in SkillName.GetValues(typeof(SkillName)))
         {
             string name = skillName.ToString();
-            string effect = name + "Effect";
-
             if (name == "None") continue;
 
-            AddToPool(name, "Prefabs/" + "Skill/" + name, 2);
-            AddToPool(effect, "Prefabs/" + "Effect/" + effect, 2);
+            AddToPool(name, "Prefabs/Skill/" + name, 1);
         }
     }
 
