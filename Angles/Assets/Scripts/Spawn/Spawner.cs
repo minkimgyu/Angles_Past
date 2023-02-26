@@ -105,14 +105,14 @@ public class Spawner : MonoBehaviour
 
     EntityData ReturnEntityData(string name)
     {
-        EntityData[] entityDatas = DatabaseManager.Instance.EntityDB.entityDatas;
-        for (int i = 0; i < entityDatas.Length; i++)
-        {
-            if(entityDatas[i].Name == name)
-            {
-                return entityDatas[i];
-            }
-        }
+        //EntityData[] entityDatas = DatabaseManager.Instance.EntityDB.entityDatas;
+        //for (int i = 0; i < entityDatas.Length; i++)
+        //{
+        //    if (entityDatas[i].Name == name)
+        //    {
+        //        return entityDatas[i];
+        //    }
+        //}
 
         return null;
     }

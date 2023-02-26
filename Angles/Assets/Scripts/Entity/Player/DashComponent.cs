@@ -26,14 +26,14 @@ public class DashComponent : UnitaskUtility
 
     private async UniTaskVoid DashTask(Vector2 dir)
     {
-        NowRunning = true;
+        nowRunning = true;
         player.PlayerMode = ActionMode.Dash;
 
         player.rigid.AddForce(dir * DatabaseManager.Instance.DashThrust, ForceMode2D.Impulse);
         await UniTask.Delay(TimeSpan.FromSeconds(DatabaseManager.Instance.DashTime), cancellationToken: source.Token);
 
         player.PlayerMode = ActionMode.Idle;
-        NowRunning = false;
+        nowRunning = false;
     }
 
     protected override void OnDisable()

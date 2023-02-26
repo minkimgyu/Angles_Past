@@ -84,7 +84,7 @@ public class WallColorChange : UnitaskUtility
 
     private async UniTaskVoid ColorChange(Vector3Int pos)
     {
-        NowRunning = true;
+        nowRunning = true;
         float progress = 0;
         float increment = smoothness / duration;
 
@@ -115,6 +115,6 @@ public class WallColorChange : UnitaskUtility
         changeTilemap.SetColor(pos, startColor);
 
         ColorChangeTileList.Remove(pos);
-        NowRunning = false;
+        nowRunning = false;
     }
 }

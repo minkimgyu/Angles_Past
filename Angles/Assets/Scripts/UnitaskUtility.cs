@@ -7,11 +7,10 @@ using System;
 
 public class UnitaskUtility : MonoBehaviour
 {
-    bool nowRunning;
-    protected bool NowRunning
+    protected bool nowRunning;
+    public bool NowRunning
     {
         get { return nowRunning; }
-        set { nowRunning = value; }
     }
 
     float waitTIme = 0.01f;

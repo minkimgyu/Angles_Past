@@ -1,31 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using System;
 
 public class NormalKnockBackSkill : BasicSkill
 {
-    public override void PlaySkill(SkillSupportData skillSupportData)
+    public override void PlaySkill(SkillSupportData data)
     {
+        transform.position = data.contactPos[0];
         effect.PlayEffect();
 
-        for (int i = 0; i < skillSupportData.contactEntity.Count; i++)
+        for (int i = 0; i < data.contactEntity.Count; i++)
         {
-            Vector2 dirToEnemy = skillSupportData.contactEntity[i].transform.position - transform.position;
-            FollowComponent followComponent = skillSupportData.contactEntity[i].gameObject.GetComponent<FollowComponent>();
-            
-            followComponent.nowHit = true;
-            followComponent.WaitFollow();
+            if (CheckCanHitSkill(data.contactEntity[i].tag) == false) continue;
 
-            if(followComponent.closeEnemy.Count == 0)
-            {
-                skillSupportData.contactEntity[i].gameObject.GetComponent<BasicReflectComponent>().KnockBack(dirToEnemy.normalized);
-            }
-            else
-            {
-                skillSupportData.contactEntity[i].gameObject.GetComponent<BasicReflectComponent>().KnockBack(dirToEnemy.normalized * followComponent.closeEnemy.Count * 3);
-            }
+            Vector2 dirToEnemy = data.contactEntity[i].gameObject.transform.position - transform.position;
+            data.contactEntity[i].GetHit(ReturnDamage(), dirToEnemy);
         }
 
-        base.PlaySkill(skillSupportData);
+        SkillTask().Forget();
+    }
+
+    public async UniTaskVoid SkillTask()
+    {
+        await UniTask.Delay(TimeSpan.FromSeconds(disableTime), cancellationToken: source.Token);
+        DisableObject();
     }
 }

@@ -16,8 +16,9 @@ public class InitPoolComponent : MonoBehaviour
 
     void Init()
     {
-        AddToPool("Enemy", "Prefabs/" + "Entity/" + "Enemy", 5);
-
+        AddToPool("Bullet", "Prefabs/" + "Entity/" + "Bullet", 5);
+        AddToPool("Triangle", "Prefabs/" + "Entity/" + "Triangle", 5);
+        AddToPool("Rectangle", "Prefabs/" + "Entity/" + "Rectangle", 5);
         AddToPool("Orb", "Prefabs/Skill/Orb", 3);
 
         foreach (SkillName skillName in SkillName.GetValues(typeof(SkillName)))

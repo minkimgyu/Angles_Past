@@ -27,7 +27,7 @@ public class ActionUIComponent : UnitaskUtility
 
     public async UniTaskVoid FillAttackPower()
     {
-        NowRunning = true;
+        nowRunning = true;
         EndRush();
 
         while (rushRatio < 1)
@@ -39,7 +39,7 @@ public class ActionUIComponent : UnitaskUtility
 
         if (rushRatio > 1) rushRatio = 1;
 
-        NowRunning = false;
+        nowRunning = false;
     }
 
     public void EndRush()

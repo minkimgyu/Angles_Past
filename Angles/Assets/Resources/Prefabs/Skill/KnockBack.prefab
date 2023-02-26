@@ -4934,7 +4934,7 @@ MonoBehaviour:
   color: {r: 0.25943398, g: 0.87792283, b: 1, a: 1}
   boxWidth: 5
   boxHeight: 5
-  distanceFromPlayer: {x: 0.35, y: 0, z: 0}
+  distanceFromPlayer: {x: 0, y: 0, z: 0}
 --- !u!114 &3065541426041930279
 MonoBehaviour:
   m_ObjectHideFlags: 0

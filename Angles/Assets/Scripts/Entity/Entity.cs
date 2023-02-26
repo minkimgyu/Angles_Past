@@ -10,15 +10,6 @@ public class Entity : MonoBehaviour
     public float Hp
     {
         get { return hp; }
-        set 
-        {
-            hp = value;
-            if (hp < 0)
-            {
-                hp = 0;
-                Die();
-            }
-        }
     }
 
     ActionMode playerMode = ActionMode.Idle;
@@ -73,8 +64,30 @@ public class Entity : MonoBehaviour
         entityData = data;
     }
 
-    protected virtual void Die()
+    public virtual void GetHit(float damage)
     {
-        
+        hp -= damage;
+    }
+
+    public virtual void GetHit(float damage, Vector3 dir)
+    {
+        hp -= damage;
+    }
+
+    public virtual void GetHeal(float healPoint)
+    {
+        hp += healPoint;
+    }
+
+    public void StopMove()
+    {
+        rigid.velocity = Vector2.zero;
+    }
+
+    protected void DisableObject() => gameObject.SetActive(false);
+
+    public virtual void Die()
+    {
+        DisableObject();
     }
 }

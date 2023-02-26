@@ -58,7 +58,7 @@ public class DashUIComponent : UnitaskUtility
 
     private async UniTaskVoid FillDashRatio()
     {
-        NowRunning = true;
+        nowRunning = true;
 
         while (DatabaseManager.Instance.DashRatio < 1)
         {
@@ -70,6 +70,6 @@ public class DashUIComponent : UnitaskUtility
 
         if (DatabaseManager.Instance.DashRatio != 1) DatabaseManager.Instance.DashRatio = 1;
 
-        NowRunning = false;
+        nowRunning = false;
     }
 }

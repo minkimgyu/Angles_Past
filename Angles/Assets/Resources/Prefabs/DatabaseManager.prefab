@@ -55,10 +55,36 @@ MonoBehaviour:
   dashRatio: 1
   moveSpeed: 5
   readySpeed: 2
+  minSpeedRatio: 0.2
+  maxSpeedRatio: 1
+  speedRatio: 1
   followSpeed: 3
   minFollowDistance: 5
   waitTime: 5
-  attackDamage: 5
+  damageDictionary:
+    m_keys: 0100000002000000030000000400000005000000060000000700000008000000090000000a000000
+    m_values:
+    - damage: 1
+      enemyTags: 01000000
+    - damage: 1
+      enemyTags: 01000000
+    - damage: 1
+      enemyTags: 01000000
+    - damage: 1
+      enemyTags: 01000000
+    - damage: 1
+      enemyTags: 01000000
+    - damage: 1
+      enemyTags: 0100000000000000
+    - damage: 0
+      enemyTags: 01000000
+    - damage: 1
+      enemyTags: 0100000000000000
+    - damage: 1
+      enemyTags: 00000000
+    - damage: 1
+      enemyTags: 00000000
+  thrustRatio: 1.2
   entityDB: {fileID: 11400000, guid: 719b4e840748906469d25c527c98354b, type: 2}
 --- !u!114 &7454889509670207891
 MonoBehaviour:
@@ -72,4 +98,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd8df3d05d0ae034db8bfacca1f7c54e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: A2:D
+  dataDictionaryList: []

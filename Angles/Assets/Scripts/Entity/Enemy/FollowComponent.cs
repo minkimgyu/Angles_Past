@@ -11,12 +11,26 @@ public class FollowComponent : UnitaskUtility
     Player player;
     public float ratio = 1;
     public int count = 0;
-    public bool once = false;
-    public bool nowHit = false;
 
-    public List<GameObject> closeEnemy = new List<GameObject>();
+    bool nowHit = false;
+    public bool NowHit
+    {
+        get { return nowHit; }
+    }
+
+    public float distance = 3f;
+    public Action followAction;
 
     public GameObject doNotClose;
+
+    public DrawGizmo stopGizmo; // 따라오다가 멈추는 거리 기준
+    public DrawGizmo attackGizmo; // 공격을 시작하는 거리 기준
+
+    void OnDrawGizmos()
+    {
+        stopGizmo.DrawCircleGizmo(transform);
+        attackGizmo.DrawCircleGizmo(transform);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -34,9 +48,17 @@ public class FollowComponent : UnitaskUtility
         WaitFollowTask().Forget();
     }
 
+    public void StopFollow()
+    {
+        CancelTask();
+        entity.StopMove();
+    }
+
     public async UniTaskVoid WaitFollowTask()
     {
-        NowRunning = true;
+        nowRunning = true;
+        nowHit = true;
+
         doNotClose.SetActive(false);
         entity.PlayerMode = ActionMode.Hit;
 
@@ -44,63 +66,41 @@ public class FollowComponent : UnitaskUtility
         await UniTask.Delay(TimeSpan.FromSeconds(DatabaseManager.Instance.WaitTime), cancellationToken: source.Token);
 
         entity.PlayerMode = ActionMode.Follow;
-        nowHit = false;
-        once = false;
         doNotClose.SetActive(true);
-        NowRunning = false;
+
+        nowHit = false;
+        nowRunning = false;
     }
 
-    private void OnCollisionEnter2D(Collision2D col)
+    void CheckDistance(Vector2 enemyPos)
     {
-        if (col.gameObject.CompareTag("Enemy"))
+        float distanceBetween = Vector2.Distance(transform.position, enemyPos);
+        if (distanceBetween <= distance)
         {
-            closeEnemy.Add(col.gameObject);
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D col)
-    {
-        if (col.gameObject.CompareTag("Enemy"))
-        {
-            closeEnemy.Remove(col.gameObject);
-        }
-    }
-
-    private void OnCollisionStay2D(Collision2D col)
-    {
-        if (col.gameObject.CompareTag("Enemy"))
-        {
-            FollowComponent followComponent = col.gameObject.GetComponent<FollowComponent>();
-
-            if (NowRunning == true && followComponent.nowHit == false && followComponent.once == false)
-            {
-                Vector2 backDir = col.transform.position - transform.position;
-
-                followComponent.WaitFollow();
-                followComponent.once = true;
-
-                if (count == 0)
-                {
-                    col.gameObject.GetComponent<BasicReflectComponent>().KnockBack(backDir);
-                }
-                else
-                {
-                    col.gameObject.GetComponent<BasicReflectComponent>().KnockBack(backDir * count);
-                }
-
-            }
+            if (followAction != null) followAction();
         }
     }
 
     public void MoveToPlayer()
     {
-        if (NowRunning == true)
-        {
-            return; // 루틴 돌아가는 동안, 사용 금지
-        }
+        if (nowHit == true) return; // 루틴 돌아가는 동안, 사용 금지
+
+        CheckDistance(player.transform.position);
 
         Vector2 dirVec = player.transform.position - entity.transform.position;
         Vector2 nextVec = dirVec.normalized * DatabaseManager.Instance.FollowSpeed * Time.fixedDeltaTime * ratio;
         entity.rigid.MovePosition(entity.rigid.position + nextVec);
+
+        RotateUsingVelocity(dirVec.normalized);
+    }
+
+    float CheckCanRotate(Vector2 vec)
+    {
+        return Mathf.Atan2(vec.y, vec.x) * Mathf.Rad2Deg;
+    }
+
+    public void RotateUsingVelocity(Vector2 vec)
+    {
+        entity.rigid.MoveRotation(CheckCanRotate(vec));
     }
 }

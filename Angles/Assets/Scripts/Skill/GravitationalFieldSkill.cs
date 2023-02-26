@@ -11,7 +11,7 @@ public class GravitationalFieldSkill : BasicSkill
     List<ForceComponent> forceComponents = new List<ForceComponent>();
 
     float damageTime = 5f;
-    float damagePerTime = 0.1f; // 10
+    float damagePerTime = 0.01f; // 10
 
     protected override void OnEnable()
     {
@@ -23,7 +23,6 @@ public class GravitationalFieldSkill : BasicSkill
         if (col.CompareTag("Enemy"))
         { 
             forceComponents.Add(col.GetComponent<ForceComponent>());
-            print(col);
         }
     }
 
@@ -36,7 +35,7 @@ public class GravitationalFieldSkill : BasicSkill
     {
         for (int i = 0; i < forceComponents.Count; i++)
         {
-            Vector3 dir = -(forceComponents[i].transform.position - transform.position).normalized * 15;
+            Vector3 dir = -(forceComponents[i].transform.position - transform.position).normalized * 50;
             forceComponents[i].AddForceUsingVec(dir, ForceMode2D.Force);
         }
     }
@@ -44,7 +43,7 @@ public class GravitationalFieldSkill : BasicSkill
     public async UniTaskVoid SkillTask()
     {
         effect.PlayEffect();
-        NowRunning = true;
+        nowRunning = true;
 
         int damageTic = 0;
         int maxDamageTic = (int)(damageTime / damagePerTime);
@@ -56,14 +55,16 @@ public class GravitationalFieldSkill : BasicSkill
             damageTic += 1;
         }
 
-        NowRunning = false;
+        nowRunning = false;
         effect.StopEffect();
+
+        await UniTask.Delay(TimeSpan.FromSeconds(disableTime), cancellationToken: source.Token);
+        DisableObject();
     }
 
     public override void PlaySkill(SkillSupportData skillSupportData)
     {
         transform.position = skillSupportData.player.transform.position;
-        base.PlaySkill(skillSupportData);
         SkillTask().Forget();
     }
 }

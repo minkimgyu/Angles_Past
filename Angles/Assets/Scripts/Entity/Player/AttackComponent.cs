@@ -55,13 +55,13 @@ public class AttackComponent : ForceComponent
 
     public async UniTaskVoid WaitAttackEndTask()
     {
-        NowRunning = true;
+        nowRunning = true;
         entity.rigid.freezeRotation = true;
 
         await UniTask.Delay(TimeSpan.FromSeconds(DatabaseManager.Instance.AttackTime), cancellationToken: source.Token);
         CancelAttack();
-        
-        NowRunning = false;
+
+        nowRunning = false;
     }
 
     public void CancelAttack()

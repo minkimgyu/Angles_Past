@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using System;
 
 public class KnockBackSkill : BasicSkill
 {
@@ -19,14 +22,17 @@ public class KnockBackSkill : BasicSkill
 
         for (int i = 0; i < hit.Length; i++)
         {
-            if (hit[i].transform.CompareTag("Enemy"))
-            {
-                hit[i].collider.GetComponent<FollowComponent>().WaitFollow();
-                hit[i].collider.GetComponent<BasicReflectComponent>().KnockBack(skillSupportData.playerDir * 2);
-            }
+            if (CheckCanHitSkill(hit[i].transform.tag) == false) continue;
+            DamageToEntity(hit[i].transform.gameObject);
         }
 
-        base.PlaySkill(skillSupportData);
+        SkillTask().Forget();
+    }
+
+    public async UniTaskVoid SkillTask()
+    {
+        await UniTask.Delay(TimeSpan.FromSeconds(disableTime), cancellationToken: source.Token);
+        DisableObject();
     }
 
     void OnDrawGizmos()

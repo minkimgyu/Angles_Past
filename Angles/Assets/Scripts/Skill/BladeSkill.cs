@@ -18,7 +18,7 @@ public class BladeSkill : BasicSkill
     {
         effect.PlayEffect();
 
-        NowRunning = true;
+        nowRunning = true;
         int damageTic = 0;
 
         int maxDamageTic = (int)(damageTime / damagePerTime);
@@ -30,9 +30,11 @@ public class BladeSkill : BasicSkill
             damageTic += 1;
         }
 
-        NowRunning = false;
-
         effect.StopEffect();
+
+        await UniTask.Delay(TimeSpan.FromSeconds(disableTime), cancellationToken: source.Token);
+        nowRunning = false;
+        DisableObject();
     }
 
     private void Update()
@@ -44,15 +46,12 @@ public class BladeSkill : BasicSkill
 
     void AttackCircleRange()
     {
-        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.up, 0);
 
         for (int i = 0; i < hit.Length; i++)
         {
-            if (hit[i].transform.CompareTag("Enemy"))
-            {
-                hit[i].collider.GetComponent<FollowComponent>().WaitFollow();
-                hit[i].collider.GetComponent<BasicReflectComponent>().KnockBack((hit[i].transform.position - transform.position).normalized * 1.5f);
-            }
+            if (CheckCanHitSkill(hit[i].transform.tag) == false) continue;
+            DamageToEntity(hit[i].transform.gameObject);
         }
     }
 
@@ -60,7 +59,6 @@ public class BladeSkill : BasicSkill
     {
         playerTr = skillSupportData.player.transform; // 위치 초기화
         SkillTask().Forget();
-        base.PlaySkill(skillSupportData);
     }
 
     void OnDrawGizmos()

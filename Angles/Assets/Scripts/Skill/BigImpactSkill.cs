@@ -1,29 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using System;
 
 public class BigImpactSkill : BasicSkill
 {
     public Color color;
     public float radius;
 
-    public override void PlaySkill(SkillSupportData skillSupportData)
+    public override void PlaySkill(SkillSupportData data)
     {
         effect.PlayEffect();
 
-        transform.position = skillSupportData.player.transform.position; // 위치 초기화
+        transform.position = data.player.transform.position; // 위치 초기화
 
-        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.up, 0, layerMask);
         for (int i = 0; i < hit.Length; i++)
-        {
-            if (hit[i].transform.CompareTag("Enemy"))
-            {
-                hit[i].collider.GetComponent<FollowComponent>().WaitFollow();
-                hit[i].collider.GetComponent<BasicReflectComponent>().KnockBack((hit[i].transform.position - transform.position).normalized * 6);
-            }
+        {   
+            if (CheckCanHitSkill(hit[i].transform.tag) == false) continue;
+            DamageToEntity(hit[i].transform.gameObject);
         }
 
-        base.PlaySkill(skillSupportData);
+        SkillTask().Forget();
+    }
+
+    public async UniTaskVoid SkillTask()
+    {
+        await UniTask.Delay(TimeSpan.FromSeconds(disableTime), cancellationToken: source.Token);
+        DisableObject();
     }
 
     void OnDrawGizmos()

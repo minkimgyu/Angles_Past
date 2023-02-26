@@ -31,7 +31,7 @@ public struct ContactData
     }
 }
 
-public class BattleComponent : MonoBehaviour
+public class BattleComponent : BasicBattleComponent
 {
     public List<ContactData> contactDatas = new List<ContactData>();
 
@@ -39,20 +39,8 @@ public class BattleComponent : MonoBehaviour
     AttackComponent attackComponent;
 
     [SerializeField]
-    SkillData normalSkillData;
-    public SkillData NormalSkillData { get { return normalSkillData; } set { normalSkillData = value; } }
-
-    [SerializeField]
     SkillData skillData;
     public SkillData SkillData { get { return skillData; } set { skillData = value; } }
-
-    [SerializeField]
-    List<BasicSkill> haveSkill = new List<BasicSkill>();
-    // <-- null이면 스킬 데이터를 플레이어에서 불러와서 사용, 아니면 저장되어 있는 객체에 playskill 실행해준다.
-    // count 변수를 만들어서 0이면 리스트에서 삭제, 1 이상일 경우 하나씩 빼주면서 사용
-
-    [SerializeField]
-    List<SkillData> loadSkillDatas = new List<SkillData>();
 
     public EntityTag contactTag;
     public Transform skillParent;
@@ -108,7 +96,7 @@ public class BattleComponent : MonoBehaviour
         return supportData;
     }
 
-    public void UseSkillInList(SkillUseType useType)
+    protected override void UseSkillInList(SkillUseType useType)
     {
         SkillSupportData supportData = ReturnContactEntity();
 
@@ -123,21 +111,13 @@ public class BattleComponent : MonoBehaviour
             loadSkillDatas[i].UseSkill(loadSkillDatas);
         }
     }
-    protected BasicSkill GetSkillUsingName(string name, Vector3 pos, Quaternion rotation, Transform tr = null)
-    {
-        GameObject go = ObjectPooler.SpawnFromPool(name, pos, rotation, tr);
-        if (go == null) return null;
-
-        BasicSkill skill = go.GetComponent<BasicSkill>();
-        return skill;
-    }
 
     bool NowContactEnemy()
     {
         return contactDatas.Count > 0;
     }
 
-    void UseSkill(SkillUseType skillUseType)
+    protected override void UseSkill(SkillUseType skillUseType)
     {
         SkillData data;
 
@@ -173,14 +153,14 @@ public class BattleComponent : MonoBehaviour
         if (NowContactEnemy() == true) PlayWhenCollision(); // 접촉 시, 충돌 함수 실행
     }
 
-    private void OnDisable()
-    {
-        if(PlayManager.Instance != null)
-            PlayManager.Instance.actionJoy.actionComponent.attackAction -= PlayWhenAttackStart;
-    }
-
     public void PlayWhenGet()
     {
         UseSkill(SkillUseType.Get);
+    }
+
+    private void OnDisable()
+    {
+        if (PlayManager.Instance != null)
+            PlayManager.Instance.actionJoy.actionComponent.attackAction -= PlayWhenAttackStart;
     }
 }

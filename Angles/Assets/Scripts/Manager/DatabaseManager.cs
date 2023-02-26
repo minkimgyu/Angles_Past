@@ -4,14 +4,37 @@ using UnityEngine;
 
 public enum ActionMode { Idle, AttackReady, Attack, Dash, Follow, Hit }; // 동작 상태 모음
 
-public enum SkillName { None, NormalKnockBack, KnockBack, RotationBall, BigImpact, Blade, StickyBomb, GravitationalField }; // 동작 상태 모음
+public enum SkillName { None, NormalKnockBack, KnockBack, RotationBall, BigImpact, Blade, StickyBomb, GravitationalField, 
+    SelfDestruction, ShootBullet, ShockWave }; // 동작 상태 모음
 
-public enum SkillUseType { None, Contact, Get, Start }
+public enum SkillUseType { None, Contact, Get, Start, Condition }
 
-public enum EntityTag { Player, Enemy, Wall };
+public enum EntityTag { Player, Enemy, Bullet };
+
+[System.Serializable]
+public class DamageMethod
+{
+    public float damage;
+    public List<EntityTag> enemyTags;
+
+    public bool CheckTags(string tag)
+    {
+        for (int i = 0; i < enemyTags.Count; i++)
+        {
+            if (tag == enemyTags[i].ToString()) return true;
+        }
+
+        return false;
+    }
+}
 
 public class DatabaseManager : Singleton<DatabaseManager>
 {
+    [SerializeField]
+    PlayerData playerData;
+    public PlayerData PlayerData { get { return playerData; } set { playerData = value; } }
+
+
     #region 변수 모음
 
     [Header("Attack")]
@@ -73,6 +96,18 @@ public class DatabaseManager : Singleton<DatabaseManager>
     float readySpeed = 2; // 움직임
     public float ReadySpeed { get { return readySpeed; } set { readySpeed = value; } }
 
+    [SerializeField]
+    float minSpeedRatio = 0.2f; // 움직임
+    public float MinSpeedRatio { get { return minSpeedRatio; } }
+
+    [SerializeField]
+    float maxSpeedRatio = 1f; // 움직임
+    public float MaxSpeedRatio { get { return maxSpeedRatio; } }
+
+    [SerializeField]
+    float speedRatio = 1; // 움직임
+    public float SpeedRatio { get { return speedRatio; } set { speedRatio = value; if (MinSpeedRatio >= speedRatio) { speedRatio = MinSpeedRatio; } if (speedRatio >= MaxSpeedRatio) { speedRatio = maxSpeedRatio; } } }
+
     [Header("Follow")]
     [SerializeField]
     float followSpeed = 3;
@@ -88,9 +123,14 @@ public class DatabaseManager : Singleton<DatabaseManager>
 
     [Header("Damage")]
     [SerializeField]
-    float attackDamage = 5;
-    public float AttackDamage { get { return attackDamage; } set { attackDamage = value; } }
+    public EnumMethodDictionary damageDictionary;
 
+    [Header("KnockBack")]
+    [SerializeField]
+    float thrustRatio = 1.2f;
+    public float ThrustRatio { get { return thrustRatio; } set { thrustRatio = value; } }
+
+   
     #endregion
 
     [Header("EntityDB")]
@@ -100,7 +140,7 @@ public class DatabaseManager : Singleton<DatabaseManager>
 
     public bool CanUseDash()
     {
-        if(DashRatio - 1 / MaxDashCount >= 0)
+        if (DashRatio - 1 / MaxDashCount >= 0)
         {
             return true;
         }

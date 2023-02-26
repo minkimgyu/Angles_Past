@@ -3,17 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class GizmoValue
+public class DrawGizmo
 {
     public Color color;
     public float width;
     public float height;
+    public float radius;
     public LayerMask layer;
 
     public void DrawBoxGizmo(Transform tr)
     {
         Gizmos.color = color;
         Gizmos.DrawWireCube(tr.position, new Vector3(width, height));
+    }
+
+    public void DrawCircleGizmo(Transform tr)
+    {
+        Gizmos.color = color;
+        Gizmos.DrawWireSphere(tr.position, radius);
     }
 
     public RaycastHit2D[] CheckBoxArea(Transform tr)
@@ -25,8 +32,8 @@ public class GizmoValue
 
 public class SpawnAssistant : MonoBehaviour
 {
-    public GizmoValue playerViewArea;
-    public GizmoValue canSpawnArea;
+    public DrawGizmo playerViewArea;
+    public DrawGizmo canSpawnArea;
     public List<Transform> activeSpawnPoints;
 
     public List<Transform> FindSpawnPoint()
