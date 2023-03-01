@@ -4,17 +4,5 @@ using UnityEngine;
 
 public class DropSkill : MonoBehaviour
 {
-    [SerializeField]
-    SkillData dropSkillData;
-    public SkillData DropSkillData
-    {
-        get
-        {
-            return dropSkillData;
-        }
-        set
-        {
-            dropSkillData = value;
-        }
-    }
+    public SkillName skillName;
 }

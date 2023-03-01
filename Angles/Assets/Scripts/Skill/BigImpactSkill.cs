@@ -12,6 +12,7 @@ public class BigImpactSkill : BasicSkill
 
     public override void PlaySkill(SkillSupportData data)
     {
+        base.PlaySkill(data);
         effect.PlayEffect();
 
         transform.position = data.player.transform.position; // 위치 초기화
@@ -19,8 +20,8 @@ public class BigImpactSkill : BasicSkill
         RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.up, 0, layerMask);
         for (int i = 0; i < hit.Length; i++)
         {   
-            if (CheckCanHitSkill(hit[i].transform.tag) == false) continue;
-            DamageToEntity(hit[i].transform.gameObject);
+            if (SkillData.CanHitSkill(hit[i].transform.tag) == false) continue;
+            DamageToEntity(hit[i].transform.gameObject, SkillData.KnockBackThrust);
         }
 
         SkillTask().Forget();
@@ -28,7 +29,7 @@ public class BigImpactSkill : BasicSkill
 
     public async UniTaskVoid SkillTask()
     {
-        await UniTask.Delay(TimeSpan.FromSeconds(disableTime), cancellationToken: source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: source.Token);
         DisableObject();
     }
 

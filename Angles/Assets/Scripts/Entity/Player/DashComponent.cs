@@ -20,7 +20,7 @@ public class DashComponent : UnitaskUtility
     {
         if (player.PlayerMode != ActionMode.Idle) return;
 
-        DatabaseManager.Instance.SubtractRatio(); // 대쉬 사용한 만큼 빼준다.
+        DatabaseManager.Instance.PlayerData.SubtractRatio(); // 대쉬 사용한 만큼 빼준다.
         DashTask(dir).Forget();
     }
 
@@ -29,8 +29,8 @@ public class DashComponent : UnitaskUtility
         nowRunning = true;
         player.PlayerMode = ActionMode.Dash;
 
-        player.rigid.AddForce(dir * DatabaseManager.Instance.DashThrust, ForceMode2D.Impulse);
-        await UniTask.Delay(TimeSpan.FromSeconds(DatabaseManager.Instance.DashTime), cancellationToken: source.Token);
+        player.rigid.AddForce(dir * DatabaseManager.Instance.PlayerData.DashThrust, ForceMode2D.Impulse);
+        await UniTask.Delay(TimeSpan.FromSeconds(DatabaseManager.Instance.PlayerData.DashTime), cancellationToken: source.Token);
 
         player.PlayerMode = ActionMode.Idle;
         nowRunning = false;

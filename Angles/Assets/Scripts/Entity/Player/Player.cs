@@ -16,7 +16,6 @@ public class Player : Entity
             return spawnAssistant;
         }
     }
-
     private void Awake()
     {
         spawnAssistant = GetComponentInChildren<SpawnAssistant>();
@@ -26,5 +25,8 @@ public class Player : Entity
     protected override void Start()
     {
         base.Start();
+
+        rigid.mass = DatabaseManager.Instance.PlayerData.Weight;
+        rigid.drag = DatabaseManager.Instance.PlayerData.Drag;
     }
 }

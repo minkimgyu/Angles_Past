@@ -44,9 +44,6 @@ public class Entity : MonoBehaviour
     public Rigidbody2D rigid;
     public Action fixedUpdateAction;
 
-    [SerializeField]
-    private EntityData entityData;
-
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -56,12 +53,7 @@ public class Entity : MonoBehaviour
 
     private void Update()
     {
-        fixedUpdateAction();
-    }
-
-    public virtual void Init(EntityData data)
-    {
-        entityData = data;
+        if (fixedUpdateAction != null) fixedUpdateAction();
     }
 
     public virtual void GetHit(float damage)

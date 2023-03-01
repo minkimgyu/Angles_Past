@@ -5,19 +5,10 @@ using UnityEngine;
 public class BasicSkill : UnitaskUtility
 {
     [SerializeField]
-    SkillName skillName;
-    public SkillName SkillName { get { return skillName; } set { skillName = value; } }
-
-    [SerializeField]
-    SkillUseType skillUseType;
-    public SkillUseType SkillUseType { get { return skillUseType; } set { skillUseType = value; } }
-
-    protected BattleComponent loadBattle;
+    SkillData skillData;
+    public SkillData SkillData { get { return skillData; } set { skillData = value; } }
 
     protected BasicEffect effect;
-
-    protected float disableTime = 3f;
-
     protected int layerMask;
 
     protected virtual void Awake()
@@ -39,24 +30,13 @@ public class BasicSkill : UnitaskUtility
         base.OnDisable();
         ObjectPooler.ReturnToPool(gameObject);
     }
-
-    protected bool CheckCanHitSkill(string tag)
-    {
-        if (DatabaseManager.Instance.damageDictionary[SkillName].CheckTags(tag) == true) return true;
-        else return false;
-    }
-
-    protected float ReturnDamage()
-    {
-        return DatabaseManager.Instance.damageDictionary[SkillName].damage;
-    }
-
-    protected void DamageToEntity(GameObject go)
+    
+    protected void DamageToEntity(GameObject go, float knockBackThrust)
     {
         Entity entity = go.GetComponent<Entity>();
-        Vector2 dirToEnemy = go.transform.position - transform.position;
+        Vector2 dirToEnemy = (go.transform.position - transform.position).normalized;
 
-        entity.GetHit(ReturnDamage(), dirToEnemy);
+        entity.GetHit(skillData.Damage, dirToEnemy * knockBackThrust);
     }
 
     protected GameObject GetEffectUsingName(string name, Vector3 pos, Quaternion rotation, Transform tr = null)
@@ -66,7 +46,14 @@ public class BasicSkill : UnitaskUtility
 
     public virtual void PlaySkill(SkillSupportData suportDatas) // 플레이어 스킬
     {
-        
+        Init();
+    }
+
+    public virtual void Init()
+    {
+        SkillName skillName = (SkillName)System.Enum.Parse(typeof(SkillName), name);
+        print(skillName);
+        skillData = DatabaseManager.Instance.ReturnSkillData(skillName);
     }
 
     public virtual void PlayBasicSkill(Transform tr) // 적 스킬

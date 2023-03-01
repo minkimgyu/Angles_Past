@@ -12,9 +12,10 @@ public class KnockBackSkill : BasicSkill
     public float boxHeight;
     public Vector3 distanceFromPlayer;
 
-    public override void PlaySkill(SkillSupportData skillSupportData)
+    public override void PlaySkill(SkillSupportData data)
     {
-        transform.position = skillSupportData.player.transform.position;
+        base.PlaySkill(data);
+        transform.position = data.player.transform.position;
         effect.PlayEffect();
 
         RaycastHit2D[] hit = Physics2D.BoxCastAll(transform.position, new Vector2(boxWidth, boxHeight), 
@@ -22,8 +23,8 @@ public class KnockBackSkill : BasicSkill
 
         for (int i = 0; i < hit.Length; i++)
         {
-            if (CheckCanHitSkill(hit[i].transform.tag) == false) continue;
-            DamageToEntity(hit[i].transform.gameObject);
+            if (SkillData.CanHitSkill(hit[i].transform.tag) == false) continue;
+            DamageToEntity(hit[i].transform.gameObject, SkillData.KnockBackThrust);
         }
 
         SkillTask().Forget();
@@ -31,7 +32,7 @@ public class KnockBackSkill : BasicSkill
 
     public async UniTaskVoid SkillTask()
     {
-        await UniTask.Delay(TimeSpan.FromSeconds(disableTime), cancellationToken: source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: source.Token);
         DisableObject();
     }
 

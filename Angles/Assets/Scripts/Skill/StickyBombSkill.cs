@@ -24,14 +24,15 @@ public class StickyBombSkill : BasicSkill
         nowRunning = false;
 
 
-        await UniTask.Delay(TimeSpan.FromSeconds(disableTime), cancellationToken: source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: source.Token);
         DisableObject();
     }
 
-    public override void PlaySkill(SkillSupportData skillSupportData)
+    public override void PlaySkill(SkillSupportData data)
     {
-        explosionTr = skillSupportData.contactEntity[0].transform;
-        dirOnContact = skillSupportData.contactPos[0] - skillSupportData.contactEntity[0].transform.position;
+        base.PlaySkill(data);
+        explosionTr = data.contactEntity[0].transform;
+        dirOnContact = data.contactPos[0] - data.contactEntity[0].transform.position;
         SkillTask().Forget();
     }
 
@@ -44,8 +45,8 @@ public class StickyBombSkill : BasicSkill
 
         for (int i = 0; i < hit.Length; i++)
         {
-            if (CheckCanHitSkill(hit[i].transform.tag) == false) continue;
-            DamageToEntity(hit[i].transform.gameObject);
+            if (SkillData.CanHitSkill(hit[i].transform.tag) == false) continue;
+            DamageToEntity(hit[i].transform.gameObject, SkillData.KnockBackThrust);
         }
     }
 

@@ -58,13 +58,14 @@ public class GravitationalFieldSkill : BasicSkill
         nowRunning = false;
         effect.StopEffect();
 
-        await UniTask.Delay(TimeSpan.FromSeconds(disableTime), cancellationToken: source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: source.Token);
         DisableObject();
     }
 
-    public override void PlaySkill(SkillSupportData skillSupportData)
+    public override void PlaySkill(SkillSupportData data)
     {
-        transform.position = skillSupportData.player.transform.position;
+        base.PlaySkill(data);
+        transform.position = data.player.transform.position;
         SkillTask().Forget();
     }
 }

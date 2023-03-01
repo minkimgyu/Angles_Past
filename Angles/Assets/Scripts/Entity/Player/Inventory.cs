@@ -18,7 +18,7 @@ public class Inventory : MonoBehaviour
         if (col.gameObject.CompareTag("DropItem"))
         {
             DropSkill dropSkill = col.GetComponent<DropSkill>();
-            battleComponent.SkillData = dropSkill.DropSkillData;
+            battleComponent.SkillData = DatabaseManager.Instance.ReturnSkillData(dropSkill.skillName);
             battleComponent.PlayWhenGet();
             Destroy(dropSkill.gameObject);
         }

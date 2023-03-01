@@ -250,10 +250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6928a387eebaa4a488e24b81a2ea35b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropSkillData:
-    name: 4
-    type: 2
-    count: 1
+  skillName: 4
 --- !u!1 &8569452341126648796
 GameObject:
   m_ObjectHideFlags: 0

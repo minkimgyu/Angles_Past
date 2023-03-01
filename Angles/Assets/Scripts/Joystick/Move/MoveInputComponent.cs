@@ -108,7 +108,7 @@ public class MoveInputComponent : MonoBehaviour
 
     public bool NowCancelAttack()
     {
-        float offset = DatabaseManager.Instance.AttackCancelOffset;
+        float offset = DatabaseManager.Instance.PlayerData.AttackCancelOffset;
 
         if (joyController.CheckCancelAttack(offset) == true || keyController.CheckCancelAttack(offset) == true)
         {

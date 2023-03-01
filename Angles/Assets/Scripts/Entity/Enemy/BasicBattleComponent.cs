@@ -5,11 +5,18 @@ using UnityEngine;
 public class BasicBattleComponent : MonoBehaviour
 {
     [SerializeField]
-    protected SkillData normalSkillData;
-    public SkillData NormalSkillData { get { return normalSkillData; } set { normalSkillData = value; } }
+    protected SkillName normalSkillName;
+
+    SkillData normalSkillData;
+    public SkillData NormalSkillData { get { return normalSkillData; } set { normalSkillData = value; }}
 
     [SerializeField]
     protected List<SkillData> loadSkillDatas = new List<SkillData>();
+
+    protected virtual void Start()
+    {
+        normalSkillData = DatabaseManager.Instance.ReturnSkillData(normalSkillName);
+    }
 
     protected virtual void UseSkill(SkillUseType skillUseType)
     {

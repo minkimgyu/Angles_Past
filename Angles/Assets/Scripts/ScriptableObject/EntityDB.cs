@@ -20,6 +20,30 @@ public class EntityData
     [SerializeField]
     protected float stunTime;
     public float StunTime { get { return stunTime; } set { stunTime = value; } }
+
+    [SerializeField]
+    protected float weight;
+    public float Weight { get { return weight; } set { weight = value; } }
+
+    [SerializeField]
+    protected float drag;
+    public float Drag { get { return drag; } set { drag = value; } }
+
+    [SerializeField]
+    protected float knockBackThrust;
+    public float KnockBackThrust { get { return knockBackThrust; } set { knockBackThrust = value; } }
+
+    public EntityData() { }
+    public EntityData(string name, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust) 
+    {
+        this.name = name;
+        this.hp = hp;
+        this.speed = speed;
+        this.stunTime = stunTime;
+        this.weight = weight;
+        this.drag = drag;
+        this.knockBackThrust = knockBackThrust;
+    }
 }
 
 [System.Serializable]
@@ -27,7 +51,11 @@ public class PlayerData : EntityData
 {
     [SerializeField]
     float readySpeed = 5;
-    public float ReadySpeed { get{ return readySpeed; } set { readySpeed = value; } }
+    public float ReadySpeed { get { return readySpeed; } set { readySpeed = value; } }
+
+    [SerializeField]
+    float speedRatio;
+    public float SpeedRatio { get { return speedRatio; } set { speedRatio = value; } }
 
     [SerializeField]
     float minSpeedRatio;
@@ -38,12 +66,20 @@ public class PlayerData : EntityData
     public float MaxSpeedRatio { get { return maxSpeedRatio; } set { maxSpeedRatio = value; } }
 
     [SerializeField]
-    float attackThrust;
-    public float AttackThrust { get { return attackThrust; } set { attackThrust = value; } }
+    float rushThrust;
+    public float RushThrust { get { return rushThrust; } set { rushThrust = value; } }
 
     [SerializeField]
-    float attackTime;
-    public float AttackTime { get { return attackTime; } set { attackTime = value; } }
+    float rushRatio;
+    public float RushRatio { get { return rushRatio; } set { rushRatio = value; } }
+
+    [SerializeField]
+    float storedRushRatio;
+    public float StoredRushRatio { get { return storedRushRatio; } set { storedRushRatio = value; } }
+
+    [SerializeField]
+    float rushTime;
+    public float RushTime { get { return rushTime; } set { rushTime = value; } }
 
     [SerializeField]
     float attackCancelOffset;
@@ -51,8 +87,8 @@ public class PlayerData : EntityData
 
 
     [SerializeField]
-    float reflectAttackThrust;
-    public float ReflectAttackThrust { get { return reflectAttackThrust; } set { reflectAttackThrust = value; } }
+    float reflectThrust;
+    public float ReflectThrust { get { return reflectThrust; } set { reflectThrust = value; } }
 
 
     [SerializeField]
@@ -73,6 +109,50 @@ public class PlayerData : EntityData
     [SerializeField]
     float dashRatio;
     public float DashRatio { get { return dashRatio; } set { dashRatio = value; } }
+
+    public bool CanUseDash()
+    {
+        if (DashRatio - 1 / MaxDashCount >= 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void SubtractRatio()
+    {
+        DashRatio -= 1 / MaxDashCount;
+    }
+
+    public PlayerData() : base() { }
+
+    public PlayerData(string name, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust,  float readySpeed, float speedRatio, float minSpeedRatio, float maxSpeedRatio, float rushThrust,
+        float rushRatio, float storedRushRatio, float rushTime, float attackCancelOffset, float reflectThrust, float maxDashCount, float dashTime, float dashThrust, float dashRatio) : base(name, hp, speed, stunTime, weight, drag, knockBackThrust)
+    {
+        this.readySpeed = readySpeed;
+        this.speedRatio = speedRatio;
+        this.minSpeedRatio = minSpeedRatio;
+        this.maxSpeedRatio = maxSpeedRatio;
+        this.rushThrust = rushThrust;
+        this.rushRatio = rushRatio;
+        this.storedRushRatio = storedRushRatio;
+        this.rushTime = rushTime;
+        this.attackCancelOffset = attackCancelOffset;
+        this.reflectThrust = reflectThrust;
+        this.maxDashCount = maxDashCount;
+        this.dashTime = dashTime;
+        this.dashThrust = dashThrust;
+        this.dashRatio = dashRatio;
+    }
+
+    public PlayerData CopyData()
+    {
+        return new PlayerData(name, hp, speed, stunTime, weight, drag, knockBackThrust, readySpeed, speedRatio, minSpeedRatio, maxSpeedRatio, rushThrust,
+        rushRatio, storedRushRatio, rushTime, attackCancelOffset, reflectThrust, maxDashCount, dashTime, dashThrust, dashRatio);
+    }
 }
 
 [System.Serializable]
@@ -82,10 +162,20 @@ public class EnemyData : EntityData
     float skillUseRange;
     public float SkillUseRange { get { return skillUseRange; } set { skillUseRange = value; } }
 
+    [SerializeField]
+    float followMinDistance;
+    public float FollowMinDistance { get { return followMinDistance; } set { followMinDistance = value; } }
+
+    public EnemyData() { }
+    public EnemyData(string name, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust, float skillUseRange, float followMinDistance) : base(name, hp, speed, stunTime, weight, drag, knockBackThrust)
+    {
+        this.skillUseRange = skillUseRange;
+        this.followMinDistance = followMinDistance;
+    }
+
     public EnemyData CopyData()
     {
-        EnemyData skillData = new EnemyData();
-        return skillData;
+        return new EnemyData(name, hp, speed, stunTime, weight, drag, knockBackThrust, skillUseRange, followMinDistance);
     }
 }
 
@@ -107,6 +197,10 @@ public class SkillData
     [SerializeField]
     float damage;
     public float Damage { get { return damage; } set { damage = value; } }
+
+    [SerializeField]
+    float knockBackThrust;
+    public float KnockBackThrust { get { return knockBackThrust; } set { knockBackThrust = value; } }
 
     [SerializeField]
     float disableTime;
@@ -131,11 +225,20 @@ public class SkillData
         if (useCount <= 0) skillDatas.Remove(this);
     }
 
-
-    public SkillData()
+    public bool CanHitSkill(string tag)
     {
-        
+        for (int i = 0; i < hitTarget.Length; i++)
+        {
+            if(hitTarget[i].ToString() == tag)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
+
+    public SkillData() { }
 
     public SkillData(SkillName name, SkillUseType useType, int useCount, float damage, float disableTime, EntityTag[] hitTarget)
     {

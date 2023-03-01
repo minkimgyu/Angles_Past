@@ -19,8 +19,8 @@ public class SelfDestructionSkill : BasicSkill
         RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.up, 0, LayerMask.GetMask("Enemy"));
         for (int i = 0; i < hit.Length; i++)
         {
-            if (CheckCanHitSkill(hit[i].transform.tag) == false) continue;
-            DamageToEntity(hit[i].transform.gameObject);
+            if (SkillData.CanHitSkill(hit[i].transform.tag) == false) continue;
+            DamageToEntity(hit[i].transform.gameObject, SkillData.KnockBackThrust);
         }
 
         SkillTask().Forget();
@@ -28,7 +28,7 @@ public class SelfDestructionSkill : BasicSkill
 
     public async UniTaskVoid SkillTask()
     {
-        await UniTask.Delay(TimeSpan.FromSeconds(disableTime), cancellationToken: source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: source.Token);
         DisableObject();
     }
 

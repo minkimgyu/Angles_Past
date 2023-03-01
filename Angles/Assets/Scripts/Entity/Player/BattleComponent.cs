@@ -45,8 +45,9 @@ public class BattleComponent : BasicBattleComponent
     public EntityTag contactTag;
     public Transform skillParent;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         player = GetComponent<Entity>();
         attackComponent = GetComponent<AttackComponent>();
         PlayManager.Instance.actionJoy.actionComponent.attackAction += PlayWhenAttackStart;

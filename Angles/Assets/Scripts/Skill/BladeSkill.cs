@@ -32,7 +32,7 @@ public class BladeSkill : BasicSkill
 
         effect.StopEffect();
 
-        await UniTask.Delay(TimeSpan.FromSeconds(disableTime), cancellationToken: source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: source.Token);
         nowRunning = false;
         DisableObject();
     }
@@ -50,14 +50,15 @@ public class BladeSkill : BasicSkill
 
         for (int i = 0; i < hit.Length; i++)
         {
-            if (CheckCanHitSkill(hit[i].transform.tag) == false) continue;
-            DamageToEntity(hit[i].transform.gameObject);
+            if (SkillData.CanHitSkill(hit[i].transform.tag) == false) continue;
+            DamageToEntity(hit[i].transform.gameObject, SkillData.KnockBackThrust);
         }
     }
 
-    public override void PlaySkill(SkillSupportData skillSupportData)
+    public override void PlaySkill(SkillSupportData data)
     {
-        playerTr = skillSupportData.player.transform; // 위치 초기화
+        base.PlaySkill(data);
+        playerTr = data.player.transform; // 위치 초기화
         SkillTask().Forget();
     }
 

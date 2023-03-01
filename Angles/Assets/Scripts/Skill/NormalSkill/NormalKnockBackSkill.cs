@@ -9,15 +9,16 @@ public class NormalKnockBackSkill : BasicSkill
 {
     public override void PlaySkill(SkillSupportData data)
     {
+        base.PlaySkill(data);
         transform.position = data.contactPos[0];
         effect.PlayEffect();
 
         for (int i = 0; i < data.contactEntity.Count; i++)
         {
-            if (CheckCanHitSkill(data.contactEntity[i].tag) == false) continue;
-
-            Vector2 dirToEnemy = data.contactEntity[i].gameObject.transform.position - transform.position;
-            data.contactEntity[i].GetHit(ReturnDamage(), dirToEnemy);
+            if (SkillData.CanHitSkill(data.contactEntity[i].tag) == false) continue;
+          
+            float ratio = DatabaseManager.Instance.PlayerData.StoredRushRatio;
+            DamageToEntity(data.contactEntity[i].gameObject, SkillData.KnockBackThrust * ratio);
         }
 
         SkillTask().Forget();
@@ -25,7 +26,7 @@ public class NormalKnockBackSkill : BasicSkill
 
     public async UniTaskVoid SkillTask()
     {
-        await UniTask.Delay(TimeSpan.FromSeconds(disableTime), cancellationToken: source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: source.Token);
         DisableObject();
     }
 }

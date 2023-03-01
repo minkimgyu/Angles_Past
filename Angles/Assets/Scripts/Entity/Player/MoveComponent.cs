@@ -66,11 +66,11 @@ public class MoveComponent : MonoBehaviour
         
         if (nowReady == true)
         {
-            rigid.velocity = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec().normalized * DatabaseManager.Instance.ReadySpeed * DatabaseManager.Instance.SpeedRatio;
+            rigid.velocity = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec().normalized * DatabaseManager.Instance.PlayerData.ReadySpeed * DatabaseManager.Instance.PlayerData.SpeedRatio;
         }
         else
         {
-            rigid.velocity = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec().normalized * DatabaseManager.Instance.MoveSpeed * DatabaseManager.Instance.SpeedRatio;
+            rigid.velocity = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec().normalized * DatabaseManager.Instance.PlayerData.Speed * DatabaseManager.Instance.PlayerData.SpeedRatio;
         }
     }
 

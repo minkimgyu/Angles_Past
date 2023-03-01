@@ -58,7 +58,7 @@ public class AttackComponent : ForceComponent
         nowRunning = true;
         entity.rigid.freezeRotation = true;
 
-        await UniTask.Delay(TimeSpan.FromSeconds(DatabaseManager.Instance.AttackTime), cancellationToken: source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(DatabaseManager.Instance.PlayerData.RushTime), cancellationToken: source.Token);
         CancelAttack();
 
         nowRunning = false;

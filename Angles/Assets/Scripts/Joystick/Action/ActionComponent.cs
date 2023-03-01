@@ -90,7 +90,7 @@ public class ActionComponent : MonoBehaviour
     {
         MoveJoystick moveJoy = PlayManager.Instance.moveJoy;
 
-        if (NowDoubleClick() == true && DatabaseManager.Instance.CanUseDash() == true && moveJoy.moveInputComponent.NowCanDash() == true)
+        if (NowDoubleClick() == true && DatabaseManager.Instance.PlayerData.CanUseDash() == true && moveJoy.moveInputComponent.NowCanDash() == true)
         {
             dashAction(moveJoy.moveInputComponent.ReturnMoveVec().normalized); // 대쉬 값을 받아와서 진행
             moveJoy.dashUIComponent.ReFillDashRatio();
@@ -103,7 +103,11 @@ public class ActionComponent : MonoBehaviour
         {
             rushVec.Set(horizontal, vertical);
 
-            attackAction(-rushVec.normalized * uIComponent.RushRatio * DatabaseManager.Instance.AttackThrust, ForceMode2D.Impulse); // Ratio와 역방향 고려
+            print(DatabaseManager.Instance.PlayerData.RushRatio);
+            print(-rushVec.normalized);
+            print(DatabaseManager.Instance.PlayerData.RushThrust);
+
+            attackAction(-rushVec.normalized * DatabaseManager.Instance.PlayerData.RushRatio * DatabaseManager.Instance.PlayerData.RushThrust, ForceMode2D.Impulse); // Ratio와 역방향 고려
             mode = ActionMode.Idle;
             uIComponent.CancelTask();
         }

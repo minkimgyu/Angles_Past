@@ -14,13 +14,14 @@ public class RotationBallSkill : BasicSkill
 
     public int BallCount { get { return ballCount; } set { if (value > 0) ballCount = value; } }
 
-    public override void PlaySkill(SkillSupportData skillSupportData)
+    public override void PlaySkill(SkillSupportData data)
     {
-        playerTr = skillSupportData.player.transform;
+        base.PlaySkill(data);
+        playerTr = data.player.transform;
 
         Debug.Log("PlaySkill");
         InitBall();
-        base.PlaySkill(skillSupportData);
+        base.PlaySkill(data);
     }
 
     void InitBall()

@@ -42,6 +42,6 @@ public class PentagonYellowComponent : UnitaskUtility
     protected override void OnDisable()
     {
         base.OnDisable();
-        followComponent.followAction -= SkillAction;
+        if(followComponent != null) followComponent.followAction -= SkillAction;
     }
 }

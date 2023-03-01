@@ -23,7 +23,7 @@ public class DashUIComponent : UnitaskUtility
     }
     void FillDashIcon(float ratio) /// 0.66435
     {
-        float perImage = 1 / DatabaseManager.Instance.MaxDashCount;
+        float perImage = 1 / DatabaseManager.Instance.PlayerData.MaxDashCount;
         bool nowFillComplete = false;
 
 
@@ -50,7 +50,7 @@ public class DashUIComponent : UnitaskUtility
                 if (lastIndex < 0) lastIndex = 0;
 
                 float lastPerImageRatio = ratio - (perImage * (lastIndex));
-                dashImage[indexOfImage].fillAmount = lastPerImageRatio * DatabaseManager.Instance.MaxDashCount;
+                dashImage[indexOfImage].fillAmount = lastPerImageRatio * DatabaseManager.Instance.PlayerData.MaxDashCount;
                 nowFillComplete = true;
             }
         }
@@ -60,15 +60,15 @@ public class DashUIComponent : UnitaskUtility
     {
         nowRunning = true;
 
-        while (DatabaseManager.Instance.DashRatio < 1)
+        while (DatabaseManager.Instance.PlayerData.DashRatio < 1)
         {
             await UniTask.Delay(TimeSpan.FromSeconds(WaitTIme), cancellationToken: source.Token);
-            DatabaseManager.Instance.DashRatio += 0.01f;
+            DatabaseManager.Instance.PlayerData.DashRatio += 0.01f;
 
-            FillDashIcon(DatabaseManager.Instance.DashRatio);
+            FillDashIcon(DatabaseManager.Instance.PlayerData.DashRatio);
         }
 
-        if (DatabaseManager.Instance.DashRatio != 1) DatabaseManager.Instance.DashRatio = 1;
+        if (DatabaseManager.Instance.PlayerData.DashRatio != 1) DatabaseManager.Instance.PlayerData.DashRatio = 1;
 
         nowRunning = false;
     }

@@ -7,7 +7,7 @@ using System;
 
 public class FollowComponent : UnitaskUtility
 {
-    Entity entity;
+    Enemy enemy;
     Player player;
     public float ratio = 1;
     public int count = 0;
@@ -35,11 +35,11 @@ public class FollowComponent : UnitaskUtility
     // Start is called before the first frame update
     void Start()
     {
-        entity = GetComponent<Entity>();
-        entity.fixedUpdateAction += MoveToPlayer;
+        enemy = GetComponent<Enemy>();
+        enemy.fixedUpdateAction += MoveToPlayer;
 
         player = PlayManager.Instance.player;
-        entity.PlayerMode = ActionMode.Follow;
+        enemy.PlayerMode = ActionMode.Follow;
     }
 
     public void WaitFollow()
@@ -51,7 +51,7 @@ public class FollowComponent : UnitaskUtility
     public void StopFollow()
     {
         CancelTask();
-        entity.StopMove();
+        enemy.StopMove();
     }
 
     public async UniTaskVoid WaitFollowTask()
@@ -60,24 +60,29 @@ public class FollowComponent : UnitaskUtility
         nowHit = true;
 
         doNotClose.SetActive(false);
-        entity.PlayerMode = ActionMode.Hit;
+        enemy.PlayerMode = ActionMode.Hit;
 
-        entity.rigid.velocity = Vector2.zero;
-        await UniTask.Delay(TimeSpan.FromSeconds(DatabaseManager.Instance.WaitTime), cancellationToken: source.Token);
+        enemy.rigid.velocity = Vector2.zero;
+        await UniTask.Delay(TimeSpan.FromSeconds(enemy.enemyData.StunTime), cancellationToken: source.Token);
 
-        entity.PlayerMode = ActionMode.Follow;
+        enemy.PlayerMode = ActionMode.Follow;
         doNotClose.SetActive(true);
 
         nowHit = false;
         nowRunning = false;
     }
 
-    void CheckDistance(Vector2 enemyPos)
+    bool CanFollowDistance(Vector2 enemyPos)
     {
         float distanceBetween = Vector2.Distance(transform.position, enemyPos);
-        if (distanceBetween <= distance)
+        if (distanceBetween <= enemy.enemyData.FollowMinDistance)
         {
             if (followAction != null) followAction();
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
 
@@ -85,13 +90,18 @@ public class FollowComponent : UnitaskUtility
     {
         if (nowHit == true) return; // 루틴 돌아가는 동안, 사용 금지
 
-        CheckDistance(player.transform.position);
-
-        Vector2 dirVec = player.transform.position - entity.transform.position;
-        Vector2 nextVec = dirVec.normalized * DatabaseManager.Instance.FollowSpeed * Time.fixedDeltaTime * ratio;
-        entity.rigid.MovePosition(entity.rigid.position + nextVec);
-
+        Vector2 dirVec = player.transform.position - enemy.transform.position;
         RotateUsingVelocity(dirVec.normalized);
+
+        bool canFollow = CanFollowDistance(player.transform.position);
+        if (canFollow == false)
+        {
+            enemy.rigid.MovePosition(enemy.rigid.position);
+            return;
+        }
+
+        Vector2 nextVec = dirVec.normalized * enemy.enemyData.Speed * Time.fixedDeltaTime * ratio;
+        enemy.rigid.MovePosition(enemy.rigid.position + nextVec);
     }
 
     float CheckCanRotate(Vector2 vec)
@@ -101,6 +111,6 @@ public class FollowComponent : UnitaskUtility
 
     public void RotateUsingVelocity(Vector2 vec)
     {
-        entity.rigid.MoveRotation(CheckCanRotate(vec));
+        enemy.rigid.MoveRotation(CheckCanRotate(vec));
     }
 }

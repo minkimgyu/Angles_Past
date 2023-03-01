@@ -9,14 +9,6 @@ using System;
 public class ActionUIComponent : UnitaskUtility
 {
     Image rushImage;
-    float rushRatio = 0;
-    public float RushRatio
-    {
-        get
-        {
-            return rushRatio;
-        }
-    }
 
     private void Start()
     {
@@ -30,21 +22,24 @@ public class ActionUIComponent : UnitaskUtility
         nowRunning = true;
         EndRush();
 
-        while (rushRatio < 1)
+        PlayerData playerData = DatabaseManager.Instance.PlayerData;
+
+        while (playerData.RushRatio < 1)
         {
             await UniTask.Delay(TimeSpan.FromSeconds(WaitTIme), cancellationToken: source.Token);
-            rushRatio += 0.01f;
-            rushImage.fillAmount = rushRatio;
+            playerData.RushRatio += 0.01f;
+            rushImage.fillAmount = playerData.RushRatio;
         }
 
-        if (rushRatio > 1) rushRatio = 1;
+        if (playerData.RushRatio > 1) playerData.RushRatio = 1;
 
         nowRunning = false;
     }
 
     public void EndRush()
     {
-        rushRatio = 0;
+        DatabaseManager.Instance.PlayerData.StoredRushRatio = DatabaseManager.Instance.PlayerData.RushRatio;
+        DatabaseManager.Instance.PlayerData.RushRatio = 0;
         rushImage.fillAmount = 0;
     }
 }

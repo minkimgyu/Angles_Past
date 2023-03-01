@@ -13,14 +13,19 @@ public class ReflectComponent : BasicReflectComponent
         base.Start();
     }
 
-    public override void ReflectEntity(Collision2D col)
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        ReflectEntity(col);
+    }
+
+    public void ReflectEntity(Collision2D col)
     {
         if (entity.PlayerMode != actionMode) return;
 
         if (col.gameObject.CompareTag(actionTag) == true)
         {
             col.gameObject.GetComponent<WallColorChange>().ChangeTileColor(ReturnHitPosition(col));
-            KnockBack(ReflectPlayer(col.contacts[0].normal) * DatabaseManager.Instance.ReflectAttackThrust);
+            KnockBack(ReflectPlayer(col.contacts[0].normal) * DatabaseManager.Instance.PlayerData.ReflectThrust);
         }
     }
     protected Vector2 ReflectPlayer(Vector2 hitPoint)
