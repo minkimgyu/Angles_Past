@@ -43,7 +43,7 @@ public class GravitationalFieldSkill : BasicSkill
     public async UniTaskVoid SkillTask()
     {
         effect.PlayEffect();
-        nowRunning = true;
+        BasicTask.NowRunning = true;
 
         int damageTic = 0;
         int maxDamageTic = (int)(damageTime / damagePerTime);
@@ -51,14 +51,14 @@ public class GravitationalFieldSkill : BasicSkill
         while (damageTic < maxDamageTic)
         {
             SetGravity();
-            await UniTask.Delay(TimeSpan.FromSeconds(damagePerTime), cancellationToken: source.Token);
+            await UniTask.Delay(TimeSpan.FromSeconds(damagePerTime), cancellationToken: BasicTask.source.Token);
             damageTic += 1;
         }
 
-        nowRunning = false;
+        BasicTask.NowRunning = false;
         effect.StopEffect();
 
-        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: BasicTask.source.Token);
         DisableObject();
     }
 

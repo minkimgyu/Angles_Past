@@ -6,11 +6,13 @@ public class ReflectComponent : BasicReflectComponent
 {
     public ActionMode actionMode;
     public string actionTag;
+    AttackComponent attackComponent;
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
+        attackComponent = GetComponent<AttackComponent>();
     }
 
     private void OnCollisionEnter2D(Collision2D col)
@@ -25,6 +27,7 @@ public class ReflectComponent : BasicReflectComponent
         if (col.gameObject.CompareTag(actionTag) == true)
         {
             col.gameObject.GetComponent<WallColorChange>().ChangeTileColor(ReturnHitPosition(col));
+            attackComponent.BasicTask.CancelTask(); // 공격 초기화
             KnockBack(ReflectPlayer(col.contacts[0].normal) * DatabaseManager.Instance.PlayerData.ReflectThrust);
         }
     }

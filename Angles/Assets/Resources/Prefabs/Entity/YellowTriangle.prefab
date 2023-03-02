@@ -288,6 +288,8 @@ MonoBehaviour:
     drag: 0
     knockBackThrust: 0
     skillUseRange: 0
+    followMinDistance: 0
+    stopMinDistance: 0
 --- !u!95 &3703049766898728195
 Animator:
   serializedVersion: 5
@@ -320,7 +322,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e743259ef5834334ea153ac910d0c46e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ratio: 1
   count: 0
   distance: 3
   doNotClose: {fileID: 4418510212704014436}
@@ -413,7 +414,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 3
+  m_Radius: 5
 --- !u!114 &7853667020278246723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,6 +429,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   go: {fileID: 5462104940915882121}
   sr: {fileID: 0}
+  slowRangeGizmo:
+    color: {r: 1, g: 0.020420859, b: 0, a: 1}
+    width: 0
+    height: 0
+    radius: 2
+    layer:
+      serializedVersion: 2
+      m_Bits: 0
 --- !u!212 &7437237964635138398
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -8,14 +8,11 @@ using System;
 public class AttackComponent : ForceComponent
 {
     MoveComponent moveComponent;
-    BattleComponent battleComponent;
 
     // Start is called before the first frame update
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
         moveComponent = GetComponent<MoveComponent>();
-        battleComponent = GetComponent<BattleComponent>();
         entity.fixedUpdateAction += SubUpdate;
 
         PlayManager.Instance.actionJoy.actionComponent.aniAction += ResetReadyAni;
@@ -29,7 +26,7 @@ public class AttackComponent : ForceComponent
 
         if (PlayManager.Instance.moveJoy.moveInputComponent.NowCancelAttack() == true) // 현재 공격을 취소해야할 경우
         {
-            CancelTask();
+            BasicTask.CancelTask();
             CancelAttack();
         }
     }
@@ -55,13 +52,19 @@ public class AttackComponent : ForceComponent
 
     public async UniTaskVoid WaitAttackEndTask()
     {
-        nowRunning = true;
+        BasicTask.NowRunning = true;
         entity.rigid.freezeRotation = true;
 
-        await UniTask.Delay(TimeSpan.FromSeconds(DatabaseManager.Instance.PlayerData.RushTime), cancellationToken: source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(DatabaseManager.Instance.PlayerData.RushTime), cancellationToken: BasicTask.source.Token);
         CancelAttack();
 
-        nowRunning = false;
+        BasicTask.NowRunning = false;
+    }
+
+    public void QuickEndTask()
+    {
+        BasicTask.CancelTask();
+        CancelAttack();
     }
 
     public void CancelAttack()
@@ -69,12 +72,6 @@ public class AttackComponent : ForceComponent
         entity.PlayerMode = ActionMode.Idle;
         entity.Animator.SetBool("NowAttack", false);
         entity.rigid.freezeRotation = false;
-    }
-
-    public void QuickEndTask()
-    {
-        CancelTask();
-        CancelAttack();
     }
 
     protected override void OnDisable()

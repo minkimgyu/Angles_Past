@@ -5,10 +5,16 @@ using UnityEngine;
 public class ForceComponent : UnitaskUtility
 {
     protected Entity entity;
-
-    protected virtual void Start()
+    protected override void Awake()
     {
+        base.Awake();
         entity = GetComponent<Entity>();
+    }
+
+    public void PlayKnockBack(Vector2 dir)
+    {
+        BasicTask.CancelTask();
+        AddForceUsingVec(dir);
     }
 
     public virtual void AddForceUsingVec(Vector2 dir, ForceMode2D forceMode = ForceMode2D.Impulse)

@@ -12,12 +12,12 @@ public class DashUIComponent : UnitaskUtility
 
     private void Start()
     {
-        WaitTIme = 0.05f;
+        BasicTask.WaitTime = 0.05f;
     }
 
     public void ReFillDashRatio()
     {
-        if (NowRunning != false) return;
+        if (BasicTask.NowRunning != false) return;
 
         FillDashRatio().Forget();
     }
@@ -58,11 +58,11 @@ public class DashUIComponent : UnitaskUtility
 
     private async UniTaskVoid FillDashRatio()
     {
-        nowRunning = true;
+        BasicTask.NowRunning = true;
 
         while (DatabaseManager.Instance.PlayerData.DashRatio < 1)
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(WaitTIme), cancellationToken: source.Token);
+            await UniTask.Delay(TimeSpan.FromSeconds(BasicTask.WaitTime), cancellationToken: BasicTask.source.Token);
             DatabaseManager.Instance.PlayerData.DashRatio += 0.01f;
 
             FillDashIcon(DatabaseManager.Instance.PlayerData.DashRatio);
@@ -70,6 +70,6 @@ public class DashUIComponent : UnitaskUtility
 
         if (DatabaseManager.Instance.PlayerData.DashRatio != 1) DatabaseManager.Instance.PlayerData.DashRatio = 1;
 
-        nowRunning = false;
+        BasicTask.NowRunning = false;
     }
 }

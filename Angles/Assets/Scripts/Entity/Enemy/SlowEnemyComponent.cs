@@ -7,11 +7,25 @@ using System;
 
 public class SlowEnemyComponent : UnitaskUtility
 {
+    Enemy enemy;
+    CircleCollider2D slowRange;
     public GameObject go;
     public SpriteRenderer sr;
 
+    [SerializeField]
+    DrawGizmo slowRangeGizmo;
+
+    void OnDrawGizmos()
+    {
+        slowRangeGizmo.DrawCircleGizmo(transform);
+    }
+
     private void Start()
     {
+        enemy = GetComponentInParent<Enemy>();
+        slowRange = GetComponent<CircleCollider2D>();
+        slowRange.radius = enemy.enemyData.SkillUseRange;
+
         sr = GetComponent<SpriteRenderer>();
     }
 
@@ -35,15 +49,13 @@ public class SlowEnemyComponent : UnitaskUtility
 
     void FillEffect(float targetAlpha)
     {
-        CancelTask();
+        BasicTask.CancelTask();
         FillSprite(targetAlpha).Forget();
     }
 
     public async UniTaskVoid FillSprite(float targetAlpha)
     {
-        nowRunning = true;
-
-        Debug.Log(targetAlpha);
+        BasicTask.NowRunning = true;
 
         float fillRate = 0.01f;
         Color curColor = sr.color;
@@ -51,9 +63,9 @@ public class SlowEnemyComponent : UnitaskUtility
         {
             curColor.a = Mathf.Lerp(curColor.a, targetAlpha, Time.deltaTime);
             sr.color = curColor;
-            await UniTask.Delay(TimeSpan.FromSeconds(fillRate), cancellationToken: source.Token);
+            await UniTask.Delay(TimeSpan.FromSeconds(fillRate), cancellationToken: BasicTask.source.Token);
         }
 
-        nowRunning = false;
+        BasicTask.NowRunning = false;
     }
 }

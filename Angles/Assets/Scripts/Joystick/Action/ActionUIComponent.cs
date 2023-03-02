@@ -13,27 +13,27 @@ public class ActionUIComponent : UnitaskUtility
     private void Start()
     {
         rushImage = GetComponent<ActionJoystick>().rush.GetComponent<Image>();
-        cancelFn += EndRush;
-        WaitTIme = 0.01f;
+        BasicTask.cancelFn += EndRush;
+        BasicTask.WaitTime = 0.01f;
     }
 
     public async UniTaskVoid FillAttackPower()
     {
-        nowRunning = true;
+        BasicTask.NowRunning = true;
         EndRush();
 
         PlayerData playerData = DatabaseManager.Instance.PlayerData;
 
         while (playerData.RushRatio < 1)
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(WaitTIme), cancellationToken: source.Token);
+            await UniTask.Delay(TimeSpan.FromSeconds(BasicTask.WaitTime), cancellationToken: BasicTask.source.Token);
             playerData.RushRatio += 0.01f;
             rushImage.fillAmount = playerData.RushRatio;
         }
 
         if (playerData.RushRatio > 1) playerData.RushRatio = 1;
 
-        nowRunning = false;
+        BasicTask.NowRunning = false;
     }
 
     public void EndRush()

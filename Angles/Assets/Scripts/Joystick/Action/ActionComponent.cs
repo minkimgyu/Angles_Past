@@ -62,7 +62,7 @@ public class ActionComponent : MonoBehaviour
             if (NowModeCheck(ActionMode.Idle) == false)
             {
                 mode = ActionMode.Idle;
-                uIComponent.CancelTask();
+                uIComponent.BasicTask.CancelTask();
                 Debug.Log("NowCancel");
 
                 aniAction(false);
@@ -109,7 +109,7 @@ public class ActionComponent : MonoBehaviour
 
             attackAction(-rushVec.normalized * DatabaseManager.Instance.PlayerData.RushRatio * DatabaseManager.Instance.PlayerData.RushThrust, ForceMode2D.Impulse); // Ratio와 역방향 고려
             mode = ActionMode.Idle;
-            uIComponent.CancelTask();
+            uIComponent.BasicTask.CancelTask();
         }
     }
 }

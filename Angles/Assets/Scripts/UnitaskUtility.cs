@@ -5,38 +5,61 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using System;
 
-public class UnitaskUtility : MonoBehaviour
+public class BasicUnitask
 {
-    protected bool nowRunning;
+    bool nowRunning;
     public bool NowRunning
     {
         get { return nowRunning; }
+        set { nowRunning = value; }
     }
 
     float waitTIme = 0.01f;
-
-    protected  float WaitTIme
+    public float WaitTime
     {
         get { return waitTIme; }
-        set 
-        {
-            waitTIme = value;
-        }
+        set { waitTIme = value; }
     }
 
     public CancellationTokenSource source = new CancellationTokenSource();
-    protected Action cancelFn;
+    public Action cancelFn;
 
     public void CancelTask()
     {
-        if(nowRunning == true)
+        if (nowRunning == true)
         {
             source.Cancel();
             source = new CancellationTokenSource();
-            if(cancelFn != null) cancelFn();
+            if (cancelFn != null) cancelFn();
             nowRunning = false;
         }
     }
+}
+
+public class UnitaskUtility : MonoBehaviour
+{
+    protected Dictionary<string, BasicUnitask> tasks = new Dictionary<string, BasicUnitask>();
+
+    protected string basicTask = "Task";
+
+    public BasicUnitask BasicTask 
+    { 
+        get 
+        {
+            if (tasks != null && tasks.Count > 0)
+                return tasks[basicTask];
+            else
+                return null;
+        } 
+    }
+
+    protected virtual void Awake()
+    {
+        print("Awake");
+        AddTask(basicTask);
+    }
+
+    public void AddTask(string taskName) => tasks.Add(taskName, new BasicUnitask());
 
     private void OnDestroy()
     {
@@ -55,18 +78,29 @@ public class UnitaskUtility : MonoBehaviour
 
     void WhenDestroy()
     {
-        source.Cancel();
-        source.Dispose();
+        foreach (KeyValuePair<string, BasicUnitask> task in tasks)
+        {
+            task.Value.source.Cancel();
+            task.Value.source.Dispose();
+        }
+
+        tasks.Clear();
     }
 
     void WhenDisable()
     {
-        source.Cancel();
+        foreach (KeyValuePair<string, BasicUnitask> task in tasks)
+        {
+            task.Value.source.Cancel();
+        }
     }
 
     protected void WhenEnable()
     {
-        if (source != null) source.Dispose();
-        source = new CancellationTokenSource();
+        foreach (KeyValuePair<string, BasicUnitask> task in tasks)
+        {
+            if (task.Value.source != null) task.Value.source.Dispose();
+            task.Value.source = new CancellationTokenSource();
+        }
     }
 }

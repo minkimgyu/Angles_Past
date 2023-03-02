@@ -33,15 +33,16 @@ public class UpdateDBComponent : UnitaskUtility
         }
     }
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         DatabaseManager.Instance.EntityDB.ResetData();
         LoadInitRange().Forget();
     }
 
     public async UniTaskVoid LoadInitRange()
     {
-        nowRunning = true;
+        BasicTask.NowRunning = true;
 
         string dbCountUrl = URL + dbCountRange;
         UnityWebRequest www1 = UnityWebRequest.Get(dbCountUrl);
@@ -59,7 +60,7 @@ public class UpdateDBComponent : UnitaskUtility
         await www3.SendWebRequest();
         SetEntityDB(www3.downloadHandler.text); // 추가 범위 체크
 
-        nowRunning = false;
+        BasicTask.NowRunning = false;
     }
 
     void SetEntityDB(string tsv)
@@ -87,7 +88,7 @@ public class UpdateDBComponent : UnitaskUtility
 
     public async UniTaskVoid LoadData(string dataName, string range)
     {
-        nowRunning = true;
+        BasicTask.NowRunning = true;
 
         string url = URL + range;
 
@@ -96,7 +97,7 @@ public class UpdateDBComponent : UnitaskUtility
         string tsv = www.downloadHandler.text; // 초기 범위 확인
         AddData(dataName, tsv);
 
-        nowRunning = false;
+        BasicTask.NowRunning = false;
     }
 
     void AddData(string dataName, string tsv)

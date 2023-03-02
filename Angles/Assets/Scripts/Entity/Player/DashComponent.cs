@@ -10,7 +10,7 @@ public class DashComponent : UnitaskUtility
     Player player;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         player = GetComponent<Player>();
         PlayManager.Instance.actionJoy.actionComponent.dashAction += PlayDash;
@@ -26,14 +26,14 @@ public class DashComponent : UnitaskUtility
 
     private async UniTaskVoid DashTask(Vector2 dir)
     {
-        nowRunning = true;
+        BasicTask.NowRunning = true;
         player.PlayerMode = ActionMode.Dash;
 
         player.rigid.AddForce(dir * DatabaseManager.Instance.PlayerData.DashThrust, ForceMode2D.Impulse);
-        await UniTask.Delay(TimeSpan.FromSeconds(DatabaseManager.Instance.PlayerData.DashTime), cancellationToken: source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(DatabaseManager.Instance.PlayerData.DashTime), cancellationToken: BasicTask.source.Token);
 
         player.PlayerMode = ActionMode.Idle;
-        nowRunning = false;
+        BasicTask.NowRunning = false;
     }
 
     protected override void OnDisable()

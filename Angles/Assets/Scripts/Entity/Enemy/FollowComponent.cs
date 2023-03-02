@@ -9,7 +9,6 @@ public class FollowComponent : UnitaskUtility
 {
     Enemy enemy;
     Player player;
-    public float ratio = 1;
     public int count = 0;
 
     bool nowHit = false;
@@ -33,7 +32,7 @@ public class FollowComponent : UnitaskUtility
     }
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         enemy = GetComponent<Enemy>();
         enemy.fixedUpdateAction += MoveToPlayer;
@@ -44,47 +43,81 @@ public class FollowComponent : UnitaskUtility
 
     public void WaitFollow()
     {
-        if (NowRunning == true) return;
+        if (BasicTask.NowRunning == true) return;
         WaitFollowTask().Forget();
     }
 
     public void StopFollow()
     {
-        CancelTask();
+        BasicTask.CancelTask();
         enemy.StopMove();
     }
 
     public async UniTaskVoid WaitFollowTask()
     {
-        nowRunning = true;
+        BasicTask.NowRunning = true;
         nowHit = true;
 
         doNotClose.SetActive(false);
         enemy.PlayerMode = ActionMode.Hit;
 
         enemy.rigid.velocity = Vector2.zero;
-        await UniTask.Delay(TimeSpan.FromSeconds(enemy.enemyData.StunTime), cancellationToken: source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(enemy.enemyData.StunTime), cancellationToken: BasicTask.source.Token);
 
         enemy.PlayerMode = ActionMode.Follow;
         doNotClose.SetActive(true);
 
         nowHit = false;
-        nowRunning = false;
+        BasicTask.NowRunning = false;
     }
 
     bool CanFollowDistance(Vector2 enemyPos)
     {
         float distanceBetween = Vector2.Distance(transform.position, enemyPos);
-        if (distanceBetween <= enemy.enemyData.FollowMinDistance)
-        {
-            if (followAction != null) followAction();
-            return false;
-        }
-        else
+        if (distanceBetween >= enemy.enemyData.FollowMinDistance)
         {
             return true;
         }
+        else
+        {
+            return false;
+        }
     }
+
+    bool CanStopDistance(Vector2 enemyPos)
+    {
+        float distanceBetween = Vector2.Distance(transform.position, enemyPos);
+        if (distanceBetween <= enemy.enemyData.StopMinDistance)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    //float startRatio = 0;
+    //float endRatio = 1;
+    //float ratio = 1;
+    //float speed = 1;
+    //float up = 0.01f;
+    //bool storedFollow = true;
+
+    //public async UniTaskVoid LerpSpeed()
+    //{
+    //    tasks["LerpSpeed"].NowRunning = true;
+    //    ratio = startRatio;
+
+    //    while (Mathf.Abs(endRatio - ratio) >= 0.01f)
+    //    {
+    //        await UniTask.Delay(TimeSpan.FromSeconds(tasks["LerpSpeed"].WaitTime), cancellationToken: tasks["LerpSpeed"].source.Token);
+    //        ratio = Mathf.Lerp(ratio, endRatio, Time.fixedDeltaTime * speed);
+    //        print(ratio);
+    //    }
+
+    //    tasks["LerpSpeed"].NowRunning = false;
+    //}
 
     public void MoveToPlayer()
     {
@@ -93,15 +126,50 @@ public class FollowComponent : UnitaskUtility
         Vector2 dirVec = player.transform.position - enemy.transform.position;
         RotateUsingVelocity(dirVec.normalized);
 
-        bool canFollow = CanFollowDistance(player.transform.position);
-        if (canFollow == false)
+        bool nowFollow = CanFollowDistance(player.transform.position);
+        bool nowStop = CanStopDistance(player.transform.position);
+
+        if (nowStop == true)
         {
-            enemy.rigid.MovePosition(enemy.rigid.position);
-            return;
+            enemy.rigid.velocity = Vector2.zero;
+            print("Stop");
+        }
+        else if(nowFollow == true && nowStop == false)
+        {
+            if (followAction != null) followAction();
+            enemy.rigid.velocity = (player.rigid.position - enemy.rigid.position).normalized * enemy.enemyData.Speed;
+            print("Follow");
         }
 
-        Vector2 nextVec = dirVec.normalized * enemy.enemyData.Speed * Time.fixedDeltaTime * ratio;
-        enemy.rigid.MovePosition(enemy.rigid.position + nextVec);
+        //print(nowFollow + "&" + storedFollow);
+
+        //if (nowFollow == true && storedFollow == false)
+        //{
+        //    if(tasks["LerpSpeed"].NowRunning == false) LerpSpeed().Forget();
+        //}
+        //else if (nowFollow == false) 
+        //{
+        //    storedFollow = nowFollow;
+        //    enemy.rigid.velocity = Vector2.zero; return; 
+        //} // Á¤Áö
+
+        //storedFollow = nowFollow;
+
+
+        //if (nowFollow == false)
+        //{
+        //    //if(enemy.rigid.velocity != Vector2.zero)
+        //    //    enemy.rigid.velocity = Vector2.zero;
+        //}
+        //else
+        //{
+        //    Vector2 nextVec = (enemy.rigid.position - player.rigid.position).normalized * enemy.enemyData.Speed;
+        //    enemy.rigid.velocity = nextVec;
+        //}
+
+        //Vector2 nextVec = dirVec.normalized * enemy.enemyData.Speed * ratio;
+        //enemy.rigid.velocity = nextVec;
+        //enemy.rigid.MovePosition(enemy.rigid.position + nextVec);
     }
 
     float CheckCanRotate(Vector2 vec)

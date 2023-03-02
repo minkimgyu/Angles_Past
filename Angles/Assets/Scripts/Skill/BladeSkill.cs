@@ -18,7 +18,7 @@ public class BladeSkill : BasicSkill
     {
         effect.PlayEffect();
 
-        nowRunning = true;
+        BasicTask.NowRunning = true;
         int damageTic = 0;
 
         int maxDamageTic = (int)(damageTime / damagePerTime);
@@ -26,14 +26,14 @@ public class BladeSkill : BasicSkill
         while (damageTic < maxDamageTic)
         {
             AttackCircleRange();
-            await UniTask.Delay(TimeSpan.FromSeconds(damagePerTime), cancellationToken: source.Token);
+            await UniTask.Delay(TimeSpan.FromSeconds(damagePerTime), cancellationToken: BasicTask.source.Token);
             damageTic += 1;
         }
 
         effect.StopEffect();
 
-        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: source.Token);
-        nowRunning = false;
+        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: BasicTask.source.Token);
+        BasicTask.NowRunning = false;
         DisableObject();
     }
 

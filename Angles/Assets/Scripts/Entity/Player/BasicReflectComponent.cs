@@ -16,7 +16,7 @@ public class BasicReflectComponent : MonoBehaviour
 
     public void KnockBack(Vector2 dir1)
     {
-        forceComponent.CancelTask();
+        //forceComponent.CancelTask();
         forceComponent.AddForceUsingVec(dir1);
     }
 }

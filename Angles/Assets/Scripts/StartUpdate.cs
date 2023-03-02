@@ -9,10 +9,4 @@ public class StartUpdate : MonoBehaviour
     {
         LoadingSceneController.LoadScene("PlayScene");
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

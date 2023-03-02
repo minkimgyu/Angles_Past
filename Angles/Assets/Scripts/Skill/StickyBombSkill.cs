@@ -16,15 +16,15 @@ public class StickyBombSkill : BasicSkill
 
     public async UniTaskVoid SkillTask()
     {
-        nowRunning = true;
-        await UniTask.Delay(TimeSpan.FromSeconds(explosionTime), cancellationToken: source.Token);
+        BasicTask.NowRunning = true;
+        await UniTask.Delay(TimeSpan.FromSeconds(explosionTime), cancellationToken: BasicTask.source.Token);
         DamageToRange();
         effect.PlayEffect();
 
-        nowRunning = false;
+        BasicTask.NowRunning = false;
 
 
-        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: BasicTask.source.Token);
         DisableObject();
     }
 

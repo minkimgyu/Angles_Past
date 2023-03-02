@@ -26,15 +26,16 @@ public class HexagonYellowComponent : UnitaskUtility
 
     public async UniTaskVoid SkillTask()
     {
-        nowRunning = true;
+        BasicTask.NowRunning = true;
+
         nowCanUseSkill = false;
         followComponent.StopFollow();
 
         enemyBattleComponent.PlayWhenCondition();
-        await UniTask.Delay(TimeSpan.FromSeconds(3f), cancellationToken: source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(3f), cancellationToken: BasicTask.source.Token);
 
         nowCanUseSkill = true;
-        nowRunning = false;
+        BasicTask.NowRunning = false;
     }
 
     protected override void OnDisable()

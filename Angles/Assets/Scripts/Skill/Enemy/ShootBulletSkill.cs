@@ -28,11 +28,15 @@ public class ShootBulletSkill : BasicSkill
 
     public async UniTaskVoid SkillTask()
     {
+        BasicTask.NowRunning = true;
+
         for (int i = 1; i <= 5; i++)
         {
             int rotation = 72 * i;
             Shoot(rotation);
-            await UniTask.Delay(TimeSpan.FromSeconds(0.3f), cancellationToken: source.Token);
+            await UniTask.Delay(TimeSpan.FromSeconds(0.3f), cancellationToken: BasicTask.source.Token);
         }
+
+        BasicTask.NowRunning = false;
     }
 }

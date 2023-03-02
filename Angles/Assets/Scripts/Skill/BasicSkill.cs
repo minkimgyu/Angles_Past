@@ -11,8 +11,9 @@ public class BasicSkill : UnitaskUtility
     protected BasicEffect effect;
     protected int layerMask;
 
-    protected virtual void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         layerMask = LayerMask.GetMask("Enemy", "Player");
         bool get = TryGetComponent(out BasicEffect basicEffect);
         if (get == true) effect = basicEffect;

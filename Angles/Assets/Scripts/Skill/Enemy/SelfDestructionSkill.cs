@@ -28,8 +28,12 @@ public class SelfDestructionSkill : BasicSkill
 
     public async UniTaskVoid SkillTask()
     {
-        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: source.Token);
+        BasicTask.NowRunning = true;
+
+        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: BasicTask.source.Token);
         DisableObject();
+
+        BasicTask.NowRunning = false;
     }
 
     void OnDrawGizmos()

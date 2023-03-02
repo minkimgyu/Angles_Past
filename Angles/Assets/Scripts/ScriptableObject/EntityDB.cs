@@ -166,16 +166,21 @@ public class EnemyData : EntityData
     float followMinDistance;
     public float FollowMinDistance { get { return followMinDistance; } set { followMinDistance = value; } }
 
+    [SerializeField]
+    float stopMinDistance;
+    public float StopMinDistance { get { return stopMinDistance; } set { stopMinDistance = value; } }
+
     public EnemyData() { }
-    public EnemyData(string name, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust, float skillUseRange, float followMinDistance) : base(name, hp, speed, stunTime, weight, drag, knockBackThrust)
+    public EnemyData(string name, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust, float skillUseRange, float followMinDistance, float stopMinDistance) : base(name, hp, speed, stunTime, weight, drag, knockBackThrust)
     {
         this.skillUseRange = skillUseRange;
         this.followMinDistance = followMinDistance;
+        this.stopMinDistance = stopMinDistance;
     }
 
     public EnemyData CopyData()
     {
-        return new EnemyData(name, hp, speed, stunTime, weight, drag, knockBackThrust, skillUseRange, followMinDistance);
+        return new EnemyData(name, hp, speed, stunTime, weight, drag, knockBackThrust, skillUseRange, followMinDistance, stopMinDistance);
     }
 }
 

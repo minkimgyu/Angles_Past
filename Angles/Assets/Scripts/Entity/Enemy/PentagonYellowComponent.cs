@@ -28,15 +28,16 @@ public class PentagonYellowComponent : UnitaskUtility
 
     public async UniTaskVoid SkillTask()
     {
-        nowRunning = true;
+        BasicTask.NowRunning = true;
+
         nowCanUseSkill = false;
         followComponent.WaitFollow();
 
-        await UniTask.Delay(TimeSpan.FromSeconds(5f), cancellationToken: source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(5f), cancellationToken: BasicTask.source.Token);
         enemyBattleComponent.PlayWhenCondition();
 
         nowCanUseSkill = true;
-        nowRunning = false;
+        BasicTask.NowRunning = false;
     }
 
     protected override void OnDisable()

@@ -22,12 +22,11 @@ public class WallColorChange : UnitaskUtility
     List<Vector3Int> ColorChangeTileList = new List<Vector3Int>();
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         tilemap = GetComponent<Tilemap>();
         SetHaloInvisible();
     }
-
 
     void SetHaloInvisible()
     {
@@ -84,7 +83,7 @@ public class WallColorChange : UnitaskUtility
 
     private async UniTaskVoid ColorChange(Vector3Int pos)
     {
-        nowRunning = true;
+        BasicTask.NowRunning = true;
         float progress = 0;
         float increment = smoothness / duration;
 
@@ -97,7 +96,7 @@ public class WallColorChange : UnitaskUtility
             changeTilemap.SetColor(pos, currentColor);
 
             progress += increment;
-            await UniTask.Delay(TimeSpan.FromSeconds(smoothness), cancellationToken: source.Token);
+            await UniTask.Delay(TimeSpan.FromSeconds(smoothness), cancellationToken: BasicTask.source.Token);
         }
 
         progress = 0;
@@ -109,12 +108,12 @@ public class WallColorChange : UnitaskUtility
             changeTilemap.SetColor(pos, currentColor);
 
             progress += increment;
-            await UniTask.Delay(TimeSpan.FromSeconds(smoothness), cancellationToken: source.Token);
+            await UniTask.Delay(TimeSpan.FromSeconds(smoothness), cancellationToken: BasicTask.source.Token);
         }
 
         changeTilemap.SetColor(pos, startColor);
 
         ColorChangeTileList.Remove(pos);
-        nowRunning = false;
+        BasicTask.NowRunning = false;
     }
 }
