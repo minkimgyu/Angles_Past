@@ -3,6 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
+public class AdditionalPrefabData
+{
+    [SerializeField]
+    protected string name;
+    public string Name { get { return name; } set { name = value; } }
+
+    [SerializeField]
+    protected int count;
+    public int Count { get { return count; } set { count = value; } }
+
+    [SerializeField]
+    protected string path;
+    public string Path { get { return path; } set { path = value; } }
+}
+
+[System.Serializable]
 public class EntityData
 {
     [SerializeField]
@@ -159,6 +175,10 @@ public class PlayerData : EntityData
 public class EnemyData : EntityData
 {
     [SerializeField]
+    float skillMinDistance;
+    public float SkillMinDistance { get { return skillMinDistance; } set { skillMinDistance = value; } }
+
+    [SerializeField]
     float skillUseRange;
     public float SkillUseRange { get { return skillUseRange; } set { skillUseRange = value; } }
 
@@ -170,17 +190,23 @@ public class EnemyData : EntityData
     float stopMinDistance;
     public float StopMinDistance { get { return stopMinDistance; } set { stopMinDistance = value; } }
 
+    [SerializeField]
+    int prefabCount;
+    public int PrefabCount { get { return prefabCount; } set { prefabCount = value; } }
+
     public EnemyData() { }
-    public EnemyData(string name, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust, float skillUseRange, float followMinDistance, float stopMinDistance) : base(name, hp, speed, stunTime, weight, drag, knockBackThrust)
+    public EnemyData(string name, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust, float skillMinDistance, float skillUseRange, float followMinDistance, float stopMinDistance, int prefabCount) : base(name, hp, speed, stunTime, weight, drag, knockBackThrust)
     {
+        this.skillMinDistance = skillMinDistance;
         this.skillUseRange = skillUseRange;
         this.followMinDistance = followMinDistance;
         this.stopMinDistance = stopMinDistance;
+        this.prefabCount = prefabCount;
     }
 
     public EnemyData CopyData()
     {
-        return new EnemyData(name, hp, speed, stunTime, weight, drag, knockBackThrust, skillUseRange, followMinDistance, stopMinDistance);
+        return new EnemyData(name, hp, speed, stunTime, weight, drag, knockBackThrust, skillMinDistance, skillUseRange, followMinDistance, stopMinDistance, prefabCount);
     }
 }
 
@@ -215,6 +241,10 @@ public class SkillData
     EntityTag[] hitTarget;
     public EntityTag[] HitTarget { get { return hitTarget; } set { hitTarget = value; } }
 
+    [SerializeField]
+    int prefabCount;
+    public int PrefabCount { get { return prefabCount; } set { prefabCount = value; } }
+
     #region Fn
 
     public bool CanUseSkill(SkillUseType skillType)
@@ -245,7 +275,7 @@ public class SkillData
 
     public SkillData() { }
 
-    public SkillData(SkillName name, SkillUseType useType, int useCount, float damage, float disableTime, EntityTag[] hitTarget)
+    public SkillData(SkillName name, SkillUseType useType, int useCount, float damage, float disableTime, EntityTag[] hitTarget, int prefabCount)
     {
         this.name = name;
         this.useType = useType;
@@ -253,11 +283,12 @@ public class SkillData
         this.damage = damage;
         this.disableTime = disableTime;
         this.hitTarget = hitTarget;
+        this.prefabCount = prefabCount;
     }
 
     public SkillData CopyData()
     {
-        SkillData skillData = new SkillData(name, useType, useCount, damage, disableTime, hitTarget);
+        SkillData skillData = new SkillData(name, useType, useCount, damage, disableTime, hitTarget, prefabCount);
         return skillData;
     }
 
@@ -277,11 +308,13 @@ public class EntityDB : ScriptableObject
     public PlayerData Player;
     public List<EnemyData> Enemy;
     public List<SkillData> Skill;
+    public List<AdditionalPrefabData> AdditionalPrefab;
 
     public void ResetData()
     {
         Player = new PlayerData();
         Enemy = new List<EnemyData>();
         Skill = new List<SkillData>();
+        AdditionalPrefab = new List<AdditionalPrefabData>();
     }
 }

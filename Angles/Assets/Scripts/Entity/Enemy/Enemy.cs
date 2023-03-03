@@ -13,20 +13,42 @@ public class Enemy : Entity
 
     public EnemyData enemyData;
 
+    public EnemyData EnemyData
+    {
+        get
+        {
+            return enemyData;
+        }
+        set
+        {
+            enemyData = value;
+            if (rigid == null) return;
+
+            rigid.mass = enemyData.Weight;
+            rigid.drag = enemyData.Drag;
+        }
+    }
+
+    private void Awake()
+    {
+        rigid = GetComponent<Rigidbody2D>();
+
+        Transform tempTr = transform.GetChild(0);
+        if (tempTr.CompareTag("InnerColor") == false) return;
+
+        innerImage = tempTr.GetComponent<SpriteRenderer>();
+    }
+    public void Init(EnemyData enemyData)
+    {
+        EnemyData = enemyData;
+    }
+
     // Start is called before the first frame update
     protected override void Start()
     {
         player = PlayManager.Instance.player;
         followComponent = GetComponent<FollowComponent>();
         basicReflectComponent = GetComponent<BasicReflectComponent>();
-    }
-
-    public void Init(EnemyData data)
-    {
-        rigid = GetComponent<Rigidbody2D>();
-        enemyData = data;
-        rigid.mass = enemyData.Weight;
-        rigid.drag = enemyData.Drag;
     }
 
     private void OnDisable()
@@ -39,5 +61,11 @@ public class Enemy : Entity
         base.GetHit(damage);
         followComponent.WaitFollow();
         basicReflectComponent.KnockBack(dir);
+    }
+
+    protected override void Die()
+    {
+        base.Die();
+        ObjectPooler.SpawnFromPool("TriangleDieEffect", transform.position, transform.rotation);
     }
 }

@@ -5,6 +5,10 @@ using UnityEngine;
 public class BasicSkill : UnitaskUtility
 {
     [SerializeField]
+    SkillName skillName;
+    public SkillName SkillName { get { return skillName; } set { skillName = value; } }
+
+    [SerializeField]
     SkillData skillData;
     public SkillData SkillData { get { return skillData; } set { skillData = value; } }
 
@@ -14,9 +18,16 @@ public class BasicSkill : UnitaskUtility
     protected override void Awake()
     {
         base.Awake();
+        Init();
+    }
+
+    public void Init()
+    {
         layerMask = LayerMask.GetMask("Enemy", "Player");
         bool get = TryGetComponent(out BasicEffect basicEffect);
         if (get == true) effect = basicEffect;
+
+        skillData = DatabaseManager.Instance.ReturnSkillData(skillName);
     }
 
     protected override void OnEnable()
@@ -47,14 +58,7 @@ public class BasicSkill : UnitaskUtility
 
     public virtual void PlaySkill(SkillSupportData suportDatas) // 플레이어 스킬
     {
-        Init();
-    }
 
-    public virtual void Init()
-    {
-        SkillName skillName = (SkillName)System.Enum.Parse(typeof(SkillName), name);
-        print(skillName);
-        skillData = DatabaseManager.Instance.ReturnSkillData(skillName);
     }
 
     public virtual void PlayBasicSkill(Transform tr) // 적 스킬

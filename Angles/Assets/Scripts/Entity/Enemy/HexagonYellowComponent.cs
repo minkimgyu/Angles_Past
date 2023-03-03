@@ -15,7 +15,7 @@ public class HexagonYellowComponent : UnitaskUtility
     {
         followComponent = GetComponent<FollowComponent>();
         enemyBattleComponent = GetComponent<EnemyBattleComponent>();
-        followComponent.followAction += SkillAction;
+        followComponent.skillAction += SkillAction;
     }
 
     public void SkillAction()
@@ -27,9 +27,7 @@ public class HexagonYellowComponent : UnitaskUtility
     public async UniTaskVoid SkillTask()
     {
         BasicTask.NowRunning = true;
-
         nowCanUseSkill = false;
-        followComponent.StopFollow();
 
         enemyBattleComponent.PlayWhenCondition();
         await UniTask.Delay(TimeSpan.FromSeconds(3f), cancellationToken: BasicTask.source.Token);
@@ -41,6 +39,6 @@ public class HexagonYellowComponent : UnitaskUtility
     protected override void OnDisable()
     {
         base.OnDisable();
-        followComponent.followAction -= SkillAction;
+        if(followComponent != null) followComponent.skillAction -= SkillAction;
     }
 }

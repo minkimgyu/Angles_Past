@@ -19,7 +19,6 @@ public class RotationBallSkill : BasicSkill
         base.PlaySkill(data);
         playerTr = data.player.transform;
 
-        Debug.Log("PlaySkill");
         InitBall();
         base.PlaySkill(data);
     }

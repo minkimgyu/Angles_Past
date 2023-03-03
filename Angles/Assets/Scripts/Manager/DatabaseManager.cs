@@ -41,16 +41,16 @@ public class DatabaseManager : Singleton<DatabaseManager>
 
     public SkillData ReturnSkillData(SkillName skillName)
     {
-        return EntityDB.Skill.Find(x => x.Name == skillName);
+        return EntityDB.Skill.Find(x => x.Name == skillName).CopyData();
     }
 
     public EnemyData ReturnEnemyData(string name)
     {
-        return EntityDB.Enemy.Find(x => x.Name == name);
+        return EntityDB.Enemy.Find(x => x.Name == name).CopyData();
     }
 
     [Header("EntityDB")]
     [SerializeField]
     EntityDB entityDB;
-    public EntityDB EntityDB { get { return entityDB; } set { entityDB = value; } }
+    public EntityDB EntityDB { get { return entityDB; }}
 }

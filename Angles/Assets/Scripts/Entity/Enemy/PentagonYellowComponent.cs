@@ -17,7 +17,7 @@ public class PentagonYellowComponent : UnitaskUtility
         enemy = GetComponent<Enemy>();
         followComponent = GetComponent<FollowComponent>();
         enemyBattleComponent = GetComponent<EnemyBattleComponent>();
-        followComponent.followAction += SkillAction;
+        followComponent.skillAction += SkillAction;
     }
 
     public void SkillAction()
@@ -29,9 +29,7 @@ public class PentagonYellowComponent : UnitaskUtility
     public async UniTaskVoid SkillTask()
     {
         BasicTask.NowRunning = true;
-
         nowCanUseSkill = false;
-        followComponent.WaitFollow();
 
         await UniTask.Delay(TimeSpan.FromSeconds(5f), cancellationToken: BasicTask.source.Token);
         enemyBattleComponent.PlayWhenCondition();
@@ -43,6 +41,6 @@ public class PentagonYellowComponent : UnitaskUtility
     protected override void OnDisable()
     {
         base.OnDisable();
-        if(followComponent != null) followComponent.followAction -= SkillAction;
+        if(followComponent != null) followComponent.skillAction -= SkillAction;
     }
 }

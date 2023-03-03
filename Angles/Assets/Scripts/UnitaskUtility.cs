@@ -55,11 +55,16 @@ public class UnitaskUtility : MonoBehaviour
 
     protected virtual void Awake()
     {
-        print("Awake");
         AddTask(basicTask);
     }
 
-    public void AddTask(string taskName) => tasks.Add(taskName, new BasicUnitask());
+    public void AddTask(string taskName, float waitTime = 0.01f)
+    {
+        BasicUnitask basicUnitask = new BasicUnitask();
+        basicUnitask.WaitTime = waitTime;
+
+        tasks.Add(taskName, basicUnitask);
+    }
 
     private void OnDestroy()
     {

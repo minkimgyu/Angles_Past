@@ -25,7 +25,7 @@ public class UpdateDBComponent : UnitaskUtility
     {
         loadCompletedDB += 1;
 
-        print(loadCompletedDB);
+        //print(loadCompletedDB);
 
         if(dbCount == loadCompletedDB)
         {
@@ -79,7 +79,7 @@ public class UpdateDBComponent : UnitaskUtility
             string range = column[1];
 
             nameAndRange.Add(name, range);
-            print(name + " : " + range);
+            //print(name + " : " + range);
 
             LoadData(name, range).Forget();
             // 여기에 데이터 채워주는 스크립트 추가
@@ -102,6 +102,8 @@ public class UpdateDBComponent : UnitaskUtility
 
     void AddData(string dataName, string tsv)
     {
+        dataName = dataName.Replace(" ", string.Empty); // 빈칸 제거
+
         string[] row = tsv.Split('\n');
         int rowSize = row.Length;
         int columnSize = row[0].Split('\t').Length;
@@ -136,6 +138,10 @@ public class UpdateDBComponent : UnitaskUtility
         else if (dataName == "Skill")
         {
             DatabaseManager.Instance.EntityDB.Skill.Add(data as SkillData);
+        }
+        else if (dataName == "AdditionalPrefab")
+        {
+            DatabaseManager.Instance.EntityDB.AdditionalPrefab.Add(data as AdditionalPrefabData);
         }
 
         CheckLoadComplete();

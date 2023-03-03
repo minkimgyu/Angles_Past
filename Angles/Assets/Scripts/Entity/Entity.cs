@@ -43,6 +43,7 @@ public class Entity : MonoBehaviour
     public float moveSpeed;
     public Rigidbody2D rigid;
     public Action fixedUpdateAction;
+    public SpriteRenderer innerImage;
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -59,6 +60,7 @@ public class Entity : MonoBehaviour
     public virtual void GetHit(float damage)
     {
         hp -= damage;
+        if (hp <= 0) Die();
     }
 
     public virtual void GetHit(float damage, Vector3 dir)
@@ -78,7 +80,7 @@ public class Entity : MonoBehaviour
 
     protected void DisableObject() => gameObject.SetActive(false);
 
-    public virtual void Die()
+    protected virtual void Die()
     {
         DisableObject();
     }

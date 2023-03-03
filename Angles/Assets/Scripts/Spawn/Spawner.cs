@@ -95,7 +95,7 @@ public class Spawner : MonoBehaviour
 
         for (int i = 0; i < spawnCount; i++)
         {
-            EnemyData enemyData = DatabaseManager.Instance.ReturnEnemyData(spawnEntityName).CopyData();
+            EnemyData enemyData = DatabaseManager.Instance.ReturnEnemyData(spawnEntityName);
             GameObject entity = ObjectPooler.SpawnFromPool(spawnEntityName);
             entity.GetComponent<Enemy>().Init(enemyData);
 

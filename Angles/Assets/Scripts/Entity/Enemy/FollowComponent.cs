@@ -17,8 +17,16 @@ public class FollowComponent : UnitaskUtility
         get { return nowHit; }
     }
 
+    bool pauseFollow = false;
+    public bool PauseFollow
+    {
+        get { return pauseFollow; }
+    }
+
     public float distance = 3f;
-    public Action followAction;
+    //public Action followAction;
+    public Action skillAction;
+    public Action stopAction;
 
     public GameObject doNotClose;
 
@@ -49,6 +57,7 @@ public class FollowComponent : UnitaskUtility
 
     public void StopFollow()
     {
+        pauseFollow = true;
         BasicTask.CancelTask();
         enemy.StopMove();
     }
@@ -61,7 +70,7 @@ public class FollowComponent : UnitaskUtility
         doNotClose.SetActive(false);
         enemy.PlayerMode = ActionMode.Hit;
 
-        enemy.rigid.velocity = Vector2.zero;
+        enemy.StopMove();
         await UniTask.Delay(TimeSpan.FromSeconds(enemy.enemyData.StunTime), cancellationToken: BasicTask.source.Token);
 
         enemy.PlayerMode = ActionMode.Follow;
@@ -97,31 +106,18 @@ public class FollowComponent : UnitaskUtility
         }
     }
 
-    //float startRatio = 0;
-    //float endRatio = 1;
-    //float ratio = 1;
-    //float speed = 1;
-    //float up = 0.01f;
-    //bool storedFollow = true;
-
-    //public async UniTaskVoid LerpSpeed()
-    //{
-    //    tasks["LerpSpeed"].NowRunning = true;
-    //    ratio = startRatio;
-
-    //    while (Mathf.Abs(endRatio - ratio) >= 0.01f)
-    //    {
-    //        await UniTask.Delay(TimeSpan.FromSeconds(tasks["LerpSpeed"].WaitTime), cancellationToken: tasks["LerpSpeed"].source.Token);
-    //        ratio = Mathf.Lerp(ratio, endRatio, Time.fixedDeltaTime * speed);
-    //        print(ratio);
-    //    }
-
-    //    tasks["LerpSpeed"].NowRunning = false;
-    //}
+    void CanUseSkillDistance(Vector2 enemyPos)
+    { 
+        float distanceBetween = Vector2.Distance(transform.position, enemyPos);
+        if (distanceBetween <= enemy.enemyData.SkillMinDistance)
+        {
+            if (skillAction != null) skillAction();
+        }
+    }
 
     public void MoveToPlayer()
     {
-        if (nowHit == true) return; // 루틴 돌아가는 동안, 사용 금지
+        if (nowHit == true || pauseFollow == true) return; // 루틴 돌아가는 동안, 사용 금지
 
         Vector2 dirVec = player.transform.position - enemy.transform.position;
         RotateUsingVelocity(dirVec.normalized);
@@ -129,47 +125,29 @@ public class FollowComponent : UnitaskUtility
         bool nowFollow = CanFollowDistance(player.transform.position);
         bool nowStop = CanStopDistance(player.transform.position);
 
+        CanUseSkillDistance(player.transform.position);
+
         if (nowStop == true)
         {
-            enemy.rigid.velocity = Vector2.zero;
-            print("Stop");
+            if (stopAction != null) stopAction();
+            enemy.StopMove();
         }
         else if(nowFollow == true && nowStop == false)
         {
-            if (followAction != null) followAction();
             enemy.rigid.velocity = (player.rigid.position - enemy.rigid.position).normalized * enemy.enemyData.Speed;
-            print("Follow");
         }
+    }
 
-        //print(nowFollow + "&" + storedFollow);
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        ResetWhenDisable();
+    }
 
-        //if (nowFollow == true && storedFollow == false)
-        //{
-        //    if(tasks["LerpSpeed"].NowRunning == false) LerpSpeed().Forget();
-        //}
-        //else if (nowFollow == false) 
-        //{
-        //    storedFollow = nowFollow;
-        //    enemy.rigid.velocity = Vector2.zero; return; 
-        //} // 정지
-
-        //storedFollow = nowFollow;
-
-
-        //if (nowFollow == false)
-        //{
-        //    //if(enemy.rigid.velocity != Vector2.zero)
-        //    //    enemy.rigid.velocity = Vector2.zero;
-        //}
-        //else
-        //{
-        //    Vector2 nextVec = (enemy.rigid.position - player.rigid.position).normalized * enemy.enemyData.Speed;
-        //    enemy.rigid.velocity = nextVec;
-        //}
-
-        //Vector2 nextVec = dirVec.normalized * enemy.enemyData.Speed * ratio;
-        //enemy.rigid.velocity = nextVec;
-        //enemy.rigid.MovePosition(enemy.rigid.position + nextVec);
+    void ResetWhenDisable()
+    {
+        if (nowHit == true) nowHit = false;
+        if (pauseFollow == true) pauseFollow = false;
     }
 
     float CheckCanRotate(Vector2 vec)
