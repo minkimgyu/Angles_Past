@@ -8,9 +8,6 @@ using System;
 public class KnockBackSkill : BasicSkill
 {
     public Color color;
-    public float boxWidth;
-    public float boxHeight;
-    public Vector3 distanceFromPlayer;
 
     public override void PlaySkill(SkillSupportData data)
     {
@@ -18,8 +15,10 @@ public class KnockBackSkill : BasicSkill
         transform.position = data.player.transform.position;
         effect.PlayEffect();
 
-        RaycastHit2D[] hit = Physics2D.BoxCastAll(transform.position, new Vector2(boxWidth, boxHeight), 
-            transform.rotation.z, Vector2.right, distanceFromPlayer.x, LayerMask.GetMask("Enemy"));
+        print(SkillData.OffsetRange.magnitude);
+
+        RaycastHit2D[] hit = Physics2D.BoxCastAll(transform.position, SkillData.BoxRange, 
+            transform.rotation.z, Vector2.right, SkillData.OffsetRange.magnitude, LayerMask.GetMask("Enemy"));
 
         for (int i = 0; i < hit.Length; i++)
         {
@@ -42,6 +41,6 @@ public class KnockBackSkill : BasicSkill
     {
         Gizmos.color = color;
         Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
-        Gizmos.DrawWireCube(Vector3.zero + distanceFromPlayer, new Vector3(boxWidth, boxHeight, 0));
+        Gizmos.DrawWireCube(SkillData.OffsetRange, SkillData.BoxRange);
     }
 }

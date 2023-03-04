@@ -41,9 +41,7 @@ public class BattleComponent : BasicBattleComponent
     [SerializeField]
     SkillData skillData;
     public SkillData SkillData { get { return skillData; } set { skillData = value; } }
-
     public EntityTag contactTag;
-    public Transform skillParent;
 
     protected override void Start()
     {
@@ -139,6 +137,8 @@ public class BattleComponent : BasicBattleComponent
             UseSkillInList(skillUseType); // 리스트에 들어간 모든 오브젝트를 조건부로 실행해줌
         }
     }
+
+    //getfix이면 먹을 경우 재사용
     
     void PlayWhenCollision()
     {

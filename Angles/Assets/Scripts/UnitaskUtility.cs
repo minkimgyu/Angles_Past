@@ -42,7 +42,7 @@ public class UnitaskUtility : MonoBehaviour
 
     protected string basicTask = "Task";
 
-    public BasicUnitask BasicTask 
+    public BasicUnitask BasicTask
     { 
         get 
         {

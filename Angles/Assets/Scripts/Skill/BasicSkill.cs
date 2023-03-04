@@ -21,7 +21,7 @@ public class BasicSkill : UnitaskUtility
         Init();
     }
 
-    public void Init()
+    public virtual void Init()
     {
         layerMask = LayerMask.GetMask("Enemy", "Player");
         bool get = TryGetComponent(out BasicEffect basicEffect);

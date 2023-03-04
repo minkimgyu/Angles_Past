@@ -34,7 +34,7 @@ public class ShootBulletSkill : BasicSkill
         {
             int rotation = 72 * i;
             Shoot(rotation);
-            await UniTask.Delay(TimeSpan.FromSeconds(0.3f), cancellationToken: BasicTask.source.Token);
+            await UniTask.Delay(TimeSpan.FromSeconds(SkillData.PreDelay), cancellationToken: BasicTask.source.Token);
         }
 
         BasicTask.NowRunning = false;

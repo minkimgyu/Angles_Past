@@ -18,7 +18,7 @@ public class InitPoolComponent : MonoBehaviour
     {
         List<EnemyData> enemyData = DatabaseManager.Instance.EntityDB.Enemy;
         List<SkillData> skillData = DatabaseManager.Instance.EntityDB.Skill;
-        List<AdditionalPrefabData> AdditionalPrefab = DatabaseManager.Instance.EntityDB.AdditionalPrefab;
+        List<AdditionalPrefabData> additionalPrefab = DatabaseManager.Instance.EntityDB.AdditionalPrefab;
 
         for (int i = 0; i < enemyData.Count; i++)
         {
@@ -30,16 +30,22 @@ public class InitPoolComponent : MonoBehaviour
             AddToPool(skillData[i].Name.ToString(), "Prefabs/Skill/" + skillData[i].Name.ToString(), skillData[i].PrefabCount);
         }
 
-        for (int i = 0; i < AdditionalPrefab.Count; i++)
+        for (int i = 0; i < additionalPrefab.Count; i++)
         {
-            AddToPool(AdditionalPrefab[i].Name, AdditionalPrefab[i].Path + AdditionalPrefab[i].Name, AdditionalPrefab[i].Count);
+            AddToPool(additionalPrefab[i].Name, additionalPrefab[i].Path + additionalPrefab[i].Name, additionalPrefab[i].Count);
         }
     }
 
     void AddToPool(string name, string path, int count)
     {
-        GameObject prefab = Resources.Load(path) as GameObject;
-        if (prefab == null) return;
+        path = path.TrimEnd((char)13);
+
+        GameObject prefab = Resources.Load<GameObject>(path);
+        if (prefab == null)
+        {
+            print(path);
+            return;
+        }
 
         ObjectPooler.AddPool(new Pool(name, prefab, count));
     }

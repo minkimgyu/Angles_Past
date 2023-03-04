@@ -67,7 +67,6 @@ public class UpdateDBComponent : UnitaskUtility
     {
         string[] row = tsv.Split('\n');
         int rowSize = row.Length;
-        int columnSize = row[0].Split('\t').Length;
 
         Dictionary<string, string> nameAndRange = new Dictionary<string, string>();
 
@@ -116,8 +115,13 @@ public class UpdateDBComponent : UnitaskUtility
             for (int j = 0; j < rowSize; j++)
             {
                 string[] column = row[j].Split('\t');
+
                 string key = column[0];
-                string value = column[i];
+                string value;
+                if (i == columnSize - 1) value = column[i].TrimEnd('\r'); // 마지막 열의 경우 \r제거
+                else value = column[i];
+
+
                 ResetTypeOfData(objType, key, value);
             }
 
@@ -160,6 +164,10 @@ public class UpdateDBComponent : UnitaskUtility
         {
             tempValue = float.Parse(value);
         }
+        else if (property.PropertyType == typeof(Vector2))
+        {
+            tempValue = SplitAsVector(value);
+        }
         else if (property.PropertyType == typeof(SkillName))
         {
             tempValue = (SkillName)Enum.Parse(typeof(SkillName), value);
@@ -180,9 +188,19 @@ public class UpdateDBComponent : UnitaskUtility
         property.SetValue(TypeData, tempValue);
     }
 
+    Vector2 SplitAsVector(string value)
+    {
+        string[] row = value.Split(',');
+
+        if (row.Length != 2) return Vector2.zero;
+
+        Vector2 newVec = new Vector2(float.Parse(row[0]), float.Parse(row[1]));
+        return newVec;
+    }
+
     EntityTag[] SplitHitTargets(string value)
     {
-        string[] row = value.Split('+');
+        string[] row = value.Split(',');
         EntityTag[] entityTag = new EntityTag[row.Length];
         for (int i = 0; i < row.Length; i++)
         {

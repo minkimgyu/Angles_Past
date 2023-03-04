@@ -8,22 +8,6 @@ using System;
 public class ShockWaveSkill : BasicSkill
 {
     public Color color;
-    public float radius;
-
-    public EntityTag[] entityTags;
-
-    bool CheckTags(string tag)
-    {
-        for (int i = 0; i < entityTags.Length; i++)
-        {
-            if(entityTags[i].ToString() == tag)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     public override void PlayBasicSkill(Transform tr)
     {
@@ -31,7 +15,7 @@ public class ShockWaveSkill : BasicSkill
 
         transform.position = tr.position; // 위치 초기화
 
-        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.up, 0);
+        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, SkillData.RadiusRange, Vector2.up, 0);
         for (int i = 0; i < hit.Length; i++)
         {
             if (SkillData.CanHitSkill(hit[i].transform.tag) == false) continue;
@@ -53,6 +37,6 @@ public class ShockWaveSkill : BasicSkill
     {
         Gizmos.color = color;
         Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
-        Gizmos.DrawWireSphere(Vector3.zero, radius);
+        Gizmos.DrawWireSphere(Vector3.zero, SkillData.RadiusRange);
     }
 }

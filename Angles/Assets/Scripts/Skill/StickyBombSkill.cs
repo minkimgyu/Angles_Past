@@ -8,8 +8,6 @@ using System;
 public class StickyBombSkill : BasicSkill
 {
     public Color color;
-    public float radius;
-    public float explosionTime = 2f;
 
     Transform explosionTr;
     Vector3 dirOnContact;
@@ -17,7 +15,7 @@ public class StickyBombSkill : BasicSkill
     public async UniTaskVoid SkillTask()
     {
         BasicTask.NowRunning = true;
-        await UniTask.Delay(TimeSpan.FromSeconds(explosionTime), cancellationToken: BasicTask.source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.PreDelay), cancellationToken: BasicTask.source.Token);
         DamageToRange();
         effect.PlayEffect();
 
@@ -41,7 +39,7 @@ public class StickyBombSkill : BasicSkill
         transform.position = explosionTr.position;
 
         Vector3 contactPos = transform.position + dirOnContact;
-        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, SkillData.RadiusRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
 
         for (int i = 0; i < hit.Length; i++)
         {
@@ -54,6 +52,6 @@ public class StickyBombSkill : BasicSkill
     {
         Gizmos.color = color;
         Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
-        Gizmos.DrawWireSphere(Vector3.zero, radius);
+        Gizmos.DrawWireSphere(Vector3.zero, SkillData.RadiusRange);
     }
 }

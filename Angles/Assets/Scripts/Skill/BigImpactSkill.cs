@@ -8,7 +8,6 @@ using System;
 public class BigImpactSkill : BasicSkill
 {
     public Color color;
-    public float radius;
 
     public override void PlaySkill(SkillSupportData data)
     {
@@ -17,7 +16,7 @@ public class BigImpactSkill : BasicSkill
 
         transform.position = data.player.transform.position; // 위치 초기화
 
-        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.up, 0, layerMask);
+        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, SkillData.RadiusRange, Vector2.up, 0, layerMask);
         for (int i = 0; i < hit.Length; i++)
         {   
             if (SkillData.CanHitSkill(hit[i].transform.tag) == false) continue;
@@ -38,7 +37,6 @@ public class BigImpactSkill : BasicSkill
     void OnDrawGizmos()
     {
         Gizmos.color = color;
-        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
-        Gizmos.DrawWireSphere(Vector3.zero, radius);
+        Gizmos.DrawWireSphere(transform.position, SkillData.RadiusRange);
     }
 }

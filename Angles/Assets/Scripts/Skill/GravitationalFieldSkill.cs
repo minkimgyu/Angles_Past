@@ -8,35 +8,48 @@ using System;
 public class GravitationalFieldSkill : BasicSkill
 {
     [SerializeField]
-    List<ForceComponent> forceComponents = new List<ForceComponent>();
-
-    float damageTime = 5f;
-    float damagePerTime = 0.01f; // 10
+    List<Enemy> enemyList = new List<Enemy>();
+    float absorbThrust;
 
     protected override void OnEnable()
     {
         WhenEnable();
     }
 
+    public override void Init()
+    {
+        base.Init();
+        absorbThrust = -SkillData.KnockBackThrust;
+        CircleCollider2D circle = GetComponent<CircleCollider2D>();
+        circle.radius = SkillData.RadiusRange;
+    }
+
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.CompareTag("Enemy"))
-        { 
-            forceComponents.Add(col.GetComponent<ForceComponent>());
+        if (col.CompareTag(EntityTag.Enemy.ToString()) == true)
+        {
+            Enemy enemy = col.GetComponent<Enemy>();
+            enemy.followComponent.StopFollow();
+            enemyList.Add(enemy);
         }
     }
 
     private void OnTriggerExit2D(Collider2D col)
     {
-        if (col.CompareTag("Enemy")) forceComponents.Remove(col.GetComponent<ForceComponent>());
+        if (col.CompareTag(EntityTag.Enemy.ToString()) == true)
+        {
+            Enemy enemy = col.GetComponent<Enemy>();
+            enemy.followComponent.ResetFollow();
+            enemyList.Remove(enemy);
+        }
     }
 
     void SetGravity()
     {
-        for (int i = 0; i < forceComponents.Count; i++)
+        for (int i = 0; i < enemyList.Count; i++)
         {
-            Vector3 dir = -(forceComponents[i].transform.position - transform.position).normalized * 50;
-            forceComponents[i].AddForceUsingVec(dir, ForceMode2D.Force);
+            Vector3 dir = -(enemyList[i].transform.position - transform.position).normalized * absorbThrust;
+            enemyList[i].forceComponent.AddForceUsingVec(dir, ForceMode2D.Impulse);
         }
     }
 
@@ -46,19 +59,17 @@ public class GravitationalFieldSkill : BasicSkill
         BasicTask.NowRunning = true;
 
         int damageTic = 0;
-        int maxDamageTic = (int)(damageTime / damagePerTime);
+        int maxDamageTic = (int)(SkillData.Duration / SkillData.UseTick);
 
         while (damageTic < maxDamageTic)
         {
             SetGravity();
-            await UniTask.Delay(TimeSpan.FromSeconds(damagePerTime), cancellationToken: BasicTask.source.Token);
+            await UniTask.Delay(TimeSpan.FromSeconds(SkillData.UseTick), cancellationToken: BasicTask.source.Token);
             damageTic += 1;
         }
 
         BasicTask.NowRunning = false;
         effect.StopEffect();
-
-        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: BasicTask.source.Token);
         DisableObject();
     }
 

@@ -8,9 +8,10 @@ using System;
 public class SelfDestructionSkill : BasicSkill
 {
     public Color color;
-    public float radius;
     public Color beforeColor;
     public Color afterColor;
+
+    float currentTime = 0;
 
     protected override void Awake()
     {
@@ -21,23 +22,32 @@ public class SelfDestructionSkill : BasicSkill
 
     public override void PlayBasicSkill(Transform tr)
     {
-        SpriteRenderer sr = tr.GetComponent<Enemy>().innerImage;
+        Enemy enemy = tr.GetComponent<Enemy>();
+        enemy.dieAction += CancleSkill;
+
+        SpriteRenderer sr = enemy.innerImage;
         ColorChangeTask(sr).Forget();
     }
 
-    float smoothness = 0.01f;
-    float duration = 3f;
+    void CancleSkill()
+    {
+        if (tasks.ContainsKey("ColorChangeTask") == true)
+        {
+            print("CancleSkill");
+            tasks["ColorChangeTask"].CancelTask();
+            SkillTask().Forget(); // Ω∫≈≥ ø¿∫Í¡ß∆Æ ≤®¡‹
+        }
+    }
 
     public async UniTaskVoid ColorChangeTask(SpriteRenderer sr)
     {
         tasks["ColorChangeTask"].NowRunning = true;
 
-        float progress = 0; //This float will serve as the 3rd parameter of the lerp function.
-        float increment = smoothness / duration; //The amount of change to apply.
-        while (progress < 1)
+        while (SkillData.PreDelay >= currentTime)
         {
-            sr.color = Color.Lerp(sr.color, afterColor, progress);
-            progress += increment;
+            currentTime += Time.deltaTime;
+
+            sr.color = Color.Lerp(sr.color, afterColor, currentTime / SkillData.PreDelay);
             await UniTask.Delay(TimeSpan.FromSeconds(tasks["ColorChangeTask"].WaitTime), cancellationToken: tasks["ColorChangeTask"].source.Token);
         }
 
@@ -47,10 +57,12 @@ public class SelfDestructionSkill : BasicSkill
 
     void DamageToCloseEntity(Vector3 pos)
     {
+        print("DamageToCloseEntity");
+
         transform.position = pos;
         effect.PlayEffect();
 
-        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, SkillData.RadiusRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
         for (int i = 0; i < hit.Length; i++)
         {
             if (SkillData.CanHitSkill(hit[i].transform.tag) == false) continue;
@@ -74,6 +86,6 @@ public class SelfDestructionSkill : BasicSkill
     {
         Gizmos.color = color;
         Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
-        Gizmos.DrawWireSphere(Vector3.zero, radius);
+        Gizmos.DrawWireSphere(Vector3.zero, SkillData.RadiusRange);
     }
 }

@@ -32,7 +32,8 @@ public class EnemyReflectComponent : BasicReflectComponent
 
             if (goFollowComponent.NowHit == true && myEnemy.followComponent.NowHit == false) // 상대는 맞은 상태 나는 안 맞은 상태
             {
-                myEnemy.GetHit(0, vec);
+                print(myEnemy.enemyData.KnockBackDamage);
+                myEnemy.GetHit(myEnemy.enemyData.KnockBackDamage, vec);
             }
         }
     }

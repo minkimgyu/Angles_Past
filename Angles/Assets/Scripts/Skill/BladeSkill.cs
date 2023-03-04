@@ -9,9 +9,6 @@ public class BladeSkill : BasicSkill
 {
     public Color color;
     public float radius;
-    float damageTime = 5f;
-    float damagePerTime = 0.5f; // 10
-    BasicEffect basicEffect;
     Transform playerTr = null;
 
     public async UniTaskVoid SkillTask()
@@ -21,12 +18,12 @@ public class BladeSkill : BasicSkill
         BasicTask.NowRunning = true;
         int damageTic = 0;
 
-        int maxDamageTic = (int)(damageTime / damagePerTime);
+        int maxDamageTic = (int)(SkillData.Duration / SkillData.UseTick);
 
         while (damageTic < maxDamageTic)
         {
             AttackCircleRange();
-            await UniTask.Delay(TimeSpan.FromSeconds(damagePerTime), cancellationToken: BasicTask.source.Token);
+            await UniTask.Delay(TimeSpan.FromSeconds(SkillData.UseTick), cancellationToken: BasicTask.source.Token);
             damageTic += 1;
         }
 
@@ -65,7 +62,6 @@ public class BladeSkill : BasicSkill
     void OnDrawGizmos()
     {
         Gizmos.color = color;
-        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
-        Gizmos.DrawWireSphere(Vector3.zero, radius);
+        Gizmos.DrawWireSphere(transform.position, radius);
     }
 }

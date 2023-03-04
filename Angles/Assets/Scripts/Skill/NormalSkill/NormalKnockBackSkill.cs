@@ -17,8 +17,9 @@ public class NormalKnockBackSkill : BasicSkill
         {
             if (SkillData.CanHitSkill(data.contactEntity[i].tag) == false) continue;
           
-            float ratio = DatabaseManager.Instance.PlayerData.StoredRushRatio;
-            DamageToEntity(data.contactEntity[i].gameObject, SkillData.KnockBackThrust * ratio);
+            print(SkillData.KnockBackThrust);
+            print(data.playerDir.magnitude);
+            DamageToEntity(data.contactEntity[i].gameObject, SkillData.KnockBackThrust * data.playerDir.magnitude);
         }
 
         SkillTask().Forget();

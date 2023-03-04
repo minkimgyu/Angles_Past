@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player:
     name: "Player\r"
+    shape: "Circle\r"
+    color: "White\r"
     hp: 1
     speed: 5
     stunTime: 0.5
@@ -24,8 +26,10 @@ MonoBehaviour:
     speedRatio: 1
     minSpeedRatio: 0.2
     maxSpeedRatio: 1
-    attackThrust: 30
-    attackTime: 3
+    rushThrust: 30
+    rushRatio: 0
+    storedRushRatio: 0
+    rushTime: 3
     attackCancelOffset: 0.2
     reflectThrust: 20
     maxDashCount: 3
@@ -34,251 +38,282 @@ MonoBehaviour:
     dashRatio: 1
   Enemy:
   - name: YellowTriangle
+    shape: Triangle
+    color: Yellow
     hp: 1
-    speed: 3
+    speed: 3.5
     stunTime: 1.5
-    weight: 1
+    weight: 1.5
     drag: 1.5
     knockBackThrust: 5
-    skillUseRange: 2
+    knockBackDamage: 0.3
+    skillMinDistance: 2
+    skillUseRange: 5
+    followMinDistance: 2.5
+    stopMinDistance: 2
+    prefabCount: 3
   - name: YellowRectangle
+    shape: Rectangle
+    color: Yellow
     hp: 2
     speed: 2
     stunTime: 1.5
-    weight: 1
+    weight: 2
     drag: 1.5
     knockBackThrust: 5
+    knockBackDamage: 0.3
+    skillMinDistance: 2
     skillUseRange: 3
+    followMinDistance: 2
+    stopMinDistance: 1.5
+    prefabCount: 3
   - name: YellowPentagon
+    shape: Pentagon
+    color: Yellow
     hp: 5
     speed: 2
     stunTime: 1.5
-    weight: 1
+    weight: 3
     drag: 1.5
     knockBackThrust: 5
+    knockBackDamage: 0.3
+    skillMinDistance: 2
     skillUseRange: 3
+    followMinDistance: 2
+    stopMinDistance: 1.5
+    prefabCount: 3
   - name: YellowHexagon
+    shape: Hexagon
+    color: Yellow
     hp: 10
     speed: 1
     stunTime: 1.5
-    weight: 1
+    weight: 4
     drag: 1.5
     knockBackThrust: 5
+    knockBackDamage: 0.3
+    skillMinDistance: 2
     skillUseRange: 4
+    followMinDistance: 2
+    stopMinDistance: 1.5
+    prefabCount: 3
   - name: RedTriangle
+    shape: Triangle
+    color: Red
     hp: 2
     speed: 5
     stunTime: 1.5
     weight: 1
     drag: 1.5
     knockBackThrust: 5
+    knockBackDamage: 0.3
+    skillMinDistance: 2
     skillUseRange: 2
+    followMinDistance: 2
+    stopMinDistance: 1.5
+    prefabCount: 3
   - name: RedRectangle
+    shape: Rectangle
+    color: Red
     hp: 4
     speed: 3
     stunTime: 1.5
     weight: 1
     drag: 1.5
     knockBackThrust: 5
+    knockBackDamage: 0.3
+    skillMinDistance: 2
     skillUseRange: 3
+    followMinDistance: 2
+    stopMinDistance: 1.5
+    prefabCount: 3
   - name: RedPentagon
+    shape: Pentagon
+    color: Red
     hp: 8
     speed: 2
     stunTime: 1.5
     weight: 1
     drag: 1.5
     knockBackThrust: 5
+    knockBackDamage: 0.3
+    skillMinDistance: 2
     skillUseRange: 3
+    followMinDistance: 2
+    stopMinDistance: 1.5
+    prefabCount: 3
   - name: "RedHexagon\r"
+    shape: "Hexagon\r"
+    color: "Red\r"
     hp: 16
     speed: 2
     stunTime: 1.5
     weight: 1
     drag: 1.5
     knockBackThrust: 5
+    knockBackDamage: 0.3
+    skillMinDistance: 2
     skillUseRange: 4
-  - name: YellowTriangle
-    hp: 1
-    speed: 3
-    stunTime: 1.5
-    weight: 1
-    drag: 1.5
-    knockBackThrust: 5
-    skillUseRange: 2
-  - name: YellowRectangle
-    hp: 2
-    speed: 2
-    stunTime: 1.5
-    weight: 1
-    drag: 1.5
-    knockBackThrust: 5
-    skillUseRange: 3
-  - name: YellowPentagon
-    hp: 5
-    speed: 2
-    stunTime: 1.5
-    weight: 1
-    drag: 1.5
-    knockBackThrust: 5
-    skillUseRange: 3
-  - name: YellowHexagon
-    hp: 10
-    speed: 1
-    stunTime: 1.5
-    weight: 1
-    drag: 1.5
-    knockBackThrust: 5
-    skillUseRange: 4
-  - name: RedTriangle
-    hp: 2
-    speed: 5
-    stunTime: 1.5
-    weight: 1
-    drag: 1.5
-    knockBackThrust: 5
-    skillUseRange: 2
-  - name: RedRectangle
-    hp: 4
-    speed: 3
-    stunTime: 1.5
-    weight: 1
-    drag: 1.5
-    knockBackThrust: 5
-    skillUseRange: 3
-  - name: RedPentagon
-    hp: 8
-    speed: 2
-    stunTime: 1.5
-    weight: 1
-    drag: 1.5
-    knockBackThrust: 5
-    skillUseRange: 3
-  - name: "RedHexagon\r"
-    hp: 16
-    speed: 2
-    stunTime: 1.5
-    weight: 1
-    drag: 1.5
-    knockBackThrust: 5
-    skillUseRange: 4
+    followMinDistance: 2
+    stopMinDistance: 1.5
+    prefabCount: 3
   Skill:
   - name: 1
     useType: 1
     useCount: 1
-    damage: 1
+    useTick: 0
+    preDelay: 0
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    damage: 0.5
+    knockBackThrust: 15
     disableTime: 3
     hitTarget: 01000000
+    prefabCount: 2
   - name: 2
     useType: 1
     useCount: 1
+    useTick: 0
+    preDelay: 0
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 5, y: 5}
+    offsetRange: {x: 0, y: 1.5}
     damage: 1
+    knockBackThrust: 25
     disableTime: 3
     hitTarget: 01000000
+    prefabCount: 2
   - name: 3
     useType: 2
     useCount: 1
+    useTick: 0
+    preDelay: 0
+    duration: 10
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
     damage: 1
+    knockBackThrust: 25
     disableTime: 3
     hitTarget: 0100000002000000
+    prefabCount: 2
   - name: 4
     useType: 2
     useCount: 1
-    damage: 1
+    useTick: 0
+    preDelay: 0
+    duration: 0
+    radiusRange: 5
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    damage: 5
+    knockBackThrust: 25
     disableTime: 3
     hitTarget: 01000000
+    prefabCount: 2
   - name: 5
     useType: 2
     useCount: 1
+    useTick: 0.5
+    preDelay: 0
+    duration: 5
+    radiusRange: 2
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
     damage: 1
+    knockBackThrust: 25
     disableTime: 3
     hitTarget: 01000000
+    prefabCount: 2
   - name: 6
     useType: 1
     useCount: 2
+    useTick: 0
+    preDelay: 2
+    duration: 2
+    radiusRange: 2.5
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
     damage: 2
+    knockBackThrust: 25
     disableTime: 3
     hitTarget: 01000000
+    prefabCount: 2
   - name: 7
     useType: 2
     useCount: 1
+    useTick: 0.01
+    preDelay: 0
+    duration: 5
+    radiusRange: 1.2
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
     damage: 0
+    knockBackThrust: -5
     disableTime: 3
     hitTarget: 01000000
+    prefabCount: 2
   - name: 8
     useType: 4
     useCount: 1
-    damage: 1
-    disableTime: 3
-    hitTarget: 0100000000000000
-  - name: 9
-    useType: 4
-    useCount: 1
-    damage: 1
-    disableTime: 3
-    hitTarget: 00000000
-  - name: 10
-    useType: 4
-    useCount: 1
-    damage: 1
-    disableTime: 3
-    hitTarget: 00000000
-  - name: 1
-    useType: 1
-    useCount: 1
-    damage: 1
-    disableTime: 3
-    hitTarget: 01000000
-  - name: 2
-    useType: 1
-    useCount: 1
-    damage: 1
-    disableTime: 3
-    hitTarget: 01000000
-  - name: 3
-    useType: 2
-    useCount: 1
-    damage: 1
-    disableTime: 3
-    hitTarget: 0100000002000000
-  - name: 4
-    useType: 2
-    useCount: 1
-    damage: 1
-    disableTime: 3
-    hitTarget: 01000000
-  - name: 5
-    useType: 2
-    useCount: 1
-    damage: 1
-    disableTime: 3
-    hitTarget: 01000000
-  - name: 6
-    useType: 1
-    useCount: 2
+    useTick: 0
+    preDelay: 0
+    duration: 0
+    radiusRange: 2
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
     damage: 2
-    disableTime: 3
-    hitTarget: 01000000
-  - name: 7
-    useType: 2
-    useCount: 1
-    damage: 0
-    disableTime: 3
-    hitTarget: 01000000
-  - name: 8
-    useType: 4
-    useCount: 1
-    damage: 1
+    knockBackThrust: 25
     disableTime: 3
     hitTarget: 0100000000000000
+    prefabCount: 2
   - name: 9
     useType: 4
     useCount: 1
+    useTick: 0
+    preDelay: 0.5
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
     damage: 1
+    knockBackThrust: 25
     disableTime: 3
     hitTarget: 00000000
+    prefabCount: 2
   - name: 10
     useType: 4
     useCount: 1
+    useTick: 0
+    preDelay: 0
+    duration: 0
+    radiusRange: 2.5
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
     damage: 1
+    knockBackThrust: 25
     disableTime: 3
     hitTarget: 00000000
+    prefabCount: 2
+  AdditionalPrefab:
+  - name: TriangleDieEffect
+    count: 3
+    path: Prefabs/Effect/Die/
+  - name: RectangleDieEffect
+    count: 3
+    path: Prefabs/Effect/Die/
+  - name: PentagonDieEffect
+    count: 3
+    path: Prefabs/Effect/Die/
+  - name: HexagonDieEffect
+    count: 3
+    path: Prefabs/Effect/Die/
+  - name: Bullet
+    count: 5
+    path: Prefabs/Entity/
+  - name: "Orb\r"
+    count: 3
+    path: Prefabs/Skill/

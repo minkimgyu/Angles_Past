@@ -5,7 +5,7 @@ using System;
 
 public class Entity : MonoBehaviour
 {
-    float hp;
+    protected float hp;
 
     public float Hp
     {

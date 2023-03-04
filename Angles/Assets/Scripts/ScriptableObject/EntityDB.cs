@@ -26,8 +26,16 @@ public class EntityData
     public string Name { get { return name; } set { name = value; } }
 
     [SerializeField]
+    protected string shape;
+    public string Shape { get { return shape; } set { shape = value; } }
+
+    [SerializeField]
+    protected string color;
+    public string Color { get { return color; } set { color = value; } }
+
+    [SerializeField]
     protected float hp;
-    public float Hp { get { return Hp; } set { hp = value; } }
+    public float Hp { get { return hp; } set { hp = value; } }
 
     [SerializeField]
     protected float speed;
@@ -50,9 +58,11 @@ public class EntityData
     public float KnockBackThrust { get { return knockBackThrust; } set { knockBackThrust = value; } }
 
     public EntityData() { }
-    public EntityData(string name, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust) 
+    public EntityData(string name, string shape, string color, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust) 
     {
         this.name = name;
+        this.shape = shape;
+        this.color = color;
         this.hp = hp;
         this.speed = speed;
         this.stunTime = stunTime;
@@ -145,8 +155,8 @@ public class PlayerData : EntityData
 
     public PlayerData() : base() { }
 
-    public PlayerData(string name, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust,  float readySpeed, float speedRatio, float minSpeedRatio, float maxSpeedRatio, float rushThrust,
-        float rushRatio, float storedRushRatio, float rushTime, float attackCancelOffset, float reflectThrust, float maxDashCount, float dashTime, float dashThrust, float dashRatio) : base(name, hp, speed, stunTime, weight, drag, knockBackThrust)
+    public PlayerData(string name, string shape, string color, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust,  float readySpeed, float speedRatio, float minSpeedRatio, float maxSpeedRatio, float rushThrust,
+        float rushRatio, float storedRushRatio, float rushTime, float attackCancelOffset, float reflectThrust, float maxDashCount, float dashTime, float dashThrust, float dashRatio) : base(name, shape, color, hp, speed, stunTime, weight, drag, knockBackThrust)
     {
         this.readySpeed = readySpeed;
         this.speedRatio = speedRatio;
@@ -166,7 +176,7 @@ public class PlayerData : EntityData
 
     public PlayerData CopyData()
     {
-        return new PlayerData(name, hp, speed, stunTime, weight, drag, knockBackThrust, readySpeed, speedRatio, minSpeedRatio, maxSpeedRatio, rushThrust,
+        return new PlayerData(name, shape, color, hp, speed, stunTime, weight, drag, knockBackThrust, readySpeed, speedRatio, minSpeedRatio, maxSpeedRatio, rushThrust,
         rushRatio, storedRushRatio, rushTime, attackCancelOffset, reflectThrust, maxDashCount, dashTime, dashThrust, dashRatio);
     }
 }
@@ -174,6 +184,10 @@ public class PlayerData : EntityData
 [System.Serializable]
 public class EnemyData : EntityData
 {
+    [SerializeField]
+    protected float knockBackDamage;
+    public float KnockBackDamage { get { return knockBackDamage; } set { knockBackDamage = value; } }
+
     [SerializeField]
     float skillMinDistance;
     public float SkillMinDistance { get { return skillMinDistance; } set { skillMinDistance = value; } }
@@ -195,8 +209,11 @@ public class EnemyData : EntityData
     public int PrefabCount { get { return prefabCount; } set { prefabCount = value; } }
 
     public EnemyData() { }
-    public EnemyData(string name, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust, float skillMinDistance, float skillUseRange, float followMinDistance, float stopMinDistance, int prefabCount) : base(name, hp, speed, stunTime, weight, drag, knockBackThrust)
+    public EnemyData(string name, string shape, string color, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust, float knockBackDamage, 
+        float skillMinDistance, float skillUseRange, float followMinDistance, float stopMinDistance, int prefabCount) : base(name, shape, color, hp, speed, stunTime, weight, drag, knockBackThrust)
     {
+        this.knockBackThrust = knockBackThrust;
+        this.knockBackDamage = knockBackDamage;
         this.skillMinDistance = skillMinDistance;
         this.skillUseRange = skillUseRange;
         this.followMinDistance = followMinDistance;
@@ -206,7 +223,7 @@ public class EnemyData : EntityData
 
     public EnemyData CopyData()
     {
-        return new EnemyData(name, hp, speed, stunTime, weight, drag, knockBackThrust, skillMinDistance, skillUseRange, followMinDistance, stopMinDistance, prefabCount);
+        return new EnemyData(name, shape, color, hp, speed, stunTime, weight, drag, knockBackThrust, knockBackDamage, skillMinDistance, skillUseRange, followMinDistance, stopMinDistance, prefabCount);
     }
 }
 
@@ -224,6 +241,30 @@ public class SkillData
     [SerializeField]
     int useCount = 1;
     public int UseCount { get { return useCount; } set { useCount = value; } }
+
+    [SerializeField]
+    float useTick;
+    public float UseTick { get { return useTick; } set { useTick = value; } }
+
+    [SerializeField]
+    float preDelay;
+    public float PreDelay { get { return preDelay; } set { preDelay = value; } }
+
+    [SerializeField]
+    float duration;
+    public float Duration { get { return duration; } set { duration = value; } }
+
+    [SerializeField]
+    float radiusRange;
+    public float RadiusRange { get { return radiusRange; } set { radiusRange = value; } }
+
+    [SerializeField]
+    Vector2 boxRange;
+    public Vector2 BoxRange { get { return boxRange; } set { boxRange = value; } }
+
+    [SerializeField]
+    Vector2 offsetRange;
+    public Vector2 OffsetRange { get { return offsetRange; } set { offsetRange = value; } }
 
     [SerializeField]
     float damage;
@@ -275,12 +316,19 @@ public class SkillData
 
     public SkillData() { }
 
-    public SkillData(SkillName name, SkillUseType useType, int useCount, float damage, float disableTime, EntityTag[] hitTarget, int prefabCount)
+    public SkillData(SkillName name, SkillUseType useType, int useCount, float useTick, float preDelay, float duration, float radiusRange, Vector2 boxRange, Vector2 offsetRange, float damage, float knockBackThrust, float disableTime, EntityTag[] hitTarget, int prefabCount)
     {
         this.name = name;
         this.useType = useType;
         this.useCount = useCount;
+        this.useTick = useTick;
+        this.preDelay = preDelay;
+        this.duration = duration;
+        this.radiusRange = radiusRange;
+        this.boxRange = boxRange;
+        this.offsetRange = offsetRange;
         this.damage = damage;
+        this.knockBackThrust = knockBackThrust;
         this.disableTime = disableTime;
         this.hitTarget = hitTarget;
         this.prefabCount = prefabCount;
@@ -288,7 +336,7 @@ public class SkillData
 
     public SkillData CopyData()
     {
-        SkillData skillData = new SkillData(name, useType, useCount, damage, disableTime, hitTarget, prefabCount);
+        SkillData skillData = new SkillData(name, useType, useCount, useTick, preDelay, duration, radiusRange, boxRange, offsetRange, damage, knockBackThrust, disableTime, hitTarget, prefabCount);
         return skillData;
     }
 

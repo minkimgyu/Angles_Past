@@ -6,7 +6,7 @@ public class BasicEffect : MonoBehaviour
 {
     public ParticleSystem[] particles;
 
-    public void PlayEffect()
+    public virtual void PlayEffect()
     {
         if (particles == null) return;
 

@@ -58,8 +58,19 @@ public class FollowComponent : UnitaskUtility
     public void StopFollow()
     {
         pauseFollow = true;
-        BasicTask.CancelTask();
+        CancelWaitFollow();
         enemy.StopMove();
+    }
+
+    public void ResetFollow()
+    {
+        pauseFollow = false;
+    }
+
+    void CancelWaitFollow()
+    {
+        BasicTask.CancelTask();
+        if (nowHit == true) nowHit = false;
     }
 
     public async UniTaskVoid WaitFollowTask()

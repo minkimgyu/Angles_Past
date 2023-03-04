@@ -10,8 +10,13 @@ public class Enemy : Entity
     Player player;
     public FollowComponent followComponent;
     public BasicReflectComponent basicReflectComponent;
+    public ForceComponent forceComponent;
 
     public EnemyData enemyData;
+
+    public Action dieAction;
+
+    string dieEffect;
 
     public EnemyData EnemyData
     {
@@ -41,6 +46,8 @@ public class Enemy : Entity
     public void Init(EnemyData enemyData)
     {
         EnemyData = enemyData;
+        hp = enemyData.Hp;
+        dieEffect = ReturnDieEffectName(EnemyData.Shape);
     }
 
     // Start is called before the first frame update
@@ -48,6 +55,7 @@ public class Enemy : Entity
     {
         player = PlayManager.Instance.player;
         followComponent = GetComponent<FollowComponent>();
+        forceComponent = GetComponent<ForceComponent>();
         basicReflectComponent = GetComponent<BasicReflectComponent>();
     }
 
@@ -63,9 +71,27 @@ public class Enemy : Entity
         basicReflectComponent.KnockBack(dir);
     }
 
+    string ReturnDieEffectName(string shape)
+    {
+        List<AdditionalPrefabData> prefabDatas = DatabaseManager.Instance.EntityDB.AdditionalPrefab;
+
+        for (int i = 0; i < prefabDatas.Count; i++)
+        {
+            if (prefabDatas[i].Name.Contains(shape))
+            {
+                return prefabDatas[i].Name;
+            }
+        }
+
+        return null;
+    }
+
     protected override void Die()
     {
+        if(dieAction != null) dieAction();
+
+        GameObject go = ObjectPooler.SpawnFromPool(dieEffect, transform.position, transform.rotation);
+        go.GetComponent<DieEffect>().Init(enemyData.Color);
         base.Die();
-        ObjectPooler.SpawnFromPool("TriangleDieEffect", transform.position, transform.rotation);
     }
 }

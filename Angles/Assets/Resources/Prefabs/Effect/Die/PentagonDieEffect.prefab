@@ -4633,8 +4633,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 41411765
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_RenderMode: 1
   m_MeshDistribution: 0
@@ -9274,8 +9274,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 41411765
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -9323,3 +9323,10 @@ MonoBehaviour:
   - {fileID: 1252688809931004262}
   - {fileID: 1233006049499349526}
   disableTime: 3
+  dieColor:
+  - color: Yellow
+    min: {r: 0.9473074, g: 1, b: 0.2971698, a: 1}
+    max: {r: 1, g: 0.98993325, b: 0.13679248, a: 1}
+  - color: Red
+    min: {r: 1, g: 0.3160377, b: 0.3160377, a: 1}
+    max: {r: 1, g: 0.16509432, b: 0.16509432, a: 1}

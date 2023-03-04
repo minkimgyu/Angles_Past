@@ -4,41 +4,62 @@ using UnityEngine;
 
 public class RotationBallSkill : BasicSkill
 {
-    List<BasicEffect> basicEffects = new List<BasicEffect>();
-    float distanceFromPlayer = 2f;
     int speed = 70;
-
     int ballCount = 3;
 
     Transform playerTr = null;
+
+    public List<BallEffect> storedBallEffects;
 
     public int BallCount { get { return ballCount; } set { if (value > 0) ballCount = value; } }
 
     public override void PlaySkill(SkillSupportData data)
     {
-        base.PlaySkill(data);
         playerTr = data.player.transform;
-
         InitBall();
-        base.PlaySkill(data);
     }
 
     void InitBall()
     {
         for (int i = 0; i < BallCount; i++)
         {
-            float angle = (360.0f * i) / ballCount;
+            GameObject go = ObjectPooler.SpawnFromPool("Orb", transform.position, Quaternion.identity, transform);
+            BallEffect basicEffect = go.GetComponent<BallEffect>();
 
-            Vector3 offset = Vector3.up * distanceFromPlayer;
+            basicEffect.Init(this);
+            storedBallEffects.Add(basicEffect);
+        }
+
+        print(storedBallEffects.Count);
+
+        for (int j = 0; j < storedBallEffects.Count; j++)
+        {
+            storedBallEffects[j].transform.position = Vector3.zero;
+
+            float angle = (360.0f * j) / storedBallEffects.Count;
+
+            print(angle);
+
+            Vector3 offset = Vector3.up * SkillData.OffsetRange.magnitude;
             Quaternion rotation = Quaternion.Euler(0, 0, angle);
             Vector3 rotatedOffset = rotation * offset;
 
-            GameObject go = ObjectPooler.SpawnFromPool("Orb", transform.position, Quaternion.identity, transform);
-            BallEffect basicEffect = go.GetComponent<BallEffect>();
-            basicEffect.PlayEffect();
-            basicEffect.transform.localPosition = rotatedOffset;
+            storedBallEffects[j].ResetPosition(rotatedOffset);
+            storedBallEffects[j].PlayEffect();
+        }
+    }
 
-            basicEffects.Add(basicEffect);
+
+    public bool HitEnemy(GameObject go)
+    {
+        if (SkillData.CanHitSkill(go.tag) == true)
+        {
+            DamageToEntity(go, SkillData.KnockBackThrust);
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -46,7 +67,6 @@ public class RotationBallSkill : BasicSkill
     void Update()
     {
         if (playerTr != null) transform.position = playerTr.position;
-
         transform.RotateAround(transform.position, Vector3.forward, Time.deltaTime * speed);
     }
 }

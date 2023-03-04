@@ -129,9 +129,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.15, y: 0}
   serializedVersion: 2
-  m_Radius: 0.65
+  m_Radius: 1
 --- !u!1 &5462104940915882121
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,6 +282,8 @@ MonoBehaviour:
   basicReflectComponent: {fileID: 0}
   enemyData:
     name: 
+    shape: 
+    color: 
     hp: 0
     speed: 0
     stunTime: 0
@@ -292,6 +294,7 @@ MonoBehaviour:
     skillUseRange: 0
     followMinDistance: 0
     stopMinDistance: 0
+    prefabCount: 0
 --- !u!95 &3703049766898728195
 Animator:
   serializedVersion: 5
@@ -481,7 +484,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 93078240ab9c8714bad292336d28aea8, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_Color: {r: 1, g: 0.91753423, b: 0.2028302, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

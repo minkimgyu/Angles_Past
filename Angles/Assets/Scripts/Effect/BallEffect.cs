@@ -1,21 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BallEffect : BasicEffect
 {
+    RotationBallSkill storedSkill;
 
+    public void Init(RotationBallSkill storedSkill)
+    {
+        this.storedSkill = storedSkill;
+    }
+
+    public void ResetPosition(Vector3 rotatedOffset)
+    {
+        transform.localPosition = rotatedOffset;
+    }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        print(col.gameObject.name); // 이펙트로 공격 - 방어 같이 진행
+        if (storedSkill == null) return;
 
-        ObjectPooler.ReturnToTransform(transform);
-        gameObject.SetActive(false);
+        if (storedSkill.HitEnemy(col.gameObject) == true)
+        {
+            ObjectPooler.ReturnToTransform(transform);
+            gameObject.SetActive(false);
+        }
     }
 
     private void OnDisable()
     {
+        storedSkill = null;
         ObjectPooler.ReturnToPool(gameObject);
     }
 }

@@ -102,11 +102,6 @@ public class ActionComponent : MonoBehaviour
         if(CheckOverMinValue(horizontal, vertical) == true)
         {
             rushVec.Set(horizontal, vertical);
-
-            print(DatabaseManager.Instance.PlayerData.RushRatio);
-            print(-rushVec.normalized);
-            print(DatabaseManager.Instance.PlayerData.RushThrust);
-
             attackAction(-rushVec.normalized * DatabaseManager.Instance.PlayerData.RushRatio * DatabaseManager.Instance.PlayerData.RushThrust, ForceMode2D.Impulse); // Ratio와 역방향 고려
             mode = ActionMode.Idle;
             uIComponent.BasicTask.CancelTask();
