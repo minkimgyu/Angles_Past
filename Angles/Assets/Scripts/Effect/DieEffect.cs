@@ -56,6 +56,4 @@ public class DieEffect : BasicEffect
         ObjectPooler.ReturnToPool(gameObject);
         CancelInvoke();
     }
-
-    protected void DisableObject() => gameObject.SetActive(false);
 }

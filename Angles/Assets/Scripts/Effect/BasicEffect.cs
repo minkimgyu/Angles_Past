@@ -25,4 +25,6 @@ public class BasicEffect : MonoBehaviour
             particles[i].Stop();
         }
     }
+
+    protected void DisableObject() => gameObject.SetActive(false);
 }

@@ -9,9 +9,9 @@ public class BigImpactSkill : BasicSkill
 {
     public Color color;
 
-    public override void PlaySkill(SkillSupportData data)
+    public override void PlaySkill(SkillSupportData data, BasicBattleComponent battleComponent)
     {
-        base.PlaySkill(data);
+        base.PlaySkill(data, battleComponent);
         effect.PlayEffect();
 
         transform.position = data.player.transform.position; // 위치 초기화

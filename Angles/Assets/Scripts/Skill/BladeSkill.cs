@@ -11,6 +11,22 @@ public class BladeSkill : BasicSkill
     public float radius;
     Transform playerTr = null;
 
+    public override void PlayAddition()
+    {
+        base.PlayAddition();
+        BasicTask.CancelTask();
+        effect.StopEffect();
+
+        if (playerTr == null) return;
+        SkillTask().Forget();
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        if (playerTr != null) playerTr = null;
+    }
+
     public async UniTaskVoid SkillTask()
     {
         effect.PlayEffect();
@@ -52,9 +68,9 @@ public class BladeSkill : BasicSkill
         }
     }
 
-    public override void PlaySkill(SkillSupportData data)
+    public override void PlaySkill(SkillSupportData data, BasicBattleComponent battleComponent)
     {
-        base.PlaySkill(data);
+        base.PlaySkill(data, battleComponent);
         playerTr = data.player.transform; // 위치 초기화
         SkillTask().Forget();
     }

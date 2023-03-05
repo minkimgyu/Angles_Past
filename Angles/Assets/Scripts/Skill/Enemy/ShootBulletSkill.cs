@@ -9,8 +9,9 @@ public class ShootBulletSkill : BasicSkill
 {
     Transform entityTr;
 
-    public override void PlayBasicSkill(Transform tr)
+    public override void PlaySkill(Transform tr, BasicBattleComponent battleComponent)
     {
+        base.PlaySkill(tr, battleComponent);
         transform.position = tr.position;
         entityTr = tr;
 

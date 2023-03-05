@@ -106,7 +106,9 @@ public class BattleComponent : BasicBattleComponent
             BasicSkill skill = GetSkillUsingName(loadSkillDatas[i].Name.ToString(), transform.position, Quaternion.identity);
             if (skill == null) continue;
 
-            skill.PlaySkill(supportData);
+            loadBasicSkills.Add(skill);
+
+            skill.PlaySkill(supportData, this);
             loadSkillDatas[i].UseSkill(loadSkillDatas);
         }
     }
@@ -120,26 +122,109 @@ public class BattleComponent : BasicBattleComponent
     {
         SkillData data;
 
+        bool nowRun = CheckCountUp(SkillData, skillUseType); // 카운트 업은 여기서 실행시킴
+        if (nowRun == true) return;
+
         // 스킬을 사용할 수 있는 경우 스킬 사용
         if (SkillData.CanUseSkill(skillUseType) == true)
         {
             data = SkillData.CopyData();
             SkillData.ResetSkill(); // 플레이어 보유 스킬은 리셋
 
-            loadSkillDatas.Add(data);
-            UseSkillInList(skillUseType); // 리스트에 들어간 모든 오브젝트를 조건부로 실행해줌
+            AddSkillToList(data, skillUseType);
         }
         else if(NormalSkillData.CanUseSkill(skillUseType) == true) // 스킬을 사용할 수 없는 경우 기본 스킬을 사용하게 한다.
         {
             data = NormalSkillData.CopyData();
-
-            loadSkillDatas.Add(data);
-            UseSkillInList(skillUseType); // 리스트에 들어간 모든 오브젝트를 조건부로 실행해줌
+            AddSkillToList(data, skillUseType);
         }
     }
 
-    //getfix이면 먹을 경우 재사용
+    public void RemoveSkillInList(SkillData skillData)
+    {
+        loadSkillDatas.Remove(skillData);
+    }
+
+    int CheckSkillList(SkillName skillName)
+    {
+        for (int i = 0; i < loadBasicSkills.Count; i++)
+        {
+            if (loadBasicSkills[i].SkillName == skillName)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    SkillData ReturnSkillData(SkillName skillName)
+    {
+        for (int i = 0; i < loadSkillDatas.Count; i++)
+        {
+            if (loadSkillDatas[i].Name == skillName)
+            {
+                return loadSkillDatas[i];
+            }
+        }
+
+        return null;
+    }
+
+    //fix이면 먹을 경우 재사용
+    void AddSkillToList(SkillData data, SkillUseType skillUseType)
+    {
+        if(data.Usage == SkillUsage.Overlap)
+        {
+            int index = CheckSkillList(data.Name);
+            if (index != -1)
+            {
+                loadBasicSkills[index].PlayAddition(); // 추가 함수 실행
+            }
+            else
+            {
+                AddToDataList(data, skillUseType);
+            }
+        }
+        else
+        {
+            AddToDataList(data, skillUseType);
+        }
+    }
+
+    bool CheckCountUp(SkillData data, SkillUseType skillUseType)
+    {
+        if (data.Usage != SkillUsage.CountUp || skillUseType != SkillUseType.Get) return false;
+
+        if(skillData.Name == data.Name)
+        {
+            print("Name");
+            skillData.CountUp();
+            return true;
+        }
+        else
+        {
+
+            print("loadData.CountUp()");
+
+            int index = CheckSkillList(data.Name);
+
+            if (index == -1) return false;
+            else
+            {
+                SkillData loadData = ReturnSkillData(data.Name);
+                loadData.CountUp();
+                return true;
+            }
+        }
+    }
     
+    void AddToDataList(SkillData data, SkillUseType skillUseType)
+    {
+        loadSkillDatas.Add(data); // 스킬 리스트에 없으면 추가해준다.
+        UseSkillInList(skillUseType); // 리스트에 들어간 모든 오브젝트를 조건부로 실행해줌
+    }
+
     void PlayWhenCollision()
     {
         if (player.PlayerMode != ActionMode.Attack) return;

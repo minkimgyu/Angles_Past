@@ -7,9 +7,11 @@ using System;
 
 public class NormalKnockBackSkill : BasicSkill
 {
-    public override void PlaySkill(SkillSupportData data)
+
+
+    public override void PlaySkill(SkillSupportData data, BasicBattleComponent battleComponent)
     {
-        base.PlaySkill(data);
+        base.PlaySkill(data, battleComponent);
         transform.position = data.contactPos[0];
         effect.PlayEffect();
 
@@ -33,5 +35,11 @@ public class NormalKnockBackSkill : BasicSkill
         DisableObject();
 
         BasicTask.NowRunning = false;
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
     }
 }

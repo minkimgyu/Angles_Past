@@ -7,7 +7,9 @@ public enum ActionMode { Idle, AttackReady, Attack, Dash, Follow, Hit }; // 동작
 public enum SkillName { None, NormalKnockBack, KnockBack, RotationBall, BigImpact, Blade, StickyBomb, GravitationalField, 
     SelfDestruction, ShootBullet, ShockWave }; // 동작 상태 모음
 
-public enum SkillUseType { None, Contact, Get, GetAndFix, Start, Condition }
+public enum SkillUseType { None, Contact, Get, Fix, Start, Condition }
+
+public enum SkillUsage { None, Single, Overlap, CountUp } // --> 사용 시, 사용 가능 횟수를 1 빼거나 사용 횟수 차감없이 고정시킴
 
 public enum EntityTag { Player, Enemy, Bullet };
 

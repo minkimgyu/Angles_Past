@@ -9,8 +9,10 @@ public class ShockWaveSkill : BasicSkill
 {
     public Color color;
 
-    public override void PlayBasicSkill(Transform tr)
+    public override void PlaySkill(Transform tr, BasicBattleComponent basicBattle)
     {
+        base.PlaySkill(tr, battleComponent);
+
         effect.PlayEffect();
 
         transform.position = tr.position; // 위치 초기화

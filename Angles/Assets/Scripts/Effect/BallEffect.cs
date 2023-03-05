@@ -23,8 +23,9 @@ public class BallEffect : BasicEffect
 
         if (storedSkill.HitEnemy(col.gameObject) == true)
         {
+            storedSkill.RemoveBallInList(this);
             ObjectPooler.ReturnToTransform(transform);
-            gameObject.SetActive(false);
+            DisableObject();
         }
     }
 

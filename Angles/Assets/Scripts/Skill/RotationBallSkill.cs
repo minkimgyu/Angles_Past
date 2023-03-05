@@ -9,14 +9,36 @@ public class RotationBallSkill : BasicSkill
 
     Transform playerTr = null;
 
-    public List<BallEffect> storedBallEffects;
+    [SerializeField]
+    List<BallEffect> storedBallEffects;
 
     public int BallCount { get { return ballCount; } set { if (value > 0) ballCount = value; } }
 
-    public override void PlaySkill(SkillSupportData data)
+    public override void PlaySkill(SkillSupportData data, BasicBattleComponent battleComponent)
     {
+        base.PlaySkill(data, battleComponent);
         playerTr = data.player.transform;
         InitBall();
+    }
+
+    public override void PlayAddition()
+    {
+        base.PlayAddition();
+        InitBall();
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+    }
+
+    public void RemoveBallInList(BallEffect ballEffect)
+    {
+        storedBallEffects.Remove(ballEffect);
+        if(storedBallEffects.Count <= 0)
+        {
+            DisableObject();
+        }
     }
 
     void InitBall()

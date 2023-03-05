@@ -9,9 +9,9 @@ public class KnockBackSkill : BasicSkill
 {
     public Color color;
 
-    public override void PlaySkill(SkillSupportData data)
+    public override void PlaySkill(SkillSupportData data, BasicBattleComponent battleComponent)
     {
-        base.PlaySkill(data);
+        base.PlaySkill(data, battleComponent);
         transform.position = data.player.transform.position;
         effect.PlayEffect();
 

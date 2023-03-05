@@ -12,6 +12,7 @@ public class BasicSkill : UnitaskUtility
     SkillData skillData;
     public SkillData SkillData { get { return skillData; } set { skillData = value; } }
 
+    protected BasicBattleComponent battleComponent;
     protected BasicEffect effect;
     protected int layerMask;
 
@@ -39,6 +40,8 @@ public class BasicSkill : UnitaskUtility
 
     protected override void OnDisable()
     {
+        if(battleComponent != null) battleComponent.RemoveSkillInList(this);
+        battleComponent = null;
         base.OnDisable();
         ObjectPooler.ReturnToPool(gameObject);
     }
@@ -56,13 +59,23 @@ public class BasicSkill : UnitaskUtility
         return ObjectPooler.SpawnFromPool(name, pos, rotation, tr);
     }
 
-    public virtual void PlaySkill(SkillSupportData suportDatas) // 플레이어 스킬
+    public virtual void PlayAddition()
     {
-
+        print("PlayAdditionalSkill");
     }
 
-    public virtual void PlayBasicSkill(Transform tr) // 적 스킬
+    public virtual void PlayCountUp(SkillData data)
     {
+        print("PlayCountUp");
+    }
 
+    public virtual void PlaySkill(SkillSupportData suportDatas, BasicBattleComponent battleComponent) // 플레이어 스킬
+    {
+        this.battleComponent = battleComponent;
+    }
+
+    public virtual void PlaySkill(Transform tr, BasicBattleComponent battleComponent) // 적 스킬
+    {
+        this.battleComponent = battleComponent;
     }
 }

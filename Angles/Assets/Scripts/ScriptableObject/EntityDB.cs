@@ -239,6 +239,10 @@ public class SkillData
     public SkillUseType UseType { get { return useType; } set { useType = value; } }
 
     [SerializeField]
+    SkillUsage usage;
+    public SkillUsage Usage { get { return usage; } set { usage = value; } }
+
+    [SerializeField]
     int useCount = 1;
     public int UseCount { get { return useCount; } set { useCount = value; } }
 
@@ -301,6 +305,12 @@ public class SkillData
         if (useCount <= 0) skillDatas.Remove(this);
     }
 
+    public void CountUp()
+    {
+        SkillData originData = DatabaseManager.Instance.ReturnSkillData(Name).CopyData();
+        UseCount += originData.UseCount;
+    }
+
     public bool CanHitSkill(string tag)
     {
         for (int i = 0; i < hitTarget.Length; i++)
@@ -316,10 +326,11 @@ public class SkillData
 
     public SkillData() { }
 
-    public SkillData(SkillName name, SkillUseType useType, int useCount, float useTick, float preDelay, float duration, float radiusRange, Vector2 boxRange, Vector2 offsetRange, float damage, float knockBackThrust, float disableTime, EntityTag[] hitTarget, int prefabCount)
+    public SkillData(SkillName name, SkillUseType useType, SkillUsage usage, int useCount, float useTick, float preDelay, float duration, float radiusRange, Vector2 boxRange, Vector2 offsetRange, float damage, float knockBackThrust, float disableTime, EntityTag[] hitTarget, int prefabCount)
     {
         this.name = name;
         this.useType = useType;
+        this.usage = usage;
         this.useCount = useCount;
         this.useTick = useTick;
         this.preDelay = preDelay;
@@ -336,7 +347,7 @@ public class SkillData
 
     public SkillData CopyData()
     {
-        SkillData skillData = new SkillData(name, useType, useCount, useTick, preDelay, duration, radiusRange, boxRange, offsetRange, damage, knockBackThrust, disableTime, hitTarget, prefabCount);
+        SkillData skillData = new SkillData(name, useType, usage, useCount, useTick, preDelay, duration, radiusRange, boxRange, offsetRange, damage, knockBackThrust, disableTime, hitTarget, prefabCount);
         return skillData;
     }
 

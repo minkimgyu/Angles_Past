@@ -13,6 +13,14 @@ public class BasicBattleComponent : MonoBehaviour
     [SerializeField]
     protected List<SkillData> loadSkillDatas = new List<SkillData>();
 
+    [SerializeField]
+    protected List<BasicSkill> loadBasicSkills = new List<BasicSkill>();
+
+    public void RemoveSkillInList(BasicSkill basicSkill)
+    {
+        loadBasicSkills.Remove(basicSkill);
+    }
+
     protected virtual void Start()
     {
         normalSkillData = DatabaseManager.Instance.ReturnSkillData(normalSkillName);
@@ -41,7 +49,9 @@ public class BasicBattleComponent : MonoBehaviour
             BasicSkill skill = GetSkillUsingName(loadSkillDatas[i].Name.ToString(), transform.position, Quaternion.identity);
             if (skill == null) continue;
 
-            skill.PlayBasicSkill(transform);
+            loadBasicSkills.Add(skill);
+
+            skill.PlaySkill(transform, this);
             loadSkillDatas[i].UseSkill(loadSkillDatas);
         }
     }

@@ -26,9 +26,17 @@ public class StickyBombSkill : BasicSkill
         DisableObject();
     }
 
-    public override void PlaySkill(SkillSupportData data)
+    public override void PlayCountUp(SkillData data)
     {
-        base.PlaySkill(data);
+        base.PlayCountUp(data);
+
+        SkillData loadData = DatabaseManager.Instance.ReturnSkillData(data.Name).CopyData();
+        data.UseCount += loadData.UseCount;
+    }
+
+    public override void PlaySkill(SkillSupportData data, BasicBattleComponent battleComponent)
+    {
+        base.PlaySkill(data, battleComponent);
         explosionTr = data.contactEntity[0].transform;
         dirOnContact = data.contactPos[0] - data.contactEntity[0].transform.position;
         SkillTask().Forget();

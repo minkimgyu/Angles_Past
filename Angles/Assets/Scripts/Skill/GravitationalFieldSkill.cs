@@ -16,6 +16,13 @@ public class GravitationalFieldSkill : BasicSkill
         WhenEnable();
     }
 
+    public override void PlaySkill(SkillSupportData data, BasicBattleComponent battleComponent)
+    {
+        base.PlaySkill(data, battleComponent);
+        transform.position = data.player.transform.position;
+        SkillTask().Forget();
+    }
+
     public override void Init()
     {
         base.Init();
@@ -71,12 +78,5 @@ public class GravitationalFieldSkill : BasicSkill
         BasicTask.NowRunning = false;
         effect.StopEffect();
         DisableObject();
-    }
-
-    public override void PlaySkill(SkillSupportData data)
-    {
-        base.PlaySkill(data);
-        transform.position = data.player.transform.position;
-        SkillTask().Forget();
     }
 }

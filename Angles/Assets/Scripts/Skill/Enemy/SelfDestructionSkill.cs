@@ -20,8 +20,10 @@ public class SelfDestructionSkill : BasicSkill
         BasicTask.WaitTime = SkillData.DisableTime;
     }
 
-    public override void PlayBasicSkill(Transform tr)
+    public override void PlaySkill(Transform tr, BasicBattleComponent battleComponent)
     {
+        base.PlaySkill(tr, battleComponent);
+
         Enemy enemy = tr.GetComponent<Enemy>();
         enemy.dieAction += CancleSkill;
 
