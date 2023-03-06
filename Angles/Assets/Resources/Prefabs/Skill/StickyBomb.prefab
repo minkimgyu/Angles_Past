@@ -78,8 +78,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 41411765
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_RenderMode: 4
   m_MeshDistribution: 0
@@ -4751,8 +4751,10 @@ MonoBehaviour:
   skillData:
     name: 0
     useType: 0
+    usage: 0
     useCount: 1
     useTick: 0
+    preDelay: 0
     duration: 0
     radiusRange: 2.5
     boxRange: {x: 0, y: 0}
@@ -4763,8 +4765,6 @@ MonoBehaviour:
     hitTarget: 
     prefabCount: 0
   color: {r: 0.47848403, g: 1, b: 0.25943398, a: 1}
-  radius: 2.5
-  explosionTime: 2
 --- !u!114 &6651798979620814198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9632,8 +9632,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 41411765
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -14406,8 +14406,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 41411765
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_RenderMode: 1
   m_MeshDistribution: 0
@@ -19302,8 +19302,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 41411765
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_RenderMode: 4
   m_MeshDistribution: 0
@@ -24184,8 +24184,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 41411765
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_RenderMode: 4
   m_MeshDistribution: 0

@@ -16,6 +16,7 @@ public class Enemy : Entity
 
     public Action dieAction;
 
+    public SpriteRenderer innerSprite;
     string dieEffect;
 
     public EnemyData EnemyData
@@ -34,14 +35,22 @@ public class Enemy : Entity
         }
     }
 
+    SpriteRenderer ReturnEffectImage()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).CompareTag("InnerSprire") == false) continue;
+
+            return transform.GetChild(i).GetComponent<SpriteRenderer>();
+        }
+
+        return null;
+    }
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
-
-        Transform tempTr = transform.GetChild(0);
-        if (tempTr.CompareTag("InnerColor") == false) return;
-
-        innerImage = tempTr.GetComponent<SpriteRenderer>();
+        innerSprite = ReturnEffectImage();
     }
     public void Init(EnemyData enemyData)
     {

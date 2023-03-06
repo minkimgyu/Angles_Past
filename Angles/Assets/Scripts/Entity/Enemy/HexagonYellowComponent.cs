@@ -7,12 +7,14 @@ using System;
 
 public class HexagonYellowComponent : UnitaskUtility
 {
+    Enemy enemy;
     FollowComponent followComponent;
     EnemyBattleComponent enemyBattleComponent;
     bool nowCanUseSkill = true;
 
     private void Start()
     {
+        enemy = GetComponent<Enemy>();
         followComponent = GetComponent<FollowComponent>();
         enemyBattleComponent = GetComponent<EnemyBattleComponent>();
         followComponent.skillAction += SkillAction;
@@ -21,6 +23,7 @@ public class HexagonYellowComponent : UnitaskUtility
     public void SkillAction()
     {
         if (nowCanUseSkill == false) return;
+        
         SkillTask().Forget();
     }
 
@@ -29,8 +32,12 @@ public class HexagonYellowComponent : UnitaskUtility
         BasicTask.NowRunning = true;
         nowCanUseSkill = false;
 
+        followComponent.StopFollow();
+
         enemyBattleComponent.PlayWhenCondition();
-        await UniTask.Delay(TimeSpan.FromSeconds(3f), cancellationToken: BasicTask.source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(enemy.enemyData.SkillReuseTime), cancellationToken: BasicTask.source.Token);
+
+        followComponent.ResetFollow();
 
         nowCanUseSkill = true;
         BasicTask.NowRunning = false;

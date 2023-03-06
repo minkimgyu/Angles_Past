@@ -11,13 +11,14 @@ public class SelfDestructionSkill : BasicSkill
     public Color beforeColor;
     public Color afterColor;
 
+    SpriteRenderer sr;
+
     float currentTime = 0;
 
     protected override void Awake()
     {
         base.Awake();
         AddTask("ColorChangeTask");
-        BasicTask.WaitTime = SkillData.DisableTime;
     }
 
     public override void PlaySkill(Transform tr, BasicBattleComponent battleComponent)
@@ -27,7 +28,9 @@ public class SelfDestructionSkill : BasicSkill
         Enemy enemy = tr.GetComponent<Enemy>();
         enemy.dieAction += CancleSkill;
 
-        SpriteRenderer sr = enemy.innerImage;
+        sr = enemy.innerSprite;
+        if (sr == null) return;
+
         ColorChangeTask(sr).Forget();
     }
 
@@ -52,6 +55,8 @@ public class SelfDestructionSkill : BasicSkill
             sr.color = Color.Lerp(sr.color, afterColor, currentTime / SkillData.PreDelay);
             await UniTask.Delay(TimeSpan.FromSeconds(tasks["ColorChangeTask"].WaitTime), cancellationToken: tasks["ColorChangeTask"].source.Token);
         }
+
+        currentTime = 0;
 
         DamageToCloseEntity(sr.transform.position);
         tasks["ColorChangeTask"].NowRunning = false;
@@ -78,7 +83,8 @@ public class SelfDestructionSkill : BasicSkill
     {
         BasicTask.NowRunning = true;
 
-        await UniTask.Delay(TimeSpan.FromSeconds(BasicTask.WaitTime), cancellationToken: BasicTask.source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: BasicTask.source.Token);
+        sr.color = beforeColor;
         DisableObject();
 
         BasicTask.NowRunning = false;

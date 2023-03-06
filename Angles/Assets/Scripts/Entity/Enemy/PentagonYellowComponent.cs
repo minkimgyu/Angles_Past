@@ -31,8 +31,8 @@ public class PentagonYellowComponent : UnitaskUtility
         BasicTask.NowRunning = true;
         nowCanUseSkill = false;
 
-        await UniTask.Delay(TimeSpan.FromSeconds(5f), cancellationToken: BasicTask.source.Token);
         enemyBattleComponent.PlayWhenCondition();
+        await UniTask.Delay(TimeSpan.FromSeconds(enemy.enemyData.SkillReuseTime), cancellationToken: BasicTask.source.Token);
 
         nowCanUseSkill = true;
         BasicTask.NowRunning = false;
@@ -41,6 +41,7 @@ public class PentagonYellowComponent : UnitaskUtility
     protected override void OnDisable()
     {
         base.OnDisable();
-        if(followComponent != null) followComponent.skillAction -= SkillAction;
+        BasicTask.CancelTask();
+        if (followComponent != null) followComponent.skillAction -= SkillAction;
     }
 }

@@ -11,7 +11,8 @@ TagManager:
   - DropItem
   - Area
   - Ground
-  - InnerColor
+  - InnerSprite
+  - EffectSprite
   layers:
   - Default
   - TransparentFX
@@ -26,7 +27,7 @@ TagManager:
   - SpawnPoint
   - RepositionEntity
   - Bullet
-  - 
+  - InnerWall
   - 
   - 
   - 

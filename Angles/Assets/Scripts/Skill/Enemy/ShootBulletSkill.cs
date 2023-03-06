@@ -24,7 +24,7 @@ public class ShootBulletSkill : BasicSkill
         Vector3 tempPos = entityTr.position + direction * 1.5f;
 
         GameObject go = ObjectPooler.SpawnFromPool("Bullet", tempPos, Quaternion.Euler(0,0, rotation));
-        go.GetComponent<BasicBullet>().Fire(direction * 1);
+        go.GetComponent<BasicBullet>().Fire(direction * SkillData.KnockBackThrust);
     }
 
     public async UniTaskVoid SkillTask()

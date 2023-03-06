@@ -43,7 +43,6 @@ public class Entity : MonoBehaviour
     public float moveSpeed;
     public Rigidbody2D rigid;
     public Action fixedUpdateAction;
-    public SpriteRenderer innerImage;
 
     // Start is called before the first frame update
     protected virtual void Start()

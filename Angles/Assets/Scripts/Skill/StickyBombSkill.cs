@@ -44,6 +44,8 @@ public class StickyBombSkill : BasicSkill
 
     public void DamageToRange()
     {
+        if (explosionTr == null || explosionTr.gameObject.activeSelf == false) return;
+
         transform.position = explosionTr.position;
 
         Vector3 contactPos = transform.position + dirOnContact;

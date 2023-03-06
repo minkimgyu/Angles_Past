@@ -41,11 +41,7 @@ public class InitPoolComponent : MonoBehaviour
         path = path.TrimEnd((char)13);
 
         GameObject prefab = Resources.Load<GameObject>(path);
-        if (prefab == null)
-        {
-            print(path);
-            return;
-        }
+        if (prefab == null) return;
 
         ObjectPooler.AddPool(new Pool(name, prefab, count));
     }

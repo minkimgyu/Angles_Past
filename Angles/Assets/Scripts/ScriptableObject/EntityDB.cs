@@ -197,6 +197,10 @@ public class EnemyData : EntityData
     public float SkillUseRange { get { return skillUseRange; } set { skillUseRange = value; } }
 
     [SerializeField]
+    float skillReuseTime;
+    public float SkillReuseTime { get { return skillReuseTime; } set { skillReuseTime = value; } }
+
+    [SerializeField]
     float followMinDistance;
     public float FollowMinDistance { get { return followMinDistance; } set { followMinDistance = value; } }
 
@@ -210,12 +214,13 @@ public class EnemyData : EntityData
 
     public EnemyData() { }
     public EnemyData(string name, string shape, string color, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust, float knockBackDamage, 
-        float skillMinDistance, float skillUseRange, float followMinDistance, float stopMinDistance, int prefabCount) : base(name, shape, color, hp, speed, stunTime, weight, drag, knockBackThrust)
+        float skillMinDistance, float skillUseRange, float skillReuseTime, float followMinDistance, float stopMinDistance, int prefabCount) : base(name, shape, color, hp, speed, stunTime, weight, drag, knockBackThrust)
     {
         this.knockBackThrust = knockBackThrust;
         this.knockBackDamage = knockBackDamage;
         this.skillMinDistance = skillMinDistance;
         this.skillUseRange = skillUseRange;
+        this.skillReuseTime = skillReuseTime;
         this.followMinDistance = followMinDistance;
         this.stopMinDistance = stopMinDistance;
         this.prefabCount = prefabCount;
@@ -223,7 +228,7 @@ public class EnemyData : EntityData
 
     public EnemyData CopyData()
     {
-        return new EnemyData(name, shape, color, hp, speed, stunTime, weight, drag, knockBackThrust, knockBackDamage, skillMinDistance, skillUseRange, followMinDistance, stopMinDistance, prefabCount);
+        return new EnemyData(name, shape, color, hp, speed, stunTime, weight, drag, knockBackThrust, knockBackDamage, skillMinDistance, skillUseRange, skillReuseTime, followMinDistance, stopMinDistance, prefabCount);
     }
 }
 
@@ -294,21 +299,29 @@ public class SkillData
 
     public bool CanUseSkill(SkillUseType skillType)
     {
-        return name != SkillName.None && useType == skillType && UseCount >= 1;
+        return name != SkillName.None && useType == skillType && useCount >= 1;
     }
 
     public void UseSkill(List<SkillData> skillDatas)
     {
+        Debug.Log("UseSkill");
+
         if (CanUseSkill(useType) == false) return;
 
+        Debug.Log("UseSkill11");
+
         useCount -= 1;
-        if (useCount <= 0) skillDatas.Remove(this);
+        if (useCount <= 0)
+        {
+            bool temp = skillDatas.Remove(this);
+            Debug.Log(temp);
+        }
     }
 
     public void CountUp()
     {
         SkillData originData = DatabaseManager.Instance.ReturnSkillData(Name).CopyData();
-        UseCount += originData.UseCount;
+        useCount += originData.useCount;
     }
 
     public bool CanHitSkill(string tag)

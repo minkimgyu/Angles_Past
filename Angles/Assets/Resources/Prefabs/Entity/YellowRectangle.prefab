@@ -83,7 +83,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1483472553
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 0a8709bca6c759149b4358689f1f5dad, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -156,21 +156,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2
   rigid: {fileID: 0}
-  innerImage: {fileID: 0}
   followComponent: {fileID: 0}
   basicReflectComponent: {fileID: 0}
+  forceComponent: {fileID: 0}
   enemyData:
     name: 
+    shape: 
+    color: 
     hp: 0
     speed: 0
     stunTime: 0
     weight: 0
     drag: 0
     knockBackThrust: 0
+    knockBackDamage: 0
     skillMinDistance: 0
     skillUseRange: 0
+    skillReuseTime: 0
     followMinDistance: 0
     stopMinDistance: 0
+    prefabCount: 0
+  innerSprite: {fileID: 0}
 --- !u!95 &8591132022318302970
 Animator:
   serializedVersion: 5
@@ -260,6 +266,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalSkillName: 8
   loadSkillDatas: []
+  loadBasicSkills: []
 --- !u!114 &1123505908519863153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,7 +291,7 @@ GameObject:
   - component: {fileID: 3409804553801936918}
   m_Layer: 0
   m_Name: InnerColor
-  m_TagString: InnerColor
+  m_TagString: InnerSprite
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -344,7 +351,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1483472553
   m_SortingLayer: 3
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0

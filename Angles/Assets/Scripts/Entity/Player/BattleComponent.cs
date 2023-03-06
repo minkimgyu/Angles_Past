@@ -131,12 +131,12 @@ public class BattleComponent : BasicBattleComponent
             data = SkillData.CopyData();
             SkillData.ResetSkill(); // 플레이어 보유 스킬은 리셋
 
-            AddSkillToList(data, skillUseType);
+            AddToDataList(data, skillUseType);
         }
         else if(NormalSkillData.CanUseSkill(skillUseType) == true) // 스킬을 사용할 수 없는 경우 기본 스킬을 사용하게 한다.
         {
             data = NormalSkillData.CopyData();
-            AddSkillToList(data, skillUseType);
+            AddToDataList(data, skillUseType);
         }
     }
 
@@ -171,52 +171,36 @@ public class BattleComponent : BasicBattleComponent
         return null;
     }
 
-    //fix이면 먹을 경우 재사용
-    void AddSkillToList(SkillData data, SkillUseType skillUseType)
-    {
-        if(data.Usage == SkillUsage.Overlap)
-        {
-            int index = CheckSkillList(data.Name);
-            if (index != -1)
-            {
-                loadBasicSkills[index].PlayAddition(); // 추가 함수 실행
-            }
-            else
-            {
-                AddToDataList(data, skillUseType);
-            }
-        }
-        else
-        {
-            AddToDataList(data, skillUseType);
-        }
-    }
-
     bool CheckCountUp(SkillData data, SkillUseType skillUseType)
     {
-        if (data.Usage != SkillUsage.CountUp || skillUseType != SkillUseType.Get) return false;
+        print("CheckCountUp1112" + skillUseType);
 
-        if(skillData.Name == data.Name)
+        if (skillUseType != SkillUseType.Get) return false;
+
+        if (data.Usage == SkillUsage.CountUp)
         {
-            print("Name");
-            skillData.CountUp();
+            print("CheckCountUp");
+            SkillData loadData = ReturnSkillData(data.Name);
+            if (loadData == null) return false;
+
+            loadData.CountUp();
+            SkillData.ResetSkill(); // 플레이어 보유 스킬은 리셋
             return true;
         }
-        else
+        else if (data.Usage == SkillUsage.Overlap)
         {
-
-            print("loadData.CountUp()");
-
+            print("Overlap");
             int index = CheckSkillList(data.Name);
-
             if (index == -1) return false;
-            else
-            {
-                SkillData loadData = ReturnSkillData(data.Name);
-                loadData.CountUp();
-                return true;
-            }
+
+            print(index);
+
+            loadBasicSkills[index].PlayAddition(); // 추가 함수 실행
+            SkillData.ResetSkill(); // 플레이어 보유 스킬은 리셋
+            return true;
         }
+
+        return false;
     }
     
     void AddToDataList(SkillData data, SkillUseType skillUseType)

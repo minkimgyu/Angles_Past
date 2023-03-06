@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 704931705847281615}
   m_Layer: 0
   m_Name: InnerColor
-  m_TagString: InnerColor
+  m_TagString: InnerSprite
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,8 +118,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1483472553
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: f35af6ef9f9c83c4dafc299c73700d4a, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
@@ -215,7 +215,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1483472553
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: ac5fc879886b1174b839b9770999a78d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -278,21 +278,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2
   rigid: {fileID: 0}
-  innerImage: {fileID: 0}
   followComponent: {fileID: 0}
   basicReflectComponent: {fileID: 0}
+  forceComponent: {fileID: 0}
   enemyData:
     name: 
+    shape: 
+    color: 
     hp: 0
     speed: 0
     stunTime: 0
     weight: 0
     drag: 0
     knockBackThrust: 0
+    knockBackDamage: 0
     skillMinDistance: 0
     skillUseRange: 0
+    skillReuseTime: 0
     followMinDistance: 0
     stopMinDistance: 0
+    prefabCount: 0
+  innerSprite: {fileID: 0}
 --- !u!95 &2171168974288439585
 Animator:
   serializedVersion: 5
@@ -382,6 +388,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalSkillName: 9
   loadSkillDatas: []
+  loadBasicSkills: []
 --- !u!114 &3604948749989201945
 MonoBehaviour:
   m_ObjectHideFlags: 0
