@@ -8,14 +8,21 @@ using System;
 public class KnockBackSkill : BasicSkill
 {
     public Color color;
+    public ParticleSystem pushEffect;
 
     public override void PlaySkill(SkillSupportData data, BasicBattleComponent battleComponent)
     {
         base.PlaySkill(data, battleComponent);
         transform.position = data.player.transform.position;
-        effect.PlayEffect();
+        transform.rotation = data.player.transform.rotation;
 
-        print(SkillData.OffsetRange.magnitude);
+        float tempRotation = transform.eulerAngles.z;
+        print(tempRotation);
+
+        var main = pushEffect.main;
+        main.startRotation = -tempRotation * Mathf.Deg2Rad;
+
+        effect.PlayEffect();
 
         RaycastHit2D[] hit = Physics2D.BoxCastAll(transform.position, SkillData.BoxRange, 
             transform.rotation.z, Vector2.right, SkillData.OffsetRange.magnitude, LayerMask.GetMask("Enemy"));

@@ -7,20 +7,13 @@ using System;
 
 public class NormalKnockBackSkill : BasicSkill
 {
-
-
     public override void PlaySkill(SkillSupportData data, BasicBattleComponent battleComponent)
     {
         base.PlaySkill(data, battleComponent);
-        transform.position = data.contactPos[0];
-        effect.PlayEffect();
 
         for (int i = 0; i < data.contactEntity.Count; i++)
         {
             if (SkillData.CanHitSkill(data.contactEntity[i].tag) == false) continue;
-          
-            print(SkillData.KnockBackThrust);
-            print(data.playerDir.magnitude);
             DamageToEntity(data.contactEntity[i].gameObject, SkillData.KnockBackThrust * data.playerDir.magnitude);
         }
 

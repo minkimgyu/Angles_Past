@@ -297,6 +297,20 @@ public class SkillData
 
     #region Fn
 
+    public int ReturnLayerMask()
+    {
+        string[] hitTargetString = new string[hitTarget.Length];
+
+        for (int i = 0; i < hitTarget.Length; i++)
+        {
+            hitTargetString[i] = hitTarget[i].ToString();
+            Debug.Log(hitTargetString[i]);
+        }
+
+        Debug.Log(hitTargetString);
+        return LayerMask.GetMask(hitTargetString);
+    }
+
     public bool CanUseSkill(SkillUseType skillType)
     {
         return name != SkillName.None && useType == skillType && useCount >= 1;
@@ -304,17 +318,12 @@ public class SkillData
 
     public void UseSkill(List<SkillData> skillDatas)
     {
-        Debug.Log("UseSkill");
-
         if (CanUseSkill(useType) == false) return;
-
-        Debug.Log("UseSkill11");
 
         useCount -= 1;
         if (useCount <= 0)
         {
             bool temp = skillDatas.Remove(this);
-            Debug.Log(temp);
         }
     }
 

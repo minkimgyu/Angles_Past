@@ -173,13 +173,10 @@ public class BattleComponent : BasicBattleComponent
 
     bool CheckCountUp(SkillData data, SkillUseType skillUseType)
     {
-        print("CheckCountUp1112" + skillUseType);
-
         if (skillUseType != SkillUseType.Get) return false;
 
         if (data.Usage == SkillUsage.CountUp)
         {
-            print("CheckCountUp");
             SkillData loadData = ReturnSkillData(data.Name);
             if (loadData == null) return false;
 
@@ -189,11 +186,8 @@ public class BattleComponent : BasicBattleComponent
         }
         else if (data.Usage == SkillUsage.Overlap)
         {
-            print("Overlap");
             int index = CheckSkillList(data.Name);
             if (index == -1) return false;
-
-            print(index);
 
             loadBasicSkills[index].PlayAddition(); // 추가 함수 실행
             SkillData.ResetSkill(); // 플레이어 보유 스킬은 리셋

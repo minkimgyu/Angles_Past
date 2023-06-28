@@ -39,8 +39,7 @@ public class Enemy : Entity
     {
         for (int i = 0; i < transform.childCount; i++)
         {
-            if (transform.GetChild(i).CompareTag("InnerSprire") == false) continue;
-
+            if (transform.GetChild(i).CompareTag(EntityTag.InnerSprite.ToString()) == false) continue;
             return transform.GetChild(i).GetComponent<SpriteRenderer>();
         }
 

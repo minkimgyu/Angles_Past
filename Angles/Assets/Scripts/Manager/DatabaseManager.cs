@@ -11,7 +11,7 @@ public enum SkillUseType { None, Contact, Get, Fix, Start, Condition }
 
 public enum SkillUsage { None, Single, Overlap, CountUp } // --> 사용 시, 사용 가능 횟수를 1 빼거나 사용 횟수 차감없이 고정시킴
 
-public enum EntityTag { Player, Enemy, Bullet };
+public enum EntityTag { Player, Enemy, Bullet, InnerSprite };
 
 [System.Serializable]
 public class DamageMethod

@@ -51,6 +51,17 @@ public class BasicSkill : UnitaskUtility
         Entity entity = go.GetComponent<Entity>();
         Vector2 dirToEnemy = (go.transform.position - transform.position).normalized;
 
+        //go 발사 위치, tr 맞는 위치
+        int layerMask = skillData.ReturnLayerMask();
+        print(layerMask);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, dirToEnemy, 20, layerMask); // 맞은애 레이어 가져오기
+        Debug.DrawRay(transform.position, dirToEnemy, Color.red, 1f);
+
+        if (hit.collider != null)
+        {
+            GetEffectUsingName("HitEffect", hit.point, Quaternion.identity);
+        }
+
         entity.GetHit(skillData.Damage, dirToEnemy * knockBackThrust);
     }
 
