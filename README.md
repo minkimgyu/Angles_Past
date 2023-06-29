@@ -8,4 +8,4 @@ https://app.diagrams.net/#G1AzQk0J-2eygBreiQG-24SsmqAXoqTW-L
 
 ## 기획서
 
-[https://app.diagrams.net/#G1AzQk0J-2eygBreiQG-24SsmqAXoqTW-L](https://docs.google.com/presentation/d/1ddHNvmDrkuVR3ZvBcJS1NzRuHPxlrByS7qKpE1mibYI/edit#slide=id.p)https://docs.google.com/presentation/d/1ddHNvmDrkuVR3ZvBcJS1NzRuHPxlrByS7qKpE1mibYI/edit#slide=id.p
+https://docs.google.com/presentation/d/1ddHNvmDrkuVR3ZvBcJS1NzRuHPxlrByS7qKpE1mibYI/edit#slide=id.p
