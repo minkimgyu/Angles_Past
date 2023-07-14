@@ -5,63 +5,82 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using System;
 
-public class StickyBombSkill : BasicSkill
+public class StickyBombSkill
 {
-    public Color color;
+    //public Color color;
 
-    Transform explosionTr;
-    Vector3 dirOnContact;
+    //Transform explosionTr;
+    //Vector3 dirOnContact;
 
-    public async UniTaskVoid SkillTask()
-    {
-        BasicTask.NowRunning = true;
-        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.PreDelay), cancellationToken: BasicTask.source.Token);
-        DamageToRange();
-        effect.PlayEffect();
+    //CancellationTokenSource _source = new();
+    //bool _nowRunning = false;
 
-        BasicTask.NowRunning = false;
+    //public async UniTaskVoid SkillTask()
+    //{
+    //    _nowRunning = true;
+    //    await UniTask.Delay(TimeSpan.FromSeconds(SkillData.PreDelay), cancellationToken: _source.Token);
+    //    DamageToRange();
+    //    effect.PlayEffect();
+
+    //    _nowRunning = false;
 
 
-        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: BasicTask.source.Token);
-        DisableObject();
-    }
+    //    await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: _source.Token);
+    //    DisableObject();
+    //}
 
-    public override void PlayCountUp(SkillData data)
-    {
-        base.PlayCountUp(data);
+    //public override void PlaySkill(SkillSupportData data, BasicBattleComponent battleComponent)
+    //{
+    //    base.PlaySkill(data, battleComponent);
+    //    explosionTr = data.contactEntity[0].transform;
+    //    dirOnContact = data.contactPos[0] - data.contactEntity[0].transform.position;
+    //    SkillTask().Forget();
+    //}
 
-        SkillData loadData = DatabaseManager.Instance.ReturnSkillData(data.Name).CopyData();
-        data.UseCount += loadData.UseCount;
-    }
+    //public void DamageToRange()
+    //{
+    //    if (explosionTr == null || explosionTr.gameObject.activeSelf == false) return;
 
-    public override void PlaySkill(SkillSupportData data, BasicBattleComponent battleComponent)
-    {
-        base.PlaySkill(data, battleComponent);
-        explosionTr = data.contactEntity[0].transform;
-        dirOnContact = data.contactPos[0] - data.contactEntity[0].transform.position;
-        SkillTask().Forget();
-    }
+    //    transform.position = explosionTr.position;
 
-    public void DamageToRange()
-    {
-        if (explosionTr == null || explosionTr.gameObject.activeSelf == false) return;
+    //    Vector3 contactPos = transform.position + dirOnContact;
+    //    RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, SkillData.RadiusRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
 
-        transform.position = explosionTr.position;
+    //    for (int i = 0; i < hit.Length; i++)
+    //    {
+    //        if (SkillData.CanHitSkill(hit[i].transform.tag) == false) continue;
+    //        DamageToEntity(hit[i].transform.gameObject, SkillData.KnockBackThrust);
+    //    }
+    //}
 
-        Vector3 contactPos = transform.position + dirOnContact;
-        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, SkillData.RadiusRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.color = color;
+    //    Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
+    //    Gizmos.DrawWireSphere(Vector3.zero, SkillData.RadiusRange);
+    //}
 
-        for (int i = 0; i < hit.Length; i++)
-        {
-            if (SkillData.CanHitSkill(hit[i].transform.tag) == false) continue;
-            DamageToEntity(hit[i].transform.gameObject, SkillData.KnockBackThrust);
-        }
-    }
+    //public override void PlayEffect()
+    //{
+    //    throw new NotImplementedException();
+    //}
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = color;
-        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
-        Gizmos.DrawWireSphere(Vector3.zero, SkillData.RadiusRange);
-    }
+    //private void OnDestroy()
+    //{
+    //    _source.Cancel();
+    //    _source.Dispose();
+    //}
+
+    //private void OnEnable()
+    //{
+    //    if (_source != null)
+    //        _source.Dispose();
+
+    //    _source = new();
+    //}
+
+    //private void OnDisable()
+    //{
+    //    _source.Cancel();
+    //}
 }

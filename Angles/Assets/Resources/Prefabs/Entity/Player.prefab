@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4491371347988923602}
   - component: {fileID: 4491371347988923600}
   - component: {fileID: 4491371347988923607}
+  - component: {fileID: 2408303065919466091}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -109,7 +110,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 2
+  m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -282,10 +283,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b42996780ef6c6049aabcd8ac5e5e798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 4
-  rigid: {fileID: 0}
-  innerImage: {fileID: 0}
-  spawnAssistant: {fileID: 0}
+  inheritedTag: 0
+  _data:
+    name: 
+    shape: 
+    color: 
+    hp: 0
+    speed: 0
+    stunTime: 0
+    weight: 0
+    drag: 0
+    knockBackThrust: 0
+    readySpeed: 5
+    speedRatio: 0
+    minSpeedRatio: 0
+    maxSpeedRatio: 0
+    rushThrust: 0
+    rushRatio: 0
+    rushRecoverRatio: 0
+    rushTime: 0
+    attackCancelOffset: 0
+    reflectThrust: 0
+    maxDashCount: 0
+    dashTime: 0
+    dashThrust: 0
+    dashRatio: 0
+    dashRecoverRatio: 0
 --- !u!114 &4491371347988923603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,20 +357,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1638d4b05d9f4e145b75023474c6c5cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalSkillName: 1
-  loadSkillDatas: []
-  contactDatas: []
-  skillData:
-    name: 0
-    useType: 0
-    useCount: 0
-    damage: 0
-    knockBackThrust: 0
-    disableTime: 0
-    hitTarget: 
-    prefabCount: 0
-  contactTag: 1
-  skillParent: {fileID: 0}
+  tags: 
+  m_contactDatas: []
+  m_possessingSkills: []
 --- !u!114 &4491371347988923600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,8 +384,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f09410742d122643b99338d14d95d22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionMode: 2
-  actionTag: Wall
+  tags: 
+--- !u!114 &2408303065919466091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4491371347988923623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a494a27d0946e4b449f7118f7a65dca5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_buffs: []
 --- !u!1 &4491371348358794610
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,138 +3,137 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class BasicController
-{
-    protected Vector2 mainVec = Vector2.zero;
-    public virtual Vector2 MainVec
-    {
-        get { return mainVec; }
-    }
+//public class BasicController
+//{
+//    protected Vector2 mainVec = Vector2.zero;
+//    public virtual Vector2 MainVec
+//    {
+//        get { return mainVec; }
+//    }
 
-    Vector2 loadVec = Vector2.zero;
-    public Vector2 LoadVec
-    {
-        get { return loadVec; }
-        set { loadVec = value; }
-    }
+//    Vector2 loadVec = Vector2.zero;
+//    public Vector2 LoadVec
+//    {
+//        get { return loadVec; }
+//        set { loadVec = value; }
+//    }
 
-    public bool CheckCancelAttack(float offset)
-    {
-        float xOffset = Mathf.Abs(loadVec.x - MainVec.x);
-        float yOffset = Mathf.Abs(loadVec.y - MainVec.y);
+//    public bool CheckCancelAttack(float offset)
+//    {
+//        float xOffset = Mathf.Abs(loadVec.x - MainVec.x);
+//        float yOffset = Mathf.Abs(loadVec.y - MainVec.y);
 
-        if (xOffset >= offset || yOffset >= offset)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+//        if (xOffset >= offset || yOffset >= offset)
+//        {
+//            return true;
+//        }
+//        else
+//        {
+//            return false;
+//        }
+//    }
 
-    public bool CheckNowUseDash()
-    {
-        return mainVec != Vector2.zero;
-    }
+//    public void SetLoadVec()
+//    {
+//        loadVec.Set(mainVec.x, mainVec.y);
+//    }
 
-    public void SetLoadVec()
-    {
-        loadVec.Set(mainVec.x, mainVec.y);
-    }
+//    public void SetMainVec(float x, float y)
+//    {
+//        mainVec.Set(x, y);
+//    }
+//}
 
-    public void SetMainVec(float x, float y)
-    {
-        mainVec.Set(x, y);
-    }
-}
-
-public class KeyController : BasicController
-{
+//public class KeyController : BasicController
+//{
     
-}
+//}
 
-public class JoyController : BasicController
-{
-    MoveJoystick moveJoystick;
+//public class JoyController : BasicController
+//{
+//    MoveJoystick moveJoystick;
 
-    public JoyController(MoveJoystick moveJoy)
-    {
-        moveJoystick = moveJoy;
-    }
+//    public JoyController(MoveJoystick moveJoy)
+//    {
+//        moveJoystick = moveJoy;
+//    }
 
-    public override Vector2 MainVec
-    {
-        get {
-            SetMainVec(moveJoystick.Horizontal, moveJoystick.Vertical);
-            return mainVec; 
-        }
-    }
-}
+//    public override Vector2 MainVec
+//    {
+//        get {
+//            SetMainVec(moveJoystick.Horizontal, moveJoystick.Vertical);
+//            return mainVec; 
+//        }
+//    }
+//}
 
 
 public class MoveInputComponent : MonoBehaviour
 {
-    JoyController joyController;
-    KeyController keyController;
+    //JoyController joyController;
+    //KeyController keyController;
 
-    MoveJoystick moveJoy;
+    //MoveJoystick moveJoy;
 
-    private void Awake()
-    {
-        moveJoy = GetComponent<MoveJoystick>();
-        moveJoy.fixedUpdateAction += SubUpdate;
+    //private void Awake()
+    //{
+    //    moveJoy = GetComponent<MoveJoystick>();
 
-        joyController = new JoyController(moveJoy);
-        keyController = new KeyController();
-    }
+    //    joyController = new JoyController(moveJoy);
+    //    keyController = new KeyController();
+    //}
 
-    public Vector2 ReturnMoveVec()
-    {
-        if(joyController.MainVec != Vector2.zero)
-        {
-            return joyController.MainVec;
-        }
-        else
-        {
-            return keyController.MainVec;
-        }
-    }
+    //public Vector2 ReturnMoveVec()
+    //{
+    //    if(joyController.MainVec != Vector2.zero)
+    //    {
+    //        return joyController.MainVec;
+    //    }
+    //    else
+    //    {
+    //        return keyController.MainVec;
+    //    }
+    //}
 
-    void SubUpdate()
-    {
-        keyController.SetMainVec(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-    }
+    //private void FixedUpdate()
+    //{
+    //    SubUpdate();
+    //}
 
-    public bool NowCancelAttack()
-    {
-        float offset = DatabaseManager.Instance.PlayerData.AttackCancelOffset;
+    //void SubUpdate()
+    //{
+    //    keyController.SetMainVec(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+    //}
 
-        if (joyController.CheckCancelAttack(offset) == true || keyController.CheckCancelAttack(offset) == true)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+    //public bool NowCancelAttack()
+    //{
+    //    float offset = DatabaseManager.Instance.PlayerData.AttackCancelOffset;
 
-    public bool NowCanDash()
-    {
-        if (joyController.CheckNowUseDash() == true || keyController.CheckNowUseDash() == true)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+    //    if (joyController.CheckCancelAttack(offset) == true || keyController.CheckCancelAttack(offset) == true)
+    //    {
+    //        return true;
+    //    }
+    //    else
+    //    {
+    //        return false;
+    //    }
+    //}
 
-    public void SetLoadVec()
-    {
-        joyController.SetLoadVec();
-        keyController.SetLoadVec(); 
-    }
+    ////public bool NowCanDash()
+    ////{
+    ////    if (joyController.CheckNowUseDash() == true || keyController.CheckNowUseDash() == true)
+    ////    {
+    ////        return true;
+    ////    }
+    ////    else
+    ////    {
+    ////        return false;
+    ////    }
+    ////}
+
+    //public void SetLoadVec()
+    //{
+    //    joyController.SetLoadVec();
+    //    keyController.SetLoadVec(); 
+    //}
 }

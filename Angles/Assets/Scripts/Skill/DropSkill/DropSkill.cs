@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class DropSkill : MonoBehaviour
 {
-    public SkillName skillName;
+    //public SkillName skillName;
 }

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: EntityDB
   m_EditorClassIdentifier: 
   Player:
-    name: "Player\r"
-    shape: "Circle\r"
-    color: "White\r"
+    name: Player
+    shape: Circle
+    color: White
     hp: 1
     speed: 5
     stunTime: 0.5
@@ -28,14 +28,15 @@ MonoBehaviour:
     maxSpeedRatio: 1
     rushThrust: 30
     rushRatio: 0
-    storedRushRatio: 0
-    rushTime: 3
+    rushRecoverRatio: 0.01
+    rushTime: 1.5
     attackCancelOffset: 0.2
     reflectThrust: 20
     maxDashCount: 3
     dashTime: 0.3
     dashThrust: 20
     dashRatio: 1
+    dashRecoverRatio: 0.001
   Enemy:
   - name: YellowTriangle
     shape: Triangle
@@ -49,6 +50,7 @@ MonoBehaviour:
     knockBackDamage: 0.3
     skillMinDistance: 2
     skillUseRange: 5
+    skillReuseTime: 0
     followMinDistance: 2.5
     stopMinDistance: 2
     prefabCount: 3
@@ -64,6 +66,7 @@ MonoBehaviour:
     knockBackDamage: 0.3
     skillMinDistance: 2
     skillUseRange: 3
+    skillReuseTime: 0
     followMinDistance: 2
     stopMinDistance: 1.5
     prefabCount: 3
@@ -77,10 +80,11 @@ MonoBehaviour:
     drag: 1.5
     knockBackThrust: 5
     knockBackDamage: 0.3
-    skillMinDistance: 2
-    skillUseRange: 3
-    followMinDistance: 2
-    stopMinDistance: 1.5
+    skillMinDistance: 7
+    skillUseRange: 0
+    skillReuseTime: 3
+    followMinDistance: 7
+    stopMinDistance: 5.5
     prefabCount: 3
   - name: YellowHexagon
     shape: Hexagon
@@ -92,10 +96,11 @@ MonoBehaviour:
     drag: 1.5
     knockBackThrust: 5
     knockBackDamage: 0.3
-    skillMinDistance: 2
-    skillUseRange: 4
-    followMinDistance: 2
-    stopMinDistance: 1.5
+    skillMinDistance: 3.5
+    skillUseRange: 2.5
+    skillReuseTime: 5
+    followMinDistance: 3.5
+    stopMinDistance: 3
     prefabCount: 3
   - name: RedTriangle
     shape: Triangle
@@ -109,6 +114,7 @@ MonoBehaviour:
     knockBackDamage: 0.3
     skillMinDistance: 2
     skillUseRange: 2
+    skillReuseTime: 0
     followMinDistance: 2
     stopMinDistance: 1.5
     prefabCount: 3
@@ -124,6 +130,7 @@ MonoBehaviour:
     knockBackDamage: 0.3
     skillMinDistance: 2
     skillUseRange: 3
+    skillReuseTime: 0
     followMinDistance: 2
     stopMinDistance: 1.5
     prefabCount: 3
@@ -139,12 +146,13 @@ MonoBehaviour:
     knockBackDamage: 0.3
     skillMinDistance: 2
     skillUseRange: 3
+    skillReuseTime: 3
     followMinDistance: 2
     stopMinDistance: 1.5
     prefabCount: 3
-  - name: "RedHexagon\r"
-    shape: "Hexagon\r"
-    color: "Red\r"
+  - name: RedHexagon
+    shape: Hexagon
+    color: Red
     hp: 16
     speed: 2
     stunTime: 1.5
@@ -154,12 +162,15 @@ MonoBehaviour:
     knockBackDamage: 0.3
     skillMinDistance: 2
     skillUseRange: 4
+    skillReuseTime: 5
     followMinDistance: 2
     stopMinDistance: 1.5
     prefabCount: 3
   Skill:
-  - name: 1
+  - name: NormalKnockBack
     useType: 1
+    usage: 1
+    synthesis: 0
     useCount: 1
     useTick: 0
     preDelay: 0
@@ -172,148 +183,19 @@ MonoBehaviour:
     disableTime: 3
     hitTarget: 01000000
     prefabCount: 2
-  - name: 2
+  - name: KnockBack
     useType: 1
+    usage: 1
+    synthesis: 0
     useCount: 1
     useTick: 0
     preDelay: 0
     duration: 0
     radiusRange: 0
-    boxRange: {x: 5, y: 5}
+    boxRange: {x: 5, y: 3.5}
     offsetRange: {x: 0, y: 1.5}
     damage: 1
     knockBackThrust: 25
     disableTime: 3
     hitTarget: 01000000
     prefabCount: 2
-  - name: 3
-    useType: 2
-    useCount: 1
-    useTick: 0
-    preDelay: 0
-    duration: 10
-    radiusRange: 0
-    boxRange: {x: 0, y: 0}
-    offsetRange: {x: 0, y: 0}
-    damage: 1
-    knockBackThrust: 25
-    disableTime: 3
-    hitTarget: 0100000002000000
-    prefabCount: 2
-  - name: 4
-    useType: 2
-    useCount: 1
-    useTick: 0
-    preDelay: 0
-    duration: 0
-    radiusRange: 5
-    boxRange: {x: 0, y: 0}
-    offsetRange: {x: 0, y: 0}
-    damage: 5
-    knockBackThrust: 25
-    disableTime: 3
-    hitTarget: 01000000
-    prefabCount: 2
-  - name: 5
-    useType: 2
-    useCount: 1
-    useTick: 0.5
-    preDelay: 0
-    duration: 5
-    radiusRange: 2
-    boxRange: {x: 0, y: 0}
-    offsetRange: {x: 0, y: 0}
-    damage: 1
-    knockBackThrust: 25
-    disableTime: 3
-    hitTarget: 01000000
-    prefabCount: 2
-  - name: 6
-    useType: 1
-    useCount: 2
-    useTick: 0
-    preDelay: 2
-    duration: 2
-    radiusRange: 2.5
-    boxRange: {x: 0, y: 0}
-    offsetRange: {x: 0, y: 0}
-    damage: 2
-    knockBackThrust: 25
-    disableTime: 3
-    hitTarget: 01000000
-    prefabCount: 2
-  - name: 7
-    useType: 2
-    useCount: 1
-    useTick: 0.01
-    preDelay: 0
-    duration: 5
-    radiusRange: 1.2
-    boxRange: {x: 0, y: 0}
-    offsetRange: {x: 0, y: 0}
-    damage: 0
-    knockBackThrust: -5
-    disableTime: 3
-    hitTarget: 01000000
-    prefabCount: 2
-  - name: 8
-    useType: 4
-    useCount: 1
-    useTick: 0
-    preDelay: 0
-    duration: 0
-    radiusRange: 2
-    boxRange: {x: 0, y: 0}
-    offsetRange: {x: 0, y: 0}
-    damage: 2
-    knockBackThrust: 25
-    disableTime: 3
-    hitTarget: 0100000000000000
-    prefabCount: 2
-  - name: 9
-    useType: 4
-    useCount: 1
-    useTick: 0
-    preDelay: 0.5
-    duration: 0
-    radiusRange: 0
-    boxRange: {x: 0, y: 0}
-    offsetRange: {x: 0, y: 0}
-    damage: 1
-    knockBackThrust: 25
-    disableTime: 3
-    hitTarget: 00000000
-    prefabCount: 2
-  - name: 10
-    useType: 4
-    useCount: 1
-    useTick: 0
-    preDelay: 0
-    duration: 0
-    radiusRange: 2.5
-    boxRange: {x: 0, y: 0}
-    offsetRange: {x: 0, y: 0}
-    damage: 1
-    knockBackThrust: 25
-    disableTime: 3
-    hitTarget: 00000000
-    prefabCount: 2
-  AdditionalPrefab:
-  - name: TriangleDieEffect
-    count: 3
-    path: Prefabs/Effect/Die/
-  - name: RectangleDieEffect
-    count: 3
-    path: Prefabs/Effect/Die/
-  - name: PentagonDieEffect
-    count: 3
-    path: Prefabs/Effect/Die/
-  - name: HexagonDieEffect
-    count: 3
-    path: Prefabs/Effect/Die/
-  - name: Bullet
-    count: 5
-    path: Prefabs/Entity/
-  - name: "Orb\r"
-    count: 3
-    path: Prefabs/Skill/

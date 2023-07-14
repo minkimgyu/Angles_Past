@@ -143,10 +143,10 @@ public class UpdateDBComponent : UnitaskUtility
         {
             DatabaseManager.Instance.EntityDB.Skill.Add(data as SkillData);
         }
-        else if (dataName == "AdditionalPrefab")
-        {
-            DatabaseManager.Instance.EntityDB.AdditionalPrefab.Add(data as AdditionalPrefabData);
-        }
+        //else if (dataName == "AdditionalPrefab")
+        //{
+        //    DatabaseManager.Instance.EntityDB.AdditionalPrefab.Add(data as AdditionalPrefabData);
+        //}
 
         CheckLoadComplete();
     }
@@ -168,10 +168,10 @@ public class UpdateDBComponent : UnitaskUtility
         {
             tempValue = SplitAsVector(value);
         }
-        else if (property.PropertyType == typeof(SkillName))
-        {
-            tempValue = (SkillName)Enum.Parse(typeof(SkillName), value);
-        }
+        //else if (property.PropertyType == typeof(SkillName))
+        //{
+        //    tempValue = (SkillName)Enum.Parse(typeof(SkillName), value);
+        //}
         else if (property.PropertyType == typeof(SkillUseType))
         {
             tempValue = (SkillUseType)Enum.Parse(typeof(SkillUseType), value);

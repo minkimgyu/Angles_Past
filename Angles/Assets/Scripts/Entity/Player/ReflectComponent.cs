@@ -2,43 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ReflectComponent : BasicReflectComponent
+public class ReflectComponent : TagCheckComponent
 {
-    public ActionMode actionMode;
-    public string actionTag;
-    AttackComponent attackComponent;
+    Rigidbody2D rigid;
 
-    // Start is called before the first frame update
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
-        attackComponent = GetComponent<AttackComponent>();
+        rigid = GetComponent<Rigidbody2D>();
     }
 
-    private void OnCollisionEnter2D(Collision2D col)
+    public Vector2 ResetReflectVec(Vector2 hitPoint) // 반사 벡터
     {
-        ReflectEntity(col);
+        Vector2 velocity = rigid.velocity;
+        return Vector2.Reflect(velocity.normalized, hitPoint).normalized;
     }
 
-    public void ReflectEntity(Collision2D col)
-    {
-        if (entity.PlayerMode != actionMode) return;
-
-        if (col.gameObject.CompareTag(actionTag) == true)
-        {
-            col.gameObject.GetComponent<WallColorChange>().ChangeTileColor(ReturnHitPosition(col));
-            attackComponent.BasicTask.CancelTask(); // 공격 초기화
-            KnockBack(ReflectPlayer(col.contacts[0].normal) * DatabaseManager.Instance.PlayerData.ReflectThrust);
-        }
-    }
-    protected Vector2 ReflectPlayer(Vector2 hitPoint)
-    {
-        Vector2 velocity = entity.rigid.velocity;
-        var dir = Vector2.Reflect(velocity.normalized, hitPoint);
-        return dir;
-    }
-
-    Vector3 ReturnHitPosition(Collision2D collision) // 벽 충돌용
+    Vector3 ReturnHitPosition(Collision2D collision) // 벽 충돌 위치 찾기 --> 벽에 넣어도 상관 없을 것 같음
     {
         Vector3 hitPosition = Vector3.zero;
         foreach (ContactPoint2D hit in collision.contacts)

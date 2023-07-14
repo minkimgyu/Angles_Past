@@ -76,7 +76,7 @@ public class ActionJoystickEditor : Editor
     private SerializedProperty handle;
     private SerializedProperty rush;
     private SerializedProperty actionComponent;
-    private SerializedProperty attackUIComponent;
+    private SerializedProperty fillUIComponent;
 
     protected Vector2 center = new Vector2(0.5f, 0.5f);
 
@@ -90,8 +90,8 @@ public class ActionJoystickEditor : Editor
         background = serializedObject.FindProperty("background");
         handle = serializedObject.FindProperty("handle");
         rush = serializedObject.FindProperty("rush");
-        actionComponent = serializedObject.FindProperty("actionComponent");
-        attackUIComponent = serializedObject.FindProperty("attackUIComponent");
+        //actionComponent = serializedObject.FindProperty("actionComponent");
+        //fillUIComponent = serializedObject.FindProperty("fillUIComponent");
     }
 
     public override void OnInspectorGUI()
@@ -128,8 +128,8 @@ public class ActionJoystickEditor : Editor
         EditorGUILayout.ObjectField(background, new GUIContent("Background", "The background's RectTransform component."));
         EditorGUILayout.ObjectField(handle, new GUIContent("Handle", "The handle's RectTransform component."));
         EditorGUILayout.ObjectField(rush, new GUIContent("rush", "rush fill"));
-        EditorGUILayout.ObjectField(actionComponent, new GUIContent("actionComponent", ""));
-        EditorGUILayout.ObjectField(attackUIComponent, new GUIContent("attackUIComponent", ""));
+        //EditorGUILayout.ObjectField(actionComponent, new GUIContent("actionComponent", "dd"));
+        //EditorGUILayout.ObjectField(fillUIComponent, new GUIContent("fillUIComponent", "ddd"));
     }
 }
 
@@ -143,7 +143,7 @@ public class MoveJoystickEditor : Editor
     private SerializedProperty snapY;
     protected SerializedProperty background;
     private SerializedProperty handle;
-    private SerializedProperty dashUIComponent;
+    private SerializedProperty fillUIComponent;
     private SerializedProperty moveInputComponent;
 
     protected Vector2 center = new Vector2(0.5f, 0.5f);
@@ -157,8 +157,8 @@ public class MoveJoystickEditor : Editor
         snapY = serializedObject.FindProperty("snapY");
         background = serializedObject.FindProperty("background");
         handle = serializedObject.FindProperty("handle");
-        dashUIComponent = serializedObject.FindProperty("dashUIComponent");
-        moveInputComponent = serializedObject.FindProperty("moveInputComponent");
+        //fillUIComponent = serializedObject.FindProperty("fillUIComponent");
+        //moveInputComponent = serializedObject.FindProperty("moveInputComponent");
     }
 
     public override void OnInspectorGUI()
@@ -194,7 +194,7 @@ public class MoveJoystickEditor : Editor
     {
         EditorGUILayout.ObjectField(background, new GUIContent("Background", "The background's RectTransform component."));
         EditorGUILayout.ObjectField(handle, new GUIContent("Handle", "The handle's RectTransform component."));
-        EditorGUILayout.ObjectField(moveInputComponent, new GUIContent("moveInputComponent", ""));
-        EditorGUILayout.ObjectField(dashUIComponent, new GUIContent("dashUIComponent", ""));
+        //EditorGUILayout.ObjectField(moveInputComponent, new GUIContent("moveInputComponent", ""));
+        //EditorGUILayout.ObjectField(fillUIComponent, new GUIContent("fillUIComponent", ""));
     }
 }

@@ -9,12 +9,19 @@ using UnityEngine.UI;
 
 public class ActionJoystick : VariableJoystick
 {
-    Vector3 attackVec;
-
-    public ActionUIComponent attackUIComponent;
-    public ActionComponent actionComponent;
-
     public RectTransform rush;
+
+    float doubleClickedTime = -1.0f;
+    float interval = 0.25f;
+
+    public Action DashAction;
+    public Action AttackAction;
+    public Action AttackReadyAction;
+
+    public Vector2 MainVec
+    {
+        get { return new Vector2(Horizontal, Vertical); }
+    }
 
     protected override void Start()
     {
@@ -31,7 +38,7 @@ public class ActionJoystick : VariableJoystick
     public override void OnDrag(PointerEventData eventData)
     {
         base.OnDrag(eventData);
-        actionComponent.SetActionMode(Horizontal, Vertical);
+        AttackReady(Horizontal, Vertical); // 공격 준비 단계
     }
 
     public override void OnPointerDown(PointerEventData eventData)
@@ -43,14 +50,42 @@ public class ActionJoystick : VariableJoystick
         }
         base.OnPointerDown(eventData);
 
-        actionComponent.CheckCanDash();
+        Dash();
     }
 
     public override void OnPointerUp(PointerEventData eventData)
     {
-        actionComponent.CheckCanAttack(Horizontal, Vertical);
+        Attack(Horizontal, Vertical);
 
         if (joystickType != JoystickType.Fixed) rush.gameObject.SetActive(false);
         base.OnPointerUp(eventData);
+    }
+    public void Dash()
+    {
+        if (NowDoubleClick() == true && DashAction != null) DashAction();
+    }
+
+    public void AttackReady(float horizontal, float vertical)
+    {
+        if (AttackReadyAction != null) AttackReadyAction();
+    }
+
+    public void Attack(float horizontal, float vertical)
+    {
+        if (AttackAction != null) AttackAction();
+    }
+
+    bool NowDoubleClick()
+    {
+        if ((Time.time - doubleClickedTime) < interval)
+        {
+            doubleClickedTime = -1.0f; // 초기화
+            return true;
+        }
+        else
+        {
+            doubleClickedTime = Time.time;
+            return false;
+        }
     }
 }

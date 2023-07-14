@@ -5,83 +5,85 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using System;
 
-public class AttackComponent : ForceComponent
+public class AttackComponent : MonoBehaviour
 {
-    MoveComponent moveComponent;
+    Animator animator;
+    Rigidbody2D rigid;
+    bool _nowAttack = false;
+
+    public bool NowAttack
+    {
+        get { return _nowAttack; }
+    }
+
+    CancellationTokenSource _source = new();
 
     // Start is called before the first frame update
     private void Start()
     {
-        moveComponent = GetComponent<MoveComponent>();
-        entity.fixedUpdateAction += SubUpdate;
-
-        PlayManager.Instance.actionJoy.actionComponent.aniAction += ResetReadyAni;
-        PlayManager.Instance.actionJoy.actionComponent.attackAction += AddForceUsingVec;
-    }
-    void ResetReadyAni(bool nowReady) => entity.Animator.SetBool("NowReady", nowReady);
-
-    void SubUpdate()
-    {
-        if (entity.PlayerMode != ActionMode.Attack) return;
-
-        if (PlayManager.Instance.moveJoy.moveInputComponent.NowCancelAttack() == true) // 현재 공격을 취소해야할 경우
-        {
-            BasicTask.CancelTask();
-            CancelAttack();
-        }
+        animator = GetComponent<Animator>();
+        rigid = GetComponent<Rigidbody2D>();
     }
 
-    public override void AddForceUsingVec(Vector2 attackDir, ForceMode2D forceMode = ForceMode2D.Impulse)
+    //void SubUpdate()
+    //{
+    //    if (PlayManager.Instance.moveJoy.moveInputComponent.NowCancelAttack() == true) // 현재 공격을 취소해야할 경우
+    //    {
+    //        QuickEndTask();
+    //    }
+    //}
+
+    public void AttackReady()
     {
-        if (entity.PlayerMode != ActionMode.Idle && entity.PlayerMode != ActionMode.Attack) return;
-
-        StopEntity();
-
-        PlayManager.Instance.moveJoy.moveInputComponent.SetLoadVec(); // 현재 벡터를 저장해둔다.
-
-        ResetReadyAni(false);
-        entity.Animator.SetBool("NowAttack", true);
-
-        base.AddForceUsingVec(attackDir);
-
-        moveComponent.RotateUsingTransform(entity.rigid.velocity);
-
-        entity.PlayerMode = ActionMode.Attack;
-        WaitAttackEndTask().Forget();
+        
     }
 
-    public async UniTaskVoid WaitAttackEndTask()
+    public void Attack(float rushTime)
     {
-        BasicTask.NowRunning = true;
-        entity.rigid.freezeRotation = true;
+        WaitAttackEndTask(rushTime).Forget();
+    }
 
-        await UniTask.Delay(TimeSpan.FromSeconds(DatabaseManager.Instance.PlayerData.RushTime), cancellationToken: BasicTask.source.Token);
+    public async UniTaskVoid WaitAttackEndTask(float rushTime)
+    {
+        _nowAttack = true;
+        
+
+        //skillComponent 추가 --> 스킬 사용가능하게끔 제작
+
+        await UniTask.Delay(TimeSpan.FromSeconds(rushTime), cancellationToken: _source.Token);
         CancelAttack();
 
-        BasicTask.NowRunning = false;
+        _nowAttack = false;
     }
 
     public void QuickEndTask()
     {
-        BasicTask.CancelTask();
+        _source.Cancel();
         CancelAttack();
     }
 
     public void CancelAttack()
     {
-        entity.PlayerMode = ActionMode.Idle;
-        entity.Animator.SetBool("NowAttack", false);
-        entity.rigid.freezeRotation = false;
+        rigid.freezeRotation = false;
+        _nowAttack = false;
     }
 
-    protected override void OnDisable()
+    private void OnDestroy()
     {
-        base.OnDisable();
+        _source.Cancel();
+        _source.Dispose();
+    }
 
-        entity.fixedUpdateAction -= SubUpdate;
-        if (PlayManager.Instance == null) return;
+    private void OnEnable()
+    {
+        if (_source != null)
+            _source.Dispose();
 
-        PlayManager.Instance.actionJoy.actionComponent.aniAction -= ResetReadyAni;
-        PlayManager.Instance.actionJoy.actionComponent.attackAction -= AddForceUsingVec;
+        _source = new();
+    }
+
+    private void OnDisable()
+    {
+        _source.Cancel();
     }
 }

@@ -13,6 +13,9 @@ TagManager:
   - Ground
   - InnerSprite
   - EffectSprite
+  - FillUISlot
+  - MoveJoystick
+  - AttackJoystick
   layers:
   - Default
   - TransparentFX

@@ -47,12 +47,12 @@ public class Spawner : MonoBehaviour
         bool nowCanSpawn = spawnDatas[level].NowCanSpawn(time);
         if (nowCanSpawn == true)
         {
-            List<Transform> spawnPoints = PlayManager.Instance.player.SpawnAssistant.FindSpawnPoint();
-            if(spawnPoints.Count > 0)
-            {
-                Vector3 pos = spawnPoints[Random.Range(0, spawnPoints.Count)].position;
-                Spawn(pos, spawnDatas[level].spawnCount, spawnDatas[level].spawnEntityName);
-            }
+            //List<Transform> spawnPoints = PlayManager.Instance.player.SpawnAssistant.FindSpawnPoint();
+            //if(spawnPoints.Count > 0)
+            //{
+            //    Vector3 pos = spawnPoints[Random.Range(0, spawnPoints.Count)].position;
+            //    Spawn(pos, spawnDatas[level].spawnCount, spawnDatas[level].spawnEntityName);
+            //}
            
             // 여기에 스폰 데이터 넣기
             level += 1;
@@ -97,7 +97,7 @@ public class Spawner : MonoBehaviour
         {
             EnemyData enemyData = DatabaseManager.Instance.ReturnEnemyData(spawnEntityName);
             GameObject entity = ObjectPooler.SpawnFromPool(spawnEntityName);
-            entity.GetComponent<Enemy>().Init(enemyData);
+            //entity.GetComponent<Enemy>().Init(enemyData);
 
             Vector3 resetPos = SpawnNotOverlap(pos, loadSpawnPos);
             entity.transform.position = resetPos;

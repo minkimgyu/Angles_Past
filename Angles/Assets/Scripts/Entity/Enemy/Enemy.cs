@@ -5,101 +5,152 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class Enemy : Entity
+public abstract class Enemy<T, W> : StateMachineEntity<T, W>, IHealth
 {
-    Player player;
-    public FollowComponent followComponent;
-    public BasicReflectComponent basicReflectComponent;
-    public ForceComponent forceComponent;
+    //public FollowComponent followComponent;
+    //public BasicReflectComponent basicReflectComponent;
+    //public ForceComponent forceComponent;
 
-    public EnemyData enemyData;
+    //private Player m_loadPlayer;
+    //public Player LoadPlayer { get { return m_loadPlayer; } }
 
-    public Action dieAction;
+    public EnemyData m_data;
 
-    public SpriteRenderer innerSprite;
-    string dieEffect;
-
-    public EnemyData EnemyData
+    public EnemyData Data
     {
         get
         {
-            return enemyData;
+            return m_data;
         }
         set
         {
-            enemyData = value;
-            if (rigid == null) return;
+            m_data = value;
+            if (m_rigid == null) return;
 
-            rigid.mass = enemyData.Weight;
-            rigid.drag = enemyData.Drag;
+            m_rigid.mass = m_data.Weight;
+            m_rigid.drag = m_data.Drag;
         }
     }
 
-    SpriteRenderer ReturnEffectImage()
-    {
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            if (transform.GetChild(i).CompareTag(EntityTag.InnerSprite.ToString()) == false) continue;
-            return transform.GetChild(i).GetComponent<SpriteRenderer>();
-        }
+    //private FollowComponent m_followComponent;
+    //public FollowComponent FollowComponent { get { return m_followComponent; } }
 
-        return null;
+    //DashComponent m_dashComponent;
+    //public DashComponent DashComponent { get { return m_dashComponent; } }
+
+    //MoveComponent m_moveComponent;
+    //public MoveComponent MoveComponent { get { return m_moveComponent; } }
+
+    //BattleComponent m_battleComponent;
+    //public BattleComponent BattleComponent { get { return m_battleComponent; } }
+
+    private Rigidbody2D m_rigid;
+    public Rigidbody2D Rigid { get { return m_rigid; } }
+
+    //public enum State
+    //{
+    //    Attack,
+    //    Follow,
+    //    Stop,
+    //    Die
+    //}
+
+    //스테이트들을 보관
+    //private Dictionary<State, IState<Enemy>> m_dicState = new Dictionary<State, IState<Enemy>>();
+
+    protected virtual void Awake()
+    {
+        //m_followComponent = GetComponent<FollowComponent>();
+        //m_dashComponent = GetComponent<DashComponent>();
+        //m_moveComponent = GetComponent<MoveComponent>();
+        m_rigid = GetComponent<Rigidbody2D>();
     }
 
-    private void Awake()
-    {
-        rigid = GetComponent<Rigidbody2D>();
-        innerSprite = ReturnEffectImage();
-    }
     public void Init(EnemyData enemyData)
     {
-        EnemyData = enemyData;
-        hp = enemyData.Hp;
-        dieEffect = ReturnDieEffectName(EnemyData.Shape);
+        m_data = enemyData;
+        //hp = enemyData.Hp;
     }
 
     // Start is called before the first frame update
-    protected override void Start()
+    private void Start()
     {
-        player = PlayManager.Instance.player;
-        followComponent = GetComponent<FollowComponent>();
-        forceComponent = GetComponent<ForceComponent>();
-        basicReflectComponent = GetComponent<BasicReflectComponent>();
+        //m_loadPlayer = PlayManager.Instance.Player;
+
+        ////상태 생성
+        //IState<Enemy> follow = new StateEnemyFollow(); // 적마다 state machine만 다르게 해서 적용시키기
+        //IState<Enemy> attack = new StateEnemyAttack();
+        //IState<Enemy> stop = new StateEnemyStop();
+        //IState<Enemy> die = new StateEnemyDie();
+
+        ////키입력 등에 따라서 언제나 상태를 꺼내 쓸 수 있게 딕셔너리에 보관
+        //m_dicState.Add(State.Attack, attack);
+        //m_dicState.Add(State.Follow, follow);
+        //m_dicState.Add(State.Stop, stop);
+        //m_dicState.Add(State.Die, die);
+
+        ////기본상태는 달리기로 설정.
+        //m_stateMachine = new StateMachine<Enemy>(this, follow);
+
+        //m_stateMachine.SetGlobalState(attack);
     }
 
-    private void OnDisable()
+    public bool IsTarget(EntityTag tag)
     {
-        ObjectPooler.ReturnToPool(gameObject);
+        throw new NotImplementedException();
     }
 
-    public override void GetHit(float damage, Vector3 dir)
+    public void UnderAttack(float healthPoint)
     {
-        base.GetHit(damage);
-        followComponent.WaitFollow();
-        basicReflectComponent.KnockBack(dir);
-    }
-
-    string ReturnDieEffectName(string shape)
-    {
-        List<AdditionalPrefabData> prefabDatas = DatabaseManager.Instance.EntityDB.AdditionalPrefab;
-
-        for (int i = 0; i < prefabDatas.Count; i++)
+        if(m_data.Hp > 0)
         {
-            if (prefabDatas[i].Name.Contains(shape))
+            m_data.Hp -= healthPoint;
+            WhenUnderAttack();
+
+            if (m_data.Hp <= 0)
             {
-                return prefabDatas[i].Name;
+                Die();
+                m_data.Hp = 0;
             }
         }
-
-        return null;
     }
 
-    protected override void Die()
+    abstract public void WhenUnderAttack(); // ---> 색상 변화 or 이펙트 적용
+
+    public void Heal(float healthPoint)
     {
-        if(dieAction != null) dieAction();
-
-        GameObject go = ObjectPooler.SpawnFromPool(dieEffect, transform.position, transform.rotation);
-        go.GetComponent<DieEffect>().Init(enemyData.Color);
-        base.Die();
+        throw new NotImplementedException();
     }
+
+    public void Die()
+    {
+        throw new NotImplementedException();
+    }
+
+
+    //public override void KnockBack(float knockBackThrust)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //private void OnDisable()
+    //{
+    //    ObjectPooler.ReturnToPool(gameObject);
+    //}
+
+    //public override void GetHit(float damage, Vector3 dir)
+    //{
+    //    base.GetHit(damage);
+    //    followComponent.WaitFollow();
+    //    basicReflectComponent.KnockBack(dir);
+    //}
+
+    //protected override void Die()
+    //{
+    //    if(dieAction != null) dieAction();
+
+    //    GameObject go = ObjectPooler.SpawnFromPool(dieEffect, transform.position, transform.rotation);
+    //    go.GetComponent<DieEffect>().Init(enemyData.Color);
+    //    base.Die();
+    //}
 }
