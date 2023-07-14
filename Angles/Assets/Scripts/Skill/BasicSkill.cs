@@ -1,65 +1,84 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using System;
 
-public class BasicSkill : UnitaskUtility
+abstract public class BasicSkill : MonoBehaviour
 {
     [SerializeField]
     SkillData skillData;
+    public SkillData SkillData { get { return skillData; } set { skillData = value; } }
 
-    public SkillData SkillData
+    string skillName;
+
+    DamageComponent damageComponent;
+    BasicEffect effect;
+
+    CancellationTokenSource _source = new();
+
+    protected int layerMask;
+
+    private void Awake()
     {
-        get
-        {
-            return skillData;
-        }
-        set
-        {
-            skillData = value;
-        }
+        layerMask = LayerMask.GetMask("Enemy", "Player");
+
+        skillData = DatabaseManager.Instance.ReturnSkillData(skillName);
+        damageComponent = GetComponent<DamageComponent>();
+        effect = GetComponent<BasicEffect>();
     }
 
-    protected Transform moveTr;
-    protected BattleComponent loadBattle;
-    protected int skillUseCount = 0;
+    protected void DisableObject() => gameObject.SetActive(false);
 
-    protected override void OnEnable()
+    private void OnDisable()
     {
-        base.OnEnable();
-        Invoke("DisableObject", 5f);
+        ObjectPooler.ReturnToPool(gameObject);
     }
 
-    protected virtual void DisableObject() => gameObject.SetActive(false);
+    //protected void Attack(List<GameObject> gos, float knockBackThrust)
+    //{
+    //    Entity entity = go.GetComponent<Entity>();
+    //    Vector2 dirToEnemy = (go.transform.position - transform.position).normalized;
 
-    protected override void OnDisable()
+    //    //go 발사 위치, tr 맞는 위치
+    //    int layerMask = skillData.ReturnLayerMask();
+    //    print(layerMask);
+    //    RaycastHit2D hit = Physics2D.Raycast(transform.position, dirToEnemy, 20, layerMask); // 맞은애 레이어 가져오기
+    //    Debug.DrawRay(transform.position, dirToEnemy, Color.red, 1f);
+
+    //    if (hit.collider != null)
+    //    {
+    //        GetEffectUsingName("HitEffect", hit.point, Quaternion.identity);
+    //    }
+
+    //    entity.GetHit(skillData.Damage, dirToEnemy * knockBackThrust);
+    //}
+
+    public virtual void Attack(List<GameObject> gos, float damage, float knockBackThrust, List<EntityTag> entityTags)
     {
-        moveTr = null;
-        ObjectPooler.ReturnToPool(gameObject);    // 한 객체에 한번만 
-        CancelInvoke();    // Monobehaviour에 Invoke가 있다면
-        base.OnDisable();
+        damageComponent.DamageToEntity(gos, damage, knockBackThrust, entityTags);
     }
 
-    protected GameObject GetEffectUsingName(string name, Vector3 pos, Quaternion rotation, Transform tr = null)
+    public virtual void Attack(List<GameObject> gos, float damage, float knockBackThrust)
+    {
+        damageComponent.DamageToEntity(gos, damage, knockBackThrust);
+    }
+
+    public abstract void PlayEffect();
+
+    GameObject GetEffectUsingName(string name, Vector3 pos, Quaternion rotation, Transform tr = null)
     {
         return ObjectPooler.SpawnFromPool(name, pos, rotation, tr);
     }
 
-    public virtual void Init(Transform tr, BattleComponent battleComponent)
-    {
-        moveTr = tr;
-        loadBattle = battleComponent;
-        skillUseCount = skillData.SkillUseCount;
-        transform.position = tr.position;
-        transform.rotation = tr.rotation;
-    }
+    //public virtual void PlayAddition()
+    //{
+    //    print("PlayAdditionalSkill");
+    //}
 
-    public virtual void PlaySkill(Vector2 dir, List<Collision2D> entity)
-    {
-
-        skillUseCount -= 1;
-        if(skillUseCount < 1)
-        {
-            loadBattle.RemoveSkillFromLoad(this);
-        }
-    }
+    //public virtual void PlayCountUp(SkillData data)
+    //{
+    //    print("PlayCountUp");
+    //}
 }

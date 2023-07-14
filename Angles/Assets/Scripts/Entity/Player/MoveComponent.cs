@@ -4,78 +4,75 @@ using UnityEngine;
 
 public class MoveComponent : MonoBehaviour
 {
-    Player player;
     Rigidbody2D rigid;
-
-    Vector2 rotationVec = Vector2.zero;
 
     // Start is called before the first frame update
     void Start()
     {
-        player = GetComponent<Player>();
-        player.fixedUpdateAction += SubUpdate;
-
         rigid = GetComponent<Rigidbody2D>();
     }
 
-    float CheckCanRotate(Vector2 vec)
+    float ReturnRotationAngle(Vector2 vec)
     {
         return Mathf.Atan2(vec.y, vec.x) * Mathf.Rad2Deg;
     }
 
-    public void RotateUsingVelocity(Vector2 vec)
+    public void RotateUsingRigidbody(Vector2 vec)
     {
-        //float lerpAngle = Mathf.Lerp(rigid.rotation, CheckCanRotate(vec), Time.deltaTime * 3);
-        rigid.MoveRotation(CheckCanRotate(vec));
+        rigid.MoveRotation(ReturnRotationAngle(vec));
     }
 
     public void RotateUsingTransform(Vector2 vec)
     {
-        //float lerpAngle = Mathf.Lerp(rigid.rotation, CheckCanRotate(vec), Time.deltaTime * 3);
-        transform.rotation = Quaternion.Euler(0, 0, CheckCanRotate(vec));
+        transform.rotation = Quaternion.Euler(0, 0, ReturnRotationAngle(vec));
     }
 
-    void RotationPlayer()
+    void RotationPlayer(Vector2 vec, bool useRigid)
     {
-        bool isAttackReady = PlayManager.Instance.actionJoy.actionComponent.Mode == ActionMode.AttackReady;
-        if (isAttackReady == true)
-        {
-            rotationVec.Set(PlayManager.Instance.actionJoy.Horizontal, PlayManager.Instance.actionJoy.Vertical);
-        }
-        else
-        {
-            bool nowPlayerMove = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec() == Vector2.zero;
-            if (nowPlayerMove == true) return;
+        //bool isAttackReady = PlayManager.Instance.actionJoy.actionComponent.Mode == ActionMode.AttackReady;
+        //if (isAttackReady == true)
+        //{
+        //    rotationVec.Set(PlayManager.Instance.actionJoy.Horizontal, PlayManager.Instance.actionJoy.Vertical);
+        //}
+        //else
+        //{
+        //    bool nowPlayerMove = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec() == Vector2.zero;
+        //    if (nowPlayerMove == true) return;
 
-            rotationVec.Set(rigid.velocity.x, rigid.velocity.y);
-        }
+        //    rotationVec.Set(rigid.velocity.x, rigid.velocity.y);
+        //}
 
-        RotateUsingVelocity(rotationVec.normalized);
+        if(useRigid) RotateUsingRigidbody(vec);
+        else RotateUsingTransform(vec);
     }
 
-    void SubUpdate()
+    public void Stop()
     {
-        if (player.PlayerMode != ActionMode.Idle) return;
-        Move();
-        RotationPlayer();
+        rigid.velocity = Vector2.zero;
     }
 
-    public void Move()
+    public void Move(Vector2 moveDir, Vector2 rotationDir, float speed, bool useRigid = true)
     {
-        bool nowReady = PlayManager.Instance.actionJoy.actionComponent.Mode == ActionMode.AttackReady;
-        
-        if (nowReady == true)
-        {
-            rigid.velocity = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec().normalized * DatabaseManager.Instance.ReadySpeed;
-        }
-        else
-        {
-            rigid.velocity = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec().normalized * DatabaseManager.Instance.MoveSpeed;
-        }
+        //bool nowReady = PlayManager.Instance.actionJoy.actionComponent.Mode == ActionMode.AttackReady;
+
+        //if (nowReady == true)
+        //{
+        //    rigid.velocity = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec().normalized * DatabaseManager.Instance.PlayerData.ReadySpeed * DatabaseManager.Instance.PlayerData.SpeedRatio;
+        //}
+        //else
+        //{
+        //    rigid.velocity = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec().normalized * DatabaseManager.Instance.PlayerData.Speed * DatabaseManager.Instance.PlayerData.SpeedRatio;
+        //}
+
+        rigid.velocity = moveDir.normalized * speed;
+
+        RotationPlayer(rotationDir, useRigid);
     }
 
-    private void OnDisable()
+    public void Move(Vector2 moveDir, float speed, bool useRigid = true)
     {
-        player.fixedUpdateAction -= SubUpdate;
+        rigid.velocity = moveDir.normalized * speed;
+
+        RotationPlayer(moveDir.normalized, useRigid);
     }
 }

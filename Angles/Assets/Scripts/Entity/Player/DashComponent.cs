@@ -5,42 +5,88 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using System;
 
-public class DashComponent : UnitaskUtility
+public class DashComponent : MonoBehaviour
 {
-    Player player;
+    Rigidbody2D _rigid;
+    CancellationTokenSource _source = new();
+    bool _nowDash = false;
+    bool _nowFinish = false;
+    public bool NowFinish
+    {
+        get { return _nowFinish; }
+    }
+
+    public bool NowDash
+    {
+        get { return _nowDash; }
+    }
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        player = GetComponent<Player>();
-        PlayManager.Instance.actionJoy.actionComponent.dashAction += PlayDash;
+        _rigid = GetComponent<Rigidbody2D>();
     }
 
-    public void PlayDash(Vector2 dir)
+    public void PlayDash(Vector2 dir, float thrust, float duration)
     {
-        if (player.PlayerMode != ActionMode.Idle) return;
+        StopEntity();
+        if (_nowDash == true) return;
 
-        DatabaseManager.Instance.SubtractRatio(); // 대쉬 사용한 만큼 빼준다.
-        DashTask(dir).Forget();
+        _nowFinish = false;
+        DashTask(dir, thrust, duration).Forget();
     }
 
-    private async UniTaskVoid DashTask(Vector2 dir)
+    private async UniTaskVoid DashTask(Vector2 dir, float thrust, float duration)
     {
-        NowRunning = true;
-        player.PlayerMode = ActionMode.Dash;
+        _nowDash = true;
+        _rigid.freezeRotation = true;
 
-        player.rigid.AddForce(dir * DatabaseManager.Instance.DashThrust, ForceMode2D.Impulse);
-        await UniTask.Delay(TimeSpan.FromSeconds(DatabaseManager.Instance.DashTime), cancellationToken: source.Token);
+        _rigid.AddForce(dir * thrust, ForceMode2D.Impulse);
+        await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: _source.Token);
 
-        player.PlayerMode = ActionMode.Idle;
-        NowRunning = false;
+        _rigid.freezeRotation = false;
+        _nowDash = false;
+
+        _nowFinish = true;
+        print("DashEnd");
     }
 
-    protected override void OnDisable()
+    public void QuickEndTask()
     {
-        base.OnDisable();
-        if (PlayManager.Instance == null) return;
+        _source.Cancel();
+        _source.Dispose();
+        _source = new(); // 취소하면 다시 넣어주기
+        CancelDash();
+    }
 
-        PlayManager.Instance.actionJoy.actionComponent.dashAction -= PlayDash;
+    public void CancelDash()
+    {
+        _rigid.freezeRotation = false;
+        _nowDash = false;
+        print("DashEndPrint");
+    }
+
+    private void StopEntity()
+    {
+        _rigid.velocity = Vector2.zero;
+    }
+
+    private void OnDestroy()
+    {
+        _source.Cancel();
+        _source.Dispose();
+    }
+
+    private void OnEnable()
+    {
+        if (_source != null)
+            _source.Dispose();
+
+        _source = new();
+    }
+
+    private void OnDisable()
+    {
+        _source.Cancel();
     }
 }

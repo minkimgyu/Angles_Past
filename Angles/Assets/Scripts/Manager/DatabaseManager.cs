@@ -2,116 +2,61 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ActionMode { Idle, AttackReady, Attack, Dash, Follow, Hit }; // 동작 상태 모음
+//public enum ActionMode { Idle, AttackReady, Attack, Dash, Follow, Hit }; // 동작 상태 모음
 
-public enum SkillName { None, NormalKnockBack, KnockBack, RotationBall, BigImpact, Blade, StickyBomb, GravitationalField }; // 동작 상태 모음
+//public enum SkillName { None, NormalKnockBack, KnockBack, RotationBall, BigImpact, Blade, StickyBomb, GravitationalField, 
+//    SelfDestruction, ShootBullet, ShockWave }; // 동작 상태 모음
 
-public enum SkillUseType { None, Contact, Get, Start }
+public enum SkillUseType { None, Contact, Get, Fix, Start, Condition }
 
-public enum EntityTag { Player, Enemy, Wall };
+public enum SkillUsage { None, Single} // --> 사용 시, 사용 가능 횟수를 1 빼거나 사용 횟수 차감없이 고정시킴
+// 스킬 사용 시, 횟수 차감 여부
+public enum SkillSynthesis { CountUp, Overlap } // --> 사용 시, 사용 가능 횟수를 1 빼거나 사용 횟수 차감없이 고정시킴
+// 스킬 획득 시, 횟수 증감 여부
+public enum EntityTag { Player, Enemy, Bullet, InnerSprite, Wall};
+
+[System.Serializable]
+public class DamageMethod
+{
+    public float damage;
+    public List<EntityTag> enemyTags;
+
+    public bool CheckTags(string tag)
+    {
+        for (int i = 0; i < enemyTags.Count; i++)
+        {
+            if (tag == enemyTags[i].ToString()) return true;
+        }
+
+        return false;
+    }
+}
 
 public class DatabaseManager : Singleton<DatabaseManager>
 {
-    #region 변수 모음
-
-    [Header("Attack")]
     [SerializeField]
-    int attackThrust = 5;
-    public int AttackThrust { get { return attackThrust; } set { attackThrust = value; } }
+    PlayerData playerData;
+    public PlayerData PlayerData { get { return playerData; } set { playerData = value; } }
 
-    [SerializeField]
-    int reflectAttackThrust = 2;
-    public int ReflectAttackThrust { get { return reflectAttackThrust; } set { reflectAttackThrust = value; } }
+    public List<ScriptableSkillData> m_scriptableSkillDatas; // 스킬 데이터 모음
 
-    [SerializeField]
-    float attackTime = 3f;
-    public float AttackTime { get { return attackTime; } set { attackTime = value; } }
-
-    [SerializeField]
-    float attackCancelOffset = 0.2f;
-    public float AttackCancelOffset { get { return attackCancelOffset; } set { attackCancelOffset = value; } }
-
-    [Header("Dash")]
-    [SerializeField]
-    float maxDashCount = 3;
-    public float MaxDashCount { get { return maxDashCount; } set { maxDashCount = value; } }
-
-    [SerializeField]
-    float dashTime = 0.5f;
-    public float DashTime { get { return dashTime; } set { dashTime = value; } }
-
-    [SerializeField]
-    int dashThrust = 8;
-    public int DashThrust { get { return dashThrust; } set { dashThrust = value; } }
-
-    [SerializeField]
-    float dashRatio = 1;
-    public float DashRatio
+    protected override void Awake()
     {
-        get
-        {
-            return dashRatio;
-        } 
-        set 
-        {
-            dashRatio = value;
-
-            if (dashRatio > 1f)
-            {
-                dashRatio = 1f;
-                return;
-            }
-        } 
+        base.Awake();
     }
 
-    [Header("Move")]
-    [SerializeField]
-    float moveSpeed = 5;
-    public float MoveSpeed{ get{ return moveSpeed; } set { moveSpeed = value; } }
+    public SkillData ReturnSkillData(string name)
+    {
+        return EntityDB.Skill.Find(x => x.Name == name).CopyData();
+    }
 
-    [SerializeField]
-    float readySpeed = 2; // 움직임
-    public float ReadySpeed { get { return readySpeed; } set { readySpeed = value; } }
-
-    [Header("Follow")]
-    [SerializeField]
-    float followSpeed = 3;
-    public float FollowSpeed { get { return followSpeed; } set { followSpeed = value; } }
-
-    [SerializeField]
-    float minFollowDistance = 5;
-    public float MinFollowDistance { get { return minFollowDistance; } set { minFollowDistance = value; } }
-
-    [SerializeField]
-    float waitTime = 5;
-    public float WaitTime { get { return waitTime; } set { waitTime = value; } }
-
-    [Header("Damage")]
-    [SerializeField]
-    float attackDamage = 5;
-    public float AttackDamage { get { return attackDamage; } set { attackDamage = value; } }
-
-    #endregion
+    public EnemyData ReturnEnemyData(string name)
+    {
+        return EntityDB.Enemy.Find(x => x.Name == name).CopyData();
+    }
 
     [Header("EntityDB")]
     [SerializeField]
     EntityDB entityDB;
-    public EntityDB EntityDB { get { return entityDB; } set { entityDB = value; } }
-
-    public bool CanUseDash()
-    {
-        if(DashRatio - 1 / MaxDashCount >= 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public void SubtractRatio() 
-    {
-        DashRatio -= 1 / MaxDashCount;
-    }
+    public EntityDB EntityDB { get { return entityDB; }}
 }

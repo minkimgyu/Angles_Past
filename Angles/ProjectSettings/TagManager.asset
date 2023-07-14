@@ -11,21 +11,26 @@ TagManager:
   - DropItem
   - Area
   - Ground
+  - InnerSprite
+  - EffectSprite
+  - FillUISlot
+  - MoveJoystick
+  - AttackJoystick
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - Enemy
   - Test
   - DoNotClose
-  - 
-  - 
-  - 
-  - 
-  - 
+  - OutWall
+  - SpawnPoint
+  - RepositionEntity
+  - Bullet
+  - InnerWall
   - 
   - 
   - 

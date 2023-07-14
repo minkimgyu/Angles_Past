@@ -5,76 +5,79 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using System;
 
-public class BladeSkill : BasicSkill
+public class BladeSkill //: BasicSkill
 {
-    public Color color;
-    public float radius;
-    float damageTime = 5f;
-    float damagePerTime = 0.5f; // 10
-    BasicEffect basicEffect;
+    //public Color color;
+    //public float radius;
+    //Transform playerTr = null;
 
-    public async UniTaskVoid SkillTask(Transform tr)
-    {
-        NowRunning = true;
-        int damageTic = 0;
+    //public override void PlayAddition()
+    //{
+    //    base.PlayAddition();
+    //    BasicTask.CancelTask();
+    //    effect.StopEffect();
 
-        int maxDamageTic = (int)(damageTime / damagePerTime);
+    //    if (playerTr == null) return;
+    //    SkillTask().Forget();
+    //}
 
-        while (damageTic < maxDamageTic)
-        {
-            AttackCircleRange(tr);
-            await UniTask.Delay(TimeSpan.FromSeconds(damagePerTime), cancellationToken: source.Token);
-            damageTic += 1;
-        }
+    //protected override void OnDisable()
+    //{
+    //    base.OnDisable();
+    //    if (playerTr != null) playerTr = null;
+    //}
 
-        NowRunning = false;
+    //public async UniTaskVoid SkillTask()
+    //{
+    //    effect.PlayEffect();
 
-        DisableObject();
-        // 이펙트를 꺼주는 코드 추가
-    }
+    //    BasicTask.NowRunning = true;
+    //    int damageTic = 0;
 
-    private void Update()
-    {
-        if (moveTr == null) return;
+    //    int maxDamageTic = (int)(SkillData.Duration / SkillData.UseTick);
 
-        transform.position = moveTr.position;
-        transform.rotation = moveTr.rotation;
-    }
+    //    while (damageTic < maxDamageTic)
+    //    {
+    //        AttackCircleRange();
+    //        await UniTask.Delay(TimeSpan.FromSeconds(SkillData.UseTick), cancellationToken: BasicTask.source.Token);
+    //        damageTic += 1;
+    //    }
 
-    protected override void DisableObject()
-    {
-        ObjectPooler.ReturnToPool(basicEffect.gameObject, true);
-        basicEffect.gameObject.SetActive(false);
+    //    effect.StopEffect();
 
-        gameObject.SetActive(false);
-    }
+    //    await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: BasicTask.source.Token);
+    //    BasicTask.NowRunning = false;
+    //    DisableObject();
+    //}
 
-    void AttackCircleRange(Transform tr)
-    {
-        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+    //private void Update()
+    //{
+    //    if (playerTr == null) return;
 
-        for (int i = 0; i < hit.Length; i++)
-        {
-            if (hit[i].transform.CompareTag("Enemy"))
-            {
-                hit[i].collider.GetComponent<FollowComponent>().WaitFollow();
-                hit[i].collider.GetComponent<BasicReflectComponent>().KnockBack((hit[i].transform.position - tr.position).normalized * 1.5f);
-            }
-        }
-    }
+    //    transform.position = playerTr.position;
+    //}
 
-    public override void PlaySkill(Vector2 dir, List<Collision2D> entity)
-    {
-        SkillTask(moveTr).Forget();
-        basicEffect = GetEffectUsingName("BladeEffect", transform.position, transform.rotation, transform).GetComponent<BasicEffect>();
+    //void AttackCircleRange()
+    //{
+    //    RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.up, 0);
 
-        base.PlaySkill(dir, entity);
-    }
+    //    for (int i = 0; i < hit.Length; i++)
+    //    {
+    //        if (SkillData.CanHitSkill(hit[i].transform.tag) == false) continue;
+    //        DamageToEntity(hit[i].transform.gameObject, SkillData.KnockBackThrust);
+    //    }
+    //}
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = color;
-        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
-        Gizmos.DrawWireSphere(Vector3.zero, radius);
-    }
+    //public override void PlaySkill(SkillSupportData data, BasicBattleComponent battleComponent)
+    //{
+    //    base.PlaySkill(data, battleComponent);
+    //    playerTr = data.player.transform; // 위치 초기화
+    //    SkillTask().Forget();
+    //}
+
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.color = color;
+    //    Gizmos.DrawWireSphere(transform.position, radius);
+    //}
 }

@@ -1,20 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class BallEffect : BasicEffect
+public class BallEffect //: BasicEffect
 {
-    private void OnTriggerEnter2D(Collider2D col)
-    {
-        print(col.gameObject.name); // 이펙트로 공격 - 방어 같이 진행
-        ObjectPooler.ReturnToPool(gameObject, true);    // 한 객체에 한번만
-        DisableObject();
-    }
+    //RotationBallSkill storedSkill;
 
+    //public void Init(RotationBallSkill storedSkill)
+    //{
+    //    this.storedSkill = storedSkill;
+    //}
 
-    protected override void OnDisable()
-    {
-        ObjectPooler.ReturnToPool(gameObject, true);    // 한 객체에 한번만 
-        CancelInvoke();    // Monobehaviour에 Invoke가 있다면
-    }
+    //public void ResetPosition(Vector3 rotatedOffset)
+    //{
+    //    transform.localPosition = rotatedOffset;
+    //}
+
+    //private void OnTriggerEnter2D(Collider2D col)
+    //{
+    //    if (storedSkill == null) return;
+
+    //    if (storedSkill.HitEnemy(col.gameObject) == true)
+    //    {
+    //        storedSkill.RemoveBallInList(this);
+    //        ObjectPooler.ReturnToTransform(transform);
+    //        DisableObject();
+    //    }
+    //}
+
+    //private void OnDisable()
+    //{
+    //    storedSkill = null;
+    //    ObjectPooler.ReturnToPool(gameObject);
+    //}
 }

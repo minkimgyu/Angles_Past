@@ -1,35 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using System;
 
-public class BigImpactSkill : BasicSkill
+public class BigImpactSkill : MonoBehaviour
 {
-    public Color color;
-    public float radius;
+    //public Color color;
 
-    public override void PlaySkill(Vector2 dir, List<Collision2D> entity)
-    {
-        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+    //public override void PlaySkill(SkillSupportData data, BasicBattleComponent battleComponent)
+    //{
+    //    base.PlaySkill(data, battleComponent);
+    //    effect.PlayEffect();
 
-        for (int i = 0; i < hit.Length; i++)
-        {
-            if (hit[i].transform.CompareTag("Enemy"))
-            {
-               
+    //    transform.position = data.player.transform.position; // 위치 초기화
 
-                hit[i].collider.GetComponent<FollowComponent>().WaitFollow();
-                hit[i].collider.GetComponent<BasicReflectComponent>().KnockBack((hit[i].transform.position - moveTr.position).normalized * 6);
-            }
-        }
+    //    RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, SkillData.RadiusRange, Vector2.up, 0, layerMask);
+    //    for (int i = 0; i < hit.Length; i++)
+    //    {   
+    //        if (SkillData.CanHitSkill(hit[i].transform.tag) == false) continue;
+    //        DamageToEntity(hit[i].transform.gameObject, SkillData.KnockBackThrust);
+    //    }
 
-        GetEffectUsingName("BigImpactEffect", transform.position, transform.rotation);
-        base.PlaySkill(dir, entity);
-    }
+    //    SkillTask().Forget();
+    //}
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = color;
-        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
-        Gizmos.DrawWireSphere(Vector3.zero, radius);
-    }
+    //public async UniTaskVoid SkillTask()
+    //{
+    //    BasicTask.NowRunning = true;
+    //    await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: BasicTask.source.Token);
+    //    DisableObject();
+    //    BasicTask.NowRunning = false;
+    //}
+
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.color = color;
+    //    Gizmos.DrawWireSphere(transform.position, SkillData.RadiusRange);
+    //}
 }

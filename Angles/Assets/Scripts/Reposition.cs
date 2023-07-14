@@ -9,7 +9,7 @@ public class Reposition : MonoBehaviour
 
     private void Start()
     {
-        player = PlayManager.Instance.player;
+        player = PlayManager.Instance.Player;
     }
 
     public bool CanMove(float diffX, float diffY)

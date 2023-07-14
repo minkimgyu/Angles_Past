@@ -1,140 +1,124 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class BattleComponent : MonoBehaviour
+public class SkillSupportData // 이런식으로 스킬에 필요한 데이터 묶어서 보내기
 {
-    List<Collision2D> entity = new List<Collision2D>();
-    Player player;
-    AttackComponent attackComponent;
+    public List<Vector3> contactPos;
+    public List<Entity> contactEntity;
+
+    public SkillSupportData(List<Entity> contactEntity, List<Vector3> contactPos)
+    {
+        this.contactEntity = contactEntity;
+        this.contactPos = contactPos;
+    }
+}
+
+[System.Serializable]
+public struct ContactData
+{
+    public GameObject go;
+    public Vector3 pos;
+
+    public ContactData(GameObject go, Vector3 pos)
+    {
+        this.go = go;
+        this.pos = pos;
+    }
+}
+
+public class BattleComponent : TagCheckComponent
+{
+    public List<ContactData> m_contactDatas = new List<ContactData>();
 
     [SerializeField]
-    List<BasicSkill> loadSkill = new List<BasicSkill>();
-    // <-- null이면 스킬 데이터를 플레이어에서 불러와서 사용, 아니면 저장되어 있는 객체에 playskill 실행해준다.
-    // count 변수를 만들어서 0이면 리스트에서 삭제, 1 이상일 경우 하나씩 빼주면서 사용
+    List<SkillData> m_possessingSkills; // 현재 보유하고 있는 스킬 --> 아이템 획득 시, 스킬을 추가해준다.
 
-    public EntityTag entityTag;
+    public Action<SkillUseType> OnUsingSkill;
 
-    private void Start()
+    private void Awake()    
     {
-        player = GetComponent<Player>();
-        attackComponent = GetComponent<AttackComponent>();
-        PlayManager.Instance.actionJoy.actionComponent.attackAction += PlayWhenAttackStart;
+        //OnUsingSkill += UseSkill; // attack state Enter의 경우
+        //OnUsingSkill -= UseSkill; // attack state Exit의 경우
     }
 
-    private void OnCollisionEnter2D(Collision2D col)
+    public void UseSkill(SkillUseType useType)
     {
-        print(col.gameObject.name);
-        AddToList(col);
-    }
+        SkillSupportData supportData = ReturnSkillSupportData();
 
-    private void OnCollisionExit2D(Collision2D col)
-    {
-        print(col.gameObject.name);
-        RemoveToList(col);
-    }
-
-    public void RemoveSkillFromLoad(BasicSkill skill)
-    {
-        loadSkill.Remove(skill);
-    }
-
-    public void AddSkillToLoad(BasicSkill skill)
-    {
-        loadSkill.Add(skill);
-    }
-
-    public void UseSkillInList(SkillUseType useType)
-    {
-        for (int j = 0; j < entity.Count; j++)
+        for (int i = 0; i < m_possessingSkills.Count; i++)
         {
-            print("entity name                           " + entity[j].gameObject.name);
+            if (m_possessingSkills[i].UseType != useType) continue;
 
+            BaseSkill skill = GetSkillUsingName(m_possessingSkills[i].Name, transform.position);
+            if (skill == null) continue;
+            skill.Execute(supportData);
+
+            m_possessingSkills[i].AfterSkillAdjustment(m_possessingSkills);
+        }
+    }
+
+    void LootingSkill(SkillData data)
+    {
+        for (int i = 0; i < m_possessingSkills.Count; i++)
+        {
+            if (m_possessingSkills[i].Name != data.Name) continue;
+            m_possessingSkills[i].CountCheckBySynthesis(data.Synthesis);
         }
 
-        for (int i = 0; i < loadSkill.Count; i++)
+        AddSkillData(data);
+        OnUsingSkill(SkillUseType.Get);
+    }
+
+    void RemoveSkillData(SkillData data) => m_possessingSkills.Remove(data);
+
+    void AddSkillData(SkillData data) => m_possessingSkills.Add(data);
+
+
+    public void CallWhenCollisionEnter(Collision2D col)
+    {
+        ContactData contactData = new ContactData(col.gameObject, col.contacts[0].point);
+        m_contactDatas.Add(contactData);
+        OnUsingSkill(SkillUseType.Contact);
+    }
+
+    public void CallWhenCollisionExit(Collision2D col)
+    {
+        for (int i = 0; i < m_contactDatas.Count; i++)
         {
-            if(loadSkill[i].SkillData.Type == useType)
+            if (m_contactDatas[i].go == col.gameObject)
             {
-                loadSkill[i].PlaySkill(player.rigid.velocity.normalized, entity);
+                m_contactDatas.RemoveAt(i);
+                return;
             }
         }
     }
 
-    void AddToList(Collision2D col)
+    SkillSupportData ReturnSkillSupportData()
     {
-        if (col.gameObject.CompareTag(entityTag.ToString()) != true) return;
+        List<Vector3> pos = new List<Vector3>();
+        List<Entity> entity = new List<Entity>();
 
-        entity.Add(col);
-        PlayWhenCollision();
-    }
-
-    void RemoveToList(Collision2D col) 
-    {
-        if (col.gameObject.CompareTag(entityTag.ToString()) != true) return;
-
-        entity.Remove(col); 
-    }
-
-    BasicSkill GetSkillUsingType(SkillName skillName)
-    {
-        BasicSkill skill = ObjectPooler.SpawnFromPool(skillName.ToString()).GetComponent<BasicSkill>();
-        return skill;
-    }
-
-    bool NowContactEnemy()
-    {
-        return entity.Count > 0;
-    }
-
-    void UseSkill(SkillUseType skillUseType)
-    {
-        bool canUseSkill = player.SkillData.CanUseSkill(skillUseType);
-
-        // 스킬을 사용할 수 있는 경우 스킬 사용
-        if (canUseSkill == true)
+        for (int i = 0; i < m_contactDatas.Count; i++)
         {
-            BasicSkill skill = GetSkillUsingType(player.SkillData.Name);
-            if (skill == null) return;
-
-            skill.Init(transform, this);
-
-            AddSkillToLoad(skill); // 먹어서 사용하는 스킬은 넣고
-            player.SkillData.ResetSkill(); // 플레이어 보유 스킬은 리셋
-        }
-        else // 스킬을 사용할 수 없는 경우 기본 스킬을 사용하게 한다.
-        {
-            BasicSkill normalSkill = GetSkillUsingType(player.NormalSkillData.Name);
-            Debug.Log(normalSkill);
-
-            if (normalSkill == null) return;
-
-            normalSkill.Init(transform, this); // 기본 스킬은 안 넣어도 될 듯
-            AddSkillToLoad(normalSkill); // 먹어서 사용하는 스킬은 넣고
+           pos.Add(m_contactDatas[i].pos);
+           entity.Add(m_contactDatas[i].go.GetComponent<Entity>());
         }
 
-        UseSkillInList(skillUseType); // 리스트에 들어간 모든 오브젝트를 조건부로 실행해줌
-    }
-    
-    void PlayWhenCollision()
-    {
-        if (NowContactEnemy() == false) return; // 적과 접촉하고 있지 않은 경우 리턴
-        if (player.PlayerMode != ActionMode.Attack) return;
-
-        UseSkill(SkillUseType.Contact);
-
-        attackComponent.QuickEndTask(); // 공격 리셋해주기
+        SkillSupportData supportData = new SkillSupportData(entity, pos);
+        return supportData;
     }
 
-    void PlayWhenAttackStart(Vector2 dir, ForceMode2D forceMode = ForceMode2D.Impulse)
+    private BaseSkill GetSkillUsingName(string name, Vector3 pos, Quaternion rotation, Transform tr = null)
     {
-        PlayWhenCollision(); // 한번 체크
-
-        UseSkill(SkillUseType.Start);
+        GameObject go = ObjectPooler.SpawnFromPool(name, pos, rotation, tr);
+        return go.GetComponent<BaseSkill>();
     }
 
-    public void PlayWhenGet()
+    private BaseSkill GetSkillUsingName(string name, Vector3 pos)
     {
-        UseSkill(SkillUseType.Get);
+        GameObject go = ObjectPooler.SpawnFromPool(name, pos, Quaternion.identity, null);
+        return go.GetComponent<BaseSkill>();
     }
 }

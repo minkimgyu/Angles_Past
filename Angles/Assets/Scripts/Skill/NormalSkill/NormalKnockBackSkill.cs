@@ -1,40 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using System;
 
-public class NormalKnockBackSkill : BasicSkill
+public class NormalKnockBackSkill : MonoBehaviour
 {
-    public override void PlaySkill(Vector2 dir, List<Collision2D> entity)
-    {
-        for (int i = 0; i < entity.Count; i++)
-        {
-            print(entity[i].gameObject.name);
-        }
+    //public override void PlaySkill(SkillSupportData data, BasicBattleComponent battleComponent)
+    //{
+    //    base.PlaySkill(data, battleComponent);
 
+    //    for (int i = 0; i < data.contactEntity.Count; i++)
+    //    {
+    //        if (SkillData.CanHitSkill(data.contactEntity[i].tag) == false) continue;
+    //        DamageToEntity(data.contactEntity[i].gameObject, SkillData.KnockBackThrust * data.playerDir.magnitude);
+    //    }
 
-        for (int i = 0; i < entity.Count; i++)
-        {
-            Vector2 dirToEnemy = entity[i].transform.position - transform.position;
+    //    SkillTask().Forget();
+    //}
 
-            if (entity[i].gameObject.name == "Player") return;
+    //public async UniTaskVoid SkillTask()
+    //{
+    //    BasicTask.NowRunning = true;
 
-            FollowComponent followComponent = entity[i].gameObject.GetComponent<FollowComponent>();
-            
-            followComponent.nowHit = true;
-            followComponent.WaitFollow();
+    //    await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: BasicTask.source.Token);
+    //    DisableObject();
 
-            if(followComponent.closeEnemy.Count == 0)
-            {
-                entity[i].gameObject.GetComponent<BasicReflectComponent>().KnockBack(dirToEnemy.normalized);
-            }
-            else
-            {
-                entity[i].gameObject.GetComponent<BasicReflectComponent>().KnockBack(dirToEnemy.normalized * followComponent.closeEnemy.Count * 3);
-            }
+    //    BasicTask.NowRunning = false;
+    //}
 
-            GetEffectUsingName("NormalKnockBackEffect", entity[i].contacts[0].point, Quaternion.identity);
-        }
+    //protected override void OnDisable()
+    //{
+    //    base.OnDisable();
 
-        base.PlaySkill(dir, entity);
-    }
+    //}
 }

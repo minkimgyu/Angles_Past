@@ -1,36 +1,53 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using System;
 
-public class KnockBackSkill : BasicSkill
+public class KnockBackSkill : MonoBehaviour
 {
-    public Color color;
-    public float boxWidth;
-    public float boxHeight;
-    public Vector3 distanceFromPlayer;
+    //public Color color;
+    //public ParticleSystem pushEffect;
 
-    public override void PlaySkill(Vector2 dir, List<Collision2D> entity)
-    {
-        RaycastHit2D[] hit = Physics2D.BoxCastAll(transform.position, new Vector2(boxWidth, boxHeight), 
-            transform.rotation.z, Vector2.right, distanceFromPlayer.x, LayerMask.GetMask("Enemy"));
+    //public override void PlaySkill(SkillSupportData data, BasicBattleComponent battleComponent)
+    //{
+    //    base.PlaySkill(data, battleComponent);
+    //    transform.position = data.player.transform.position;
+    //    transform.rotation = data.player.transform.rotation;
 
-        for (int i = 0; i < hit.Length; i++)
-        {
-            if (hit[i].transform.CompareTag("Enemy"))
-            {
-                hit[i].collider.GetComponent<FollowComponent>().WaitFollow();
-                hit[i].collider.GetComponent<BasicReflectComponent>().KnockBack(dir.normalized * 2);
-            }
-        }
+    //    float tempRotation = transform.eulerAngles.z;
+    //    print(tempRotation);
 
-        GetEffectUsingName("KnockBackEffect", transform.position, transform.rotation);
-        base.PlaySkill(dir, entity);
-    }
+    //    var main = pushEffect.main;
+    //    main.startRotation = -tempRotation * Mathf.Deg2Rad;
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = color;
-        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
-        Gizmos.DrawWireCube(Vector3.zero + distanceFromPlayer, new Vector3(boxWidth, boxHeight, 0));
-    }
+    //    effect.PlayEffect();
+
+    //    RaycastHit2D[] hit = Physics2D.BoxCastAll(transform.position, SkillData.BoxRange, 
+    //        transform.rotation.z, Vector2.right, SkillData.OffsetRange.magnitude, LayerMask.GetMask("Enemy"));
+
+    //    for (int i = 0; i < hit.Length; i++)
+    //    {
+    //        if (SkillData.CanHitSkill(hit[i].transform.tag) == false) continue;
+    //        DamageToEntity(hit[i].transform.gameObject, SkillData.KnockBackThrust);
+    //    }
+
+    //    SkillTask().Forget();
+    //}
+
+    //public async UniTaskVoid SkillTask()
+    //{
+    //    BasicTask.NowRunning = true;
+    //    await UniTask.Delay(TimeSpan.FromSeconds(SkillData.DisableTime), cancellationToken: BasicTask.source.Token);
+    //    DisableObject();
+    //    BasicTask.NowRunning = false;
+    //}
+
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.color = color;
+    //    Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
+    //    Gizmos.DrawWireCube(SkillData.OffsetRange, SkillData.BoxRange);
+    //}
 }

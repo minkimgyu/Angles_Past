@@ -5,105 +5,181 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using System;
 
-public class FollowComponent : UnitaskUtility
+public class FollowComponent : MonoBehaviour
 {
-    Entity entity;
-    Player player;
-    public float ratio = 1;
-    public int count = 0;
-    public bool once = false;
-    public bool nowHit = false;
+    //Enemy enemy;
+    //Player player;
+    //public int count = 0;
 
-    public List<GameObject> closeEnemy = new List<GameObject>();
+    //bool nowHit = false;
+    //public bool NowHit
+    //{
+    //    get { return nowHit; }
+    //}
 
-    // Start is called before the first frame update
-    void Start()
+    //bool pauseFollow = false;
+    //public bool PauseFollow
+    //{
+    //    get { return pauseFollow; }
+    //}
+
+    //public GameObject doNotClose;
+
+    public DrawGizmo stopGizmo; // 따라오다가 멈추는 거리 기준
+    public DrawGizmo attackGizmo; // 공격을 시작하는 거리 기준
+
+    void OnDrawGizmos()
     {
-        entity = GetComponent<Entity>();
-        entity.fixedUpdateAction += MoveToPlayer;
-
-        player = PlayManager.Instance.player;
-        entity.PlayerMode = ActionMode.Follow;
+        stopGizmo.DrawCircleGizmo(transform);
+        attackGizmo.DrawCircleGizmo(transform);
     }
 
-    public void WaitFollow()
+    public bool IsDistanceLower(Vector3 enemyPos, float minDistance)
     {
-        if (NowRunning == true) return;
-        WaitFollowTask().Forget();
-    }
-
-    public async UniTaskVoid WaitFollowTask()
-    {
-        NowRunning = true;
-        entity.PlayerMode = ActionMode.Hit;
-
-        entity.rigid.velocity = Vector2.zero;
-        await UniTask.Delay(TimeSpan.FromSeconds(DatabaseManager.Instance.WaitTime), cancellationToken: source.Token);
-
-        entity.PlayerMode = ActionMode.Follow;
-        nowHit = false;
-        once = false;
-        NowRunning = false;
-    }
-
-    private void OnCollisionEnter2D(Collision2D col)
-    {
-        if (col.gameObject.CompareTag("Enemy"))
+        float distanceBetween = Vector2.Distance(transform.position, enemyPos);
+        if (distanceBetween <= minDistance)
         {
-            closeEnemy.Add(col.gameObject);
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
-    private void OnCollisionExit2D(Collision2D col)
+    public Vector2 ReturnDirVec(Vector3 pos)
     {
-        if (col.gameObject.CompareTag("Enemy"))
-        {
-            closeEnemy.Remove(col.gameObject);
-        }
+        return (pos - transform.position).normalized;
     }
 
-    private void OnCollisionStay2D(Collision2D col)
-    {
-        if (col.gameObject.CompareTag("Enemy"))
-        {
-            FollowComponent followComponent = col.gameObject.GetComponent<FollowComponent>();
+    //// Start is called before the first frame update
+    //private void Start()
+    //{
+    //    enemy = GetComponent<Enemy>();
+    //    player = PlayManager.Instance.player;
+    //}
 
-            if (NowRunning == true && followComponent.nowHit == false && followComponent.once == false)
-            {
-                Vector2 backDir = col.transform.position - transform.position;
+    //public void WaitFollow()
+    //{
+    //    if (BasicTask.NowRunning == true) return;
+    //    WaitFollowTask().Forget();
+    //}
 
-                followComponent.WaitFollow();
-                followComponent.once = true;
+    //public void StopFollow()
+    //{
+    //    pauseFollow = true;
+    //    CancelWaitFollow();
+    //    enemy.StopMove();
+    //}
 
-                if (count == 0)
-                {
-                    col.gameObject.GetComponent<BasicReflectComponent>().KnockBack(backDir);
-                }
-                else
-                {
-                    col.gameObject.GetComponent<BasicReflectComponent>().KnockBack(backDir * count);
-                }
+    //public void ResetFollow()
+    //{
+    //    pauseFollow = false;
+    //}
 
-            }
-        }
-    }
+    //void CancelWaitFollow()
+    //{
+    //    BasicTask.CancelTask();
+    //    if (nowHit == true) nowHit = false;
+    //}
 
-    public void MoveToPlayer()
-    {
-        if (NowRunning == true)
-        {
-            return; // 루틴 돌아가는 동안, 사용 금지
-        }
+    //public async UniTaskVoid WaitFollowTask()
+    //{
+    //    BasicTask.NowRunning = true;
+    //    nowHit = true;
 
-        //float distance = Vector2.Distance(player.transform.position, entity.transform.position);
+    //    doNotClose.SetActive(false);
+    //    enemy.PlayerMode = ActionMode.Hit;
 
-        //if (distance < DatabaseManager.Instance.MinFollowDistance) { entity.PlayerMode = ActionMode.Idle; }
-        //else { entity.PlayerMode = ActionMode.Follow; }
+    //    enemy.StopMove();
+    //    await UniTask.Delay(TimeSpan.FromSeconds(enemy.enemyData.StunTime), cancellationToken: BasicTask.source.Token);
 
-        //if (entity.PlayerMode == ActionMode.Idle || entity.PlayerMode == ActionMode.Hit) return;
+    //    enemy.PlayerMode = ActionMode.Follow;
+    //    doNotClose.SetActive(true);
 
-        Vector2 dirVec = player.transform.position - entity.transform.position;
-        Vector2 nextVec = dirVec.normalized * DatabaseManager.Instance.FollowSpeed * Time.fixedDeltaTime * ratio;
-        entity.rigid.MovePosition(entity.rigid.position + nextVec);
-    }
+    //    nowHit = false;
+    //    BasicTask.NowRunning = false;
+    //}
+
+    //bool CanFollowDistance(Vector2 enemyPos)
+    //{
+    //    float distanceBetween = Vector2.Distance(transform.position, enemyPos);
+    //    if (distanceBetween >= enemy.enemyData.FollowMinDistance)
+    //    {
+    //        return true;
+    //    }
+    //    else
+    //    {
+    //        return false;
+    //    }
+    //}
+
+    //bool CanStopDistance(Vector2 enemyPos)
+    //{
+    //    float distanceBetween = Vector2.Distance(transform.position, enemyPos);
+    //    if (distanceBetween <= enemy.enemyData.StopMinDistance)
+    //    {
+    //        return true;
+    //    }
+    //    else
+    //    {
+    //        return false;
+    //    }
+    //}
+
+    //void CanUseSkillDistance(Vector2 enemyPos)
+    //{
+    //    float distanceBetween = Vector2.Distance(transform.position, enemyPos);
+    //    if (distanceBetween <= enemy.enemyData.SkillMinDistance)
+    //    {
+    //        if (skillAction != null) skillAction();
+    //    }
+    //}
+
+
+
+    //public void MoveToPlayer()
+    //{
+    //    if (nowHit == true || pauseFollow == true) return; // 루틴 돌아가는 동안, 사용 금지
+
+    //    Vector2 dirVec = player.transform.position - enemy.transform.position;
+    //    RotateUsingVelocity(dirVec.normalized);
+
+    //    bool nowFollow = CanFollowDistance(player.transform.position);
+    //    bool nowStop = CanStopDistance(player.transform.position);
+
+    //    CanUseSkillDistance(player.transform.position);
+
+    //    if (nowStop == true)
+    //    {
+    //        if (stopAction != null) stopAction();
+    //        enemy.StopMove();
+    //    }
+    //    else if(nowFollow == true && nowStop == false)
+    //    {
+    //        enemy.rigid.velocity = (player.rigid.position - enemy.rigid.position).normalized * enemy.enemyData.Speed;
+    //    }
+    //}
+
+    //protected override void OnDisable()
+    //{
+    //    base.OnDisable();
+    //    ResetWhenDisable();
+    //}
+
+    //void ResetWhenDisable()
+    //{
+    //    if (nowHit == true) nowHit = false;
+    //    if (pauseFollow == true) pauseFollow = false;
+    //}
+
+    //float CheckCanRotate(Vector2 vec)
+    //{
+    //    return Mathf.Atan2(vec.y, vec.x) * Mathf.Rad2Deg;
+    //}
+
+    //public void RotateUsingVelocity(Vector2 vec)
+    //{
+    //    enemy.rigid.MoveRotation(CheckCanRotate(vec));
+    //}
 }
