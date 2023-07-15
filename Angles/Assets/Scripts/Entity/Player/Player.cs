@@ -23,7 +23,8 @@ public class Player : StateMachineEntity<Player, Player.State>, ISubject<Player.
     BattleComponent m_battleComponent;
     public BattleComponent BattleComponent { get { return m_battleComponent; } }
 
-
+    ContactComponent m_contactComponent;
+    public ContactComponent ContactComponent { get { return m_contactComponent; } }
 
     ReflectComponent m_reflectComponent;
     public ReflectComponent ReflectComponent { get { return m_reflectComponent; } }
@@ -163,12 +164,14 @@ public class Player : StateMachineEntity<Player, Player.State>, ISubject<Player.
 
     private void OnCollisionEnter2D(Collision2D col) // 충돌 시 상태 변환
     {
+        ContactComponent.CallWhenCollisionEnter(col);
+
         if (ContactAction != null) ContactAction(col);
     }
 
     private void OnCollisionExit2D(Collision2D col)
     {
-        m_battleComponent.CallWhenCollisionExit(col);
+        ContactComponent.CallWhenCollisionExit(col);
     }
 
     public void AddObserver(IObserver<ObserverType, PlayerData> observer)
