@@ -18,7 +18,7 @@ using UnityEngine;
 
 abstract public class BaseBuff : ScriptableObject
 {
-    protected bool canOverlap; 
+    protected bool canOverlap;
 
     public bool CanOverlap
     {
