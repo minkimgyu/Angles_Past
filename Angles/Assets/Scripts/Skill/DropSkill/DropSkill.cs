@@ -4,5 +4,10 @@ using UnityEngine;
 
 public class DropSkill : MonoBehaviour
 {
-    //public SkillName skillName;
+    BaseSkill m_baseSkill;
+
+    BaseSkill ReturnSkill()
+    {
+        return m_baseSkill;
+    }
 }

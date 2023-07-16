@@ -57054,6 +57054,91 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8eb37258fc7a52f47832e08393ebe2c1, type: 3}
+--- !u!1001 &1624940685
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 9090485990806616077, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
+      propertyPath: m_Name
+      value: DatabaseManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 9090485990806616078, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
+      propertyPath: skillCallData.name
+      value: Shockwave
+      objectReference: {fileID: 0}
+    - target: {fileID: 9090485990806616078, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
+      propertyPath: baseSkills.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9090485990806616078, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
+      propertyPath: skillCallData.useCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9090485990806616078, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
+      propertyPath: skillCallData.maxUseCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9090485990806616078, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
+      propertyPath: skillCallData.callCondition
+      value: 
+      objectReference: {fileID: 11400000, guid: a8f78a4beb9581a4bbefee125829f461, type: 2}
+    - target: {fileID: 9090485990806616078, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
+      propertyPath: skillCallData.skillUseCount
+      value: 
+      objectReference: {fileID: 11400000, guid: 94a82954e5ef1e44580c1dd186248879, type: 2}
+    - target: {fileID: 9090485990806616078, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
+      propertyPath: skillCallData.skillSynthesisCondition
+      value: 
+      objectReference: {fileID: 11400000, guid: d796a3ef2bb32d64f973782acc2bf14b, type: 2}
+    - target: {fileID: 9090485990806616079, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 9090485990806616079, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9090485990806616079, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9090485990806616079, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9090485990806616079, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9090485990806616079, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9090485990806616079, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9090485990806616079, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9090485990806616079, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9090485990806616079, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9090485990806616079, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0bf075697de14654e8be06b5a389c18d, type: 3}
 --- !u!1001 &1637319828
 PrefabInstance:
   m_ObjectHideFlags: 0

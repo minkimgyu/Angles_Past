@@ -214,4 +214,14 @@ public class Player : StateMachineEntity<Player, Player.State>, ISubject<Player.
     {
         throw new NotImplementedException();
     }
+
+    public EntityTag ReturnTag()
+    {
+        return inheritedTag;
+    }
+
+    public void Knockback(Vector2 dir, float thrust)
+    {
+        throw new NotImplementedException();
+    }
 }

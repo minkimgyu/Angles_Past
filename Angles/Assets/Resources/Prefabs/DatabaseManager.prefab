@@ -46,6 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerData:
     name: 
+    shape: 
+    color: 
     hp: 0
     speed: 0
     stunTime: 0
@@ -56,13 +58,20 @@ MonoBehaviour:
     speedRatio: 0
     minSpeedRatio: 0
     maxSpeedRatio: 0
-    attackThrust: 0
-    attackTime: 0
+    rushThrust: 0
+    rushRatio: 0
+    rushRecoverRatio: 0
+    rushTime: 0
     attackCancelOffset: 0
     reflectThrust: 0
     maxDashCount: 0
     dashTime: 0
     dashThrust: 0
     dashRatio: 0
-  updateDB: {fileID: 0}
+    dashRecoverRatio: 0
+  baseBuffs: []
+  baseSkills:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   entityDB: {fileID: 11400000, guid: 719b4e840748906469d25c527c98354b, type: 2}

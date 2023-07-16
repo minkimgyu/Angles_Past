@@ -266,28 +266,83 @@ public class EnemyData : HealthEntityData, IData<EnemyData>
     }
 }
 
+abstract public class SkillCallCondition : ScriptableObject
+{
+    public abstract bool Check(SkillUseType useType);
+
+    public abstract bool Check(string myName, string callName);
+}
+
+abstract public class SkillUseCountCondition : ScriptableObject
+{
+    public abstract int Usage(int useCount);
+}
+
+abstract public class SkillSynthesisCondition : ScriptableObject
+{
+    public abstract int Synthesis(int useCount, int maxUseCount);
+}
+
 [System.Serializable]
-public class SkillData : BaseData, IData<SkillData>
+public class SkillCallData : BaseData, IData<SkillCallData>
 {
     [SerializeField]
-    SkillUseType useType;
-    public SkillUseType UseType { get { return useType; } set { useType = value; } }
+    int maxUseCount;
+    public int MaxUseCount { get { return maxUseCount; } set { maxUseCount = value; } }
 
     [SerializeField]
-    SkillUsage usage;
-    public SkillUsage Usage { get { return usage; } set { usage = value; } }
-
-    [SerializeField]
-    SkillSynthesis synthesis;
-    public SkillSynthesis Synthesis { get { return synthesis; } set { synthesis = value; } }
-
-    [SerializeField]
-    int useCount = 1;
+    int useCount;
     public int UseCount { get { return useCount; } set { useCount = value; } }
 
     [SerializeField]
-    float useTick;
-    public float UseTick { get { return useTick; } set { useTick = value; } }
+    SkillCallCondition callCondition;
+    public SkillCallCondition CallCondition { get { return callCondition; } set { callCondition = value; } }
+
+    [SerializeField]
+    SkillUseCountCondition useCountCondition;
+    public SkillUseCountCondition UseCountCondition { get { return useCountCondition; } set { useCountCondition = value; } }
+
+    [SerializeField]
+    SkillSynthesisCondition synthesisCondition;
+    public SkillSynthesisCondition SynthesisCondition { get { return synthesisCondition; } set { synthesisCondition = value; } }
+
+    public SkillCallData(int maxUseCount, int useCount, SkillCallCondition callCondition, SkillUseCountCondition useCountCondition, SkillSynthesisCondition synthesisCondition)
+    {
+        this.maxUseCount = maxUseCount;
+        this.useCount = useCount;
+        this.callCondition = callCondition;
+        this.useCountCondition = useCountCondition;
+        this.synthesisCondition = synthesisCondition;
+    }
+
+    public SkillCallData CopyData()
+    {
+        return new SkillCallData(maxUseCount, useCount, callCondition, useCountCondition, synthesisCondition);
+    }
+}
+
+[System.Serializable]
+public class SkillData : BaseData, IData<SkillData>
+{
+    //[SerializeField]
+    //SkillUseType useType;
+    //public SkillUseType UseType { get { return useType; } set { useType = value; } }
+
+    //[SerializeField]
+    //SkillUsage usage;
+    //public SkillUsage Usage { get { return usage; } set { usage = value; } }
+
+    //[SerializeField]
+    //SkillSynthesis synthesis;
+    //public SkillSynthesis Synthesis { get { return synthesis; } set { synthesis = value; } }
+
+    //[SerializeField]
+    //int maxUseCount;
+    //public int UseCount { get { return maxUseCount; } set { maxUseCount = value; } }
+
+    [SerializeField]
+    int attackTick = 1;
+    public int AttackTick { get { return attackTick; } set { attackTick = value; } }
 
     [SerializeField]
     float preDelay;
@@ -345,40 +400,40 @@ public class SkillData : BaseData, IData<SkillData>
         return LayerMask.GetMask(hitTargetString);
     }
 
-    public bool CanUseSkill(SkillUseType skillType)
-    {
-        return useCount >= 1;
-    }
+    //public bool CanUseSkill(SkillUseType skillType)
+    //{
+    //    return useCount >= 1;
+    //}
 
-    public void AfterSkillAdjustment(List<SkillData> skillDatas)
-    {
-        if (CanUseSkill(useType) == false) return;
+    //public void AfterSkillAdjustment(List<SkillData> skillDatas)
+    //{
+    //    if (CanUseSkill(useType) == false) return;
 
-        if (Usage == SkillUsage.Single) useCount -= 1;
+    //    if (Usage == SkillUsage.Single) useCount -= 1;
 
-        if (useCount <= 0)
-        {
-            skillDatas.Remove(this);
-        }
-    }
+    //    if (useCount <= 0)
+    //    {
+    //        skillDatas.Remove(this);
+    //    }
+    //}
 
-    public void CountCheckBySynthesis(SkillSynthesis synthesis)
-    {
-        if (synthesis == SkillSynthesis.CountUp) CountUp();
-        else if (synthesis == SkillSynthesis.Overlap) return;
-    }
+    //public void CountCheckBySynthesis(SkillSynthesis synthesis)
+    //{
+    //    if (synthesis == SkillSynthesis.CountUp) CountUp();
+    //    else if (synthesis == SkillSynthesis.Overlap) return;
+    //}
 
-    public void CountUp()
-    {
-        SkillData originData = DatabaseManager.Instance.ReturnSkillData(Name).CopyData();
-        useCount += originData.useCount;
-    }
+    //public void CountUp()
+    //{
+    //    SkillData originData = DatabaseManager.Instance.ReturnSkillData(Name).CopyData();
+    //    useCount += originData.useCount;
+    //}
 
-    public bool CanHitSkill(string tag)
+    public bool CanHitSkill(EntityTag tag)
     {
         for (int i = 0; i < hitTarget.Length; i++)
         {
-            if(hitTarget[i].ToString() == tag)
+            if (hitTarget[i] == tag)
             {
                 return true;
             }
@@ -387,15 +442,12 @@ public class SkillData : BaseData, IData<SkillData>
         return false;
     }
 
-    public SkillData() { }
+    //public SkillData() { }
 
-    public SkillData(string name, SkillUseType useType, SkillUsage usage, int useCount, float useTick, float preDelay, float duration, float radiusRange, Vector2 boxRange, Vector2 offsetRange, float damage, float knockBackThrust, float disableTime, EntityTag[] hitTarget, int prefabCount)
+    public SkillData(string name, int useTick, float preDelay, float duration, float radiusRange, Vector2 boxRange, Vector2 offsetRange, float damage, float knockBackThrust, float disableTime, EntityTag[] hitTarget, int prefabCount)
     {
         this.name = name;
-        this.useType = useType;
-        this.usage = usage;
-        this.useCount = useCount;
-        this.useTick = useTick;
+        this.attackTick = useTick;
         this.preDelay = preDelay;
         this.duration = duration;
         this.radiusRange = radiusRange;
@@ -408,16 +460,9 @@ public class SkillData : BaseData, IData<SkillData>
         this.prefabCount = prefabCount;
     }
 
-    public void ResetSkill()
-    {
-        name = "";
-        useType = SkillUseType.None;
-        useCount = 0;
-    }
-
     public SkillData CopyData()
     {
-        return new SkillData(name, useType, usage, useCount, useTick, preDelay, duration, radiusRange, boxRange, offsetRange, damage, knockBackThrust, disableTime, hitTarget, prefabCount);
+        return new SkillData(name, attackTick, preDelay, duration, radiusRange, boxRange, offsetRange, damage, knockBackThrust, disableTime, hitTarget, prefabCount);
     }
 
     #endregion

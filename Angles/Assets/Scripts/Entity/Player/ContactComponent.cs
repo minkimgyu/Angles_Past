@@ -29,7 +29,11 @@ public struct ContactData
 
 public class ContactComponent : MonoBehaviour
 {
-    public List<ContactData> m_contactDatas = new List<ContactData>();
+    [SerializeField]
+    List<ContactData> m_contactDatas = new List<ContactData>();
+
+    [SerializeField]
+    List<EntityTag> m_entityTags;
 
     public void CallWhenCollisionEnter(Collision2D col)
     {
@@ -49,18 +53,31 @@ public class ContactComponent : MonoBehaviour
         }
     }
 
+    bool CheckCorrectEntity(EntityTag tag)
+    {
+        for (int i = 0; i < m_entityTags.Count; i++)
+        {
+            if (m_entityTags[i] == tag) return true;
+        }
+
+        return false;
+    }
+
     ContactSupportData ReturnContactSupportData()
     {
         List<Vector3> pos = new List<Vector3>();
-        List<Entity> entity = new List<Entity>();
+        List<Entity> entities = new List<Entity>();
 
         for (int i = 0; i < m_contactDatas.Count; i++)
         {
+            m_contactDatas[i].go.TryGetComponent(out Entity entity);
+            if (entity == null || !CheckCorrectEntity(entity.InheritedTag)) continue;
+
             pos.Add(m_contactDatas[i].pos);
-            entity.Add(m_contactDatas[i].go.GetComponent<Entity>());
+            entities.Add(entity);
         }
 
-        ContactSupportData supportData = new ContactSupportData(entity, pos);
+        ContactSupportData supportData = new ContactSupportData(entities, pos);
         return supportData;
     }
 }

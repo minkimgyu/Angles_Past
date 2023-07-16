@@ -33,7 +33,7 @@ abstract public class BaseBuff : ScriptableObject
 }
 
 //[CreateAssetMenu(fileName = "TimeBuff", menuName = "Buff/TimeBuff", order = int.MaxValue)]
-public class TimeBuff : BaseBuff
+abstract public class TimeBuff : BaseBuff
 {
     BuffComponent m_bC;
 
@@ -52,16 +52,6 @@ public class TimeBuff : BaseBuff
         else return true;
     }
 
-    public override void OnEnd()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnStart()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public override void OnUpdate()
     {
         if (CheckLifeTime() == false) m_bC.RemoveBuff(this);
@@ -69,20 +59,7 @@ public class TimeBuff : BaseBuff
 }
 
 //[CreateAssetMenu(fileName = "PassiveBuff", menuName = "Buff/PassiveBuff", order = int.MaxValue)]
-public class PassiveBuff : BaseBuff
+abstract public class PassiveBuff : BaseBuff
 {
-    public override void OnEnd()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnStart()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnUpdate()
-    {
-        throw new System.NotImplementedException();
-    }
+   
 }
