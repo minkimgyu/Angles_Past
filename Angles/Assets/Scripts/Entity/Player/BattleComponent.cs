@@ -33,7 +33,7 @@ public class BattleComponent : TagCheckComponent
     //public List<ContactData> m_contactDatas = new List<ContactData>();
 
     [SerializeField]
-    List<SkillData> m_possessingSkills; // 현재 보유하고 있는 스킬 --> 아이템 획득 시, 스킬을 추가해준다.
+    List<SkillCallData> m_possessingSkills; // 현재 보유하고 있는 스킬 --> 아이템 획득 시, 스킬을 추가해준다.
 
     public Action<SkillUseType> OnUsingSkill;
 
@@ -45,35 +45,40 @@ public class BattleComponent : TagCheckComponent
 
     public void UseSkill(SkillUseType useType)
     {
-        //SkillSupportData supportData = ReturnSkillSupportData();
+        //SkillSupportData supportData = ReturnSkillSupportData();   
 
         for (int i = 0; i < m_possessingSkills.Count; i++)
         {
-            if (m_possessingSkills[i].UseType != useType) continue;
+            if (!m_possessingSkills[i].CallCondition.Check(useType)) continue;
 
-            BaseSkill skill = GetSkillUsingName(m_possessingSkills[i].Name, transform.position);
+            BasicSkill skill = GetSkillUsingName(m_possessingSkills[i].Name, transform.position);
             if (skill == null) continue;
-            //skill.Execute(supportData);
 
-            m_possessingSkills[i].AfterSkillAdjustment(m_possessingSkills);
+            skill.Execute(this);
+
+            //skill.Execute(supportData);
+            //m_possessingSkills[i].AfterSkillAdjustment(m_possessingSkills);
         }
     }
 
-    void LootingSkill(SkillData data)
+    void LootingSkill(SkillCallData skill)
     {
         for (int i = 0; i < m_possessingSkills.Count; i++)
         {
-            if (m_possessingSkills[i].Name != data.Name) continue;
-            m_possessingSkills[i].CountCheckBySynthesis(data.Synthesis);
+            if (m_possessingSkills[i].Name == skill.Name)
+            {
+                //m_possessingSkills[i].Loot(this); 
+                return;
+            }
         }
 
-        AddSkillData(data);
+        AddSkillData(skill);
         OnUsingSkill(SkillUseType.Get);
     }
 
-    void RemoveSkillData(SkillData data) => m_possessingSkills.Remove(data);
+    public void RemoveSkillData(SkillCallData skill) => m_possessingSkills.Remove(skill);
 
-    void AddSkillData(SkillData data) => m_possessingSkills.Add(data);
+    void AddSkillData(SkillCallData skill) => m_possessingSkills.Add(skill);
 
 
     //public void CallWhenCollisionEnter(Collision2D col)
@@ -110,15 +115,15 @@ public class BattleComponent : TagCheckComponent
     //    return supportData;
     //}
 
-    private BaseSkill GetSkillUsingName(string name, Vector3 pos, Quaternion rotation, Transform tr = null)
+    private BasicSkill GetSkillUsingName(string name, Vector3 pos, Quaternion rotation, Transform tr = null)
     {
         GameObject go = ObjectPooler.SpawnFromPool(name, pos, rotation, tr);
-        return go.GetComponent<BaseSkill>();
+        return go.GetComponent<BasicSkill>();
     }
 
-    private BaseSkill GetSkillUsingName(string name, Vector3 pos)
+    private BasicSkill GetSkillUsingName(string name, Vector3 pos) // --> 데이터베이스에서 스크립터블 오브젝트 받아오는 방식으로 전환
     {
         GameObject go = ObjectPooler.SpawnFromPool(name, pos, Quaternion.identity, null);
-        return go.GetComponent<BaseSkill>();
+        return go.GetComponent<BasicSkill>();
     }
 }

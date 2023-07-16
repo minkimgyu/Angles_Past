@@ -4,9 +4,11 @@ using UnityEngine;
 
 public interface IHealth
 {
-    public bool IsTarget(EntityTag tag);
+    public EntityTag ReturnTag();
 
     public void UnderAttack(float healthPoint);
+
+    public void Knockback(Vector2 dir, float thrust);
 
     public void Heal(float healthPoint);
 

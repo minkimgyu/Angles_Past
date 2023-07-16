@@ -176,10 +176,10 @@ public class UpdateDBComponent : UnitaskUtility
         {
             tempValue = (SkillUseType)Enum.Parse(typeof(SkillUseType), value);
         }
-        else if (property.PropertyType == typeof(SkillUsage))
-        {
-            tempValue = (SkillUsage)Enum.Parse(typeof(SkillUsage), value);
-        }
+        //else if (property.PropertyType == typeof(SkillUsage))
+        //{
+        //    tempValue = (SkillUsage)Enum.Parse(typeof(SkillUsage), value);
+        //}
         else if (property.PropertyType == typeof(EntityTag[]))
         {
             tempValue = SplitHitTargets(value);

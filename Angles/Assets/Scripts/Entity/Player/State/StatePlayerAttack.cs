@@ -22,13 +22,17 @@ public class StatePlayerAttack : IState<Player, Player.State>
 
     void ContactAct(Collision2D col) // 스킬 사용 + Reflect 채크해서 함수 사용
     {
-        if (col.gameObject.GetComponent<Entity>().InheritedTag == EntityTag.Enemy)
+        col.gameObject.TryGetComponent(out Entity entity);
+        if (entity == null) return;
+
+
+        if (entity.InheritedTag == EntityTag.Enemy)
         {
             m_loadPlayer.BattleComponent.UseSkill(SkillUseType.Contact);
             // 스킬 사용
         }
 
-        if (col.gameObject.GetComponent<Entity>().InheritedTag == EntityTag.Wall)
+        if (entity.InheritedTag == EntityTag.Wall)
         {
             Message<Player.State> message = new Message<Player.State>();
             message.dir = m_loadPlayer.ReflectComponent.ResetReflectVec(col.contacts[0].normal);

@@ -7,30 +7,30 @@ using UnityEngine;
 //public enum SkillName { None, NormalKnockBack, KnockBack, RotationBall, BigImpact, Blade, StickyBomb, GravitationalField, 
 //    SelfDestruction, ShootBullet, ShockWave }; // 동작 상태 모음
 
-public enum SkillUseType { None, Contact, Get, Fix, Start, Condition }
+public enum SkillUseType { Contact, Get }
 
-public enum SkillUsage { None, Single} // --> 사용 시, 사용 가능 횟수를 1 빼거나 사용 횟수 차감없이 고정시킴
+public enum SkillUseCount { Uncountable, Countable } // --> 사용 시, 사용 가능 횟수를 1 빼거나 사용 횟수 차감없이 고정시킴
 // 스킬 사용 시, 횟수 차감 여부
-public enum SkillSynthesis { CountUp, Overlap } // --> 사용 시, 사용 가능 횟수를 1 빼거나 사용 횟수 차감없이 고정시킴
+public enum SkillSynthesis { CountUp, NoCount } // --> 사용 시, 사용 가능 횟수를 1 빼거나 사용 횟수 차감없이 고정시킴
 // 스킬 획득 시, 횟수 증감 여부
 public enum EntityTag { Player, Enemy, Bullet, InnerSprite, Wall};
 
-[System.Serializable]
-public class DamageMethod
-{
-    public float damage;
-    public List<EntityTag> enemyTags;
+//[System.Serializable]
+//public class DamageMethod
+//{
+//    public float damage;
+//    public List<EntityTag> enemyTags;
 
-    public bool CheckTags(string tag)
-    {
-        for (int i = 0; i < enemyTags.Count; i++)
-        {
-            if (tag == enemyTags[i].ToString()) return true;
-        }
+//    public bool CheckTags(string tag)
+//    {
+//        for (int i = 0; i < enemyTags.Count; i++)
+//        {
+//            if (tag == enemyTags[i].ToString()) return true;
+//        }
 
-        return false;
-    }
-}
+//        return false;
+//    }
+//}
 
 public class DatabaseManager : Singleton<DatabaseManager>
 {
@@ -38,7 +38,19 @@ public class DatabaseManager : Singleton<DatabaseManager>
     PlayerData playerData;
     public PlayerData PlayerData { get { return playerData; } set { playerData = value; } }
 
-    public List<ScriptableSkillData> m_scriptableSkillDatas; // 스킬 데이터 모음
+    //public List<ScriptableSkillData> m_scriptableSkillDatas; // 스킬 데이터 모음
+
+    [SerializeField]
+    List<BaseBuff> baseBuffs;
+    public List<BaseBuff> BaseBuffs { get { return baseBuffs; }}
+
+    [SerializeField]
+    List<BaseSkill> baseSkills;
+    public List<BaseSkill> BaseSkills { get { return baseSkills; } }
+
+    [SerializeField]
+    SkillCallData skillCallData;
+    public SkillCallData SkillCallData { get { return skillCallData; } }
 
     protected override void Awake()
     {

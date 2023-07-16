@@ -127,6 +127,16 @@ public abstract class Enemy<T, W> : StateMachineEntity<T, W>, IHealth
         throw new NotImplementedException();
     }
 
+    public EntityTag ReturnTag()
+    {
+        return inheritedTag;
+    }
+
+    public void Knockback(Vector2 dir, float thrust)
+    {
+        throw new NotImplementedException();
+    }
+
 
     //public override void KnockBack(float knockBackThrust)
     //{
