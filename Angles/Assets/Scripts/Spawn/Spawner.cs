@@ -95,8 +95,8 @@ public class Spawner : MonoBehaviour
 
         for (int i = 0; i < spawnCount; i++)
         {
-            EnemyData enemyData = DatabaseManager.Instance.ReturnEnemyData(spawnEntityName);
-            GameObject entity = ObjectPooler.SpawnFromPool(spawnEntityName);
+            //EnemyData enemyData = DatabaseManager.Instance.ReturnEnemyData(spawnEntityName);
+            Entity entity = ObjectPooler.SpawnFromPool<Entity>(spawnEntityName);
             //entity.GetComponent<Enemy>().Init(enemyData);
 
             Vector3 resetPos = SpawnNotOverlap(pos, loadSpawnPos);

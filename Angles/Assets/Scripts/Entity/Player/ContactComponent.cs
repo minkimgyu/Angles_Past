@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class ContactSupportData // 이런식으로 스킬에 필요한 데이터 묶어서 보내기
 {
-    public List<Vector3> contactPos;
-    public List<Entity> contactEntity;
+
+    List<Vector3> contactPos;
+    public List<Vector3> ContactPos { get { return contactPos; } }
+
+    List<Entity> contactEntity;
+    public List<Entity> ContactEntity { get { return contactEntity; } }
 
     public ContactSupportData(List<Entity> contactEntity, List<Vector3> contactPos)
     {
@@ -63,7 +67,7 @@ public class ContactComponent : MonoBehaviour
         return false;
     }
 
-    ContactSupportData ReturnContactSupportData()
+    public ContactSupportData ReturnContactSupportData()
     {
         List<Vector3> pos = new List<Vector3>();
         List<Entity> entities = new List<Entity>();

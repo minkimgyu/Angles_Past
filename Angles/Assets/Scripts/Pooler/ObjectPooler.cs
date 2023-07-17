@@ -21,6 +21,11 @@ public class ObjectPoolerEditor : Editor
 }
 #endif
 
+public interface IPool
+{
+	public void Init();
+}
+
 [Serializable]
 public class Pool
 {
@@ -64,17 +69,17 @@ public class ObjectPooler : MonoBehaviour
 
 	public static void ReturnToTransform(Transform tr) => inst._ReturnToTranstorm(tr);
 
-	public static GameObject SpawnFromPool(string tag) =>
-		inst._SpawnFromPool(tag, Vector3.zero, Quaternion.identity, inst.transform);
+	//public static GameObject SpawnFromPool(string tag) =>
+	//	inst._SpawnFromPool(tag, Vector3.zero, Quaternion.identity, inst.transform);
 
-	public static GameObject SpawnFromPool(string tag, Vector3 position) =>
-		inst._SpawnFromPool(tag, position, Quaternion.identity, inst.transform);
+	//public static GameObject SpawnFromPool(string tag, Vector3 position) =>
+	//	inst._SpawnFromPool(tag, position, Quaternion.identity, inst.transform);
 
-	public static GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation) =>
-		inst._SpawnFromPool(tag, position, rotation, inst.transform);
+	//public static GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation) =>
+	//	inst._SpawnFromPool(tag, position, rotation, inst.transform);
 
-	public static GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation, Transform transform) =>
-		inst._SpawnFromPool(tag, position, rotation, transform);
+	//public static GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation, Transform transform) =>
+	//	inst._SpawnFromPool(tag, position, rotation, transform);
 
 	public static T SpawnFromPool<T>(string tag) where T : Component
 	{

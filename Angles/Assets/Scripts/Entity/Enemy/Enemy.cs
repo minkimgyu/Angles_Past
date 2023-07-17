@@ -102,7 +102,9 @@ public abstract class Enemy<T, W> : StateMachineEntity<T, W>, IHealth
 
     public void UnderAttack(float healthPoint)
     {
-        if(m_data.Hp > 0)
+        print("UnderAttack");
+
+        if (m_data.Hp > 0)
         {
             m_data.Hp -= healthPoint;
             WhenUnderAttack();
@@ -134,7 +136,7 @@ public abstract class Enemy<T, W> : StateMachineEntity<T, W>, IHealth
 
     public void Knockback(Vector2 dir, float thrust)
     {
-        throw new NotImplementedException();
+        print("Knockback");
     }
 
 

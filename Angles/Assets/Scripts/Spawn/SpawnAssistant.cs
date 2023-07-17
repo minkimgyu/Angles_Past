@@ -9,18 +9,20 @@ public class DrawGizmo
     public float width;
     public float height;
     public float radius;
+    public Vector3 offset;
+
     public LayerMask layer;
 
     public void DrawBoxGizmo(Transform tr)
     {
         Gizmos.color = color;
-        Gizmos.DrawWireCube(tr.position, new Vector3(width, height));
+        Gizmos.DrawWireCube(tr.position + offset, new Vector3(width, height));
     }
 
     public void DrawCircleGizmo(Transform tr)
     {
         Gizmos.color = color;
-        Gizmos.DrawWireSphere(tr.position, radius);
+        Gizmos.DrawWireSphere(tr.position + offset, radius);
     }
 
     public RaycastHit2D[] CheckBoxArea(Transform tr)

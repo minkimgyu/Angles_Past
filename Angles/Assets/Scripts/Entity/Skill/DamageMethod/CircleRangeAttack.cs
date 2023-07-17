@@ -7,12 +7,19 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CircleRangeAttack", menuName = "Scriptable Object/DamageMethod/CircleRangeAttack", order = int.MaxValue)]
 public class CircleRangeAttack : DamageMethod
 {
-    public override void Attack(GameObject go, SkillData data)
+    public override void Attack(DamageSupportData supportData)
     {
-        RaycastHit2D[] hit = Physics2D.CircleCastAll(go.transform.position, data.RadiusRange, Vector2.up, 0);
+        // ÀÌÆåÆ® »ý¼º
+
+        RaycastHit2D[] hit = Physics2D.CircleCastAll(supportData.Me.transform.position, supportData.Data.RadiusRange, Vector2.up, 0);
         for (int i = 0; i < hit.Length; i++)
         {
-            if (DamageToEntity(go, hit[i].transform, data) == false) continue;
+            if(DamageToEntity(supportData.Me, hit[i].transform, supportData.Data) == true)
+            {
+                BasicEffectPlayer effectPlayer = effectMethod.ReturnEffectFromPool();
+                effectPlayer.Init(supportData.Me.transform);
+                effectPlayer.PlayEffect();
+            }
         }
     }
 }

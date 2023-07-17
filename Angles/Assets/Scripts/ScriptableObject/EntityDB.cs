@@ -2,27 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class AdditionalPrefabData
-{
-    [SerializeField]
-    protected string name;
-    public string Name { get { return name; } set { name = value; } }
+//[System.Serializable]
+//public class AdditionalPrefabData
+//{
+//    [SerializeField]
+//    protected string name;
+//    public string Name { get { return name; } set { name = value; } }
 
-    [SerializeField]
-    protected int count;
-    public int Count { get { return count; } set { count = value; } }
+//    [SerializeField]
+//    protected int count;
+//    public int Count { get { return count; } set { count = value; } }
 
-    [SerializeField]
-    protected string path;
-    public string Path { get { return path; } set { path = value; } }
-}
+//    [SerializeField]
+//    protected string path;
+//    public string Path { get { return path; } set { path = value; } }
+//}
 
 public class BaseData
 {
     [SerializeField]
     protected string name;
     public string Name { get { return name; } set { name = value; } }
+
+    public BaseData() { }
+
+    public BaseData(string name)
+    {
+        this.name = name;
+    }
 }
 
 public interface IData<T>
@@ -66,9 +73,9 @@ public class HealthEntityData : BaseData
     public float KnockBackThrust { get { return knockBackThrust; } set { knockBackThrust = value; } }
 
     public HealthEntityData() { }
-    public HealthEntityData(string name, string shape, string color, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust) 
+
+    public HealthEntityData(string name, string shape, string color, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust) : base(name)
     {
-        this.name = name;
         this.shape = shape;
         this.color = color;
         this.hp = hp;
@@ -247,6 +254,7 @@ public class EnemyData : HealthEntityData, IData<EnemyData>
     public int PrefabCount { get { return prefabCount; } set { prefabCount = value; } }
 
     public EnemyData() { }
+
     public EnemyData(string name, string shape, string color, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust, float knockBackDamage, 
         float skillMinDistance, float skillUseRange, float skillReuseTime, float followMinDistance, float stopMinDistance, int prefabCount) : base(name, shape, color, hp, speed, stunTime, weight, drag, knockBackThrust)
     {
@@ -266,23 +274,6 @@ public class EnemyData : HealthEntityData, IData<EnemyData>
     }
 }
 
-abstract public class SkillCallCondition : ScriptableObject
-{
-    public abstract bool Check(SkillUseType useType);
-
-    public abstract bool Check(string myName, string callName);
-}
-
-abstract public class SkillUseCountCondition : ScriptableObject
-{
-    public abstract int Usage(int useCount);
-}
-
-abstract public class SkillSynthesisCondition : ScriptableObject
-{
-    public abstract int Synthesis(int useCount, int maxUseCount);
-}
-
 [System.Serializable]
 public class SkillCallData : BaseData, IData<SkillCallData>
 {
@@ -295,62 +286,108 @@ public class SkillCallData : BaseData, IData<SkillCallData>
     public int UseCount { get { return useCount; } set { useCount = value; } }
 
     [SerializeField]
-    SkillCallCondition callCondition;
-    public SkillCallCondition CallCondition { get { return callCondition; } set { callCondition = value; } }
+    SkillUseConditionType useConditionType;
+    public SkillUseConditionType UseConditionType { get { return useConditionType; } set { useConditionType = value; } }
 
     [SerializeField]
-    SkillUseCountCondition useCountCondition;
-    public SkillUseCountCondition UseCountCondition { get { return useCountCondition; } set { useCountCondition = value; } }
+    SkillUseCountSubtractType countSubtractType;
+    public SkillUseCountSubtractType CountSubtractType { get { return countSubtractType; } set { countSubtractType = value; } }
 
     [SerializeField]
-    SkillSynthesisCondition synthesisCondition;
-    public SkillSynthesisCondition SynthesisCondition { get { return synthesisCondition; } set { synthesisCondition = value; } }
+    SkillSynthesisType synthesisType;
+    public SkillSynthesisType SynthesisType { get { return synthesisType; } set { synthesisType = value; } }
 
-    public SkillCallData(int maxUseCount, int useCount, SkillCallCondition callCondition, SkillUseCountCondition useCountCondition, SkillSynthesisCondition synthesisCondition)
+
+    public bool CanUseSkill(SkillUseConditionType useConditionType)
+    {
+        return this.useConditionType == useConditionType;
+    }
+
+    public bool CanSubtractUseCount()
+    {
+        if (countSubtractType == SkillUseCountSubtractType.None) return false;
+        useCount--;
+
+        return true;
+    }
+
+    public bool IsUseCountZero()
+    {
+        return useCount <= 0;
+    }
+
+    public void UpUseCount()
+    {
+        if (synthesisType == SkillSynthesisType.None) return;
+
+        useCount += maxUseCount;
+    }
+
+    public SkillCallData(string name, int maxUseCount, int useCount, SkillUseConditionType useConditionType, SkillUseCountSubtractType countSubtractType, SkillSynthesisType synthesisType)
+        :base(name)
     {
         this.maxUseCount = maxUseCount;
         this.useCount = useCount;
-        this.callCondition = callCondition;
-        this.useCountCondition = useCountCondition;
-        this.synthesisCondition = synthesisCondition;
+        this.useConditionType = useConditionType;
+        this.countSubtractType = countSubtractType;
+        this.synthesisType = synthesisType;
     }
 
     public SkillCallData CopyData()
     {
-        return new SkillCallData(maxUseCount, useCount, callCondition, useCountCondition, synthesisCondition);
+        return new SkillCallData(name, maxUseCount, useCount, useConditionType, countSubtractType, synthesisType);
     }
 }
 
 [System.Serializable]
 public class SkillData : BaseData, IData<SkillData>
 {
-    //[SerializeField]
-    //SkillUseType useType;
-    //public SkillUseType UseType { get { return useType; } set { useType = value; } }
+    [SerializeField]
+    float disableTime;
+    public float DisableTime { get { return disableTime; } set { disableTime = value; } }
 
-    //[SerializeField]
-    //SkillUsage usage;
-    //public SkillUsage Usage { get { return usage; } set { usage = value; } }
 
-    //[SerializeField]
-    //SkillSynthesis synthesis;
-    //public SkillSynthesis Synthesis { get { return synthesis; } set { synthesis = value; } }
-
-    //[SerializeField]
-    //int maxUseCount;
-    //public int UseCount { get { return maxUseCount; } set { maxUseCount = value; } }
+    [Header("Attack")]
 
     [SerializeField]
-    int attackTick = 1;
-    public int AttackTick { get { return attackTick; } set { attackTick = value; } }
+    float damage;
+    public float Damage { get { return damage; } set { damage = value; } }
+
+    [SerializeField]
+    float knockBackThrust;
+    public float KnockBackThrust { get { return knockBackThrust; } set { knockBackThrust = value; } }
+
+    [SerializeField]
+    EntityTag[] hitTarget;
+    public EntityTag[] HitTarget { get { return hitTarget; } set { hitTarget = value; } }
+
+
+    [Header("PrefabCount")]
+
+    [SerializeField]
+    int prefabCount;
+    public int PrefabCount { get { return prefabCount; } set { prefabCount = value; } }
+
+
+    [Header("Delay")]
 
     [SerializeField]
     float preDelay;
     public float PreDelay { get { return preDelay; } set { preDelay = value; } }
 
+
+    [Header("Tick")]
+
+    [SerializeField]
+    int tickCount = 1;
+    public int TickCount { get { return tickCount; } set { tickCount = value; } }
+
     [SerializeField]
     float duration;
     public float Duration { get { return duration; } set { duration = value; } }
+
+
+    [Header("Range")]
 
     [SerializeField]
     float radiusRange;
@@ -364,25 +401,8 @@ public class SkillData : BaseData, IData<SkillData>
     Vector2 offsetRange;
     public Vector2 OffsetRange { get { return offsetRange; } set { offsetRange = value; } }
 
-    [SerializeField]
-    float damage;
-    public float Damage { get { return damage; } set { damage = value; } }
-
-    [SerializeField]
-    float knockBackThrust;
-    public float KnockBackThrust { get { return knockBackThrust; } set { knockBackThrust = value; } }
-
-    [SerializeField]
-    float disableTime;
-    public float DisableTime { get { return disableTime; } set { disableTime = value; } }
-
-    [SerializeField]
-    EntityTag[] hitTarget;
-    public EntityTag[] HitTarget { get { return hitTarget; } set { hitTarget = value; } }
-
-    [SerializeField]
-    int prefabCount;
-    public int PrefabCount { get { return prefabCount; } set { prefabCount = value; } }
+    
+    
 
     #region Fn
 
@@ -444,10 +464,10 @@ public class SkillData : BaseData, IData<SkillData>
 
     //public SkillData() { }
 
-    public SkillData(string name, int useTick, float preDelay, float duration, float radiusRange, Vector2 boxRange, Vector2 offsetRange, float damage, float knockBackThrust, float disableTime, EntityTag[] hitTarget, int prefabCount)
+    public SkillData(string name, int tickCount, float preDelay, float duration, float radiusRange, Vector2 boxRange, Vector2 offsetRange, float damage, float knockBackThrust, float disableTime, EntityTag[] hitTarget, int prefabCount)
+    : base(name)
     {
-        this.name = name;
-        this.attackTick = useTick;
+        this.tickCount = tickCount;
         this.preDelay = preDelay;
         this.duration = duration;
         this.radiusRange = radiusRange;
@@ -462,23 +482,26 @@ public class SkillData : BaseData, IData<SkillData>
 
     public SkillData CopyData()
     {
-        return new SkillData(name, attackTick, preDelay, duration, radiusRange, boxRange, offsetRange, damage, knockBackThrust, disableTime, hitTarget, prefabCount);
+        return new SkillData(name, tickCount, preDelay, duration, radiusRange, boxRange, offsetRange, damage, knockBackThrust, disableTime, hitTarget, prefabCount);
     }
 
     #endregion
 }
 
-[CreateAssetMenu(fileName = "EntityDB", menuName = "Scriptable Object/EntityDB")]
+[CreateAssetMenu(fileName = "EntityDB", menuName = "Scriptable Object/DB/EntityDB")]
 public class EntityDB : ScriptableObject
 {
-    public PlayerData Player;
-    public List<EnemyData> Enemy;
-    public List<SkillData> Skill;
+    [SerializeField]
+    PlayerData player;
+    public PlayerData Player { get { return player; } }
+
+    [SerializeField]
+    List<EnemyData> enemy;
+    public List<EnemyData> Enemy { get { return enemy; } }
 
     public void ResetData()
     {
-        Player = new PlayerData();
-        Enemy = new List<EnemyData>();
-        Skill = new List<SkillData>();
+        player = new PlayerData();
+        enemy = new List<EnemyData>();
     }
 }
