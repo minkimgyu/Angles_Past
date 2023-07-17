@@ -20,13 +20,11 @@ public class PlayManager : Singleton<PlayManager>
         Application.targetFrameRate = 60;
 
         base.Awake();
-        DatabaseManager DB = DatabaseManager.Instance;
-        DB.PlayerData = DB.EntityDB.Player.CopyData();
 
         GameObject go = Resources.Load("Prefabs/Entity/Player") as GameObject;
         player = Instantiate(go).GetComponent<Player>();
 
-        player.ResetPlayerData(DB.EntityDB.Player.CopyData());
+        player.ResetPlayerData(DatabaseManager.Instance.EntityDB.Player.CopyData());
         virtualCamera.Follow = player.transform;
     }
 }

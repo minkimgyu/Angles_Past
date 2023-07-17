@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class DropSkill : MonoBehaviour
 {
-    BaseSkill m_baseSkill;
+    [SerializeField]
+    string skillName;
 
-    BaseSkill ReturnSkill()
+    public SkillCallData ReturnSkill()
     {
-        return m_baseSkill;
+        return DatabaseManager.Instance.UtilizationDB.SkillCallDatas.Find(x => x.Name == skillName).CopyData();
+    }
+
+    private void OnDisable()
+    {
+        ObjectPooler.ReturnToPool(gameObject);
     }
 }

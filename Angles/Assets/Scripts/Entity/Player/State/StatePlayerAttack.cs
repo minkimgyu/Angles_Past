@@ -28,7 +28,7 @@ public class StatePlayerAttack : IState<Player, Player.State>
 
         if (entity.InheritedTag == EntityTag.Enemy)
         {
-            m_loadPlayer.BattleComponent.UseSkill(SkillUseType.Contact);
+            m_loadPlayer.BattleComponent.UseSkill(SkillUseConditionType.Contact);
             // 스킬 사용
         }
 

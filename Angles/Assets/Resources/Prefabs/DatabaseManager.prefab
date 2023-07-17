@@ -69,9 +69,5 @@ MonoBehaviour:
     dashThrust: 0
     dashRatio: 0
     dashRecoverRatio: 0
-  baseBuffs: []
-  baseSkills:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   entityDB: {fileID: 11400000, guid: 719b4e840748906469d25c527c98354b, type: 2}
+  utilizationDB: {fileID: 11400000, guid: 9a202892ba266fe4f9d816b0b0dfbe94, type: 2}

@@ -2,35 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IEffectMethod
-{
-    public void Show(GameObject go);
-}
+//[CreateAssetMenu(fileName = "BaseSkill", menuName = "Scriptable Object/BaseSkill", order = int.MaxValue)]
+//[System.Serializable]
+//public class BaseSkill : ScriptableObject
+//{
+//    [SerializeField]
+//    protected SkillData data; // --> 데미지, 범위 등등 공통된 변수만 넣어주자
+//    public SkillData Data{ get { return data; } }
 
-[CreateAssetMenu(fileName = "BaseSkill", menuName = "Scriptable Object/BaseSkill", order = int.MaxValue)]
-[System.Serializable]
-public class BaseSkill : ScriptableObject
-{
-    [SerializeField]
-    protected SkillData data; // --> 데미지, 범위 등등 공통된 변수만 넣어주자
-    public SkillData Data{ get { return data; } }
+//    //--> 앞으로 이펙트 데이터도 필요할 것
 
-    //--> 앞으로 이펙트 데이터도 필요할 것
+//    // 추가로 들어갈 수 있는 것 --> 사용 조건, 
 
-    // 추가로 들어갈 수 있는 것 --> 사용 조건, 
+//    [SerializeField]
+//    DamageMethod damageMethod; // 원거리 공격, 근거리 공격 등등
+//    public DamageMethod DamageMethod { get { return damageMethod; } }
 
-    [SerializeField]
-    DamageMethod damageMethod; // 원거리 공격, 근거리 공격 등등
-    public DamageMethod DamageMethod { get { return damageMethod; } }
+//    [SerializeField]
+//    EffectMethod effectMethod; // 효과들 모음
+//    public EffectMethod EffectMethod { get { return effectMethod; } }
 
-    [SerializeField]
-    IEffectMethod effectMethod; // 효과들 모음
-    public IEffectMethod EffectMethod { get { return effectMethod; } }
-
-    public void Execute(BattleComponent battle)
-    {
-        damageMethod.Attack(battle.gameObject, data);
-    }
+//    public void Execute(BattleComponent battle)
+//    {
+//        damageMethod.Attack(battle.gameObject, data);
+//    }
 
     //public void Execute(BattleComponent battle, SkillUseType useType)
     //{
@@ -58,7 +53,7 @@ public class BaseSkill : ScriptableObject
     //{
     //    return ObjectPooler.SpawnFromPool(name, pos, rotation, tr);
     //}
-}
+//}
 
 ///// <summary>
 ///// 사용해도 스킬 사용 카운트가 안 줄음

@@ -358,7 +358,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1638d4b05d9f4e145b75023474c6c5cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tags: 
   m_possessingSkills: []
 --- !u!114 &4491371347988923600
 MonoBehaviour:
@@ -461,6 +460,7 @@ MonoBehaviour:
     width: 13.95
     height: 22
     radius: 0
+    offset: {x: 0, y: 0, z: 0}
     layer:
       serializedVersion: 2
       m_Bits: 1024
@@ -469,6 +469,7 @@ MonoBehaviour:
     width: 30
     height: 40
     radius: 0
+    offset: {x: 0, y: 0, z: 0}
     layer:
       serializedVersion: 2
       m_Bits: 1024

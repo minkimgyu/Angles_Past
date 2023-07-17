@@ -133,7 +133,7 @@ public class UpdateDBComponent : UnitaskUtility
     {
         if (dataName == "Player")
         {
-            DatabaseManager.Instance.EntityDB.Player = data as PlayerData;
+            //DatabaseManager.Instance.EntityDB.Player = data as PlayerData;
         }
         else if (dataName == "Enemy")
         {
@@ -141,7 +141,7 @@ public class UpdateDBComponent : UnitaskUtility
         }
         else if (dataName == "Skill")
         {
-            DatabaseManager.Instance.EntityDB.Skill.Add(data as SkillData);
+            //DatabaseManager.Instance.EntityDB.Skill.Add(data as SkillData);
         }
         //else if (dataName == "AdditionalPrefab")
         //{
@@ -172,9 +172,9 @@ public class UpdateDBComponent : UnitaskUtility
         //{
         //    tempValue = (SkillName)Enum.Parse(typeof(SkillName), value);
         //}
-        else if (property.PropertyType == typeof(SkillUseType))
+        else if (property.PropertyType == typeof(SkillUseConditionType))
         {
-            tempValue = (SkillUseType)Enum.Parse(typeof(SkillUseType), value);
+            tempValue = (SkillUseConditionType)Enum.Parse(typeof(SkillUseConditionType), value);
         }
         //else if (property.PropertyType == typeof(SkillUsage))
         //{

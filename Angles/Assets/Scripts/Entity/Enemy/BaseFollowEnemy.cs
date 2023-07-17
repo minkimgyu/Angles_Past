@@ -31,7 +31,7 @@ public class BaseFollowEnemy : Enemy<BaseFollowEnemy, BaseFollowEnemy.State>
         m_moveComponent = GetComponent<MoveComponent>();
         m_battleComponent = GetComponent<BattleComponent>();
 
-        m_battleComponent.AbleTags.Add(EntityTag.Player);
+        //m_battleComponent.AbleTags.Add(EntityTag.Player);
     }
 
     // Start is called before the first frame update

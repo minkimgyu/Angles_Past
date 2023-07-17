@@ -95,12 +95,15 @@ public class Player : StateMachineEntity<Player, Player.State>, ISubject<Player.
         m_battleComponent = GetComponent<BattleComponent>();
         m_animator = GetComponent<Animator>();
 
+        m_contactComponent = GetComponent<ContactComponent>();
+        m_buffComponent = GetComponent<BuffComponent>();
+
         moveJoystick = GameObject.FindWithTag("MoveJoystick").GetComponent<MoveJoystick>();
         actionJoycstick = GameObject.FindWithTag("AttackJoystick").GetComponent<ActionJoystick>();
         
         m_reflectComponent.AbleTags.Add(EntityTag.Wall);
 
-        m_battleComponent.AbleTags.Add(EntityTag.Enemy);
+        //m_battleComponent.AbleTags.Add(EntityTag.Enemy);
 
 
         //actionJoycstick.DashAction += Dash;
@@ -160,6 +163,15 @@ public class Player : StateMachineEntity<Player, Player.State>, ISubject<Player.
     {
         DoOperateUpdate();
         // 움직임이 감지되면 move state로 넘어감
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.CompareTag("DropItem"))
+        {
+            DropSkill dropSkill = col.GetComponent<DropSkill>();
+            m_battleComponent.LootingSkill(dropSkill.ReturnSkill());
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D col) // 충돌 시 상태 변환
