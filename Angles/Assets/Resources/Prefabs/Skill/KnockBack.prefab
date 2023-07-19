@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     name: Knockback
-    disableTime: 0
+    disableTime: 3
     damage: 10
     knockBackThrust: 10
     hitTarget: 01000000

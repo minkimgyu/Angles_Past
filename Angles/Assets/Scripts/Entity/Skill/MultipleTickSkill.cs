@@ -11,20 +11,23 @@ public class MultipleTickSkill : TickSkill // --> ÇÁ¸®ÆÕÀ¸·Î »ý¼ºÇØ¼­ ¿ÀºêÁ§Æ® Ç
     {
         // --> À§Ä¡ ÁöÁ¤ ·ÎÁ÷ Ãß°¡
         base.Execute(caster);
-        DamageTask(new DamageSupportData(caster, gameObject, data)).Forget();
+
+        CancelTask(); // ¸ÕÀú µ¹¸®°í ÀÖ´Â°Ô ÀÖ´Ù¸é Ãë¼Ò½ÃÅ°°í ´Ù½Ã ½ÇÇà //--> ºí·¹ÀÌµå¿Í °°Àº ½ºÅ³ÀÇ ÃÊ±âÈ­
+
+        DamageTask(new DamageSupportData(caster, this)).Forget();
     }
 
     private async UniTaskVoid DamageTask(DamageSupportData damageSupportData)
     {
-        await UniTask.Delay(TimeSpan.FromSeconds(damageSupportData.Data.PreDelay), cancellationToken: m_source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(damageSupportData.Me.Data.PreDelay), cancellationToken: m_source.Token);
 
         int storedTick = 0;
 
-        float delay = damageSupportData.Data.Duration / damageSupportData.Data.TickCount;
+        float delay = damageSupportData.Me.Data.Duration / damageSupportData.Me.Data.TickCount;
 
-        while (damageSupportData.Data.TickCount > storedTick)
+        while (damageSupportData.Me.Data.TickCount > storedTick)
         {
-            damageMethod.Attack(damageSupportData);
+            damageMethod.Execute(damageSupportData);
             storedTick++;
             await UniTask.Delay(TimeSpan.FromSeconds(delay), cancellationToken: m_source.Token);
         }

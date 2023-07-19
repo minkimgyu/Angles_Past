@@ -10,14 +10,14 @@ public class PreDelaySkill : TickSkill // --> 프리팹으로 생성해서 오브젝트 풀링�
     public override void Execute(GameObject caster)
     {
         base.Execute(caster);
-        DamageTask(new DamageSupportData(caster, gameObject, data)).Forget();
+        DamageTask(new DamageSupportData(caster, this)).Forget();
     }
 
     private async UniTaskVoid DamageTask(DamageSupportData damageSupportData)
     {
-        await UniTask.Delay(TimeSpan.FromSeconds(damageSupportData.Data.PreDelay), cancellationToken: m_source.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(damageSupportData.Me.Data.PreDelay), cancellationToken: m_source.Token);
 
-        damageMethod.Attack(damageSupportData);
+        damageMethod.Execute(damageSupportData);
         gameObject.SetActive(false);
     }
 }

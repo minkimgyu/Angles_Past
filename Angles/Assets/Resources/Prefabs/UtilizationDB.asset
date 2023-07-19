@@ -16,15 +16,47 @@ MonoBehaviour:
   - name: Shockwave
     maxUseCount: 1
     useCount: 1
+    overlapType: 0
     useConditionType: 1
     countSubtractType: 1
     synthesisType: 0
   - name: Knockback
     maxUseCount: 1
     useCount: 1
+    overlapType: 0
     useConditionType: 0
+    countSubtractType: 1
+    synthesisType: 0
+  - name: Blade
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 1
+    useConditionType: 1
+    countSubtractType: 1
+    synthesisType: 0
+  - name: StickyBomb
+    maxUseCount: 2
+    useCount: 2
+    overlapType: 0
+    useConditionType: 0
+    countSubtractType: 1
+    synthesisType: 1
+  - name: Punch
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 0
+    countSubtractType: 0
+    synthesisType: 0
+  - name: SpawnBall
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 1
+    useConditionType: 1
     countSubtractType: 1
     synthesisType: 0
   skillDatas:
   - {fileID: 990536666640814472, guid: 9ae127746cd27e545abb2b1e190dbe1c, type: 3}
+  - {fileID: 4137328563240184283, guid: 25326d2331f93084aabb63802c3da467, type: 3}
+  - {fileID: -3030192017513386572, guid: 588b0780a4ff0914fb8a7533146705a1, type: 3}
   baseBuffs: []

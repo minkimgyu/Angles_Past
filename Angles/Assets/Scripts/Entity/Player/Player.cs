@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 
-public class Player : StateMachineEntity<Player, Player.State>, ISubject<Player.ObserverType, PlayerData>, IHealth
+public class Player : StateMachineEntity<Player, Player.State>, ISubject<Player.ObserverType, PlayerData>, IHealth, IBuff<PlayerData>
 {
     //private StateMachine<Player, Telegram<State>> m_stateMachine;
 
@@ -95,6 +95,11 @@ public class Player : StateMachineEntity<Player, Player.State>, ISubject<Player.
         m_battleComponent = GetComponent<BattleComponent>();
         m_animator = GetComponent<Animator>();
 
+
+        m_battleComponent.LootingSkill
+            (DatabaseManager.Instance.UtilizationDB.SkillCallDatas.Find(x => x.Name == "Punch").CopyData());
+
+
         m_contactComponent = GetComponent<ContactComponent>();
         m_buffComponent = GetComponent<BuffComponent>();
 
@@ -169,6 +174,8 @@ public class Player : StateMachineEntity<Player, Player.State>, ISubject<Player.
     {
         if (col.gameObject.CompareTag("DropItem"))
         {
+            m_buffComponent.AddBuff("SpeedDebuff");
+
             DropSkill dropSkill = col.GetComponent<DropSkill>();
             m_battleComponent.LootingSkill(dropSkill.ReturnSkill());
         }
@@ -235,5 +242,10 @@ public class Player : StateMachineEntity<Player, Player.State>, ISubject<Player.
     public void Knockback(Vector2 dir, float thrust)
     {
         throw new NotImplementedException();
+    }
+
+    public PlayerData GetData()
+    {
+        return Data;
     }
 }

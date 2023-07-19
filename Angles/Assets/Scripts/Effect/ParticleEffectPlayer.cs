@@ -19,6 +19,8 @@ public class ParticleEffectPlayer : BasicEffectPlayer
 
     public override void RotationEffect(float rotation)
     {
+        transform.rotation = Quaternion.Euler(0, 0, rotation);
+
         for (int i = 0; i < m_particles.Count; i++)
         {
             var main = m_particles[i].main;
@@ -35,7 +37,7 @@ public class ParticleEffectPlayer : BasicEffectPlayer
             m_particles[i].Play();
         }
 
-        Invoke("DisableObject", 5f);
+        Invoke("DisableObject", m_duration);
     }
 
     public override void StopEffect()

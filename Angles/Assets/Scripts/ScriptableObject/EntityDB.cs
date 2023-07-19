@@ -49,12 +49,25 @@ public class HealthEntityData : BaseData
     public string Color { get { return color; } set { color = value; } }
 
     [SerializeField]
+    protected bool immortality;
+    public bool Immortality { get { return immortality; } set { immortality = value; } }
+
+    [SerializeField]
     protected float hp;
     public float Hp { get { return hp; } set { hp = value; } }
 
     [SerializeField]
+    protected float maxSpeed;
+    public float MaxSpeed { get { return maxSpeed; } set { maxSpeed = value; } }
+
+    [SerializeField]
+    protected float minSpeed;
+    public float MinSpeed { get { return minSpeed; } set { minSpeed = value; } }
+
+    [SerializeField]
     protected float speed;
-    public float Speed { get { return speed; } set { speed = value; } }
+    public float Speed {get { return speed; } set{ speed = value; } }
+    
 
     [SerializeField]
     protected float stunTime;
@@ -74,11 +87,14 @@ public class HealthEntityData : BaseData
 
     public HealthEntityData() { }
 
-    public HealthEntityData(string name, string shape, string color, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust) : base(name)
+    public HealthEntityData(string name, string shape, string color, bool immortality, float hp, float maxSpeed, float minSpeed, float speed, float stunTime, float weight, float drag, float knockBackThrust) : base(name)
     {
         this.shape = shape;
         this.color = color;
+        this.immortality = immortality;
         this.hp = hp;
+        this.maxSpeed = maxSpeed;
+        this.minSpeed = minSpeed;
         this.speed = speed;
         this.stunTime = stunTime;
         this.weight = weight;
@@ -195,8 +211,8 @@ public class PlayerData : HealthEntityData, IData<PlayerData>
 
     public PlayerData() { }
 
-    public PlayerData(string name, string shape, string color, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust,  float readySpeed, float speedRatio, float minSpeedRatio, float maxSpeedRatio, float rushThrust,
-        float rushRatio, float rushRecoverRatio, float rushTime, float attackCancelOffset, float reflectThrust, float maxDashCount, float dashTime, float dashThrust, float dashRatio, float dashRecoverRatio) : base(name, shape, color, hp, speed, stunTime, weight, drag, knockBackThrust)
+    public PlayerData(string name, string shape, string color, bool immortality, float hp, float maxSpeed, float minSpeed, float speed, float stunTime, float weight, float drag, float knockBackThrust,  float readySpeed, float speedRatio, float minSpeedRatio, float maxSpeedRatio, float rushThrust,
+        float rushRatio, float rushRecoverRatio, float rushTime, float attackCancelOffset, float reflectThrust, float maxDashCount, float dashTime, float dashThrust, float dashRatio, float dashRecoverRatio) : base(name, shape, color, immortality, hp, maxSpeed, minSpeed, speed, stunTime, weight, drag, knockBackThrust)
     {
         this.readySpeed = readySpeed;
         this.speedRatio = speedRatio;
@@ -217,7 +233,7 @@ public class PlayerData : HealthEntityData, IData<PlayerData>
 
     public PlayerData CopyData()
     {
-        return new PlayerData(name, shape, color, hp, speed, stunTime, weight, drag, knockBackThrust, readySpeed, speedRatio, minSpeedRatio, maxSpeedRatio, rushThrust,
+        return new PlayerData(name, shape, color, immortality, hp, maxSpeed, minSpeed, speed, stunTime, weight, drag, knockBackThrust, readySpeed, speedRatio, minSpeedRatio, maxSpeedRatio, rushThrust,
         rushRatio, rushRecoverRatio, rushTime, attackCancelOffset, reflectThrust, maxDashCount, dashTime, dashThrust, dashRatio, dashRecoverRatio);
     }
 }
@@ -255,8 +271,8 @@ public class EnemyData : HealthEntityData, IData<EnemyData>
 
     public EnemyData() { }
 
-    public EnemyData(string name, string shape, string color, float hp, float speed, float stunTime, float weight, float drag, float knockBackThrust, float knockBackDamage, 
-        float skillMinDistance, float skillUseRange, float skillReuseTime, float followMinDistance, float stopMinDistance, int prefabCount) : base(name, shape, color, hp, speed, stunTime, weight, drag, knockBackThrust)
+    public EnemyData(string name, string shape, string color, bool immortality, float hp, float maxSpeed, float minSpeed, float speed, float stunTime, float weight, float drag, float knockBackThrust, float knockBackDamage, 
+        float skillMinDistance, float skillUseRange, float skillReuseTime, float followMinDistance, float stopMinDistance, int prefabCount) : base(name, shape, color, immortality, hp, maxSpeed, minSpeed, speed, stunTime, weight, drag, knockBackThrust)
     {
         this.knockBackThrust = knockBackThrust;
         this.knockBackDamage = knockBackDamage;
@@ -270,7 +286,7 @@ public class EnemyData : HealthEntityData, IData<EnemyData>
 
     public EnemyData CopyData()
     {
-        return new EnemyData(name, shape, color, hp, speed, stunTime, weight, drag, knockBackThrust, knockBackDamage, skillMinDistance, skillUseRange, skillReuseTime, followMinDistance, stopMinDistance, prefabCount);
+        return new EnemyData(name, shape, color, immortality, hp, maxSpeed, minSpeed, speed, stunTime, weight, drag, knockBackThrust, knockBackDamage, skillMinDistance, skillUseRange, skillReuseTime, followMinDistance, stopMinDistance, prefabCount);
     }
 }
 
@@ -284,6 +300,14 @@ public class SkillCallData : BaseData, IData<SkillCallData>
     [SerializeField]
     int useCount;
     public int UseCount { get { return useCount; } set { useCount = value; } }
+
+    //[SerializeField]
+    //Test test;
+    //public Test Test1 { get { return test; } set { test = value; } }
+
+    [SerializeField]
+    SkillOverlapType overlapType;
+    public SkillOverlapType OverlapType { get { return overlapType; } set { overlapType = value; } }
 
     [SerializeField]
     SkillUseConditionType useConditionType;
@@ -323,11 +347,12 @@ public class SkillCallData : BaseData, IData<SkillCallData>
         useCount += maxUseCount;
     }
 
-    public SkillCallData(string name, int maxUseCount, int useCount, SkillUseConditionType useConditionType, SkillUseCountSubtractType countSubtractType, SkillSynthesisType synthesisType)
+    public SkillCallData(string name, int maxUseCount, int useCount, SkillOverlapType overlapType, SkillUseConditionType useConditionType, SkillUseCountSubtractType countSubtractType, SkillSynthesisType synthesisType)
         :base(name)
     {
         this.maxUseCount = maxUseCount;
         this.useCount = useCount;
+        this.overlapType = overlapType;
         this.useConditionType = useConditionType;
         this.countSubtractType = countSubtractType;
         this.synthesisType = synthesisType;
@@ -335,7 +360,7 @@ public class SkillCallData : BaseData, IData<SkillCallData>
 
     public SkillCallData CopyData()
     {
-        return new SkillCallData(name, maxUseCount, useCount, useConditionType, countSubtractType, synthesisType);
+        return new SkillCallData(name, maxUseCount, useCount, overlapType, useConditionType, countSubtractType, synthesisType);
     }
 }
 
@@ -401,8 +426,17 @@ public class SkillData : BaseData, IData<SkillData>
     Vector2 offsetRange;
     public Vector2 OffsetRange { get { return offsetRange; } set { offsetRange = value; } }
 
-    
-    
+    [Header("Spawn")]
+
+    [SerializeField]
+    int spawnCount;
+    public int SpawnCount { get { return spawnCount; } set { spawnCount = value; } }
+
+    [SerializeField]
+    int spawnObjectSpeed;
+    public int SpawnObjectSpeed { get { return spawnObjectSpeed; } set { spawnObjectSpeed = value; } }
+
+
 
     #region Fn
 

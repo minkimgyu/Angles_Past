@@ -4,21 +4,24 @@ using UnityEngine;
 
 public struct DamageSupportData // --> 추후에 버프 추가
 {
-    public DamageSupportData(GameObject caster, GameObject me, SkillData data)
+    public DamageSupportData(GameObject caster, AttackSkill me)
     {
         m_caster = caster;
         m_me = me;
-        m_data = data;
+        //m_data = data;
     }
 
     GameObject m_caster;
     public GameObject Caster { get { return m_caster; } }
 
-    GameObject m_me;
-    public GameObject Me { get { return m_me; } }
+    //GameObject m_me;
+    //public GameObject Me { get { return m_me; } }
 
-    SkillData m_data;
-    public SkillData Data { get { return m_data; } }
+    //SkillData m_data;
+    //public SkillData Data { get { return m_data; } }
+
+    AttackSkill m_me;
+    public AttackSkill Me { get { return m_me; } }
 }
 
 abstract public class DamageMethod : ScriptableObject
@@ -33,7 +36,7 @@ abstract public class DamageMethod : ScriptableObject
     /// <param name="me"> 이 메소드를 컴포넌트로 담고있는 오브젝트</param>
     /// <param name="data"></param>
     /// <param name="effectMethod"></param>
-    public abstract void Attack(DamageSupportData supportData);
+    public abstract void Execute(DamageSupportData supportData);
 
     protected bool DamageToEntity(GameObject me, Transform enemy, SkillData data)
     {

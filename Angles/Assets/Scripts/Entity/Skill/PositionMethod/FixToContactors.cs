@@ -17,6 +17,7 @@ public class FixToContactors : PositionMethod
         if (contact == null) return;
 
         ContactSupportData supportData = contact.ReturnContactSupportData();
+        if (supportData.ContactEntity[0] == null) return;
 
         me.PosTr = supportData.ContactEntity[0].transform;
     }

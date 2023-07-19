@@ -21,11 +21,6 @@ public class ObjectPoolerEditor : Editor
 }
 #endif
 
-public interface IPool
-{
-	public void Init();
-}
-
 [Serializable]
 public class Pool
 {
