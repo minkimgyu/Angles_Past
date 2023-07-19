@@ -1,38 +1,51 @@
 using UnityEngine;
 
-public class StateFollowEnemyStop : IState<BaseFollowEnemy, BaseFollowEnemy.State>
+public class StateFollowEnemyStop : IState<BaseFollowEnemy.State>
 {
-    public void CheckSwitchStates(BaseFollowEnemy value)
+    BaseFollowEnemy loadFollowEnemy;
+
+    public StateFollowEnemyStop(BaseFollowEnemy followEnemy) 
+    { 
+        loadFollowEnemy = followEnemy; 
+    }
+
+    public void CheckSwitchStates()
     {
         throw new System.NotImplementedException();
     }
 
-    public void OnAwakeMessage(BaseFollowEnemy value, Telegram<BaseFollowEnemy.State> telegram)
+    public void OnAwakeMessage(Telegram<BaseFollowEnemy.State> telegram)
     {
         throw new System.NotImplementedException();
     }
 
-    public void OnProcessingMessage(BaseFollowEnemy value, Telegram<BaseFollowEnemy.State> telegram)
+    public void OnProcessingMessage(Telegram<BaseFollowEnemy.State> telegram)
     {
         throw new System.NotImplementedException();
     }
 
-    public void OperateEnter(BaseFollowEnemy enemy)
+    public void OnSetToGlobalState()
     {
-        //Debug.Log("Stop");
-        enemy.MoveComponent.Stop();
     }
 
-    public void OperateExit(BaseFollowEnemy enemy)
+    public void OperateEnter()
+    {
+        loadFollowEnemy.MoveComponent.Stop();
+    }
+
+    public void OperateExit()
     {
        
     }
 
-    public void OperateUpdate(BaseFollowEnemy enemy)
+    public void OperateUpdate()
     {
-        if (!enemy.FollowComponent.IsDistanceLower(enemy.LoadPlayer.transform.position, enemy.Data.StopMinDistance))
+        Vector2 dir = loadFollowEnemy.FollowComponent.ReturnDirVec(loadFollowEnemy.LoadPlayer.transform.position);
+        loadFollowEnemy.MoveComponent.RotationPlayer(dir.normalized, true);
+
+        if (!loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.Data.StopMinDistance))
         {
-            enemy.SetState(BaseFollowEnemy.State.Follow);
+            loadFollowEnemy.SetState(BaseFollowEnemy.State.Follow);
         }
     }
 }

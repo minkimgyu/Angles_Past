@@ -9,13 +9,20 @@ public class HealthEntitySpeedBuff : PassiveBuff
     [SerializeField]
     float speed;
 
-    float offset;
+    [SerializeField]
+    float readySpeed;
 
     public override void OnEnd()
     {
-        entityData.Speed -= speed;
+        if(m_effectPlayer != null)
+        {
+            m_effectPlayer.StopEffect();
+        }
 
-        entityData.Speed += offset; // 최대 최소 적용
+        entityData.Speed.OriginValue -= speed;
+        entityData.ReadySpeed.OriginValue -= readySpeed;
+
+        gameObject.SetActive(false);
     }
 
     public override void OnStart(GameObject caster)
@@ -23,19 +30,20 @@ public class HealthEntitySpeedBuff : PassiveBuff
         caster.TryGetComponent(out IBuff<PlayerData> buffData);
 
         if (buffData == null) isFinished = true;
-        else entityData = buffData.GetData(); 
+        else entityData = buffData.GetData();
 
-        entityData.Speed += speed;
+        entityData.Speed.OriginValue += speed;
+        entityData.ReadySpeed.OriginValue += readySpeed;
 
-        if(entityData.Speed > entityData.MaxSpeed)
+        // 수치에 영향이 없으면 이펙트 생성 X
+        //if (entityData.Speed.IsOutInterval() || entityData.ReadySpeed.IsOutInterval()) return;
+
+        BasicEffectPlayer effectPlayer = effectMethod.ReturnEffectFromPool();
+        if (effectPlayer != null)
         {
-            offset = entityData.Speed - entityData.MaxSpeed;
-            entityData.Speed = entityData.MaxSpeed;
-        }
-        else if(entityData.Speed < entityData.MinSpeed)
-        {
-            offset = entityData.MinSpeed - entityData.Speed;
-            entityData.Speed = entityData.MinSpeed;
+            m_effectPlayer = effectPlayer;
+            effectPlayer.Init(caster.transform, 1000f);
+            effectPlayer.PlayEffect();
         }
     }
 }

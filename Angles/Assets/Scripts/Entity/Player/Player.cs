@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 
-public class Player : StateMachineEntity<Player, Player.State>, ISubject<Player.ObserverType, PlayerData>, IHealth, IBuff<PlayerData>
+public class Player : StateMachineEntity<Player.State>, ISubject<Player.ObserverType, PlayerData>, IHealth, IBuff<PlayerData>
 {
     //private StateMachine<Player, Telegram<State>> m_stateMachine;
 
@@ -124,14 +124,14 @@ public class Player : StateMachineEntity<Player, Player.State>, ISubject<Player.
     private void Start()
     {
         //상태 생성
-        IState<Player, State> move = new StatePlayerMove(this);
-        IState<Player, State> attack = new StatePlayerAttack(this);
-        IState<Player, State> attackReady = new StatePlayerAttackReady(this);
-        IState<Player, State> dash = new StatePlayerDash();
-        IState<Player, State> dead = new StatePlayerDie();
-        IState<Player, State> reflect = new StatePlayerReflect();
+        IState<State> move = new StatePlayerMove(this);
+        IState<State> attack = new StatePlayerAttack(this);
+        IState<State> attackReady = new StatePlayerAttackReady(this);
+        IState<State> dash = new StatePlayerDash(this);
+        IState<State> dead = new StatePlayerDie(this);
+        IState<State> reflect = new StatePlayerReflect(this);
 
-        IState<Player, State> global = new StatePlayerGlobal();
+        IState<State> global = new StatePlayerGlobal(this);
 
         //키입력 등에 따라서 언제나 상태를 꺼내 쓸 수 있게 딕셔너리에 보관
         m_dicState.Add(State.Move, move);
@@ -141,7 +141,7 @@ public class Player : StateMachineEntity<Player, Player.State>, ISubject<Player.
         m_dicState.Add(State.Die, dead);
         m_dicState.Add(State.Reflect, reflect);
 
-        SetUp(this, State.Move);
+        SetUp(State.Move);
         SetGlobalState(global);
     }
 
@@ -166,6 +166,15 @@ public class Player : StateMachineEntity<Player, Player.State>, ISubject<Player.
     // Update is called once per frame
     private void Update()
     {
+        //if(Input.GetKeyDown(KeyCode.K))
+        //{
+        //    m_buffComponent.AddBuff("SpeedDebuff");
+        //}
+        //else if(Input.GetKeyDown(KeyCode.T))
+        //{
+        //    m_buffComponent.RemoveBuff("SpeedDebuff");
+        //}
+
         DoOperateUpdate();
         // 움직임이 감지되면 move state로 넘어감
     }
@@ -174,8 +183,6 @@ public class Player : StateMachineEntity<Player, Player.State>, ISubject<Player.
     {
         if (col.gameObject.CompareTag("DropItem"))
         {
-            m_buffComponent.AddBuff("SpeedDebuff");
-
             DropSkill dropSkill = col.GetComponent<DropSkill>();
             m_battleComponent.LootingSkill(dropSkill.ReturnSkill());
         }
@@ -212,7 +219,7 @@ public class Player : StateMachineEntity<Player, Player.State>, ISubject<Player.
     }
 
 
-
+   
 
     public bool IsTarget(EntityTag tag)
     {

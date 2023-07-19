@@ -27,7 +27,7 @@ public class MoveComponent : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, ReturnRotationAngle(vec));
     }
 
-    void RotationPlayer(Vector2 vec, bool useRigid)
+    public void RotationPlayer(Vector2 vec, bool useRigid)
     {
         //bool isAttackReady = PlayManager.Instance.actionJoy.actionComponent.Mode == ActionMode.AttackReady;
         //if (isAttackReady == true)

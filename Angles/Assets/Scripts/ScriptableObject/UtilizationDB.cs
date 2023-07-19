@@ -14,13 +14,6 @@ public class UtilizationDB : ScriptableObject
     public List<BasicSkill> SkillDatas { get { return skillDatas; } }
 
     [SerializeField]
-    List<BaseBuff> baseBuffs;
-    public List<BaseBuff> BaseBuffs { get { return baseBuffs; } }
-
-    public void ResetData()
-    {
-        skillCallDatas = new List<SkillCallData>();
-        skillDatas = new List<BasicSkill>();
-        baseBuffs = new List<BaseBuff>();
-    }
+    List<BuffData> buffDatas;
+    public List<BuffData> BuffDatas { get { return buffDatas; } }
 }

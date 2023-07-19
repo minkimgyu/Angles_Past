@@ -7,22 +7,42 @@ public class BuffComponent : MonoBehaviour
     [SerializeField]
     List<BaseBuff> m_buffs;
 
-    public void AddBuff(string name)
+    public bool AddBuff(string name) //--> 같은 효과를 n개 이상 넣으면 무시 --> buffData를 넘겨주자   
     {
+        BuffData data = DatabaseManager.Instance.UtilizationDB.BuffDatas.Find(x => x.Name == name).CopyData();
+        if (CheckBuffList(name) >= data.MaxCount) return false; // maxCount보다 더 많은 버프를 가지고 있다면 Return
+
         BaseBuff foundBuff = ObjectPooler.SpawnFromPool<BaseBuff>(name);
+
+        foundBuff.Init(data); // 버프 초기화
 
         m_buffs.Add(foundBuff);
         foundBuff.OnStart(gameObject);
+
+        return true;
     }
 
-    public void RemoveBuff(string name)
+    public bool RemoveBuff(string name)
     {
-        BaseBuff foundBuff = m_buffs.Find(x => x.BuffName == name);
-
-        if (foundBuff == null) return;
+        BaseBuff foundBuff = m_buffs.Find(x => x.Data.Name == name);
+        if (foundBuff == null) return false;
 
         m_buffs.Remove(foundBuff);
         foundBuff.OnEnd();
+
+        return true;
+    }
+
+    int CheckBuffList(string name)
+    {
+        int tmpCount = 0;
+
+        for (int i = 0; i < m_buffs.Count; i++)
+        {
+            if (m_buffs[i].Data.Name == name) tmpCount++;
+        }
+
+        return tmpCount;
     }
 
     void BuffTick()

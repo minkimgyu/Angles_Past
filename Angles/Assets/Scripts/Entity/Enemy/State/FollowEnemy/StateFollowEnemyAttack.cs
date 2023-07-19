@@ -1,35 +1,54 @@
-public class StateFollowEnemyAttack : IState<BaseFollowEnemy, BaseFollowEnemy.State>
+abstract public class StateFollowEnemyAttack : IState<BaseFollowEnemy.State>
 {
-    public void CheckSwitchStates(BaseFollowEnemy value)
+    private BaseFollowEnemy loadFollowEnemy;
+    bool isInAttackRange;
+
+    protected StateFollowEnemyAttack(BaseFollowEnemy followEnemy)
     {
-        throw new System.NotImplementedException();
+        loadFollowEnemy = followEnemy;
     }
 
-    public void OnAwakeMessage(BaseFollowEnemy value, Telegram<BaseFollowEnemy.State> telegram)
+    public void CheckSwitchStates()
     {
-        throw new System.NotImplementedException();
     }
 
-    public void OnProcessingMessage(BaseFollowEnemy value, Telegram<BaseFollowEnemy.State> telegram)
+    public void OnAwakeMessage(Telegram<BaseFollowEnemy.State> telegram)
     {
-        throw new System.NotImplementedException();
     }
 
-    public void OperateEnter(BaseFollowEnemy enemy)
+    public void OnProcessingMessage(Telegram<BaseFollowEnemy.State> telegram)
     {
-       
     }
 
-    public void OperateExit(BaseFollowEnemy enemy)
+    public void OnSetToGlobalState()
     {
-
     }
 
-    public void OperateUpdate(BaseFollowEnemy enemy)
+    public void OperateEnter()
     {
-        if (enemy.FollowComponent.IsDistanceLower(enemy.LoadPlayer.transform.position, enemy.Data.SkillMinDistance))
+    }
+
+    public void OperateExit()
+    {
+    }
+
+    public virtual void OperateUpdate()
+    {
+        if (loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.Data.SkillUseDistance) && isInAttackRange == false)
         {
-            // 스킬 공격 함수 추가
+            ExecuteInRangeMethod();
+            isInAttackRange = true;
+        }
+        else if (!loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.Data.SkillUseDistance + loadFollowEnemy.Data.SkillUseOffsetDistance) 
+            && isInAttackRange == true)
+        {
+            ExecuteInOutsideMethod();
+            isInAttackRange = false;
         }
     }
+
+    public abstract void ExecuteInRangeMethod();
+
+
+    public abstract void ExecuteInOutsideMethod();
 }

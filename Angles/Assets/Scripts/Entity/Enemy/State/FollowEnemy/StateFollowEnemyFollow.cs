@@ -1,42 +1,53 @@
 using UnityEngine;
 
-public class StateFollowEnemyFollow : IState<BaseFollowEnemy, BaseFollowEnemy.State>
+public class StateFollowEnemyFollow : IState<BaseFollowEnemy.State>
 {
-    public void OnAwakeMessage(BaseFollowEnemy value, Telegram<BaseFollowEnemy.State> telegram)
+    BaseFollowEnemy loadFollowEnemy;
+
+    public StateFollowEnemyFollow(BaseFollowEnemy followEnemy)
+    {
+        loadFollowEnemy = followEnemy;
+    }
+
+    public void OnAwakeMessage(Telegram<BaseFollowEnemy.State> telegram)
     {
         throw new System.NotImplementedException();
     }
 
-    public void OnProcessingMessage(BaseFollowEnemy value, Telegram<BaseFollowEnemy.State> telegram)
+    public void OnProcessingMessage(Telegram<BaseFollowEnemy.State> telegram)
     {
         throw new System.NotImplementedException();
     }
 
-    public void OperateEnter(BaseFollowEnemy enemy)
+    public void OperateEnter()
     {
 
     }
 
-    public void OperateExit(BaseFollowEnemy enemy)
+    public void OperateExit()
     {
        
     }
 
-    public void OperateUpdate(BaseFollowEnemy enemy)
+    public void OperateUpdate()
     {
-        CheckSwitchStates(enemy);
+        CheckSwitchStates();
     }
 
-    public void CheckSwitchStates(BaseFollowEnemy enemy)
+    public void CheckSwitchStates()
     {
-        if (!enemy.FollowComponent.IsDistanceLower(enemy.LoadPlayer.transform.position, enemy.Data.FollowMinDistance))
+        if (!loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.Data.FollowMinDistance))
         {
-            Vector2 dir = enemy.FollowComponent.ReturnDirVec(enemy.LoadPlayer.transform.position);
-            enemy.MoveComponent.Move(dir, enemy.Data.Speed);
+            Vector2 dir = loadFollowEnemy.FollowComponent.ReturnDirVec(loadFollowEnemy.LoadPlayer.transform.position);
+            loadFollowEnemy.MoveComponent.Move(dir, loadFollowEnemy.Data.Speed.IntervalValue);
         }
         else
         {
-            enemy.SetState(BaseFollowEnemy.State.Stop);
+            loadFollowEnemy.SetState(BaseFollowEnemy.State.Stop);
         }
+    }
+
+    public void OnSetToGlobalState()
+    {
     }
 }

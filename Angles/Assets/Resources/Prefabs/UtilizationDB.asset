@@ -59,4 +59,6 @@ MonoBehaviour:
   - {fileID: 990536666640814472, guid: 9ae127746cd27e545abb2b1e190dbe1c, type: 3}
   - {fileID: 4137328563240184283, guid: 25326d2331f93084aabb63802c3da467, type: 3}
   - {fileID: -3030192017513386572, guid: 588b0780a4ff0914fb8a7533146705a1, type: 3}
-  baseBuffs: []
+  buffDatas:
+  - name: SpeedDebuff
+    maxCount: 3

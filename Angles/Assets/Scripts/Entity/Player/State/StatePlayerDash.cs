@@ -2,36 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatePlayerDash : IState<Player, Player.State>
+public class StatePlayerDash : IState<Player.State>
 {
-    public void CheckSwitchStates(Player player)
+    Player m_loadPlayer;
+
+    public StatePlayerDash(Player player)
     {
-        if (player.DashComponent.NowFinish == true) player.SetState(Player.State.Move);
+        m_loadPlayer = player;
     }
 
-    public void OnAwakeMessage(Player value, Telegram<Player.State> telegram)
+    public void CheckSwitchStates()
+    {
+        if (m_loadPlayer.DashComponent.NowFinish == true) m_loadPlayer.SetState(Player.State.Move);
+    }
+
+    public void OnAwakeMessage(Telegram<Player.State> telegram)
     {
         throw new System.NotImplementedException();
     }
 
-    public void OnProcessingMessage(Player value, Telegram<Player.State> telegram)
+    public void OnProcessingMessage(Telegram<Player.State> telegram)
     {
         throw new System.NotImplementedException();
     }
 
-    public void OperateEnter(Player player)
+    public void OnSetToGlobalState()
     {
-        player.DashComponent.PlayDash(player.MoveVec, player.Data.DashThrust, player.Data.DashTime);
-        player.Data.SubtractDashRatio();
     }
 
-    public void OperateExit(Player player)
+    public void OperateEnter()
+    {
+        m_loadPlayer.DashComponent.PlayDash(m_loadPlayer.MoveVec, m_loadPlayer.Data.DashThrust, m_loadPlayer.Data.DashTime);
+        m_loadPlayer.Data.SubtractDashRatio();
+    }
+
+    public void OperateExit()
     {
         
     }
 
-    public void OperateUpdate(Player player)
+    public void OperateUpdate()
     {
-        CheckSwitchStates(player);
+        CheckSwitchStates();
     }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatePlayerMove : IState<Player, Player.State>
+public class StatePlayerMove : IState<Player.State>
 {
     Player m_loadPlayer;
 
@@ -12,25 +12,25 @@ public class StatePlayerMove : IState<Player, Player.State>
         m_loadPlayer = player;
     }
 
-    public void CheckSwitchStates(Player value)
+    public void CheckSwitchStates()
     {
         throw new System.NotImplementedException();
     }
 
-    public void OnAwakeMessage(Player value, Telegram<Player.State> message)
+    public void OnAwakeMessage(Telegram<Player.State> message)
     {
         throw new System.NotImplementedException();
     }
 
-    public void OnProcessingMessage(Player player, Telegram<Player.State> telegram)
+    public void OnProcessingMessage(Telegram<Player.State> telegram)
     {
         throw new System.NotImplementedException();
     }
 
-    public void OperateEnter(Player player)
+    public void OperateEnter()
     {
-        player.ActionJoystick.DashAction += UseDash;
-        player.ActionJoystick.AttackReadyAction += GoToAttackReady;
+        m_loadPlayer.ActionJoystick.DashAction += UseDash;
+        m_loadPlayer.ActionJoystick.AttackReadyAction += GoToAttackReady;
     }
 
     void GoToAttackReady()
@@ -49,14 +49,18 @@ public class StatePlayerMove : IState<Player, Player.State>
         m_loadPlayer.SetState(Player.State.Dash);
     }
 
-    public void OperateExit(Player player)
+    public void OperateExit()
     {
-        player.ActionJoystick.DashAction -= UseDash;
-        player.ActionJoystick.AttackReadyAction -= GoToAttackReady;
+        m_loadPlayer.ActionJoystick.DashAction -= UseDash;
+        m_loadPlayer.ActionJoystick.AttackReadyAction -= GoToAttackReady;
     }
 
-    public void OperateUpdate(Player player)
+    public void OperateUpdate()
     {
-        player.MoveComponent.Move(player.MoveVec, player.Data.Speed * player.Data.SpeedRatio, true);
+        m_loadPlayer.MoveComponent.Move(m_loadPlayer.MoveVec, m_loadPlayer.Data.Speed.IntervalValue * m_loadPlayer.Data.SpeedRatio, true);
+    }
+
+    public void OnSetToGlobalState()
+    {
     }
 }

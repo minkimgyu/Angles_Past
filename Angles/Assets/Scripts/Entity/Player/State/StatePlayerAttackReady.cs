@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatePlayerAttackReady : IState<Player, Player.State>
+public class StatePlayerAttackReady : IState<Player.State>
 {
     Player m_loadPlayer;
 
@@ -11,19 +11,19 @@ public class StatePlayerAttackReady : IState<Player, Player.State>
         m_loadPlayer = player;
     }
 
-    public void CheckSwitchStates(Player value)
+    public void CheckSwitchStates()
     {
         throw new System.NotImplementedException();
     }
 
     // 다른 state애서 변환되어 오는 경우 작동하는 함수
-    public void OnAwakeMessage(Player player, Telegram<Player.State> telegram)
+    public void OnAwakeMessage(Telegram<Player.State> telegram)
     {
         
     }
 
     // 현 스테이트에 메시지를 전달하는 경우 작동하는 함수
-    public void OnProcessingMessage(Player player, Telegram<Player.State> telegram)
+    public void OnProcessingMessage(Telegram<Player.State> telegram)
     {
         // AttackReady --> Attack
         if (telegram.SenderStateName == Player.State.AttackReady && telegram.Message.nextState == Player.State.Attack)
@@ -33,7 +33,7 @@ public class StatePlayerAttackReady : IState<Player, Player.State>
             newMessage.nextState = Player.State.Attack;
             Telegram<Player.State> newTelegram = new Telegram<Player.State>(Player.State.AttackReady, Player.State.Attack, newMessage);
 
-            player.SetState(Player.State.Attack, newTelegram);
+            m_loadPlayer.SetState(Player.State.Attack, newTelegram);
         }
             
     }
@@ -49,13 +49,13 @@ public class StatePlayerAttackReady : IState<Player, Player.State>
         m_loadPlayer.SetState(Player.State.Attack, telegram);
     }
 
-    public void OperateEnter(Player player)
+    public void OperateEnter()
     {
-        player.ActionJoystick.AttackAction += Attack;
-        player.ActionJoystick.AttackReadyAction += GoToMove;
+        m_loadPlayer.ActionJoystick.AttackAction += Attack;
+        m_loadPlayer.ActionJoystick.AttackReadyAction += GoToMove;
 
-        player.Animator.SetBool("NowReady", true);
-        player.Data.ResetRushRatioToZero();
+        m_loadPlayer.Animator.SetBool("NowReady", true);
+        m_loadPlayer.Data.ResetRushRatioToZero();
     }
 
     void GoToMove()
@@ -66,20 +66,24 @@ public class StatePlayerAttackReady : IState<Player, Player.State>
         m_loadPlayer.SetState(Player.State.Move);
     }
 
-    public void OperateExit(Player player)
+    public void OperateExit()
     {
-        player.ActionJoystick.AttackAction -= Attack;
-        player.ActionJoystick.AttackReadyAction -= GoToMove;
+        m_loadPlayer.ActionJoystick.AttackAction -= Attack;
+        m_loadPlayer.ActionJoystick.AttackReadyAction -= GoToMove;
 
-        player.Animator.SetBool("NowReady", false);
-        player.NotifyObservers(Player.ObserverType.HideRushUI, player.Data);
+        m_loadPlayer.Animator.SetBool("NowReady", false);
+        m_loadPlayer.NotifyObservers(Player.ObserverType.HideRushUI, m_loadPlayer.Data);
     }
 
-    public void OperateUpdate(Player player)
+    public void OperateUpdate()
     {
-        player.MoveComponent.Move(player.MoveVec, player.ActionVec, player.Data.ReadySpeed * player.Data.SpeedRatio, true);
+        m_loadPlayer.MoveComponent.Move(m_loadPlayer.MoveVec, m_loadPlayer.ActionVec, m_loadPlayer.Data.ReadySpeed.IntervalValue * m_loadPlayer.Data.SpeedRatio, true);
 
-        player.Data.RestoreRushRatio();
-        player.NotifyObservers(Player.ObserverType.ShowRushUI, player.Data);
+        m_loadPlayer.Data.RestoreRushRatio();
+        m_loadPlayer.NotifyObservers(Player.ObserverType.ShowRushUI, m_loadPlayer.Data);
+    }
+
+    public void OnSetToGlobalState()
+    {
     }
 }

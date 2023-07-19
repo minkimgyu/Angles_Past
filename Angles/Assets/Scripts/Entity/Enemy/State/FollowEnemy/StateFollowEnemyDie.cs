@@ -1,31 +1,42 @@
-public class StateFollowEnemyDie : IState<BaseFollowEnemy, BaseFollowEnemy.State>
+public class StateFollowEnemyDie : IState<BaseFollowEnemy.State>
 {
-    public void CheckSwitchStates(BaseFollowEnemy value)
+    BaseFollowEnemy loadFollowEnemy;
+
+    public StateFollowEnemyDie(BaseFollowEnemy followEnemy)
+    {
+        loadFollowEnemy = followEnemy; 
+    }
+
+    public void CheckSwitchStates()
     {
         throw new System.NotImplementedException();
     }
 
-    public void OnAwakeMessage(BaseFollowEnemy value, Telegram<BaseFollowEnemy.State> telegram)
+    public void OnAwakeMessage(Telegram<BaseFollowEnemy.State> telegram)
     {
         throw new System.NotImplementedException();
     }
 
-    public void OnProcessingMessage(BaseFollowEnemy value, Telegram<BaseFollowEnemy.State> telegram)
+    public void OnProcessingMessage(Telegram<BaseFollowEnemy.State> telegram)
     {
         throw new System.NotImplementedException();
     }
 
-    public void OperateEnter(BaseFollowEnemy enemy)
+    public void OnSetToGlobalState()
+    {
+    }
+
+    public void OperateEnter()
     {
 
     }
 
-    public void OperateExit(BaseFollowEnemy enemy)
+    public void OperateExit()
     {
 
     }
 
-    public void OperateUpdate(BaseFollowEnemy enemy)
+    public void OperateUpdate()
     {
 
     }

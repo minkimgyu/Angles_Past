@@ -11,11 +11,25 @@ public interface IBuff<T>
 abstract public class BaseBuff : MonoBehaviour
 {
     [SerializeField]
-    string buffName;
-    public string BuffName { get { return buffName; } }
+    BuffData data;
+    public BuffData Data { get { return data; } }
+
+    [SerializeField]
+    int buffCount; // buffData 제작해서 이름, 최대 갯수 넣기
+    public int BuffCount { get { return buffCount; } }
 
     protected bool isFinished;
     public bool IsFinished { get { return isFinished; } }
+
+    protected BasicEffectPlayer m_effectPlayer;
+
+    [SerializeField]
+    protected EffectMethod effectMethod;
+
+    public void Init(BuffData data)
+    {
+        this.data = data;
+    }
 
     public abstract void OnStart(GameObject caster); // getComponent
 
@@ -25,6 +39,7 @@ abstract public class BaseBuff : MonoBehaviour
 
     private void OnDisable()
     {
+        data = null;
         ObjectPooler.ReturnToPool(gameObject);
     }
 }
@@ -32,6 +47,7 @@ abstract public class BaseBuff : MonoBehaviour
 //[CreateAssetMenu(fileName = "TimeBuff", menuName = "Buff/TimeBuff", order = int.MaxValue)]
 abstract public class TimeBuff : BaseBuff
 {
+    [SerializeField]
     float maxTickTime;
 
     float buffTime;
