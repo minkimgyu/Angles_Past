@@ -7,9 +7,12 @@ using UnityEngine;
 //public enum SkillName { None, NormalKnockBack, KnockBack, RotationBall, BigImpact, Blade, StickyBomb, GravitationalField, 
 //    SelfDestruction, ShootBullet, ShockWave }; // 동작 상태 모음
 
+public enum SkillOverlapType { None, Restart }
+
 /// <summary>
 /// InRange, OutRange는 적이 추적 중 플레이어가 공격 범위에 들어왔는지 아닌지 체크함
 /// </summary>
+/// 
 public enum SkillUseConditionType { Contact, Get, InRange, OutRange }
 
 public enum SkillUseCountSubtractType { None, Subtract } // --> 사용 시, 사용 가능 횟수를 1 빼거나 사용 횟수 차감없이 고정시킴

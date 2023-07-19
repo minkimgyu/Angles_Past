@@ -7,11 +7,21 @@ abstract public class BasicEffectPlayer : MonoBehaviour
     Transform m_posTr;
     bool m_isFix;
     public bool IsFixed { set { m_isFix = value; } }
+    protected float m_duration;
 
-    public void Init(Transform tr)
+    public void Init(Transform tr, float duration)
     {
         m_posTr = tr;
         transform.position = m_posTr.position;
+        m_duration = duration;
+    }
+
+    public void Init(Vector3 pos, float duration)
+    {
+        m_posTr = null;
+        m_isFix = false;
+        transform.position = pos;
+        m_duration = duration;
     }
 
     private void Update()

@@ -17,7 +17,7 @@ public class PlayManager : Singleton<PlayManager>
     // Start is called before the first frame update
     protected override void Awake()
     {
-        Application.targetFrameRate = 60;
+        //Application.targetFrameRate = 60;
 
         base.Awake();
 

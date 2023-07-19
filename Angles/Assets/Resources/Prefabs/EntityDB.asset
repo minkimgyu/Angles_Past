@@ -16,7 +16,10 @@ MonoBehaviour:
     name: Player
     shape: White
     color: Circle
+    immortality: 0
     hp: 1
+    maxSpeed: 10
+    minSpeed: 1
     speed: 5
     stunTime: 0.5
     weight: 1
@@ -28,7 +31,7 @@ MonoBehaviour:
     maxSpeedRatio: 1
     rushThrust: 30
     rushRatio: 0
-    rushRecoverRatio: 0.2
+    rushRecoverRatio: 0.01
     rushTime: 3
     attackCancelOffset: 0.2
     reflectThrust: 20
@@ -36,5 +39,5 @@ MonoBehaviour:
     dashTime: 0.3
     dashThrust: 20
     dashRatio: 1
-    dashRecoverRatio: 0.2
+    dashRecoverRatio: 0.001
   enemy: []

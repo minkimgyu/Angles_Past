@@ -1,65 +1,67 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-/// <summary>
-/// T는 데이터 클레스
-/// </summary>
-/// <typeparam name="T"></typeparam>
-
-//interface IBuff
-//{
-//    public void OnStart();
-
-//    public void OnUpdate();
-
-//    public void OnEnd();
-//}
-
-abstract public class BaseBuff : ScriptableObject
+public interface IBuff<T>
 {
-    protected bool canOverlap;
+    public T GetData();
+}
 
-    public bool CanOverlap
-    {
-        get { return canOverlap; }
-    }
+abstract public class BaseBuff : MonoBehaviour
+{
+    [SerializeField]
+    string buffName;
+    public string BuffName { get { return buffName; } }
 
-    public abstract void OnStart();
+    protected bool isFinished;
+    public bool IsFinished { get { return isFinished; } }
 
-    public abstract void OnUpdate();
+    public abstract void OnStart(GameObject caster); // getComponent
 
     public abstract void OnEnd();
+
+    public abstract void Tick(float deltaTime);
+
+    private void OnDisable()
+    {
+        ObjectPooler.ReturnToPool(gameObject);
+    }
 }
 
 //[CreateAssetMenu(fileName = "TimeBuff", menuName = "Buff/TimeBuff", order = int.MaxValue)]
 abstract public class TimeBuff : BaseBuff
 {
-    BuffComponent m_bC;
-
-    public TimeBuff(BuffComponent bC)
-    {
-        m_bC = bC;
-    }
+    float maxTickTime;
 
     float buffTime;
+    float tickTime;
 
-    public bool CheckLifeTime()
+    public override void Tick(float deltaTime)
     {
-        buffTime -= Time.deltaTime;
+        buffTime -= deltaTime;
 
-        if (buffTime <= 0) return false;
-        else return true;
+        if (buffTime <= 0)
+        {
+            isFinished = true;
+        }
+
+        tickTime -= deltaTime;
+        if (tickTime <= 0)
+        {
+            ApplyTickEffect();
+            tickTime = maxTickTime;
+        }
     }
 
-    public override void OnUpdate()
-    {
-        if (CheckLifeTime() == false) m_bC.RemoveBuff(this);
-    }
+    public abstract void ApplyTickEffect();
 }
 
 //[CreateAssetMenu(fileName = "PassiveBuff", menuName = "Buff/PassiveBuff", order = int.MaxValue)]
 abstract public class PassiveBuff : BaseBuff
 {
-   
+    public override void Tick(float deltaTime)
+    {
+       
+    }
 }

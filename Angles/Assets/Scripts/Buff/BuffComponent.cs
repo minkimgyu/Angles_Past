@@ -7,33 +7,17 @@ public class BuffComponent : MonoBehaviour
     [SerializeField]
     List<BaseBuff> m_buffs;
 
-    /// <summary>
-    /// 스크립터블 오브젝트 만들어서 긁어오기
-    /// </summary>
-    public void AddBuff(BaseBuff buff)
+    public void AddBuff(string name)
     {
-        if (CheckOverlap(buff) == false) return;
-        
-        m_buffs.Add(buff);
-        buff.OnStart();
+        BaseBuff foundBuff = ObjectPooler.SpawnFromPool<BaseBuff>(name);
+
+        m_buffs.Add(foundBuff);
+        foundBuff.OnStart(gameObject);
     }
 
-    /// <summary>
-    /// 버프가 겹쳐도 되는지 체크
-    /// </summary>
-    /// <returns></returns>
-    bool CheckOverlap(BaseBuff buff)
+    public void RemoveBuff(string name)
     {
-        if (buff.CanOverlap == true) return true;
-
-
-        // 버프가 리스트에 존재한다면 false를 리턴해준다.
-        return !m_buffs.Exists(x => x == buff);
-    }
-
-    public void RemoveBuff(BaseBuff buff)
-    {
-        BaseBuff foundBuff = m_buffs.Find(x => x == buff);
+        BaseBuff foundBuff = m_buffs.Find(x => x.BuffName == name);
 
         if (foundBuff == null) return;
 
@@ -41,17 +25,22 @@ public class BuffComponent : MonoBehaviour
         foundBuff.OnEnd();
     }
 
-    void DoBuffUpdate()
+    void BuffTick()
     {
         for (int i = 0; i < m_buffs.Count; i++)
         {
-            m_buffs[i].OnUpdate();
+            m_buffs[i].Tick(Time.deltaTime);
+            if(m_buffs[i].IsFinished)
+            {
+                m_buffs[i].OnEnd();
+                m_buffs.Remove(m_buffs[i]);
+            }
         }
     }
 
 
     private void Update()
     {
-        DoBuffUpdate();
+        BuffTick();
     }
 }

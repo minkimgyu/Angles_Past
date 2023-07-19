@@ -19,7 +19,7 @@ public class StateFollowEnemyStop : IState<BaseFollowEnemy, BaseFollowEnemy.Stat
 
     public void OperateEnter(BaseFollowEnemy enemy)
     {
-        Debug.Log("Stop");
+        //Debug.Log("Stop");
         enemy.MoveComponent.Stop();
     }
 

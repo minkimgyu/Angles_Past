@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     name: Shockwave
-    disableTime: 0
+    disableTime: 3
     damage: 10
     knockBackThrust: 10
     hitTarget: 01000000
@@ -54,8 +54,17 @@ MonoBehaviour:
     preDelay: 0
     tickCount: 0
     duration: 0
-    radiusRange: 5
+    radiusRange: 3.5
     boxRange: {x: 0, y: 0}
     offsetRange: {x: 0, y: 0}
   positionMethod: {fileID: 11400000, guid: 1452171049d70fe4085b2c7070bb92f2, type: 2}
   damageMethod: {fileID: 11400000, guid: 610d5690e4be34c45a07e016b46a2500, type: 2}
+  drawGizmo:
+    color: {r: 0.7169812, g: 0.15218942, b: 0.15218942, a: 1}
+    width: 0
+    height: 0
+    radius: 3.5
+    offset: {x: 0, y: 0, z: 0}
+    layer:
+      serializedVersion: 2
+      m_Bits: 0
