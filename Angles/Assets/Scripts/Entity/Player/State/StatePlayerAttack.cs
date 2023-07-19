@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatePlayerAttack : IState<Player, Player.State>
+public class StatePlayerAttack : IState<Player.State>
 {
     Player m_loadPlayer;
 
@@ -11,7 +11,7 @@ public class StatePlayerAttack : IState<Player, Player.State>
         m_loadPlayer = player;
     }
 
-    public void OnAwakeMessage(Player value, Telegram<Player.State> telegram)
+    public void OnAwakeMessage(Telegram<Player.State> telegram)
     {
         if (telegram.SenderStateName == Player.State.AttackReady || telegram.SenderStateName == Player.State.Reflect)
         {
@@ -42,7 +42,7 @@ public class StatePlayerAttack : IState<Player, Player.State>
         }
     }
 
-    public void OnProcessingMessage(Player value, Telegram<Player.State> telegram)
+    public void OnProcessingMessage(Telegram<Player.State> telegram)
     {
         throw new System.NotImplementedException();
     }
@@ -50,28 +50,28 @@ public class StatePlayerAttack : IState<Player, Player.State>
     Vector2 savedAttackVec;
     Vector2 savedMoveVec;
 
-    public void OperateEnter(Player player)
+    public void OperateEnter()
     {
-        player.Animator.SetBool("NowAttack", true);
-        player.DashComponent.PlayDash(savedAttackVec, player.Data.RushThrust * player.Data.RushRatio, player.Data.RushTime);
+        m_loadPlayer.Animator.SetBool("NowAttack", true);
+        m_loadPlayer.DashComponent.PlayDash(savedAttackVec, m_loadPlayer.Data.RushThrust * m_loadPlayer.Data.RushRatio, m_loadPlayer.Data.RushTime);
 
-        savedMoveVec = player.MoveVec;
+        savedMoveVec = m_loadPlayer.MoveVec;
 
-        player.MoveComponent.RotateUsingTransform(savedAttackVec); // 날라가는 방향으로 전환
+        m_loadPlayer.MoveComponent.RotateUsingTransform(savedAttackVec); // 날라가는 방향으로 전환
 
-        player.ContactAction += ContactAct;
+        m_loadPlayer.ContactAction += ContactAct;
     }
 
-    public void OperateExit(Player player)
+    public void OperateExit()
     {
-        player.DashComponent.QuickEndTask(); // 조건에서 탈출할 때, 한번 리셋해줌
-        player.Animator.SetBool("NowAttack", false);
-        player.ContactAction -= ContactAct;
+        m_loadPlayer.DashComponent.QuickEndTask(); // 조건에서 탈출할 때, 한번 리셋해줌
+        m_loadPlayer.Animator.SetBool("NowAttack", false);
+        m_loadPlayer.ContactAction -= ContactAct;
     }
 
-    public void OperateUpdate(Player player)
+    public void OperateUpdate()
     {
-        CheckSwitchStates(player);
+        CheckSwitchStates();
     }
 
     public bool CheckOverMinValue(Vector2 savedMoveVec, Vector2 dir, float attackCancelOffset)
@@ -82,12 +82,16 @@ public class StatePlayerAttack : IState<Player, Player.State>
         else return true;
     }
 
-    public void CheckSwitchStates(Player player)
+    public void CheckSwitchStates()
     {
-        if (player.DashComponent.NowFinish == true || CheckOverMinValue(savedMoveVec, player.MoveVec, player.Data.AttackCancelOffset) == false)
+        if (m_loadPlayer.DashComponent.NowFinish == true || CheckOverMinValue(savedMoveVec, m_loadPlayer.MoveVec, m_loadPlayer.Data.AttackCancelOffset) == false)
         {
-            player.DashComponent.QuickEndTask();
-            player.SetState(Player.State.Move);
+            m_loadPlayer.DashComponent.QuickEndTask();
+            m_loadPlayer.SetState(Player.State.Move);
         }
+    }
+
+    public void OnSetToGlobalState()
+    {
     }
 }

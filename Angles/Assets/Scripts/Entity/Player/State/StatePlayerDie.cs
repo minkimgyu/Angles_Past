@@ -2,34 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatePlayerDie : IState<Player, Player.State>
+public class StatePlayerDie : IState<Player.State>
 {
-    public void CheckSwitchStates(Player value)
+    Player m_loadPlayer;
+
+    public StatePlayerDie(Player player)
+    {
+        m_loadPlayer = player;
+    }
+
+    public void CheckSwitchStates()
     {
         throw new System.NotImplementedException();
     }
 
-    public void OnAwakeMessage(Player value, Telegram<Player.State> telegram)
+    public void OnAwakeMessage(Telegram<Player.State> telegram)
     {
         throw new System.NotImplementedException();
     }
 
-    public void OnProcessingMessage(Player value, Telegram<Player.State> telegram)
+    public void OnProcessingMessage(Telegram<Player.State> telegram)
     {
         throw new System.NotImplementedException();
     }
 
-    public void OperateEnter(Player player)
+    public void OnSetToGlobalState()
+    {
+    }
+
+    public void OperateEnter()
     {
 
     }
 
-    public void OperateExit(Player player)
+    public void OperateExit()
     {
 
     }
 
-    public void OperateUpdate(Player player)
+    public void OperateUpdate()
     {
 
     }

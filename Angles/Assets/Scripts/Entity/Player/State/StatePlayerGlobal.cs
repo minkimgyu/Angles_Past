@@ -2,36 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatePlayerGlobal : IState<Player, Player.State>
+public class StatePlayerGlobal : IState<Player.State>
 {
-    public void CheckSwitchStates(Player value)
+    Player m_loadPlayer;
+
+    public StatePlayerGlobal(Player player)
+    {
+        m_loadPlayer = player;
+    }
+
+    public void CheckSwitchStates()
     {
         throw new System.NotImplementedException();
     }
 
-    public void OnAwakeMessage(Player value, Telegram<Player.State> telegram)
+    public void OnAwakeMessage(Telegram<Player.State> telegram)
     {
         throw new System.NotImplementedException();
     }
 
-    public void OnProcessingMessage(Player value, Telegram<Player.State> telegram)
+    public void OnProcessingMessage(Telegram<Player.State> telegram)
     {
         throw new System.NotImplementedException();
     }
 
-    public void OperateEnter(Player player)
+    public void OnSetToGlobalState()
+    {
+    }
+
+    public void OperateEnter()
     {
 
     }
 
-    public void OperateExit(Player player)
+    public void OperateExit()
     {
 
     }
 
-    public void OperateUpdate(Player player)
+    public void OperateUpdate()
     {
-        if(player.Data.RestoreDashRatio())
-            player.NotifyObservers(Player.ObserverType.ShowDashUI, player.Data);
+        if(m_loadPlayer.Data.RestoreDashRatio())
+            m_loadPlayer.NotifyObservers(Player.ObserverType.ShowDashUI, m_loadPlayer.Data);
     }
 }

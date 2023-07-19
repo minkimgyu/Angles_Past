@@ -45,4 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buffName: SpeedDebuff
+  effectMethod: {fileID: 11400000, guid: ea89125168b92314eb7de12b5ad5d01e, type: 2}
   speed: -1.5
+  readySpeed: -0.5

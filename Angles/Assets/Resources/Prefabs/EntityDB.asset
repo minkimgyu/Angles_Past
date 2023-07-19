@@ -18,14 +18,18 @@ MonoBehaviour:
     color: Circle
     immortality: 0
     hp: 1
-    maxSpeed: 10
-    minSpeed: 1
-    speed: 5
+    speed:
+      maxValue: 10
+      minValue: 2
+      originValue: 5
     stunTime: 0.5
     weight: 1
     drag: 1.5
     knockBackThrust: 5
-    readySpeed: 2
+    readySpeed:
+      maxValue: 5
+      minValue: 2
+      originValue: 5
     speedRatio: 1
     minSpeedRatio: 0.2
     maxSpeedRatio: 1

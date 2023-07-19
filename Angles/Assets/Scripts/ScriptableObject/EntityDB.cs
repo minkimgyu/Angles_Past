@@ -37,6 +37,91 @@ public interface IData<T>
     T CopyData();
 }
 
+
+[System.Serializable]
+public class BuffFloat : IData<BuffFloat>
+{
+    [SerializeField]
+    float maxValue;
+    public float Max { get { return maxValue; } }
+
+    [SerializeField]
+    float minValue;
+    public float Min { get { return minValue; } }
+
+    [SerializeField]
+    float originValue;
+    public float OriginValue { get { return originValue; } set { originValue = value; } }
+    public float IntervalValue
+    {
+        get
+        {
+            if(originValue < minValue)
+            {
+                return minValue;
+            }
+            else if(originValue > maxValue)
+            {
+                return maxValue;
+            }
+            else
+            {
+                return originValue;
+            }
+        }
+        set 
+        { 
+            originValue = value;
+        }
+    }
+
+    public bool IsOutInterval()
+    {
+        if (originValue < minValue)
+        {
+            return true;
+        }
+        else if (originValue > maxValue)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public BuffFloat(float max, float min, float value)
+    {
+        this.maxValue = max;
+        this.minValue = min;
+        this.originValue = value;
+    }
+
+    public BuffFloat CopyData()
+    {
+        return new BuffFloat(maxValue, minValue, originValue);
+    }
+}
+
+[System.Serializable]
+public class BuffData : BaseData, IData<BuffData>
+{
+    [SerializeField]
+    protected int maxCount;
+    public int MaxCount { get { return maxCount; } set { maxCount = value; } }
+
+    public BuffData(string name, int maxCount) : base(name)
+    {
+        this.maxCount = maxCount;
+    }
+
+    public BuffData CopyData()
+    {
+        return new BuffData(name, maxCount);
+    }
+}
+
 [System.Serializable]
 public class HealthEntityData : BaseData
 {
@@ -57,17 +142,8 @@ public class HealthEntityData : BaseData
     public float Hp { get { return hp; } set { hp = value; } }
 
     [SerializeField]
-    protected float maxSpeed;
-    public float MaxSpeed { get { return maxSpeed; } set { maxSpeed = value; } }
-
-    [SerializeField]
-    protected float minSpeed;
-    public float MinSpeed { get { return minSpeed; } set { minSpeed = value; } }
-
-    [SerializeField]
-    protected float speed;
-    public float Speed {get { return speed; } set{ speed = value; } }
-    
+    protected BuffFloat speed;
+    public BuffFloat Speed { get { return speed; } set { speed = value; } }
 
     [SerializeField]
     protected float stunTime;
@@ -87,15 +163,15 @@ public class HealthEntityData : BaseData
 
     public HealthEntityData() { }
 
-    public HealthEntityData(string name, string shape, string color, bool immortality, float hp, float maxSpeed, float minSpeed, float speed, float stunTime, float weight, float drag, float knockBackThrust) : base(name)
+    public HealthEntityData(string name, string shape, string color, bool immortality, float hp, BuffFloat speed, float stunTime, float weight, float drag, float knockBackThrust) : base(name)
     {
         this.shape = shape;
         this.color = color;
         this.immortality = immortality;
         this.hp = hp;
-        this.maxSpeed = maxSpeed;
-        this.minSpeed = minSpeed;
-        this.speed = speed;
+
+        this.speed = speed.CopyData();
+
         this.stunTime = stunTime;
         this.weight = weight;
         this.drag = drag;
@@ -107,8 +183,8 @@ public class HealthEntityData : BaseData
 public class PlayerData : HealthEntityData, IData<PlayerData>
 {
     [SerializeField]
-    float readySpeed = 5;
-    public float ReadySpeed { get { return readySpeed; } set { readySpeed = value; } }
+    BuffFloat readySpeed;
+    public BuffFloat ReadySpeed { get { return readySpeed; } set { readySpeed = value; } }
 
     [SerializeField]
     float speedRatio;
@@ -211,10 +287,10 @@ public class PlayerData : HealthEntityData, IData<PlayerData>
 
     public PlayerData() { }
 
-    public PlayerData(string name, string shape, string color, bool immortality, float hp, float maxSpeed, float minSpeed, float speed, float stunTime, float weight, float drag, float knockBackThrust,  float readySpeed, float speedRatio, float minSpeedRatio, float maxSpeedRatio, float rushThrust,
-        float rushRatio, float rushRecoverRatio, float rushTime, float attackCancelOffset, float reflectThrust, float maxDashCount, float dashTime, float dashThrust, float dashRatio, float dashRecoverRatio) : base(name, shape, color, immortality, hp, maxSpeed, minSpeed, speed, stunTime, weight, drag, knockBackThrust)
+    public PlayerData(string name, string shape, string color, bool immortality, float hp, BuffFloat speed, float stunTime, float weight, float drag, float knockBackThrust, BuffFloat readySpeed, float speedRatio, float minSpeedRatio, float maxSpeedRatio, float rushThrust,
+        float rushRatio, float rushRecoverRatio, float rushTime, float attackCancelOffset, float reflectThrust, float maxDashCount, float dashTime, float dashThrust, float dashRatio, float dashRecoverRatio) : base(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust)
     {
-        this.readySpeed = readySpeed;
+        this.readySpeed = readySpeed.CopyData();
         this.speedRatio = speedRatio;
         this.minSpeedRatio = minSpeedRatio;
         this.maxSpeedRatio = maxSpeedRatio;
@@ -233,7 +309,7 @@ public class PlayerData : HealthEntityData, IData<PlayerData>
 
     public PlayerData CopyData()
     {
-        return new PlayerData(name, shape, color, immortality, hp, maxSpeed, minSpeed, speed, stunTime, weight, drag, knockBackThrust, readySpeed, speedRatio, minSpeedRatio, maxSpeedRatio, rushThrust,
+        return new PlayerData(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust, readySpeed, speedRatio, minSpeedRatio, maxSpeedRatio, rushThrust,
         rushRatio, rushRecoverRatio, rushTime, attackCancelOffset, reflectThrust, maxDashCount, dashTime, dashThrust, dashRatio, dashRecoverRatio);
     }
 }
@@ -246,8 +322,12 @@ public class EnemyData : HealthEntityData, IData<EnemyData>
     public float KnockBackDamage { get { return knockBackDamage; } set { knockBackDamage = value; } }
 
     [SerializeField]
-    float skillMinDistance;
-    public float SkillMinDistance { get { return skillMinDistance; } set { skillMinDistance = value; } }
+    float skillUseDistance;
+    public float SkillUseDistance { get { return skillUseDistance; } set { skillUseDistance = value; } }
+
+    [SerializeField]
+    float skillUseOffsetDistance;
+    public float SkillUseOffsetDistance { get { return skillUseOffsetDistance; } set { skillUseOffsetDistance = value; } }
 
     [SerializeField]
     float skillUseRange;
@@ -271,12 +351,13 @@ public class EnemyData : HealthEntityData, IData<EnemyData>
 
     public EnemyData() { }
 
-    public EnemyData(string name, string shape, string color, bool immortality, float hp, float maxSpeed, float minSpeed, float speed, float stunTime, float weight, float drag, float knockBackThrust, float knockBackDamage, 
-        float skillMinDistance, float skillUseRange, float skillReuseTime, float followMinDistance, float stopMinDistance, int prefabCount) : base(name, shape, color, immortality, hp, maxSpeed, minSpeed, speed, stunTime, weight, drag, knockBackThrust)
+    public EnemyData(string name, string shape, string color, bool immortality, float hp, BuffFloat speed, float stunTime, float weight, float drag, float knockBackThrust, float knockBackDamage, 
+        float skillUseDistance, float skillUseOffsetDistance, float skillUseRange, float skillReuseTime, float followMinDistance, float stopMinDistance, int prefabCount) : base(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust)
     {
         this.knockBackThrust = knockBackThrust;
         this.knockBackDamage = knockBackDamage;
-        this.skillMinDistance = skillMinDistance;
+        this.skillUseDistance = skillUseDistance;
+        this.skillUseOffsetDistance = skillUseOffsetDistance;
         this.skillUseRange = skillUseRange;
         this.skillReuseTime = skillReuseTime;
         this.followMinDistance = followMinDistance;
@@ -286,7 +367,7 @@ public class EnemyData : HealthEntityData, IData<EnemyData>
 
     public EnemyData CopyData()
     {
-        return new EnemyData(name, shape, color, immortality, hp, maxSpeed, minSpeed, speed, stunTime, weight, drag, knockBackThrust, knockBackDamage, skillMinDistance, skillUseRange, skillReuseTime, followMinDistance, stopMinDistance, prefabCount);
+        return new EnemyData(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust, knockBackDamage, skillUseDistance, skillUseOffsetDistance, skillUseRange, skillReuseTime, followMinDistance, stopMinDistance, prefabCount);
     }
 }
 
