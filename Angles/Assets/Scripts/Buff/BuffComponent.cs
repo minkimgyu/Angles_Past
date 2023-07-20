@@ -7,12 +7,11 @@ public class BuffComponent : MonoBehaviour
     [SerializeField]
     List<BaseBuff> m_buffs;
 
-    public bool AddBuff(string name) //--> 같은 효과를 n개 이상 넣으면 무시 --> buffData를 넘겨주자   
+    public bool AddBuff(BuffData data) //--> 같은 효과를 n개 이상 넣으면 무시 --> buffData를 넘겨주자   
     {
-        BuffData data = DatabaseManager.Instance.UtilizationDB.BuffDatas.Find(x => x.Name == name).CopyData();
-        if (CheckBuffList(name) >= data.MaxCount) return false; // maxCount보다 더 많은 버프를 가지고 있다면 Return
+        if (CheckBuffList(data.Name) >= data.MaxCount) return false; // maxCount보다 더 많은 버프를 가지고 있다면 Return
 
-        BaseBuff foundBuff = ObjectPooler.SpawnFromPool<BaseBuff>(name);
+        BaseBuff foundBuff = ObjectPooler.SpawnFromPool<BaseBuff>(data.Name);
 
         foundBuff.Init(data); // 버프 초기화
 
@@ -22,9 +21,9 @@ public class BuffComponent : MonoBehaviour
         return true;
     }
 
-    public bool RemoveBuff(string name)
+    public bool RemoveBuff(BuffData data)
     {
-        BaseBuff foundBuff = m_buffs.Find(x => x.Data.Name == name);
+        BaseBuff foundBuff = m_buffs.Find(x => x.Data.Name == data.Name);
         if (foundBuff == null) return false;
 
         m_buffs.Remove(foundBuff);

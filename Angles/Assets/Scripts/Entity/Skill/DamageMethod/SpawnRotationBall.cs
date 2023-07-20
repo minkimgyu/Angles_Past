@@ -12,7 +12,6 @@ public class SpawnRotationBall : SpawnMethod
 
     public override void Execute(SpawnSupportData supportData)
     {
-
         for (int i = 0; i < supportData.Me.Data.SpawnCount; i++)
         {
             BasicProjectile projectile = ObjectPooler.SpawnFromPool<BasicProjectile>(projectileName);
@@ -33,7 +32,7 @@ public class SpawnRotationBall : SpawnMethod
             Quaternion rotation = Quaternion.Euler(0, 0, angle);
             Vector3 rotatedOffset = rotation * offset;
 
-            supportData.Me.SpawnedObjects[j].Init(rotatedOffset, supportData.Me);
+            supportData.Me.SpawnedObjects[j].Init(rotatedOffset);
         }
     }
 }

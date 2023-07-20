@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 public class RotationBallProjectile : BasicProjectile
 {
-    protected override void OnDisable()
+    public override void DoUpdate()
     {
-        if(m_skill != null) m_skill.SpawnedObjectDisable(this);
-        base.OnDisable();
     }
 
     protected override void OnCollisionEnter2D(Collision2D col) // 충돌 시 상태 변환
     {
         base.OnCollisionEnter2D(col);
+        isFinished = true; //  조건도 추가
+    }
 
+    public override void OnEnd()
+    {
         ObjectPooler.ReturnToTransform(transform);
-        gameObject.SetActive(false);
+        base.OnEnd();
     }
 }

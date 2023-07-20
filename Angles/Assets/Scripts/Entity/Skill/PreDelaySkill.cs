@@ -5,19 +5,29 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using System;
 
-public class PreDelaySkill : TickSkill // --> 프리팹으로 생성해서 오브젝트 풀링에 추가
+public class PreDelaySkill : TickAttackSkill // --> 프리팹으로 생성해서 오브젝트 풀링에 추가
 {
-    public override void Execute(GameObject caster)
+    public override void CancelSkill()
     {
-        base.Execute(caster);
-        DamageTask(new DamageSupportData(caster, this)).Forget();
     }
 
-    private async UniTaskVoid DamageTask(DamageSupportData damageSupportData)
+    protected override void DamageTask(float tick)
     {
-        await UniTask.Delay(TimeSpan.FromSeconds(damageSupportData.Me.Data.PreDelay), cancellationToken: m_source.Token);
+        storedDelay += tick;
+        if (damageSupportData.Me.Data.PreDelay > storedDelay) return;
 
         damageMethod.Execute(damageSupportData);
-        gameObject.SetActive(false);
+        IsFinished = true;
     }
+
+    //private async UniTaskVoid DamageTask(DamageSupportData damageSupportData)
+    //{
+    //    print("DamageTask");
+    //    await UniTask.Delay(TimeSpan.FromSeconds(damageSupportData.Me.Data.PreDelay), cancellationToken: m_source.Token);
+
+    //    print("DamageTask12");
+
+    //    damageMethod.Execute(damageSupportData);
+    //    gameObject.SetActive(false);
+    //}
 }

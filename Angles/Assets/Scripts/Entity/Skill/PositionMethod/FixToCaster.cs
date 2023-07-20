@@ -8,6 +8,8 @@ public class FixToCaster : PositionMethod
 {
     public override void DoUpdate(BasicSkill me)
     {
+        if (me.PosTr == null) return;
+
         me.transform.position = me.PosTr.position; // 계속 고정시킴 // --> 돌아가는 기능을 넣어보자
     }
 

@@ -6,7 +6,8 @@ using System;
 public class BattleComponent : MonoBehaviour
 {
     [SerializeField]
-    List<SkillCallData> m_possessingSkills; // 현재 보유하고 있는 스킬 --> 아이템 획득 시, 스킬을 추가해준다.
+    List<SkillData> m_possessingSkills; // 현재 보유하고 있는 스킬 --> 아이템 획득 시, 스킬을 추가해준다.
+    public List<SkillData> PossessingSkills { get { return m_possessingSkills; } }
 
     [SerializeField]
     List<BasicSkill> m_activeSkills; // 현재 엑티브 되어있는 스킬 
@@ -20,13 +21,13 @@ public class BattleComponent : MonoBehaviour
             if (CheckActiveSkillAndExecute(m_possessingSkills[i]) == true) continue;
 
 
-             BasicSkill skill = ObjectPooler.SpawnFromPool<BasicSkill>(m_possessingSkills[i].Name, transform.position);
+            BasicSkill skill = ObjectPooler.SpawnFromPool<BasicSkill>(m_possessingSkills[i].Name, transform.position);
             if (skill == null) continue;
 
 
             m_activeSkills.Add(skill);
 
-            skill.RemoveFromList += RemoveFromActiveSkills;
+            skill.Init(m_possessingSkills[i]);
             skill.Execute(gameObject);
 
             if (m_possessingSkills[i].CanSubtractUseCount() && m_possessingSkills[i].IsUseCountZero())
@@ -36,7 +37,34 @@ public class BattleComponent : MonoBehaviour
         }
     }
 
-    bool CheckActiveSkillAndExecute(SkillCallData callData)
+    private void Update()
+    {
+        for (int i = 0; i < m_activeSkills.Count; i++)
+        {
+            m_activeSkills[i].DoUpdate(Time.deltaTime);
+            if (m_activeSkills[i].IsFinished)
+            {
+                m_activeSkills[i].OnEnd();
+                m_activeSkills.Remove(m_activeSkills[i]);
+            }
+        }
+    }
+
+    public void ClearAllActiveSkill()
+    {
+        for (int i = 0; i < m_activeSkills.Count; i++)
+        {
+            m_activeSkills[i].DisableOnself = true;
+            m_activeSkills.Remove(m_activeSkills[i]);
+        }
+    }
+
+    private void OnDisable()
+    {
+        ClearAllActiveSkill();
+    }
+
+    bool CheckActiveSkillAndExecute(SkillData callData)
     {
         if (callData.OverlapType == SkillOverlapType.None) return false;
 
@@ -53,13 +81,7 @@ public class BattleComponent : MonoBehaviour
         return false;
     }
 
-    public void RemoveFromActiveSkills(BasicSkill skill)
-    {
-        skill.RemoveFromList -= RemoveFromActiveSkills;
-        m_activeSkills.Remove(skill);
-    }
-
-    public void LootingSkill(SkillCallData skill)
+    public void LootingSkill(SkillData skill)
     {
         for (int i = 0; i < m_possessingSkills.Count; i++)
         {

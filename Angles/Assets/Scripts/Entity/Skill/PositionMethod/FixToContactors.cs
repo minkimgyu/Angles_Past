@@ -8,6 +8,8 @@ public class FixToContactors : PositionMethod
 {
     public override void DoUpdate(BasicSkill me)
     {
+        if (me.PosTr == null) return;
+
         me.transform.position = me.PosTr.position; // 계속 고정시킴
     }
 

@@ -5,18 +5,11 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using System;
 
-// 이펙트는 오브젝트 풀링에서 꺼내서 적용
-
 abstract public class BasicSkill : MonoBehaviour // --> 프리팹으로 생성해서 오브젝트 풀링에 추가
 {
-    public Action<BasicSkill> RemoveFromList;
-
     [SerializeField]
-    protected SkillData data; // --> 데미지, 범위 등등 공통된 변수만 넣어주자
-    public SkillData Data { get { return data; } }
-
-    protected BasicEffectPlayer effectPlayer;
-    public BasicEffectPlayer EffectPlayer { get { return effectPlayer; } set { effectPlayer = value; } }
+    protected SkillData m_data; // --> 데미지, 범위 등등 공통된 변수만 넣어주자
+    public SkillData Data { get { return m_data; } }
 
     /// <summary>
     /// 스킬의 위치를 지정할 오브젝트
@@ -25,17 +18,33 @@ abstract public class BasicSkill : MonoBehaviour // --> 프리팹으로 생성해서 오브
     public Transform PosTr { get { return posTr; } set { posTr = value; } }
 
     [SerializeField]
+    private bool isFinished; // 스킬의 위치 지정
+    public bool IsFinished 
+    { 
+        get { return isFinished; }
+        set
+        {
+            if (disableOnself == false) return;
+            OnEnd();
+        }
+    }
+
+    bool disableOnself = false; // battleComponent가 먼저 사라질 경우 하위 스킬들은 종료시 알아서 제거됨
+    public bool DisableOnself { set { disableOnself = value; } }
+
+    [SerializeField]
     protected PositionMethod positionMethod; // 스킬의 위치 지정
     public PositionMethod PositionMethod { get { return positionMethod; } }
 
-    // 원거리 공격, 근거리 공격 등등 공격 방식 설정 --> 시전 위치는 스킬 위치를 기준으로 함
-    //[SerializeField]
-    //protected DamageMethod damageMethod; 
-    //public DamageMethod DamageMethod { get { return damageMethod; } }
-
-    private void Update()
+    public virtual void DoUpdate(float tick)
     {
         positionMethod.DoUpdate(this);
+    }
+
+    public void Init(SkillData data)
+    {
+        m_data = data;
+        IsFinished = false;
     }
 
     public virtual void Execute(GameObject caster) // 여기에서 Unitask 호출해서 틱 당 데미지 적용 함수 추가
@@ -43,11 +52,16 @@ abstract public class BasicSkill : MonoBehaviour // --> 프리팹으로 생성해서 오브
         positionMethod.Init(caster.transform, this);
     }
 
+    public virtual void OnEnd()
+    {
+        disableOnself = false;
+        m_data = null;
+        gameObject.SetActive(false);
+    }
+
     protected virtual void OnDisable()
     {
         posTr = null;
-        
-        if(RemoveFromList != null) RemoveFromList(this);
         ObjectPooler.ReturnToPool(gameObject);
     }
 }
@@ -59,54 +73,63 @@ abstract public class AttackSkill : BasicSkill // --> 프리팹으로 생성해서 오브젝
     protected DamageMethod damageMethod;
     public DamageMethod DamageMethod { get { return damageMethod; } }
 
+    protected BasicEffectPlayer effectPlayer;
+    public BasicEffectPlayer EffectPlayer { get { return effectPlayer; } set { effectPlayer = value; } }
+
     [SerializeField]
     DrawGizmo drawGizmo;
-
-    private void Update()
-    {
-        positionMethod.DoUpdate(this);
-    }
 
     void OnDrawGizmos()
     {
         drawGizmo.DrawBoxGizmo(transform);
         drawGizmo.DrawCircleGizmo(transform);
     }
+
+    public override void OnEnd()
+    {
+        if (effectPlayer != null) effectPlayer.StopEffect();
+        effectPlayer = null;
+        base.OnEnd();
+    }
 }
 
-abstract public class TickSkill : AttackSkill // --> 프리팹으로 생성해서 오브젝트 풀링에 추가
+abstract public class TickAttackSkill : AttackSkill // --> 프리팹으로 생성해서 오브젝트 풀링에 추가
 {
-    protected CancellationTokenSource m_source = new();
+    protected DamageSupportData damageSupportData;
+    protected bool nowStart;
 
-    public void CancelTask()
+    [SerializeField]
+    protected float storedDelay;
+
+    public override void Execute(GameObject caster)
     {
-        if(m_source != null)
-        {
-            if(effectPlayer != null) effectPlayer.StopEffect();
-
-            m_source.Cancel();
-            m_source = null;
-            m_source = new();
-        }
+        base.Execute(caster);
+        CancelSkill();
+        damageSupportData = new DamageSupportData(caster, this);
+        nowStart = true;
     }
 
-    protected void OnDestroy()
+    public abstract void CancelSkill();
+
+    public override void OnEnd()
     {
-        m_source.Cancel();
-        m_source.Dispose();
+        storedDelay = 0;
+        nowStart = false; // 스킬 종료
+        base.OnEnd();
     }
 
-    protected void OnEnable()
+    public override void DoUpdate(float tick)
     {
-        if (m_source != null)
-            m_source.Dispose();
+        base.DoUpdate(tick);
+        if (nowStart == false) return;
 
-        m_source = new();
+        DamageTask(tick);
     }
 
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-        m_source.Cancel();
-    }
+    abstract protected void DamageTask(float tick);
+}
+
+abstract public class TickSpawnSkill : SpawnSkill // --> 프리팹으로 생성해서 오브젝트 풀링에 추가
+{
+   
 }

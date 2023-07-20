@@ -5,33 +5,73 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using System;
 
-public class MultipleTickSkill : TickSkill // --> 프리팹으로 생성해서 오브젝트 풀링에 추가
+public class MultipleTickSkill : TickAttackSkill // --> 프리팹으로 생성해서 오브젝트 풀링에 추가
 {
-    public override void Execute(GameObject caster) // 여기에서 Unitask 호출해서 틱 당 데미지 적용 함수 추가
+    [SerializeField]
+    int storedTick;
+
+    float storedTickTime;
+    bool canDamage = true;
+
+    public override void CancelSkill()
     {
-        // --> 위치 지정 로직 추가
-        base.Execute(caster);
-
-        CancelTask(); // 먼저 돌리고 있는게 있다면 취소시키고 다시 실행 //--> 블레이드와 같은 스킬의 초기화
-
-        DamageTask(new DamageSupportData(caster, this)).Forget();
+        storedTickTime = 0;
+        storedTick = 0;
+        storedDelay = 0;
     }
 
-    private async UniTaskVoid DamageTask(DamageSupportData damageSupportData)
+    protected override void DamageTask(float tick)
     {
-        await UniTask.Delay(TimeSpan.FromSeconds(damageSupportData.Me.Data.PreDelay), cancellationToken: m_source.Token);
-
-        int storedTick = 0;
+        storedDelay += tick;
+        if (damageSupportData.Me.Data.PreDelay > storedDelay) return;
 
         float delay = damageSupportData.Me.Data.Duration / damageSupportData.Me.Data.TickCount;
 
-        while (damageSupportData.Me.Data.TickCount > storedTick)
-        {
-            damageMethod.Execute(damageSupportData);
-            storedTick++;
-            await UniTask.Delay(TimeSpan.FromSeconds(delay), cancellationToken: m_source.Token);
-        }
 
-        gameObject.SetActive(false);
+        if (damageSupportData.Me.Data.TickCount > storedTick)
+        {
+            if(canDamage) damageMethod.Execute(damageSupportData);
+            canDamage = false;
+            storedTickTime += tick;
+            if (delay > storedTickTime) return;
+
+
+
+            damageMethod.Execute(damageSupportData);
+
+            storedTickTime = 0;
+            storedTick++;
+            canDamage = true;
+        }
+        else
+        {
+            IsFinished = true;
+        }
     }
+
+    public override void OnEnd()
+    {
+        storedTickTime = 0;
+        storedTick = 0;
+        base.OnEnd();
+    }
+
+
+    //private async UniTaskVoid DamageTask(DamageSupportData damageSupportData)
+    //{
+    //    await UniTask.Delay(TimeSpan.FromSeconds(damageSupportData.Me.Data.PreDelay), cancellationToken: m_source.Token);
+
+    //    int storedTick = 0;
+
+    //    float delay = damageSupportData.Me.Data.Duration / damageSupportData.Me.Data.TickCount;
+
+    //    while (damageSupportData.Me.Data.TickCount > storedTick)
+    //    {
+    //        damageMethod.Execute(damageSupportData);
+    //        storedTick++;
+    //        await UniTask.Delay(TimeSpan.FromSeconds(delay), cancellationToken: m_source.Token);
+    //    }
+
+    //    gameObject.SetActive(false);
+    //}
 }

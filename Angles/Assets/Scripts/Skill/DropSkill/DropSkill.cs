@@ -7,9 +7,9 @@ public class DropSkill : MonoBehaviour
     [SerializeField]
     string skillName;
 
-    public SkillCallData ReturnSkill()
+    public SkillData ReturnSkill()
     {
-        return DatabaseManager.Instance.UtilizationDB.SkillCallDatas.Find(x => x.Name == skillName).CopyData();
+        return DatabaseManager.Instance.UtilizationDB.ReturnSkillData(skillName);
     }
 
     private void OnDisable()

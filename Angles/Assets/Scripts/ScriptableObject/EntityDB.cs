@@ -2,22 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//[System.Serializable]
-//public class AdditionalPrefabData
-//{
-//    [SerializeField]
-//    protected string name;
-//    public string Name { get { return name; } set { name = value; } }
-
-//    [SerializeField]
-//    protected int count;
-//    public int Count { get { return count; } set { count = value; } }
-
-//    [SerializeField]
-//    protected string path;
-//    public string Path { get { return path; } set { path = value; } }
-//}
-
 public class BaseData
 {
     [SerializeField]
@@ -105,20 +89,33 @@ public class BuffFloat : IData<BuffFloat>
 }
 
 [System.Serializable]
-public class BuffData : BaseData, IData<BuffData>
+public class GrantedUtilization
 {
     [SerializeField]
-    protected int maxCount;
-    public int MaxCount { get { return maxCount; } set { maxCount = value; } }
+    List<string> skillNames = new List<string>();
 
-    public BuffData(string name, int maxCount) : base(name)
+    [SerializeField]
+    List<string> buffNames = new List<string>();
+    public List<string> BuffNames { get { return buffNames; } }
+
+    public void LootSkillFromDB(BattleComponent component)
     {
-        this.maxCount = maxCount;
+        for (int i = 0; i < skillNames.Count; i++)
+        {
+            component.LootingSkill(DatabaseManager.Instance.UtilizationDB.ReturnSkillData(skillNames[i]));
+        }
     }
 
-    public BuffData CopyData()
+    public List<BuffData> LootBuffFromDB()
     {
-        return new BuffData(name, maxCount);
+        List<BuffData> tmpData = new List<BuffData>();
+
+        for (int i = 0; i < buffNames.Count; i++)
+        {
+            tmpData.Add(DatabaseManager.Instance.UtilizationDB.ReturnBuffData(buffNames[i]));
+        }
+
+        return tmpData;
     }
 }
 
@@ -161,9 +158,13 @@ public class HealthEntityData : BaseData
     protected float knockBackThrust;
     public float KnockBackThrust { get { return knockBackThrust; } set { knockBackThrust = value; } }
 
+    [SerializeField]
+    protected GrantedUtilization grantedUtilization;
+    public GrantedUtilization GrantedUtilization { get { return grantedUtilization; } }
+
     public HealthEntityData() { }
 
-    public HealthEntityData(string name, string shape, string color, bool immortality, float hp, BuffFloat speed, float stunTime, float weight, float drag, float knockBackThrust) : base(name)
+    public HealthEntityData(string name, string shape, string color, bool immortality, float hp, BuffFloat speed, float stunTime, float weight, float drag, float knockBackThrust, GrantedUtilization grantedUtilization) : base(name)
     {
         this.shape = shape;
         this.color = color;
@@ -176,6 +177,7 @@ public class HealthEntityData : BaseData
         this.weight = weight;
         this.drag = drag;
         this.knockBackThrust = knockBackThrust;
+        this.grantedUtilization = grantedUtilization;
     }
 }
 
@@ -287,8 +289,8 @@ public class PlayerData : HealthEntityData, IData<PlayerData>
 
     public PlayerData() { }
 
-    public PlayerData(string name, string shape, string color, bool immortality, float hp, BuffFloat speed, float stunTime, float weight, float drag, float knockBackThrust, BuffFloat readySpeed, float speedRatio, float minSpeedRatio, float maxSpeedRatio, float rushThrust,
-        float rushRatio, float rushRecoverRatio, float rushTime, float attackCancelOffset, float reflectThrust, float maxDashCount, float dashTime, float dashThrust, float dashRatio, float dashRecoverRatio) : base(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust)
+    public PlayerData(string name, string shape, string color, bool immortality, float hp, BuffFloat speed, float stunTime, float weight, float drag, float knockBackThrust, GrantedUtilization grantedUtilization, BuffFloat readySpeed, float speedRatio, float minSpeedRatio, float maxSpeedRatio, float rushThrust,
+        float rushRatio, float rushRecoverRatio, float rushTime, float attackCancelOffset, float reflectThrust, float maxDashCount, float dashTime, float dashThrust, float dashRatio, float dashRecoverRatio) : base(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust, grantedUtilization)
     {
         this.readySpeed = readySpeed.CopyData();
         this.speedRatio = speedRatio;
@@ -309,7 +311,7 @@ public class PlayerData : HealthEntityData, IData<PlayerData>
 
     public PlayerData CopyData()
     {
-        return new PlayerData(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust, readySpeed, speedRatio, minSpeedRatio, maxSpeedRatio, rushThrust,
+        return new PlayerData(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust, grantedUtilization, readySpeed, speedRatio, minSpeedRatio, maxSpeedRatio, rushThrust,
         rushRatio, rushRecoverRatio, rushTime, attackCancelOffset, reflectThrust, maxDashCount, dashTime, dashThrust, dashRatio, dashRecoverRatio);
     }
 }
@@ -351,10 +353,9 @@ public class EnemyData : HealthEntityData, IData<EnemyData>
 
     public EnemyData() { }
 
-    public EnemyData(string name, string shape, string color, bool immortality, float hp, BuffFloat speed, float stunTime, float weight, float drag, float knockBackThrust, float knockBackDamage, 
-        float skillUseDistance, float skillUseOffsetDistance, float skillUseRange, float skillReuseTime, float followMinDistance, float stopMinDistance, int prefabCount) : base(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust)
+    public EnemyData(string name, string shape, string color, bool immortality, float hp, BuffFloat speed, float stunTime, float weight, float drag, float knockBackThrust, GrantedUtilization grantedUtilization, float knockBackDamage, 
+        float skillUseDistance, float skillUseOffsetDistance, float skillUseRange, float skillReuseTime, float followMinDistance, float stopMinDistance, int prefabCount) : base(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust, grantedUtilization)
     {
-        this.knockBackThrust = knockBackThrust;
         this.knockBackDamage = knockBackDamage;
         this.skillUseDistance = skillUseDistance;
         this.skillUseOffsetDistance = skillUseOffsetDistance;
@@ -367,240 +368,8 @@ public class EnemyData : HealthEntityData, IData<EnemyData>
 
     public EnemyData CopyData()
     {
-        return new EnemyData(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust, knockBackDamage, skillUseDistance, skillUseOffsetDistance, skillUseRange, skillReuseTime, followMinDistance, stopMinDistance, prefabCount);
+        return new EnemyData(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust, grantedUtilization, knockBackDamage, skillUseDistance, skillUseOffsetDistance, skillUseRange, skillReuseTime, followMinDistance, stopMinDistance, prefabCount);
     }
-}
-
-[System.Serializable]
-public class SkillCallData : BaseData, IData<SkillCallData>
-{
-    [SerializeField]
-    int maxUseCount;
-    public int MaxUseCount { get { return maxUseCount; } set { maxUseCount = value; } }
-
-    [SerializeField]
-    int useCount;
-    public int UseCount { get { return useCount; } set { useCount = value; } }
-
-    //[SerializeField]
-    //Test test;
-    //public Test Test1 { get { return test; } set { test = value; } }
-
-    [SerializeField]
-    SkillOverlapType overlapType;
-    public SkillOverlapType OverlapType { get { return overlapType; } set { overlapType = value; } }
-
-    [SerializeField]
-    SkillUseConditionType useConditionType;
-    public SkillUseConditionType UseConditionType { get { return useConditionType; } set { useConditionType = value; } }
-
-    [SerializeField]
-    SkillUseCountSubtractType countSubtractType;
-    public SkillUseCountSubtractType CountSubtractType { get { return countSubtractType; } set { countSubtractType = value; } }
-
-    [SerializeField]
-    SkillSynthesisType synthesisType;
-    public SkillSynthesisType SynthesisType { get { return synthesisType; } set { synthesisType = value; } }
-
-
-    public bool CanUseSkill(SkillUseConditionType useConditionType)
-    {
-        return this.useConditionType == useConditionType;
-    }
-
-    public bool CanSubtractUseCount()
-    {
-        if (countSubtractType == SkillUseCountSubtractType.None) return false;
-        useCount--;
-
-        return true;
-    }
-
-    public bool IsUseCountZero()
-    {
-        return useCount <= 0;
-    }
-
-    public void UpUseCount()
-    {
-        if (synthesisType == SkillSynthesisType.None) return;
-
-        useCount += maxUseCount;
-    }
-
-    public SkillCallData(string name, int maxUseCount, int useCount, SkillOverlapType overlapType, SkillUseConditionType useConditionType, SkillUseCountSubtractType countSubtractType, SkillSynthesisType synthesisType)
-        :base(name)
-    {
-        this.maxUseCount = maxUseCount;
-        this.useCount = useCount;
-        this.overlapType = overlapType;
-        this.useConditionType = useConditionType;
-        this.countSubtractType = countSubtractType;
-        this.synthesisType = synthesisType;
-    }
-
-    public SkillCallData CopyData()
-    {
-        return new SkillCallData(name, maxUseCount, useCount, overlapType, useConditionType, countSubtractType, synthesisType);
-    }
-}
-
-[System.Serializable]
-public class SkillData : BaseData, IData<SkillData>
-{
-    [SerializeField]
-    float disableTime;
-    public float DisableTime { get { return disableTime; } set { disableTime = value; } }
-
-
-    [Header("Attack")]
-
-    [SerializeField]
-    float damage;
-    public float Damage { get { return damage; } set { damage = value; } }
-
-    [SerializeField]
-    float knockBackThrust;
-    public float KnockBackThrust { get { return knockBackThrust; } set { knockBackThrust = value; } }
-
-    [SerializeField]
-    EntityTag[] hitTarget;
-    public EntityTag[] HitTarget { get { return hitTarget; } set { hitTarget = value; } }
-
-
-    [Header("PrefabCount")]
-
-    [SerializeField]
-    int prefabCount;
-    public int PrefabCount { get { return prefabCount; } set { prefabCount = value; } }
-
-
-    [Header("Delay")]
-
-    [SerializeField]
-    float preDelay;
-    public float PreDelay { get { return preDelay; } set { preDelay = value; } }
-
-
-    [Header("Tick")]
-
-    [SerializeField]
-    int tickCount = 1;
-    public int TickCount { get { return tickCount; } set { tickCount = value; } }
-
-    [SerializeField]
-    float duration;
-    public float Duration { get { return duration; } set { duration = value; } }
-
-
-    [Header("Range")]
-
-    [SerializeField]
-    float radiusRange;
-    public float RadiusRange { get { return radiusRange; } set { radiusRange = value; } }
-
-    [SerializeField]
-    Vector2 boxRange;
-    public Vector2 BoxRange { get { return boxRange; } set { boxRange = value; } }
-
-    [SerializeField]
-    Vector2 offsetRange;
-    public Vector2 OffsetRange { get { return offsetRange; } set { offsetRange = value; } }
-
-    [Header("Spawn")]
-
-    [SerializeField]
-    int spawnCount;
-    public int SpawnCount { get { return spawnCount; } set { spawnCount = value; } }
-
-    [SerializeField]
-    int spawnObjectSpeed;
-    public int SpawnObjectSpeed { get { return spawnObjectSpeed; } set { spawnObjectSpeed = value; } }
-
-
-
-    #region Fn
-
-    public int ReturnLayerMask()
-    {
-        string[] hitTargetString = new string[hitTarget.Length];
-
-        for (int i = 0; i < hitTarget.Length; i++)
-        {
-            hitTargetString[i] = hitTarget[i].ToString();
-            Debug.Log(hitTargetString[i]);
-        }
-
-        Debug.Log(hitTargetString);
-        return LayerMask.GetMask(hitTargetString);
-    }
-
-    //public bool CanUseSkill(SkillUseType skillType)
-    //{
-    //    return useCount >= 1;
-    //}
-
-    //public void AfterSkillAdjustment(List<SkillData> skillDatas)
-    //{
-    //    if (CanUseSkill(useType) == false) return;
-
-    //    if (Usage == SkillUsage.Single) useCount -= 1;
-
-    //    if (useCount <= 0)
-    //    {
-    //        skillDatas.Remove(this);
-    //    }
-    //}
-
-    //public void CountCheckBySynthesis(SkillSynthesis synthesis)
-    //{
-    //    if (synthesis == SkillSynthesis.CountUp) CountUp();
-    //    else if (synthesis == SkillSynthesis.Overlap) return;
-    //}
-
-    //public void CountUp()
-    //{
-    //    SkillData originData = DatabaseManager.Instance.ReturnSkillData(Name).CopyData();
-    //    useCount += originData.useCount;
-    //}
-
-    public bool CanHitSkill(EntityTag tag)
-    {
-        for (int i = 0; i < hitTarget.Length; i++)
-        {
-            if (hitTarget[i] == tag)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    //public SkillData() { }
-
-    public SkillData(string name, int tickCount, float preDelay, float duration, float radiusRange, Vector2 boxRange, Vector2 offsetRange, float damage, float knockBackThrust, float disableTime, EntityTag[] hitTarget, int prefabCount)
-    : base(name)
-    {
-        this.tickCount = tickCount;
-        this.preDelay = preDelay;
-        this.duration = duration;
-        this.radiusRange = radiusRange;
-        this.boxRange = boxRange;
-        this.offsetRange = offsetRange;
-        this.damage = damage;
-        this.knockBackThrust = knockBackThrust;
-        this.disableTime = disableTime;
-        this.hitTarget = hitTarget;
-        this.prefabCount = prefabCount;
-    }
-
-    public SkillData CopyData()
-    {
-        return new SkillData(name, tickCount, preDelay, duration, radiusRange, boxRange, offsetRange, damage, knockBackThrust, disableTime, hitTarget, prefabCount);
-    }
-
-    #endregion
 }
 
 [CreateAssetMenu(fileName = "EntityDB", menuName = "Scriptable Object/DB/EntityDB")]

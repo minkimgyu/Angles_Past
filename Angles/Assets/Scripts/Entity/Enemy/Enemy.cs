@@ -101,7 +101,7 @@ public abstract class Enemy<T> : StateMachineEntity<T>, IHealth
         //print("Knockback");
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         ObjectPooler.ReturnToPool(gameObject);
     }

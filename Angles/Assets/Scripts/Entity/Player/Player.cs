@@ -95,11 +95,6 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
         m_battleComponent = GetComponent<BattleComponent>();
         m_animator = GetComponent<Animator>();
 
-
-        m_battleComponent.LootingSkill
-            (DatabaseManager.Instance.UtilizationDB.SkillCallDatas.Find(x => x.Name == "Punch").CopyData());
-
-
         m_contactComponent = GetComponent<ContactComponent>();
         m_buffComponent = GetComponent<BuffComponent>();
 
@@ -140,6 +135,8 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
         m_dicState.Add(State.Dash, dash);
         m_dicState.Add(State.Die, dead);
         m_dicState.Add(State.Reflect, reflect);
+
+        Data.GrantedUtilization.LootSkillFromDB(BattleComponent);
 
         SetUp(State.Move);
         SetGlobalState(global);
@@ -228,17 +225,17 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
 
     public void UnderAttack(float healthPoint)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public void Heal(float healthPoint)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public void Die()
     {
-        throw new NotImplementedException();
+        
     }
 
     public EntityTag ReturnTag()
@@ -248,7 +245,7 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
 
     public void Knockback(Vector2 dir, float thrust)
     {
-        throw new NotImplementedException();
+        
     }
 
     public PlayerData GetData()

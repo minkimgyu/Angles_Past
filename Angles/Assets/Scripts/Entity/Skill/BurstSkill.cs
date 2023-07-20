@@ -9,9 +9,6 @@ public class BurstSkill : AttackSkill // --> 프리팹으로 생성해서 오브젝트 풀링에
         // --> 위치 지정 로직 추가
         base.Execute(caster);
         damageMethod.Execute(new DamageSupportData(caster, this));
-
-
-
-        gameObject.SetActive(false);
+        IsFinished = true;
     }
 }

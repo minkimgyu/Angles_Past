@@ -53,6 +53,8 @@ public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
         m_dicState.Add(State.Follow, follow); // 기본 상태가 추적 --> 거리에 따라 정지 or 움직임
         m_dicState.Add(State.Stop, stop);
         m_dicState.Add(State.Die, die);
+
+        Data.GrantedUtilization.LootSkillFromDB(BattleComponent);
     }
 
     public override void WhenUnderAttack()

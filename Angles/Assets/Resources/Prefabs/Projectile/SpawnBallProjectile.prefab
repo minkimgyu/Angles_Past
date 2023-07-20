@@ -4837,7 +4837,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd399465008839841b7538952dde8506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Punch
+  grantedUtilization:
+    skillNames:
+    - Punch
+    buffNames: []
 --- !u!58 &3286443389367354579
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4866,13 +4869,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1638d4b05d9f4e145b75023474c6c5cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_possessingSkills:
-  - name: Punch
-    maxUseCount: 1
-    useCount: 1
-    useConditionType: 0
-    countSubtractType: 0
-    synthesisType: 0
+  m_possessingSkills: []
   m_activeSkills: []
 --- !u!114 &5504882030948801225
 MonoBehaviour:

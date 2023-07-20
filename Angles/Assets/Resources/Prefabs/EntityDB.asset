@@ -26,6 +26,10 @@ MonoBehaviour:
     weight: 1
     drag: 1.5
     knockBackThrust: 5
+    grantedUtilization:
+      skillNames:
+      - Punch
+      buffNames: []
     readySpeed:
       maxValue: 5
       minValue: 2
