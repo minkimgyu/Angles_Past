@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d38e6424707bca347ac801e91a66f6bb, type: 3}
   m_Name: UtilizationDB
   m_EditorClassIdentifier: 
-  skillCallDatas:
+  skillDatas:
   - name: Shockwave
     maxUseCount: 1
     useCount: 1
@@ -20,13 +20,19 @@ MonoBehaviour:
     useConditionType: 1
     countSubtractType: 1
     synthesisType: 0
-  - name: Knockback
-    maxUseCount: 1
-    useCount: 1
-    overlapType: 0
-    useConditionType: 0
-    countSubtractType: 1
-    synthesisType: 0
+    damage: 10
+    knockBackThrust: 10
+    hitTarget: 01000000
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 0
+    duration: 0
+    radiusRange: 3.5
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    spawnCount: 0
+    spawnObjectSpeed: 0
+    disableTime: 3
   - name: Blade
     maxUseCount: 1
     useCount: 1
@@ -34,6 +40,19 @@ MonoBehaviour:
     useConditionType: 1
     countSubtractType: 1
     synthesisType: 0
+    damage: 10
+    knockBackThrust: 10
+    hitTarget: 01000000
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 5
+    duration: 5
+    radiusRange: 2
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    spawnCount: 0
+    spawnObjectSpeed: 0
+    disableTime: 1.2
   - name: StickyBomb
     maxUseCount: 2
     useCount: 2
@@ -41,6 +60,19 @@ MonoBehaviour:
     useConditionType: 0
     countSubtractType: 1
     synthesisType: 1
+    damage: 10
+    knockBackThrust: 10
+    hitTarget: 01000000
+    prefabCount: 0
+    preDelay: 2
+    tickCount: 0
+    duration: 0
+    radiusRange: 2.5
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    spawnCount: 0
+    spawnObjectSpeed: 0
+    disableTime: 3
   - name: Punch
     maxUseCount: 1
     useCount: 1
@@ -48,6 +80,19 @@ MonoBehaviour:
     useConditionType: 0
     countSubtractType: 0
     synthesisType: 0
+    damage: 10
+    knockBackThrust: 10
+    hitTarget: 01000000
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 0
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    spawnCount: 0
+    spawnObjectSpeed: 0
+    disableTime: 3
   - name: SpawnBall
     maxUseCount: 1
     useCount: 1
@@ -55,10 +100,61 @@ MonoBehaviour:
     useConditionType: 1
     countSubtractType: 1
     synthesisType: 0
-  skillDatas:
-  - {fileID: 990536666640814472, guid: 9ae127746cd27e545abb2b1e190dbe1c, type: 3}
-  - {fileID: 4137328563240184283, guid: 25326d2331f93084aabb63802c3da467, type: 3}
-  - {fileID: -3030192017513386572, guid: 588b0780a4ff0914fb8a7533146705a1, type: 3}
+    damage: 0
+    knockBackThrust: 0
+    hitTarget: 
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 0
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    spawnCount: 3
+    spawnObjectSpeed: 30
+    disableTime: 0
+  - name: SelfDestruction
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 2
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 10
+    knockBackThrust: 10
+    hitTarget: 0000000001000000
+    prefabCount: 0
+    preDelay: 2
+    tickCount: 0
+    duration: 0
+    radiusRange: 5
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    spawnCount: 0
+    spawnObjectSpeed: 0
+    disableTime: 3
+  - name: Knockback
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 0
+    countSubtractType: 1
+    synthesisType: 0
+    damage: 10
+    knockBackThrust: 10
+    hitTarget: 0000000001000000
+    prefabCount: 0
+    preDelay: 2
+    tickCount: 0
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 6, y: 3.5}
+    offsetRange: {x: 1, y: 0}
+    spawnCount: 0
+    spawnObjectSpeed: 0
+    disableTime: 3
   buffDatas:
   - name: SpeedDebuff
     maxCount: 3
+    duration: 0
+    tickTime: 0

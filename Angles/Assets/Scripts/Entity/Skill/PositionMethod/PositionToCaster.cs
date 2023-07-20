@@ -8,7 +8,6 @@ public class PositionToCaster : PositionMethod
 {
     public override void DoUpdate(BasicSkill me)
     {
-        
     }
 
     public override void Init(Transform caster, BasicSkill me)

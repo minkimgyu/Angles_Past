@@ -8,6 +8,8 @@ public class FixToCasterAndRotation : PositionMethod
 {
     public override void DoUpdate(BasicSkill me)
     {
+        if (me.PosTr == null || me.Data == null) return;
+
         me.transform.position = me.PosTr.position; // 계속 고정시킴
         me.transform.RotateAround(me.transform.position, Vector3.forward, Time.deltaTime * me.Data.SpawnObjectSpeed);
     }

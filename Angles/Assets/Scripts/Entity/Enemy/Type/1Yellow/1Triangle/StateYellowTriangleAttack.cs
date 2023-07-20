@@ -4,34 +4,44 @@ using UnityEngine;
 
 public class StateYellowTriangleAttack : StateFollowEnemyAttack
 {
-    YellowTriangleEnemy loadyYellowTriangleEnemy;
+    YellowTriangleEnemy enemy;
 
     public StateYellowTriangleAttack(YellowTriangleEnemy yellowTriangle) : base(yellowTriangle)
     {
-        loadyYellowTriangleEnemy = yellowTriangle;
+        enemy = yellowTriangle;
     }
 
     public override void ExecuteInRangeMethod()
     {
-        if (loadyYellowTriangleEnemy.LoadPlayer.BuffComponent.AddBuff("SpeedDebuff") == false) return;
+        List<BuffData> tmpData = enemy.Data.GrantedUtilization.LootBuffFromDB();
 
-        BasicEffectPlayer effectPlayer = loadyYellowTriangleEnemy.EffectMethod.ReturnEffectFromPool();
-        if (effectPlayer == null) return;
+        for (int i = 0; i < tmpData.Count; i++)
+        {
+            if (enemy.LoadPlayer.BuffComponent.AddBuff(tmpData[i]) == false) return;
 
-        loadyYellowTriangleEnemy.EffectPlayer = effectPlayer;
-        loadyYellowTriangleEnemy.EffectPlayer.Init(loadyYellowTriangleEnemy.transform, 1000f);
-        loadyYellowTriangleEnemy.EffectPlayer.PlayEffect();
+            BasicEffectPlayer effectPlayer = enemy.EffectMethod.ReturnEffectFromPool();
+            if (effectPlayer == null) return;
 
-        Debug.Log("In");
+            enemy.EffectPlayer = effectPlayer;
+            enemy.EffectPlayer.Init(enemy.transform, 1000f);
+            enemy.EffectPlayer.PlayEffect();
+
+            Debug.Log("In");
+        }
     }
 
     public override void ExecuteInOutsideMethod()
     {
-        loadyYellowTriangleEnemy.LoadPlayer.BuffComponent.RemoveBuff("SpeedDebuff");
+        List<BuffData> tmpData = enemy.Data.GrantedUtilization.LootBuffFromDB();
 
-        if (loadyYellowTriangleEnemy.EffectPlayer == null) return;
-        loadyYellowTriangleEnemy.EffectPlayer.StopEffect();
+        for (int i = 0; i < tmpData.Count; i++)
+        {
+            enemy.LoadPlayer.BuffComponent.RemoveBuff(tmpData[i]);
 
-        Debug.Log("Out");
+            if (enemy.EffectPlayer == null) return;
+            enemy.EffectPlayer.StopEffect();
+
+            Debug.Log("Out");
+        }
     }
 }

@@ -7,9 +7,6 @@ abstract public class BasicProjectile : MonoBehaviour
     Transform m_posTr;
     public Transform PosTr { get { return m_posTr; } set { m_posTr = value; } }
 
-    protected SpawnSkill m_skill;
-    public SpawnSkill Skill { get { return m_skill; } }
-
     protected BattleComponent m_battleComponent;
     public BattleComponent BattleComponent { get { return m_battleComponent; } }
 
@@ -17,7 +14,12 @@ abstract public class BasicProjectile : MonoBehaviour
     public ContactComponent ContactComponent { get { return m_contactComponent; } }
 
     [SerializeField]
-    string skillName;
+    GrantedUtilization grantedUtilization;
+
+    protected bool isFinished;
+    public bool IsFinished { get { return isFinished; } }
+
+    public abstract void DoUpdate();
 
     private void Awake()
     {
@@ -26,20 +28,23 @@ abstract public class BasicProjectile : MonoBehaviour
     }
     private void Start()
     {
-        m_battleComponent.LootingSkill(DatabaseManager.Instance.UtilizationDB.SkillCallDatas.Find(x => x.Name == skillName).CopyData());
+        grantedUtilization.LootSkillFromDB(BattleComponent);
     }
 
-    public virtual void Init(Transform tr, SpawnSkill skill)
+    public virtual void Init(Transform tr)
     {
         m_posTr = tr;
-        m_skill = skill;
     }
 
-    public virtual void Init(Vector3 pos, SpawnSkill skill)
+    public virtual void Init(Vector3 pos)
     {
         transform.localPosition = pos;
         m_posTr = null;
-        m_skill = skill;
+    }
+
+    public virtual void OnEnd()
+    {
+        gameObject.SetActive(false);
     }
 
     protected virtual void OnCollisionEnter2D(Collision2D col) // 충돌 시 상태 변환
@@ -56,7 +61,6 @@ abstract public class BasicProjectile : MonoBehaviour
 
     protected virtual void OnDisable()
     {
-        m_skill = null;
         ObjectPooler.ReturnToPool(gameObject);
     }
 }
