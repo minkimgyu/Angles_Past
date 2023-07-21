@@ -21,13 +21,13 @@ public class BattleComponent : MonoBehaviour
             if (CheckActiveSkillAndExecute(m_possessingSkills[i]) == true) continue;
 
 
-            BasicSkill skill = ObjectPooler.SpawnFromPool<BasicSkill>(m_possessingSkills[i].Name, transform.position);
+            BasicSkill skill = ObjectPooler.SpawnFromPool<BasicSkill>(m_possessingSkills[i].PrefabName, transform.position);
             if (skill == null) continue;
 
 
             m_activeSkills.Add(skill);
 
-            skill.Init(m_possessingSkills[i]);
+            skill.Init(this, m_possessingSkills[i]);
             skill.Execute(gameObject);
 
             if (m_possessingSkills[i].CanSubtractUseCount() && m_possessingSkills[i].IsUseCountZero())
@@ -37,31 +37,9 @@ public class BattleComponent : MonoBehaviour
         }
     }
 
-    private void Update()
+    public void RemoveFromActiveSkills(BasicSkill skill)
     {
-        for (int i = 0; i < m_activeSkills.Count; i++)
-        {
-            m_activeSkills[i].DoUpdate(Time.deltaTime);
-            if (m_activeSkills[i].IsFinished)
-            {
-                m_activeSkills[i].OnEnd();
-                m_activeSkills.Remove(m_activeSkills[i]);
-            }
-        }
-    }
-
-    public void ClearAllActiveSkill()
-    {
-        for (int i = 0; i < m_activeSkills.Count; i++)
-        {
-            m_activeSkills[i].DisableOnself = true;
-            m_activeSkills.Remove(m_activeSkills[i]);
-        }
-    }
-
-    private void OnDisable()
-    {
-        ClearAllActiveSkill();
+        m_activeSkills.Remove(skill);
     }
 
     bool CheckActiveSkillAndExecute(SkillData callData)

@@ -2,29 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicBullet : MonoBehaviour
+public class BasicBullet : BasicProjectile
 {
-    Rigidbody2D rigid;
+    DashComponent m_dashComponent;
 
-    private void Awake()
+    protected override void Awake()
     {
-        rigid = GetComponent<Rigidbody2D>();
+        base.Awake();
+        m_dashComponent = GetComponent<DashComponent>();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void Fire(Vector2 dir, float thrust)
     {
-        DisableObject();
+        m_dashComponent.PlayDash(dir, thrust);
     }
 
-    public void Fire(Vector2 dir)
+    public override void DoUpdate()
     {
-        rigid.AddForce(dir, ForceMode2D.Impulse);
-    }
-
-    protected void DisableObject() => gameObject.SetActive(false);
-
-    private void OnDisable()
-    {
-        ObjectPooler.ReturnToPool(gameObject);
     }
 }

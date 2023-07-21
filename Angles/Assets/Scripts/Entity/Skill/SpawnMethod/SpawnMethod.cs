@@ -4,10 +4,11 @@ using UnityEngine;
 
 public struct SpawnSupportData // --> 추후에 버프 추가
 {
-    public SpawnSupportData(GameObject caster, SpawnSkill me)
+    public SpawnSupportData(GameObject caster, SpawnSkill me, int tickCount)
     {
         m_caster = caster;
         m_me = me;
+        m_tickCount = tickCount;
     }
 
     GameObject m_caster;
@@ -15,6 +16,9 @@ public struct SpawnSupportData // --> 추후에 버프 추가
 
     SpawnSkill m_me;
     public SpawnSkill Me { get { return m_me; } }
+
+    int m_tickCount;
+    public int m_TickCount { get { return m_tickCount; } }
 }
 
 abstract public class SpawnMethod : ScriptableObject

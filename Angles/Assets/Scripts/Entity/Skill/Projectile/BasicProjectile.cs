@@ -21,7 +21,7 @@ abstract public class BasicProjectile : MonoBehaviour
 
     public abstract void DoUpdate();
 
-    private void Awake()
+    protected virtual void Awake()
     {
         m_battleComponent = GetComponent<BattleComponent>();
         m_contactComponent = GetComponent<ContactComponent>();
@@ -44,6 +44,7 @@ abstract public class BasicProjectile : MonoBehaviour
 
     public virtual void OnEnd()
     {
+        isFinished = false;
         gameObject.SetActive(false);
     }
 
@@ -61,6 +62,7 @@ abstract public class BasicProjectile : MonoBehaviour
 
     protected virtual void OnDisable()
     {
+        m_posTr = null;
         ObjectPooler.ReturnToPool(gameObject);
     }
 }

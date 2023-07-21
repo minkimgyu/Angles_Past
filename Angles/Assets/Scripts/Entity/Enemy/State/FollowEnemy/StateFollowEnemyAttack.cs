@@ -1,3 +1,5 @@
+using UnityEngine;
+
 abstract public class StateFollowEnemyAttack : IState<BaseFollowEnemy.State>
 {
     private BaseFollowEnemy loadFollowEnemy;
@@ -22,6 +24,7 @@ abstract public class StateFollowEnemyAttack : IState<BaseFollowEnemy.State>
 
     public void OnSetToGlobalState()
     {
+        loadFollowEnemy.WhenEnable += ResetIsInAttackRange;
     }
 
     public void OperateEnter()
@@ -30,6 +33,18 @@ abstract public class StateFollowEnemyAttack : IState<BaseFollowEnemy.State>
 
     public void OperateExit()
     {
+    }
+
+    void ResetIsInAttackRange() // 처음에 근거리인지 원거리인지 채크해서 OperateUpdate에 적용
+    {
+        if (loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.Data.SkillUseDistance))
+        {
+            isInAttackRange = false;
+        }
+        else 
+        {
+            isInAttackRange = true;
+        }
     }
 
     public virtual void OperateUpdate()
