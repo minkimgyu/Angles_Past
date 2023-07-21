@@ -9,7 +9,6 @@ public struct DamageSupportData // --> 추후에 버프 추가
         m_caster = caster;
         m_me = me;
         m_tickCount = tickCount;
-        //m_data = data;
     }
 
     GameObject m_caster;

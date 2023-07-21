@@ -20,9 +20,6 @@ public class CircleRangeAttack : DamageMethod
 
         BasicEffectPlayer effectPlayer = effectMethod.ReturnEffectFromPool();
 
-
-
-        Debug.Log(effectPlayer.gameObject.activeSelf);
         if (effectPlayer == null) return;
 
         supportData.Me.EffectPlayer = effectPlayer; // Effect 변수 초기화

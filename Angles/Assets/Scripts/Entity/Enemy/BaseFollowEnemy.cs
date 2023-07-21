@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
+abstract public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
 {
     public Action WhenEnable;
 
@@ -24,7 +24,8 @@ public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
         Attack,
         Follow,
         Stop,
-        Die
+        Die,
+        Fix
     }
 
     protected override void Awake()
@@ -58,11 +59,6 @@ public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
         m_dicState.Add(State.Die, die);
 
         Data.GrantedUtilization.LootSkillFromDB(BattleComponent);
-    }
-
-    public override void WhenUnderAttack()
-    {
-        throw new System.NotImplementedException();
     }
 
     private void OnEnable()

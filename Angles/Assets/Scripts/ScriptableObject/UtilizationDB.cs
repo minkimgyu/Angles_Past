@@ -144,6 +144,13 @@ public class SkillData : BaseData, IData<SkillData>
     Vector2 offsetRange;
     public Vector2 OffsetRange { get { return offsetRange; } set { offsetRange = value; } }
 
+
+    [Header("Direction")]
+
+    [SerializeField]
+    public List<Vector3> directions;
+    public List<Vector3> Directions { get { return directions; } set { directions = value; } }
+
     [Header("Spawn")]
 
     [SerializeField]

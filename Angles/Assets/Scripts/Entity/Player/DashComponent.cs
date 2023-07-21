@@ -75,10 +75,13 @@ public class DashComponent : MonoBehaviour
 
     public void QuickEndTask()
     {
-        _source.Cancel();
-        _source.Dispose();
-        _source = new(); // 취소하면 다시 넣어주기
-        CancelDash();
+        if(_source != null)
+        {
+            _source.Cancel();
+            _source.Dispose();
+            _source = new(); // 취소하면 다시 넣어주기
+            CancelDash();
+        }
     }
 
     public void CancelDash()
