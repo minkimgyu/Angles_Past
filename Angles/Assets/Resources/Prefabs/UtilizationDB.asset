@@ -31,6 +31,7 @@ MonoBehaviour:
     radiusRange: 0
     boxRange: {x: 6, y: 3.5}
     offsetRange: {x: 1, y: 0}
+    directions: []
     spawnCount: 0
     rotationSpeed: 0
     disableTime: 3
@@ -52,6 +53,7 @@ MonoBehaviour:
     radiusRange: 3.5
     boxRange: {x: 0, y: 0}
     offsetRange: {x: 0, y: 0}
+    directions: []
     spawnCount: 0
     rotationSpeed: 0
     disableTime: 3
@@ -73,6 +75,7 @@ MonoBehaviour:
     radiusRange: 2
     boxRange: {x: 0, y: 0}
     offsetRange: {x: 0, y: 0}
+    directions: []
     spawnCount: 0
     rotationSpeed: 0
     disableTime: 1.2
@@ -94,6 +97,7 @@ MonoBehaviour:
     radiusRange: 2.5
     boxRange: {x: 0, y: 0}
     offsetRange: {x: 0, y: 0}
+    directions: []
     spawnCount: 0
     rotationSpeed: 0
     disableTime: 3
@@ -115,6 +119,7 @@ MonoBehaviour:
     radiusRange: 0
     boxRange: {x: 0, y: 0}
     offsetRange: {x: 0, y: 0}
+    directions: []
     spawnCount: 0
     rotationSpeed: 0
     disableTime: 3
@@ -136,6 +141,7 @@ MonoBehaviour:
     radiusRange: 0
     boxRange: {x: 0, y: 0}
     offsetRange: {x: 0, y: 0}
+    directions: []
     spawnCount: 3
     rotationSpeed: 30
     disableTime: 0
@@ -157,10 +163,11 @@ MonoBehaviour:
     radiusRange: 5
     boxRange: {x: 0, y: 0}
     offsetRange: {x: 0, y: 0}
+    directions: []
     spawnCount: 0
     rotationSpeed: 0
     disableTime: 3
-  - name: SpawnBulletClocwise
+  - name: PentagonSpawnBulletClocwise
     prefabName: SpawnBulletClocwise
     maxUseCount: 1
     useCount: 1
@@ -178,9 +185,76 @@ MonoBehaviour:
     radiusRange: 0
     boxRange: {x: 0, y: 0}
     offsetRange: {x: 0, y: 0}
+    directions: []
     spawnCount: 1
     rotationSpeed: 0
     disableTime: 3
+  - name: HexagonImpact
+    prefabName: SelfDestruction
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 2
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 10
+    knockBackThrust: 10
+    hitTarget: 0000000001000000
+    prefabCount: 0
+    preDelay: 2
+    tickCount: 0
+    duration: 0
+    radiusRange: 5
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
+  - name: HeptagonContactAttack
+    prefabName: HeptagonContactAttack
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 0
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 10
+    knockBackThrust: 10
+    hitTarget: 00000000
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 0
+    duration: 0
+    radiusRange: 5
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
+  - name: OctagonLaserAttack
+    prefabName: OctagonLaserAttack
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 2
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 10
+    knockBackThrust: 10
+    hitTarget: 00000000
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 2
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 0.8
   buffDatas:
   - name: SpeedDebuff
     maxCount: 3

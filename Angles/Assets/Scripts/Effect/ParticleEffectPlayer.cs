@@ -51,4 +51,10 @@ public class ParticleEffectPlayer : BasicEffectPlayer
 
         DisableObject();
     }
+
+    public override void Init(Transform tr, float duration, List<Vector3> pos)
+    {
+        m_posTr = tr;
+        m_duration = duration;
+    }
 }

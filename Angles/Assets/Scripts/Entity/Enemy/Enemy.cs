@@ -79,7 +79,9 @@ public abstract class Enemy<T> : StateMachineEntity<T>, IHealth
         }
     }
 
-    abstract public void WhenUnderAttack(); // ---> 색상 변화 or 이펙트 적용
+    public void WhenUnderAttack() // ---> 색상 변화 or 이펙트 적용
+    {
+    }
 
     public void Heal(float healthPoint)
     {

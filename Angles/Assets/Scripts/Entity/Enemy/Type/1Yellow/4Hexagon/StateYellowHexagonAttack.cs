@@ -34,6 +34,7 @@ public class StateYellowHexaagonAttack : StateFollowEnemyAttack
             {
                 // state를 스킬 사용 시 --> 정지 --> 추적으로 바꿔줌
                 loadYellowHexagonEnemy.BattleComponent.UseSkill(SkillUseConditionType.InRange);
+                loadYellowHexagonEnemy.SetState(BaseFollowEnemy.State.Fix);
                 canAttack = false;
             }
         }
@@ -52,5 +53,60 @@ public class StateYellowHexaagonAttack : StateFollowEnemyAttack
     public override void ExecuteInOutsideMethod()
     {
         attackFlag = false;
+    }
+}
+
+public class StateYellowHexaagonFix : IState<BaseFollowEnemy.State>
+{
+    YellowHexagonEnemy loadYellowHexagonEnemy;
+
+    float storedTime;
+    bool canRevertToPreviousState = false;
+
+    public StateYellowHexaagonFix(YellowHexagonEnemy yellowHexagonEnemy)
+    {
+        loadYellowHexagonEnemy = yellowHexagonEnemy;
+    }
+
+    public void CheckSwitchStates()
+    {
+    }
+
+    public void OnAwakeMessage(Telegram<BaseFollowEnemy.State> telegram)
+    {
+    }
+
+    public void OnProcessingMessage(Telegram<BaseFollowEnemy.State> telegram)
+    {
+    }
+
+    public void OnSetToGlobalState()
+    {
+    }
+
+    public void OperateEnter()
+    {
+        canRevertToPreviousState = false;
+        loadYellowHexagonEnemy.MoveComponent.Stop();
+    }
+
+    public void OperateExit()
+    {
+        
+    }
+
+    public void OperateUpdate()
+    {
+        if (canRevertToPreviousState == false)
+        {
+            storedTime += Time.deltaTime;
+            if (storedTime > loadYellowHexagonEnemy.FixTime)
+            {
+                storedTime = 0;
+                canRevertToPreviousState = true;
+            }
+        }
+
+        if (canRevertToPreviousState) loadYellowHexagonEnemy.RevertToPreviousState();
     }
 }

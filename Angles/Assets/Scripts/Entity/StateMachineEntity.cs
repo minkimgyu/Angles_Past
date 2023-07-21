@@ -6,6 +6,7 @@ public struct Message<T>
 {
     public T nextState; // state 값을 string으로 변환해서 비교해주기
     public Vector2 dir;
+    public Entity contactedEntity;
 }
 
 public class Telegram<T>

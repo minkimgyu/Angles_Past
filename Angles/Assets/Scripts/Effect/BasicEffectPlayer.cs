@@ -4,7 +4,7 @@ using UnityEngine;
 
 abstract public class BasicEffectPlayer : MonoBehaviour
 {
-    Transform m_posTr;
+    protected Transform m_posTr;
     bool m_isFix;
     public bool IsFixed { set { m_isFix = value; } }
     protected float m_duration;
@@ -24,7 +24,9 @@ abstract public class BasicEffectPlayer : MonoBehaviour
         m_duration = duration;
     }
 
-    private void Update()
+    public abstract void Init(Transform tr, float duration, List<Vector3> pos);
+
+    protected virtual void Update()
     {
         if(m_isFix) transform.position = m_posTr.position;
     }
@@ -35,12 +37,12 @@ abstract public class BasicEffectPlayer : MonoBehaviour
 
     public abstract void StopEffect();
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         ObjectPooler.ReturnToPool(gameObject);
     }
 
-    protected void DisableObject()
+    protected virtual void DisableObject()
     {
         gameObject.SetActive(false);
         m_posTr = null;

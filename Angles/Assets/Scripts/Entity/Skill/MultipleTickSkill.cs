@@ -18,15 +18,12 @@ public class MultipleTickSkill : TickAttackSkill // --> 프리팹으로 생성해서 오브
     {
         await UniTask.Delay(TimeSpan.FromSeconds(Data.PreDelay), cancellationToken: m_source.Token);
 
-        print("PreDelay");
-
         int storedTick = 0;
 
         float delay = Data.Duration / Data.TickCount;
 
         while (Data.TickCount > storedTick)
         {
-            print("Attack");
             storedTick++;
             damageMethod.Execute(new DamageSupportData(caster, this, storedTick));
             await UniTask.Delay(TimeSpan.FromSeconds(delay), cancellationToken: m_source.Token);
