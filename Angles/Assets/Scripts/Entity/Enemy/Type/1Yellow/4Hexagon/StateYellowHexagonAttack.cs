@@ -5,17 +5,17 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using System;
 
-public class StateYellowPentagonAttack : StateFollowEnemyAttack
+public class StateYellowHexaagonAttack : StateFollowEnemyAttack
 {
-    YellowPentagonEnemy loadYellowPentagonEnemy;
+    YellowHexagonEnemy loadYellowHexagonEnemy;
 
     float storedTime;
     bool attackFlag = false;
     bool canAttack = true;
 
-    public StateYellowPentagonAttack(YellowPentagonEnemy yellowPentagonEnemy) : base(yellowPentagonEnemy)
+    public StateYellowHexaagonAttack(YellowHexagonEnemy yellowHexagonEnemy) : base(yellowHexagonEnemy)
     {
-        loadYellowPentagonEnemy = yellowPentagonEnemy;
+        loadYellowHexagonEnemy = yellowHexagonEnemy;
     }
 
     // 계속 발사해야해서 unitask로 제작      
@@ -32,7 +32,8 @@ public class StateYellowPentagonAttack : StateFollowEnemyAttack
         {
             if(canAttack == true)
             {
-                loadYellowPentagonEnemy.BattleComponent.UseSkill(SkillUseConditionType.InRange);
+                // state를 스킬 사용 시 --> 정지 --> 추적으로 바꿔줌
+                loadYellowHexagonEnemy.BattleComponent.UseSkill(SkillUseConditionType.InRange);
                 canAttack = false;
             }
         }
@@ -40,7 +41,7 @@ public class StateYellowPentagonAttack : StateFollowEnemyAttack
         if(canAttack == false)
         {
             storedTime += Time.deltaTime;
-            if(storedTime > loadYellowPentagonEnemy.Delay)
+            if(storedTime > loadYellowHexagonEnemy.Delay)
             {
                 storedTime = 0;
                 canAttack = true;

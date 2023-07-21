@@ -22,7 +22,7 @@ public class DashComponent : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
         _rigid = GetComponent<Rigidbody2D>();
     }
@@ -34,6 +34,15 @@ public class DashComponent : MonoBehaviour
 
         _nowFinish = false;
         DashTask(dir, thrust, duration).Forget();
+    }
+
+    public void PlayDash(Vector2 dir, float thrust)
+    {
+        StopEntity();
+        if (_nowDash == true) return;
+
+        _nowFinish = false;
+        DashTask(dir, thrust).Forget();
     }
 
     private async UniTaskVoid DashTask(Vector2 dir, float thrust, float duration)
@@ -48,7 +57,20 @@ public class DashComponent : MonoBehaviour
         _nowDash = false;
 
         _nowFinish = true;
-        print("DashEnd");
+    }
+
+    private async UniTaskVoid DashTask(Vector2 dir, float thrust)
+    {
+        _nowDash = true;
+        _rigid.freezeRotation = true;
+
+        _rigid.AddForce(dir * thrust, ForceMode2D.Impulse);
+        await UniTask.Delay(TimeSpan.FromSeconds(0), cancellationToken: _source.Token);
+
+        _rigid.freezeRotation = false;
+        _nowDash = false;
+
+        _nowFinish = true;
     }
 
     public void QuickEndTask()
@@ -63,7 +85,6 @@ public class DashComponent : MonoBehaviour
     {
         _rigid.freezeRotation = false;
         _nowDash = false;
-        print("DashEndPrint");
     }
 
     private void StopEntity()

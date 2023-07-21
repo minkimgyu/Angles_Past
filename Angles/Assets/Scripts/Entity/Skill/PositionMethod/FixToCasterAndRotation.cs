@@ -11,7 +11,7 @@ public class FixToCasterAndRotation : PositionMethod
         if (me.PosTr == null || me.Data == null) return;
 
         me.transform.position = me.PosTr.position; // 계속 고정시킴
-        me.transform.RotateAround(me.transform.position, Vector3.forward, Time.deltaTime * me.Data.SpawnObjectSpeed);
+        me.transform.RotateAround(me.transform.position, Vector3.forward, Time.deltaTime * me.Data.RotationSpeed);
     }
 
     public override void Init(Transform caster, BasicSkill me)

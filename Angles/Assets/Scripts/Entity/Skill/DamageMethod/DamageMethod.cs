@@ -4,24 +4,22 @@ using UnityEngine;
 
 public struct DamageSupportData // --> 추후에 버프 추가
 {
-    public DamageSupportData(GameObject caster, AttackSkill me)
+    public DamageSupportData(GameObject caster, AttackSkill me, int tickCount)
     {
         m_caster = caster;
         m_me = me;
+        m_tickCount = tickCount;
         //m_data = data;
     }
 
     GameObject m_caster;
     public GameObject Caster { get { return m_caster; } }
 
-    //GameObject m_me;
-    //public GameObject Me { get { return m_me; } }
-
-    //SkillData m_data;
-    //public SkillData Data { get { return m_data; } }
-
     AttackSkill m_me;
     public AttackSkill Me { get { return m_me; } }
+
+    int m_tickCount;
+    public int m_TickCount { get { return m_tickCount; } }
 }
 
 abstract public class DamageMethod : ScriptableObject

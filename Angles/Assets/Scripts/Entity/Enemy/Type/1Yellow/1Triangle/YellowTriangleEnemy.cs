@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class YellowTriangleEnemy : BaseFollowEnemy
 {
+    public Action WhenDisable;
+
     [SerializeField]
     EffectMethod effectMethod; // 이팩트 불러오기
     public EffectMethod EffectMethod { get { return effectMethod; } } // 이팩트 불러오기
@@ -20,5 +23,31 @@ public class YellowTriangleEnemy : BaseFollowEnemy
 
         SetUp(State.Follow);
         SetGlobalState(attack);
+    }
+
+    protected override void OnDisable()
+    {
+        if(WhenDisable != null)
+        {
+            WhenDisable();
+        }
+
+        if (effectPlayer != null)
+        {
+            effectPlayer.StopEffect();
+            effectPlayer = null;
+        }
+
+        base.OnDisable();
+    }
+
+    protected override void OnDestroy()
+    {
+        if (WhenDisable != null)
+        {
+            WhenDisable = null;
+        }
+
+        base.OnDestroy();
     }
 }

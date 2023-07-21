@@ -36,6 +36,10 @@ public class SkillData : BaseData, IData<SkillData>
     [Header("Call")]
 
     [SerializeField]
+    string prefabName;
+    public string PrefabName { get { return prefabName; } set { prefabName = value; } }
+
+    [SerializeField]
     int maxUseCount;
     public int MaxUseCount { get { return maxUseCount; } set { maxUseCount = value; } }
 
@@ -146,9 +150,10 @@ public class SkillData : BaseData, IData<SkillData>
     int spawnCount;
     public int SpawnCount { get { return spawnCount; } set { spawnCount = value; } }
 
+    [Header("Rotation")]
     [SerializeField]
-    float spawnObjectSpeed;
-    public float SpawnObjectSpeed { get { return spawnObjectSpeed; } set { spawnObjectSpeed = value; } }
+    float rotationSpeed;
+    public float RotationSpeed { get { return rotationSpeed; } set { rotationSpeed = value; } }
 
     [Header("Disable")]
 
@@ -185,10 +190,12 @@ public class SkillData : BaseData, IData<SkillData>
         return false;
     }
 
-    public SkillData(string name, int maxUseCount, int useCount, SkillOverlapType overlapType, SkillUseConditionType useConditionType, SkillUseCountSubtractType countSubtractType, SkillSynthesisType synthesisType,
-        int tickCount, float preDelay, float duration, float radiusRange, Vector2 boxRange, Vector2 offsetRange, float damage, float knockBackThrust, float disableTime, EntityTag[] hitTarget, int prefabCount, int spawnCount, float spawnObjectSpeed)
+    public SkillData(string name, string prefabName, int maxUseCount, int useCount, SkillOverlapType overlapType, SkillUseConditionType useConditionType, SkillUseCountSubtractType countSubtractType, SkillSynthesisType synthesisType,
+        int tickCount, float preDelay, float duration, float radiusRange, Vector2 boxRange, Vector2 offsetRange, float damage, float knockBackThrust, float disableTime, EntityTag[] hitTarget, int prefabCount, 
+        int spawnCount, float rotationSpeed)
     : base(name)
     {
+        this.prefabName = prefabName;
         this.maxUseCount = maxUseCount;
         this.useCount = useCount; 
         this.overlapType = overlapType;
@@ -209,13 +216,15 @@ public class SkillData : BaseData, IData<SkillData>
         this.prefabCount = prefabCount;
 
         this.spawnCount = spawnCount;
-        this.spawnObjectSpeed = spawnObjectSpeed;
+
+        this.rotationSpeed = rotationSpeed;
     }
 
 
     public SkillData CopyData()
     {
-        return new SkillData(name, maxUseCount, useCount, overlapType, useConditionType, countSubtractType, synthesisType, tickCount, preDelay, duration, radiusRange, boxRange, offsetRange, damage, knockBackThrust, disableTime, hitTarget, prefabCount, spawnCount, spawnObjectSpeed);
+        return new SkillData(name, prefabName, maxUseCount, useCount, overlapType, useConditionType, countSubtractType, synthesisType, tickCount, preDelay, duration, radiusRange, boxRange, offsetRange, damage, knockBackThrust, 
+            disableTime, hitTarget, prefabCount, spawnCount, rotationSpeed);
     }
 
     #endregion

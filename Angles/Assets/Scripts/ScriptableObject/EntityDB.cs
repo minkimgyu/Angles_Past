@@ -102,6 +102,8 @@ public class GrantedUtilization
     {
         for (int i = 0; i < skillNames.Count; i++)
         {
+            //Debug.Log(DatabaseManager.Instance.UtilizationDB.ReturnSkillData(skillNames[i]));
+            //Debug.Log(component);
             component.LootingSkill(DatabaseManager.Instance.UtilizationDB.ReturnSkillData(skillNames[i]));
         }
     }

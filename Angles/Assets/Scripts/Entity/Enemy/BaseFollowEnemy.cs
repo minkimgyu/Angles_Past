@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
 {
+    public Action WhenEnable;
+
     private Player m_loadPlayer;
     public Player LoadPlayer { get { return m_loadPlayer; } }
 
@@ -60,5 +63,21 @@ public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
     public override void WhenUnderAttack()
     {
         throw new System.NotImplementedException();
+    }
+
+    private void OnEnable()
+    {
+        if (WhenEnable != null)
+        {
+            WhenEnable();
+        }
+    }
+
+    protected virtual void OnDestroy()
+    {
+        if (WhenEnable != null)
+        {
+            WhenEnable = null;
+        }
     }
 }
