@@ -22,7 +22,7 @@ Material:
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 5000
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -69,7 +69,7 @@ Material:
     - _DirectLightingRamp: 1
     - _DissolveAlongUVY: 0
     - _DissolveOffsetStrength: 0
-    - _DissolveSmooth: 0.025
+    - _DissolveSmooth: 0.01
     - _Distort: 0.1
     - _DoubleDissolve: 1
     - _DstBlend: 10
