@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ContactSupportData // 이런식으로 스킬에 필요한 데이터 묶어서 보내기
 {
-
     List<Vector3> contactPos;
     public List<Vector3> ContactPos { get { return contactPos; } }
 
