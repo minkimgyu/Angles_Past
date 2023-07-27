@@ -41,9 +41,7 @@ abstract public class DamageMethod : ScriptableObject
 
         if (health == null || data.CanHitSkill(health.ReturnTag()) == false) return false;
 
-        health.UnderAttack(data.Damage);
-        health.Knockback((me.transform.position - enemy.position).normalized, data.KnockBackThrust);
-
+        health.UnderAttack(data.Damage, (me.transform.position - enemy.position).normalized, data.KnockBackThrust);
         return true;
     }
 }

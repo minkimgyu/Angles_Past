@@ -13,7 +13,7 @@ public class SpawnAndShootGravityBall : SpawnMethod
     {
         GravityBallProjectile projectile = ObjectPooler.SpawnFromPool<GravityBallProjectile>(projectileName);
         projectile.Init(supportData.Caster.transform.position);
-
+        supportData.Me.SpawnedObjects.Add(projectile);
         projectile.ShootBall(supportData.Caster.GetComponent<Rigidbody2D>().velocity.normalized, thrust);
     }
 }

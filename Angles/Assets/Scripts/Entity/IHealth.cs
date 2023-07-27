@@ -6,7 +6,7 @@ public interface IHealth
 {
     public EntityTag ReturnTag();
 
-    public void UnderAttack(float healthPoint);
+    public void UnderAttack(float healthPoint, Vector2 dir, float thrust);
 
     public void Knockback(Vector2 dir, float thrust);
 

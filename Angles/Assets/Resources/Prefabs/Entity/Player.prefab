@@ -288,13 +288,23 @@ MonoBehaviour:
     name: 
     shape: 
     color: 
+    immortality: 0
     hp: 0
-    speed: 0
+    speed:
+      maxValue: 0
+      minValue: 0
+      originValue: 0
     stunTime: 0
     weight: 0
     drag: 0
     knockBackThrust: 0
-    readySpeed: 5
+    grantedUtilization:
+      skillNames: []
+      buffNames: []
+    readySpeed:
+      maxValue: 0
+      minValue: 0
+      originValue: 0
     speedRatio: 0
     minSpeedRatio: 0
     maxSpeedRatio: 0
@@ -359,6 +369,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_possessingSkills: []
   m_activeSkills: []
+  m_synthesisComponent:
+    synthesisWays:
+    - possessingSkill: Knockback
+      getSkill: Blade
+      synthesizedSkill: SpawnBoomerang
+    - possessingSkill: Knockback
+      getSkill: SpawnGravityBall
+      synthesizedSkill: SpawnTornado
 --- !u!114 &4491371347988923607
 MonoBehaviour:
   m_ObjectHideFlags: 0

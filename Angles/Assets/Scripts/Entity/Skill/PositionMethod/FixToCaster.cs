@@ -11,6 +11,7 @@ public class FixToCaster : PositionMethod
         if (me.PosTr == null) return;
 
         me.transform.position = me.PosTr.position; // 계속 고정시킴 // --> 돌아가는 기능을 넣어보자
+        me.transform.rotation = me.PosTr.rotation; // 계속 고정시킴 // --> 돌아가는 기능을 넣어보자
     }
 
     public override void Init(Transform caster, BasicSkill me)

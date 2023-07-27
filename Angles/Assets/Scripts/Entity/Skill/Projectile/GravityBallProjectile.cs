@@ -18,7 +18,12 @@ public class GravityBallProjectile : BasicProjectile
     {
         base.Awake();
         dashComponent = GetComponent<DashComponent>();
-        Invoke("OnEnd", endTime);
+    }
+
+    public override void Init(Vector3 pos)
+    {
+        base.Init(pos);
+        Invoke("NowFinish", endTime);
     }
 
     public void ShootBall(Vector2 dir, float thrust)
@@ -54,5 +59,11 @@ public class GravityBallProjectile : BasicProjectile
         {
             rigidbodies.Remove(col.GetComponent<Rigidbody2D>());
         }
+    }
+
+    protected override void OnDisable()
+    {
+        CancelInvoke();
+        base.OnDisable();
     }
 }

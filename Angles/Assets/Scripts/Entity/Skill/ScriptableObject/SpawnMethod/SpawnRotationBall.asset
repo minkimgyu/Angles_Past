@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0be3b5cedbdad9245844f1da0f1ebc04, type: 3}
   m_Name: SpawnRotationBall
   m_EditorClassIdentifier: 
-  effectMethod: {fileID: 11400000, guid: 86b18972716475841bbbc1e8522d46f4, type: 2}
+  effectMethod: {fileID: 11400000, guid: fee2276e795ec4748aaedd15371d69f3, type: 2}
   projectileName: SpawnBallProjectile
   diatance: 2

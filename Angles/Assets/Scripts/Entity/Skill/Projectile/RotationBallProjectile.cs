@@ -10,7 +10,9 @@ public class RotationBallProjectile : BasicProjectile
     protected override void OnCollisionEnter2D(Collision2D col) // 충돌 시 상태 변환
     {
         base.OnCollisionEnter2D(col);
-        isFinished = true; //  조건도 추가
+
+        if(col.gameObject.tag == "Enemy")
+            NowFinish(); //  조건도 추가
     }
 
     public override void OnEnd()

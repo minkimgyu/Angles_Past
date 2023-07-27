@@ -13,7 +13,6 @@ public class StateYellowSquareAttack : StateFollowEnemyAttack
 
     public override void ExecuteInRangeMethod()
     {
-        loadYellowSquareEnemy.ColorChangeComponent.ColorChangeTask().Forget();
         loadYellowSquareEnemy.BattleComponent.UseSkill(SkillUseConditionType.InRange);
     }
 

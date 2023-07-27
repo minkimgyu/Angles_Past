@@ -48,6 +48,8 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
 
     public Action<Collision2D> ContactAction;
 
+    public Action<Vector2, float> KnockbackAction;
+
     [SerializeField]
     PlayerData _data;
     public PlayerData Data { get { return _data; } }
@@ -223,7 +225,7 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
         return inheritedTag == tag;
     }
 
-    public void UnderAttack(float healthPoint)
+    public void UnderAttack(float healthPoint, Vector2 dir, float thrust)
     {
         
     }
@@ -245,7 +247,7 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
 
     public void Knockback(Vector2 dir, float thrust)
     {
-        
+        KnockbackAction(dir, thrust);
     }
 
     public PlayerData GetData()

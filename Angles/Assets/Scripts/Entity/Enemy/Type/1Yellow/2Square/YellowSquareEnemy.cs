@@ -4,13 +4,9 @@ using UnityEngine;
 
 public class YellowSquareEnemy : BaseFollowEnemy
 {
-    ColorChangeComponent colorChangeComponent;
-    public ColorChangeComponent ColorChangeComponent { get { return colorChangeComponent; } }
-
     protected override void Awake()
     {
         base.Awake();
-        colorChangeComponent = GetComponent<ColorChangeComponent>();
     }
 
     protected override void Init()
@@ -25,12 +21,10 @@ public class YellowSquareEnemy : BaseFollowEnemy
         if (BattleComponent.PossessingSkills == null || BattleComponent.PossessingSkills.Count == 0) return;
 
         float delayTime = BattleComponent.PossessingSkills[0].PreDelay; // 첫번째 스킬의 PreDelay를 넣는다.
-        colorChangeComponent.Init(delayTime);
     }
 
     protected override void OnDisable()
     {
-        colorChangeComponent.ResetColor();
         base.OnDisable();
     }
 }

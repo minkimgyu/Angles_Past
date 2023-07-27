@@ -19,7 +19,16 @@ public class SpawnRotationBall : SpawnMethod
 
             supportData.Me.SpawnedObjects.Add(projectile);
         }
-        
+
+        BasicEffectPlayer effectPlayer = effectMethod.ReturnEffectFromPool();
+        if (effectPlayer != null)
+        {
+            supportData.Me.EffectPlayer = effectPlayer; // Effect 변수 초기화
+
+            effectPlayer.Init(supportData.Caster.transform, supportData.Me.Data.DisableTime);
+            effectPlayer.PlayEffect();
+        }
+
         for (int j = 0; j < supportData.Me.SpawnedObjects.Count; j++)
         {
             supportData.Me.SpawnedObjects[j].transform.position = Vector3.zero;

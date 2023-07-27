@@ -10,7 +10,7 @@ public class SpawnAndShootBoomerangProjectile : SpawnMethod
     {
         BoomerangProjectile projectile = ObjectPooler.SpawnFromPool<BoomerangProjectile>(projectileName);
         projectile.Init(supportData.Caster.transform.position);
-
+        supportData.Me.SpawnedObjects.Add(projectile);
         projectile.ShootBoomerang(supportData.Caster);
     }
 }

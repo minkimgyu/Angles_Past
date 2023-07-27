@@ -144,7 +144,7 @@ MonoBehaviour:
     directions: []
     spawnCount: 3
     rotationSpeed: 30
-    disableTime: 0
+    disableTime: 3
   - name: SelfDestruction
     prefabName: SelfDestruction
     maxUseCount: 1
@@ -189,8 +189,8 @@ MonoBehaviour:
     spawnCount: 1
     rotationSpeed: 0
     disableTime: 3
-  - name: HexagonImpact
-    prefabName: SelfDestruction
+  - name: HexagonAttack
+    prefabName: HexagonAttack
     maxUseCount: 1
     useCount: 1
     overlapType: 0
@@ -255,6 +255,94 @@ MonoBehaviour:
     spawnCount: 0
     rotationSpeed: 0
     disableTime: 0.8
+  - name: SpawnGravityBall
+    prefabName: SpawnGravityBall
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 1
+    countSubtractType: 1
+    synthesisType: 0
+    damage: 0
+    knockBackThrust: 0
+    hitTarget: 01000000
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 0
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 1
+    rotationSpeed: 0
+    disableTime: 0.8
+  - name: SpawnBoomerang
+    prefabName: SpawnBoomerang
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 1
+    countSubtractType: 1
+    synthesisType: 0
+    damage: 0
+    knockBackThrust: 0
+    hitTarget: 01000000
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 0
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 1
+    rotationSpeed: 0
+    disableTime: 0.8
+  - name: SpawnTornado
+    prefabName: SpawnTornado
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 1
+    countSubtractType: 1
+    synthesisType: 0
+    damage: 0
+    knockBackThrust: 0
+    hitTarget: 01000000
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 0
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 1
+    rotationSpeed: 0
+    disableTime: 0.8
+  - name: TornadoExplosion
+    prefabName: TornadoExplosion
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 4
+    countSubtractType: 1
+    synthesisType: 0
+    damage: 10
+    knockBackThrust: 10
+    hitTarget: 01000000
+    prefabCount: 0
+    preDelay: 5
+    tickCount: 0
+    duration: 0
+    radiusRange: 2
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
   buffDatas:
   - name: SpeedDebuff
     maxCount: 3
