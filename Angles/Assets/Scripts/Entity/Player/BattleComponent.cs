@@ -12,6 +12,9 @@ public class BattleComponent : MonoBehaviour
     [SerializeField]
     List<BasicSkill> m_activeSkills; // 현재 엑티브 되어있는 스킬 
 
+    [SerializeField]
+    SkillSynthesisComponent m_synthesisComponent; // 스킬 합성 컴포넌트
+
     public void UseSkill(SkillUseConditionType useType)
     {
         for (int i = 0; i < m_possessingSkills.Count; i++)
@@ -70,7 +73,16 @@ public class BattleComponent : MonoBehaviour
             }
         }
 
-        m_possessingSkills.Add(skill);
+        SkillData synthesisedData = m_synthesisComponent.SynthesisSkill(PossessingSkills, skill);
+        if(synthesisedData == null)
+        {
+            m_possessingSkills.Add(skill);
+        }
+        else
+        {
+            m_possessingSkills.Add(synthesisedData);
+        }
+        
         UseSkill(SkillUseConditionType.Get);
     }
 }

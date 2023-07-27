@@ -28,7 +28,10 @@ abstract public class BasicEffectPlayer : MonoBehaviour
 
     protected virtual void Update()
     {
-        if(m_isFix) transform.position = m_posTr.position;
+        if(m_isFix)
+        {
+            transform.position = m_posTr.position;
+        }
     }
 
     public abstract void RotationEffect(float rotation);

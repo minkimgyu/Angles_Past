@@ -10,5 +10,6 @@ public class SpawnGravityBall : SpawnMethod
     {
         BasicProjectile projectile = ObjectPooler.SpawnFromPool<BasicProjectile>(projectileName);
         projectile.Init(supportData.Caster.transform.position);
+        supportData.Me.SpawnedObjects.Add(projectile);
     }
 }

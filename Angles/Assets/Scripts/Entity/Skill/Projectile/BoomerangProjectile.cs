@@ -13,28 +13,26 @@ public class BoomerangProjectile : BasicProjectile
     [SerializeField]
     float speed = 10;
 
-    float goDuration;
-    float returnDuration;
     float smoothness = 0.001f;
 
-
     Transform casterTr;
-
     CancellationTokenSource _source = new();
-
     Vector3 returnPoint;
 
-    bool nowReturn = false;
 
     protected override void OnCollisionEnter2D(Collision2D col) // 충돌 시 상태 변환
     {
         base.OnCollisionEnter2D(col);
+        if(col.gameObject.tag == "Wall")
+        {
+            ReturnToPlayer();
+        }
     }
 
-    protected override void Awake()
+    public override void Init(Vector3 pos)
     {
-        base.Awake();
-        Invoke("OnEnd", endTime);
+        base.Init(pos);
+        Invoke("NowFinish", endTime);
     }
 
     Vector2 ReturnTruningPoint(Vector2 pos, Vector2 casterDir)
@@ -81,6 +79,30 @@ public class BoomerangProjectile : BasicProjectile
         }
     }
 
+    private async UniTaskVoid ReturnTask()
+    {
+        while (ReturnDistanceOffset(transform.position, casterTr.position) > 0.1f) // 다시 돌아옴
+        {
+            transform.position = Vector2.MoveTowards(transform.position, casterTr.position, speed * Time.deltaTime);
+            await UniTask.Delay(TimeSpan.FromSeconds(smoothness), cancellationToken: _source.Token);
+        }
+
+        while (true) // 위치를 플레이어에 고정시킴
+        {
+            transform.position = casterTr.position;
+            await UniTask.Delay(TimeSpan.FromSeconds(smoothness), cancellationToken: _source.Token);
+        }
+    }
+
+    void ReturnToPlayer()
+    {
+        _source.Cancel();
+        _source = null;
+        _source = new();
+
+        ReturnTask().Forget();
+    }
+
     public override void DoUpdate()
     {
     }
@@ -101,6 +123,7 @@ public class BoomerangProjectile : BasicProjectile
 
     protected override void OnDisable()
     {
+        CancelInvoke();
         _source.Cancel();
         casterTr = null;
         returnPoint = Vector3.zero;

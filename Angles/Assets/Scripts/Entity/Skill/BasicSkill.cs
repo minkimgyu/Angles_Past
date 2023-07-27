@@ -75,7 +75,11 @@ abstract public class AttackSkill : BasicSkill // --> 프리팹으로 생성해서 오브젝
 
     public override void OnEnd()
     {
-        effectPlayer = null;
+        if (effectPlayer != null)
+        {
+            effectPlayer.StopEffect();
+            effectPlayer = null;
+        }
         base.OnEnd();
     }
 }
@@ -142,6 +146,16 @@ public class SpawnSkill : BasicSkill // --> 프리팹으로 생성해서 오브젝트 풀링에 
                 }
             }
         }
+    }
+
+    public override void OnEnd()
+    {
+        if(effectPlayer != null)
+        {
+            effectPlayer.StopEffect();
+            effectPlayer = null;
+        }
+        base.OnEnd();
     }
 }
 

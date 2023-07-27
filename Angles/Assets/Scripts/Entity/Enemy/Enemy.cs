@@ -62,7 +62,7 @@ public abstract class Enemy<T> : StateMachineEntity<T>, IHealth
         throw new NotImplementedException();
     }
 
-    public void UnderAttack(float healthPoint)
+    public void UnderAttack(float healthPoint, Vector2 dir, float thrust)
     {
         //print("UnderAttack");
 

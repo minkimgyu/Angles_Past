@@ -13,7 +13,7 @@ public enum SkillOverlapType { None, Restart }
 /// InRange, OutRange는 적이 추적 중 플레이어가 공격 범위에 들어왔는지 아닌지 체크함
 /// </summary>
 /// 
-public enum SkillUseConditionType { Contact, Get, InRange, OutRange }
+public enum SkillUseConditionType { Contact, Get, InRange, OutRange, Init }
 
 public enum SkillUseCountSubtractType { None, Subtract } // --> 사용 시, 사용 가능 횟수를 1 빼거나 사용 횟수 차감없이 고정시킴
 // 스킬 사용 시, 횟수 차감 여부

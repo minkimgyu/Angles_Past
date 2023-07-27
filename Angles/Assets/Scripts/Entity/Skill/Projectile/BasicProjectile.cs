@@ -28,22 +28,33 @@ abstract public class BasicProjectile : MonoBehaviour
     }
     private void Start()
     {
-        grantedUtilization.LootSkillFromDB(BattleComponent);
     }
 
     public virtual void Init(Transform tr)
     {
         m_posTr = tr;
+        grantedUtilization.LootSkillFromDB(BattleComponent);
+
+        m_battleComponent.UseSkill(SkillUseConditionType.Init); // --> 이런 식으로 스킬로 작동
     }
 
     public virtual void Init(Vector3 pos)
     {
         transform.localPosition = pos;
         m_posTr = null;
+        grantedUtilization.LootSkillFromDB(BattleComponent);
+
+        m_battleComponent.UseSkill(SkillUseConditionType.Init); // --> 이런 식으로 스킬로 작동
+    }
+
+    protected void NowFinish()
+    {
+        isFinished = true;
     }
 
     public virtual void OnEnd()
     {
+        print("End");
         isFinished = false;
         gameObject.SetActive(false);
     }
