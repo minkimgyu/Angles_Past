@@ -7,6 +7,13 @@ using UnityEngine;
 
 public class LaserAttack : DamageMethod
 {
+    [SerializeField]
+    protected EffectMethod hitEffectMethod; // 효과들 모음 --> 이팩트는 이름으로 오브젝트 풀링에서 불러옴
+
+    [SerializeField]
+    float hitEffectDisableTime  = 1.5f;
+
+    [SerializeField]   
     float maxDistance = 20;
 
     [SerializeField]
@@ -15,6 +22,7 @@ public class LaserAttack : DamageMethod
     public override void Execute(DamageSupportData supportData)
     {
         List<Vector3> hitPos = new List<Vector3>();
+        List<Vector3> hitEffectPos = new List<Vector3>();
 
         int ignoreLayer = supportData.Caster.layer;
 
@@ -32,6 +40,7 @@ public class LaserAttack : DamageMethod
                 if (hits[i].transform.tag == blockedTag[j])
                 {
                     hitPos.Add(hits[i].point - (Vector2)supportData.Caster.transform.position);
+                    hitEffectPos.Add(hits[i].point);
                     isBlocked = true;
                     break;
                 }
@@ -42,12 +51,22 @@ public class LaserAttack : DamageMethod
             if (DamageToEntity(supportData.Me.gameObject, hits[i].transform, supportData.Me.Data) == false) continue;
 
             hitPos.Add(hits[i].point - (Vector2)supportData.Caster.transform.position);
+            hitEffectPos.Add(hits[i].point);
+
             break;
         }
 
         if (hitPos.Count == 0)
         {
             hitPos.Add(supportData.Me.Data.Directions[supportData.m_TickCount - 1] * maxDistance / 2);
+        }
+
+        for (int i = 0; i < hitEffectPos.Count; i++)
+        {
+            BasicEffectPlayer hitEffectPlayer = hitEffectMethod.ReturnEffectFromPool();
+
+            hitEffectPlayer.Init(hitEffectPos[i], hitEffectDisableTime);
+            hitEffectPlayer.PlayEffect();
         }
 
 

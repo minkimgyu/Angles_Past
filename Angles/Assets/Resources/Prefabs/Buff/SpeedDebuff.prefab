@@ -44,7 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a9688f437eab70439d33bb6f769a7ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buffName: SpeedDebuff
-  effectMethod: {fileID: 11400000, guid: ea89125168b92314eb7de12b5ad5d01e, type: 2}
+  data:
+    name: 
+    maxCount: 0
+    duration: 0
+    tickTime: 0
+  buffCount: 0
   speed: -1.5
   readySpeed: -0.5
+  buffEffectColor: {r: 0.45857513, g: 1, b: 0.4009434, a: 1}

@@ -75,11 +75,11 @@ abstract public class AttackSkill : BasicSkill // --> 프리팹으로 생성해서 오브젝
 
     public override void OnEnd()
     {
-        if (effectPlayer != null)
-        {
-            effectPlayer.StopEffect();
-            effectPlayer = null;
-        }
+        //if (effectPlayer != null) --> 이팩트가 바로 꺼짐 넣기 X
+        //{
+        //    effectPlayer.StopEffect();
+        //    effectPlayer = null;
+        //}
         base.OnEnd();
     }
 }

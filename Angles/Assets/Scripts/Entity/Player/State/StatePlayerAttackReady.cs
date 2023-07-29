@@ -13,13 +13,11 @@ public class StatePlayerAttackReady : IState<Player.State>
 
     public void CheckSwitchStates()
     {
-        throw new System.NotImplementedException();
     }
 
     // 다른 state애서 변환되어 오는 경우 작동하는 함수
     public void OnAwakeMessage(Telegram<Player.State> telegram)
     {
-        
     }
 
     // 현 스테이트에 메시지를 전달하는 경우 작동하는 함수
@@ -78,6 +76,8 @@ public class StatePlayerAttackReady : IState<Player.State>
     public void OperateUpdate()
     {
         m_loadPlayer.MoveComponent.Move(m_loadPlayer.MoveVec, m_loadPlayer.ActionVec, m_loadPlayer.Data.ReadySpeed.IntervalValue * m_loadPlayer.Data.SpeedRatio, true);
+
+        m_loadPlayer.MoveComponent.RotationPlayer(m_loadPlayer.ActionVec, true);
 
         m_loadPlayer.Data.RestoreRushRatio();
         m_loadPlayer.NotifyObservers(Player.ObserverType.ShowRushUI, m_loadPlayer.Data);

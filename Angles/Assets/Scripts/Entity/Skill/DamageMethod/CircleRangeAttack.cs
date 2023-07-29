@@ -7,6 +7,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CircleRangeAttack", menuName = "Scriptable Object/DamageMethod/CircleRangeAttack", order = int.MaxValue)]
 public class CircleRangeAttack : DamageMethod
 {
+    [SerializeField]
+    bool exceptMe;
+
     public override void Execute(DamageSupportData supportData)
     {
         // ÀÌÆåÆ® »ý¼º
@@ -14,6 +17,11 @@ public class CircleRangeAttack : DamageMethod
         RaycastHit2D[] hit = Physics2D.CircleCastAll(supportData.Me.transform.position, supportData.Me.Data.RadiusRange, Vector2.up, 0);
         for (int i = 0; i < hit.Length; i++)
         {
+            if(exceptMe == true)
+            {
+                if (hit[i].transform.gameObject == supportData.Caster) continue;
+            }
+
             DamageToEntity(supportData.Me.gameObject, hit[i].transform, supportData.Me.Data);
         }
 

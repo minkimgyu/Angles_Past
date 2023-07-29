@@ -30,6 +30,7 @@ public class BaseReflectEnemy : Enemy<BaseReflectEnemy.State>
     {
         Rush,
         Reflect,
+        Damaged
     }
 
     protected override void Awake()
@@ -64,10 +65,12 @@ public class BaseReflectEnemy : Enemy<BaseReflectEnemy.State>
     {
         IState<State> rush = new StateReflectEnemyRush(this);
         IState<State> reflect = new StateReflectEnemyReflect(this);
+        IState<State> damaged = new StateReflectEnemyDamaged(this);
 
         //키입력 등에 따라서 언제나 상태를 꺼내 쓸 수 있게 딕셔너리에 보관
         m_dicState.Add(State.Rush, rush);
         m_dicState.Add(State.Reflect, reflect);
+        m_dicState.Add(State.Damaged, damaged);
 
         SetUp(State.Rush);
         Data.GrantedUtilization.LootSkillFromDB(BattleComponent);

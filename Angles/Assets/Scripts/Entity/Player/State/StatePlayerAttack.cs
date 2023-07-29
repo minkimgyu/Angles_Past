@@ -29,6 +29,43 @@ public class StatePlayerAttack : IState<Player.State>
         if (entity.InheritedTag == EntityTag.Enemy)
         {
             m_loadPlayer.BattleComponent.UseSkill(SkillUseConditionType.Contact);
+
+            
+
+            col.gameObject.TryGetComponent(out BaseFollowEnemy followEnemy);
+            col.gameObject.TryGetComponent(out BaseReflectEnemy reflectEnemy);
+
+
+            if(followEnemy != null)
+            {
+                if(followEnemy.Data.Weight > m_loadPlayer.Data.Weight)
+                {
+                    if (col != null && col.contacts.Length != 0)
+                    {
+                        Message<Player.State> message = new Message<Player.State>();
+                        message.dir = m_loadPlayer.ReflectComponent.ResetReflectVec(col.contacts[0].normal);
+                        Telegram<Player.State> telegram = new Telegram<Player.State>(Player.State.Attack, Player.State.Reflect, message);
+
+                        m_loadPlayer.SetState(Player.State.Reflect, telegram);
+                    }
+                }
+            }
+            else if(reflectEnemy != null)
+            {
+                if (reflectEnemy.Data.Weight > m_loadPlayer.Data.Weight)
+                {
+                    if (col != null && col.contacts.Length != 0)
+                    {
+                        Message<Player.State> message = new Message<Player.State>();
+                        message.dir = m_loadPlayer.ReflectComponent.ResetReflectVec(col.contacts[0].normal);
+                        Telegram<Player.State> telegram = new Telegram<Player.State>(Player.State.Attack, Player.State.Reflect, message);
+
+                        m_loadPlayer.SetState(Player.State.Reflect, telegram);
+                    }
+                }
+            }
+            
+
             // 스킬 사용
         }
 
@@ -52,8 +89,12 @@ public class StatePlayerAttack : IState<Player.State>
 
     public void OperateEnter()
     {
+        //m_loadPlayer.BattleComponent.UseSkill(SkillUseConditionType.Rush);
+
         m_loadPlayer.Animator.SetBool("NowAttack", true);
         m_loadPlayer.DashComponent.PlayDash(savedAttackVec, m_loadPlayer.Data.RushThrust * m_loadPlayer.Data.RushRatio, m_loadPlayer.Data.RushTime);
+
+
 
         savedMoveVec = m_loadPlayer.MoveVec;
 

@@ -7,6 +7,13 @@ public class BuffComponent : MonoBehaviour
     [SerializeField]
     List<BaseBuff> m_buffs;
 
+    BuffEffectComponent effectComponent;
+
+    private void Start()
+    {
+        effectComponent = GetComponentInChildren<BuffEffectComponent>();
+    }
+
     public BaseBuff AddBuff(BuffData data) //--> 같은 효과를 n개 이상 넣으면 무시 --> buffData를 넘겨주자   
     {
         if (CheckBuffList(data.Name) >= data.MaxCount) return null; // maxCount보다 더 많은 버프를 가지고 있다면 Return
@@ -16,10 +23,10 @@ public class BuffComponent : MonoBehaviour
         foundBuff.Init(data); // 버프 초기화
 
         m_buffs.Add(foundBuff);
-        foundBuff.OnStart(gameObject);
+        foundBuff.OnStart(gameObject, effectComponent);
 
         return foundBuff;
-    }
+    }  
 
     public bool RemoveBuff(BaseBuff buff)
     {
@@ -27,7 +34,7 @@ public class BuffComponent : MonoBehaviour
         if (foundBuff == null) return false;
 
         m_buffs.Remove(foundBuff);
-        foundBuff.OnEnd();
+        foundBuff.OnEnd(effectComponent);
 
         return true;
     }
@@ -51,7 +58,7 @@ public class BuffComponent : MonoBehaviour
             m_buffs[i].Tick(Time.deltaTime);
             if(m_buffs[i].IsFinished)
             {
-                m_buffs[i].OnEnd();
+                m_buffs[i].OnEnd(effectComponent);
                 m_buffs.Remove(m_buffs[i]);
             }
         }
@@ -63,7 +70,7 @@ public class BuffComponent : MonoBehaviour
 
         for (int i = 0; i < m_buffs.Count; i++)
         {
-            m_buffs[i].OnEnd();
+            m_buffs[i].OnEnd(effectComponent);
             m_buffs.Remove(m_buffs[i]);
         }
     }

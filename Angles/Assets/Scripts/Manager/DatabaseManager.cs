@@ -13,7 +13,7 @@ public enum SkillOverlapType { None, Restart }
 /// InRange, OutRange는 적이 추적 중 플레이어가 공격 범위에 들어왔는지 아닌지 체크함
 /// </summary>
 /// 
-public enum SkillUseConditionType { Contact, Get, InRange, OutRange, Init }
+public enum SkillUseConditionType { Contact, Get, InRange, OutRange, Init, Rush }
 
 public enum SkillUseCountSubtractType { None, Subtract } // --> 사용 시, 사용 가능 횟수를 1 빼거나 사용 횟수 차감없이 고정시킴
 // 스킬 사용 시, 횟수 차감 여부
@@ -40,7 +40,7 @@ public enum EntityTag { Player, Enemy, Bullet, InnerSprite, Wall, Construction};
 //    }
 //}
 
-public class DatabaseManager : Singleton<DatabaseManager>
+public class DatabaseManager : MonoBehaviour//Singleton<DatabaseManager>
 {
     //[SerializeField]
     //PlayerData playerData;
@@ -48,9 +48,13 @@ public class DatabaseManager : Singleton<DatabaseManager>
 
     //public List<ScriptableSkillData> m_scriptableSkillDatas; // 스킬 데이터 모음
 
-    protected override void Awake()
+    public static DatabaseManager instance;
+    public static DatabaseManager Instance { get { return instance; } }
+
+    protected void Awake()
     {
-        base.Awake();
+        //base.Awake();
+        instance = this;
     }
 
     //public SkillData ReturnSkillData(string name)

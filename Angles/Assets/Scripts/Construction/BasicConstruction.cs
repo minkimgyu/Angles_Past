@@ -32,6 +32,10 @@ abstract public class BasicConstruction : StateMachineEntity<BasicConstruction.S
         m_contactComponent = GetComponent<ContactComponent>();
     }
 
+    public override void InitData()
+    {
+    }
+
     public abstract void Init();
 
     private void Update()

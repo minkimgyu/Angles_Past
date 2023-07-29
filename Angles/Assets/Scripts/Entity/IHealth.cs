@@ -8,11 +8,13 @@ public interface IHealth
 
     public void UnderAttack(float healthPoint, Vector2 dir, float thrust);
 
-    public void Knockback(Vector2 dir, float thrust);
+    //public void GetDamage(float healthPoint);
+
+    //public void Knockback(Vector2 dir, float thrust);
 
     public void Heal(float healthPoint);
 
-    public void Die();
+    //public void Die();
 }
 
 //abstract public class HealthEntity<T, W> : StateMachineEntity<T, W>

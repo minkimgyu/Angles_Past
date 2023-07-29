@@ -31,8 +31,6 @@ public class StateYellowTriangleAttack : StateFollowEnemyAttack
         enemy.EffectPlayer = effectPlayer;
         enemy.EffectPlayer.Init(enemy.transform, 1000f);
         enemy.EffectPlayer.PlayEffect();
-
-        Debug.Log("In");
     }
 
     public override void ExecuteInOutsideMethod()
@@ -46,7 +44,5 @@ public class StateYellowTriangleAttack : StateFollowEnemyAttack
 
         if (enemy.EffectPlayer == null) return;
         enemy.EffectPlayer.StopEffect();
-
-        Debug.Log("Out");
     }
 }

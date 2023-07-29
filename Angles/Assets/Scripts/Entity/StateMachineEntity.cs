@@ -6,6 +6,8 @@ public struct Message<T>
 {
     public T nextState; // state 값을 string으로 변환해서 비교해주기
     public Vector2 dir;
+    public float damage;
+    public float thrust;
     public Entity contactedEntity;
 }
 
@@ -59,7 +61,7 @@ public class Telegram<T>
     }
 }
 
-public class StateMachineEntity<T> : Entity // T는 Entity, W는 State
+abstract public class StateMachineEntity<T> : Entity // T는 Entity, W는 State
 {
     public T CurrentStateName { get; private set; }
     public T GlobalStateName { get; private set; }
@@ -71,6 +73,8 @@ public class StateMachineEntity<T> : Entity // T는 Entity, W는 State
     public IState<T> CurrentState { get; private set; }
     public IState<T> GlobalState { get; private set; }
     public IState<T> PreviousState { get; private set; }
+
+    
 
     //기본 상태를 생성시에 설정하게 생성자 만들기.
     protected void SetUp(T defaultState) // 가상 함수 처리

@@ -42,6 +42,7 @@ abstract public class BasicEffectPlayer : MonoBehaviour
 
     protected virtual void OnDisable()
     {
+        CancelInvoke();
         ObjectPooler.ReturnToPool(gameObject);
     }
 

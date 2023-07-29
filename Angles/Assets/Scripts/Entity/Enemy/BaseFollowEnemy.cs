@@ -7,7 +7,7 @@ abstract public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
 {
     public Action WhenEnable;
 
-    private Player m_loadPlayer;
+    protected Player m_loadPlayer;
     public Player LoadPlayer { get { return m_loadPlayer; } }
 
     private FollowComponent m_followComponent;
@@ -19,13 +19,20 @@ abstract public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
     BattleComponent m_battleComponent;
     public BattleComponent BattleComponent { get { return m_battleComponent; } }
 
+    DashComponent m_dashComponent;
+    public DashComponent DashComponent { get { return m_dashComponent; } }
+
+    ContactComponent m_contactComponent;
+    public ContactComponent ContactComponent { get { return m_contactComponent; } }
+
     public enum State
     {
         Attack,
         Follow,
         Stop,
         Die,
-        Fix
+        Fix,
+        Damaged,
     }
 
     protected override void Awake()
@@ -34,6 +41,8 @@ abstract public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
         m_followComponent = GetComponent<FollowComponent>();
         m_moveComponent = GetComponent<MoveComponent>();
         m_battleComponent = GetComponent<BattleComponent>();
+        m_dashComponent = GetComponent<DashComponent>();
+        m_contactComponent = GetComponent<ContactComponent>();
 
 
         //m_battleComponent.AbleTags.Add(EntityTag.Player);
@@ -47,21 +56,40 @@ abstract public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
 
     protected virtual void Init()
     {
-        m_loadPlayer = GameObject.FindWithTag("Player").GetComponent<Player>();
+        GameObject go = GameObject.FindWithTag("Player");
+        if(go != null)
+        {
+            m_loadPlayer = go.GetComponent<Player>();
+        }
+        
 
         IState<State> follow = new StateFollowEnemyFollow(this);
         IState<State> stop = new StateFollowEnemyStop(this);
         IState<State> die = new StateFollowEnemyDie(this);
+        IState<State> damaged = new StateFollowEnemyDamaged(this);
 
         //키입력 등에 따라서 언제나 상태를 꺼내 쓸 수 있게 딕셔너리에 보관
         m_dicState.Add(State.Follow, follow); // 기본 상태가 추적 --> 거리에 따라 정지 or 움직임
         m_dicState.Add(State.Stop, stop);
         m_dicState.Add(State.Die, die);
+        m_dicState.Add(State.Damaged, damaged);
 
         Data.GrantedUtilization.LootSkillFromDB(BattleComponent);
     }
 
-    private void OnEnable()
+    private void OnCollisionEnter2D(Collision2D col) // 충돌 시 상태 변환
+    {
+        m_contactComponent.CallWhenCollisionEnter(col);
+
+        BattleComponent.UseSkill(SkillUseConditionType.Contact);
+    }
+
+    private void OnCollisionExit2D(Collision2D col)
+    {
+        m_contactComponent.CallWhenCollisionExit(col);
+    }
+
+    protected virtual void OnEnable()
     {
         if (WhenEnable != null)
         {

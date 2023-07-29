@@ -41,6 +41,7 @@ public class SpawnBulletInCircleRange : SpawnMethod
         Vector3 tempPos = supportData.Me.transform.position + direction * distanceFromOrigin;
 
         BasicBullet projectile = ObjectPooler.SpawnFromPool<BasicBullet>(projectileName, tempPos, Quaternion.Euler(0, 0, rotation));
+        projectile.Init(tempPos);
         projectile.Fire(direction, bulletThrust);
         supportData.Me.SpawnedObjects.Add(projectile);
     }

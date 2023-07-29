@@ -46,14 +46,8 @@ public class ContactComponent : MonoBehaviour
 
     public void CallWhenCollisionExit(Collision2D col)
     {
-        for (int i = 0; i < m_contactDatas.Count; i++)
-        {
-            if (m_contactDatas[i].go == col.gameObject)
-            {
-                m_contactDatas.RemoveAt(i);
-                return;
-            }
-        }
+        ContactData contactData = m_contactDatas.Find(x => x.go == col.gameObject);
+        m_contactDatas.Remove(contactData);
     }
 
     bool CheckCorrectEntity(EntityTag tag)

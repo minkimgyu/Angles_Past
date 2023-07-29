@@ -27,47 +27,53 @@ public class DashComponent : MonoBehaviour
         _rigid = GetComponent<Rigidbody2D>();
     }
 
-    public void PlayDash(Vector2 dir, float thrust, float duration)
+    public void PlayDash(Vector2 dir, float thrust, float duration, bool nowFreeze = true)
     {
         StopEntity();
         if (_nowDash == true) return;
 
         _nowFinish = false;
-        DashTask(dir, thrust, duration).Forget();
+        DashTask(dir, thrust, duration, nowFreeze).Forget();
     }
 
-    public void PlayDash(Vector2 dir, float thrust)
+    public void PlayDash(Vector2 dir, float thrust, bool nowFreeze = true)
     {
         StopEntity();
         if (_nowDash == true) return;
 
         _nowFinish = false;
-        DashTask(dir, thrust).Forget();
+        DashTask(dir, thrust, nowFreeze).Forget();
     }
 
-    private async UniTaskVoid DashTask(Vector2 dir, float thrust, float duration)
+    private async UniTaskVoid DashTask(Vector2 dir, float thrust, float duration, bool nowFreeze = true)
     {
         _nowDash = true;
-        _rigid.freezeRotation = true;
+
+        if(nowFreeze)
+            _rigid.freezeRotation = true;
 
         _rigid.AddForce(dir * thrust, ForceMode2D.Impulse);
         await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: _source.Token);
 
-        _rigid.freezeRotation = false;
+        if (nowFreeze)
+            _rigid.freezeRotation = false;
+
         _nowDash = false;
 
         _nowFinish = true;
     }
 
-    private async UniTaskVoid DashTask(Vector2 dir, float thrust)
+    private async UniTaskVoid DashTask(Vector2 dir, float thrust, bool nowFreeze = true)
     {
         _nowDash = true;
-        _rigid.freezeRotation = true;
+        if (nowFreeze)
+            _rigid.freezeRotation = true;
 
         _rigid.AddForce(dir * thrust, ForceMode2D.Impulse);
         await UniTask.Delay(TimeSpan.FromSeconds(0), cancellationToken: _source.Token);
 
-        _rigid.freezeRotation = false;
+        if (nowFreeze)
+            _rigid.freezeRotation = false;
         _nowDash = false;
 
         _nowFinish = true;
@@ -84,10 +90,12 @@ public class DashComponent : MonoBehaviour
         }
     }
 
-    public void CancelDash()
+    public void CancelDash(bool nowFreeze = true)
     {
-        _rigid.freezeRotation = false;
+        if(nowFreeze)
+            _rigid.freezeRotation = false;
         _nowDash = false;
+        _nowFinish = false;
     }
 
     private void StopEntity()

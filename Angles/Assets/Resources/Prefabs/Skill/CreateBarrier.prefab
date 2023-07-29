@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5215549754818315974
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5215549754818315972}
+  - component: {fileID: 5215549754818315973}
+  m_Layer: 0
+  m_Name: CreateBarrier
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5215549754818315972
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5215549754818315974}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5215549754818315973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5215549754818315974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6ddc200cbdea7a4bb174b576db1aa18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_data:
+    name: 
+    prefabName: 
+    maxUseCount: 0
+    useCount: 0
+    overlapType: 0
+    useConditionType: 0
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 0
+    knockBackThrust: 0
+    hitTarget: 
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 0
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 0
+  positionMethod: {fileID: 11400000, guid: 1452171049d70fe4085b2c7070bb92f2, type: 2}
+  damageMethod: {fileID: 11400000, guid: 3d41e37bcc45c484688b98beb85f5bdb, type: 2}
+  drawGizmo:
+    color: {r: 0, g: 0, b: 0, a: 0}
+    width: 0
+    height: 0
+    radius: 0
+    offset: {x: 0, y: 0, z: 0}
+    layer:
+      serializedVersion: 2
+      m_Bits: 0
