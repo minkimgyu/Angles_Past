@@ -25,7 +25,7 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
     { 
         instance = this;
 
-        //Application.targetFrameRate = 60;
+        Application.targetFrameRate = 60;
 
         //base.Awake();
         GameObject go = Resources.Load("Prefabs/Entity/Player") as GameObject;

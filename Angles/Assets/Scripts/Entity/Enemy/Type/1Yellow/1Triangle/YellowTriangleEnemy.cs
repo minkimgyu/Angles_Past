@@ -17,7 +17,10 @@ public class YellowTriangleEnemy : BaseFollowEnemy
 
     protected override void Init()
     {
-        m_loadPlayer = GameObject.FindWithTag("Player").GetComponent<Player>();
+        GameObject go = GameObject.FindWithTag("Player");
+        if (go == null) return;
+
+        m_loadPlayer = go.GetComponent<Player>();
 
         IState<State> follow = new StateTriangleEnemyFollow(this);
         IState<State> stop = new StateTriangleEnemyStop(this);

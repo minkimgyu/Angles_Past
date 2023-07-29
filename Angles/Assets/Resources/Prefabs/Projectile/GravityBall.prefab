@@ -4738,13 +4738,13 @@ Transform:
   m_GameObject: {fileID: 8096986474827546966}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 11.84, y: 3.78, z: -0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3636404074276023078}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &4208704372193293214
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -9434,7 +9434,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1.0550002
+  m_Radius: 1
 --- !u!114 &6470764691316903544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9452,7 +9452,7 @@ MonoBehaviour:
     buffNames: []
   rigidbodies: []
   endTime: 5
-  absorbThrust: 10
+  absorbThrust: 40
 --- !u!114 &4700921922852446071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9467,6 +9467,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_possessingSkills: []
   m_activeSkills: []
+  m_synthesisComponent:
+    synthesisWays: []
 --- !u!114 &-8449184255749857883
 MonoBehaviour:
   m_ObjectHideFlags: 0

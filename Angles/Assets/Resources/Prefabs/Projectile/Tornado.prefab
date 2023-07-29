@@ -9610,7 +9610,7 @@ Transform:
   m_GameObject: {fileID: 4744131029357870603}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 8.291365, y: -17.70834, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4051111155731258422}
@@ -14378,7 +14378,7 @@ MonoBehaviour:
     buffNames: []
   rigidbodies: []
   endTime: 4.9
-  absorbThrust: 10
+  absorbThrust: 40
 --- !u!58 &2363303874491838153
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -14394,7 +14394,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1.0550002
+  m_Radius: 1.5
 --- !u!114 &-8071368934072371844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14409,6 +14409,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_possessingSkills: []
   m_activeSkills: []
+  m_synthesisComponent:
+    synthesisWays: []
 --- !u!114 &362888301596904231
 MonoBehaviour:
   m_ObjectHideFlags: 0

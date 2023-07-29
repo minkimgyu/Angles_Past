@@ -185,8 +185,8 @@ MonoBehaviour:
     stopMinDistance: 0
     prefabCount: 0
   spawnPercentage: 0.3
-  delay: 5
-  directionCount: 2
+  delay: 3
+  directionCount: 3
 --- !u!114 &6379353961815610346
 MonoBehaviour:
   m_ObjectHideFlags: 0
