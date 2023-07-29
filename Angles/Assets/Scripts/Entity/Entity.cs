@@ -11,4 +11,8 @@ public class Entity : MonoBehaviour
     {
         get { return inheritedTag; }
     }
+
+    public virtual void InitData()
+    {
+    }
 }

@@ -40,6 +40,14 @@ public class BattleComponent : MonoBehaviour
         }
     }
 
+    public void RemoveSkillFromPossessingSkills(SkillData data)
+    {
+        SkillData skillData = m_possessingSkills.Find(x => x.Name == data.Name);
+        if (skillData == null) return;
+
+        m_possessingSkills.Remove(skillData);
+    }
+
     public void RemoveFromActiveSkills(BasicSkill skill)
     {
         m_activeSkills.Remove(skill);

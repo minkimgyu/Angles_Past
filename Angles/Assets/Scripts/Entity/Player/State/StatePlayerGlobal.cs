@@ -28,6 +28,27 @@ public class StatePlayerGlobal : IState<Player.State>
 
     public void OnSetToGlobalState()
     {
+        m_loadPlayer.UnderAttackAction += GoToGetDamageState;
+    }
+
+    void GoToGetDamageState(float damage, Vector2 dir, float thrust)
+    {
+        // 아래와 같은 state일 때만 작동
+        if(m_loadPlayer.CurrentStateName == Player.State.Move || m_loadPlayer.CurrentStateName == Player.State.AttackReady)
+        {
+            Debug.Log("Damage");
+            Message<Player.State> message = new Message<Player.State>();
+            message.dir = dir;
+            message.damage = damage;
+            message.thrust = thrust;
+
+            Telegram<Player.State> telegram = new Telegram<Player.State>(Player.State.Damaged, message);
+            m_loadPlayer.SetState(Player.State.Damaged, telegram);
+        }
+        else
+        {
+            Debug.Log("NoDamage");
+        }
     }
 
     public void OperateEnter()

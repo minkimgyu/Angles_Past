@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 [System.Serializable]
 public class SpawnData
@@ -26,34 +27,57 @@ public class Spawner : MonoBehaviour
 {
     public Transform[] spawnPoints;
 
+    public Transform[] octagonSpawnPoints;
+
     public int level = 0;
     public float time;
 
     public List<SpawnData> spawnDatas = new List<SpawnData>();
 
+    SpawnAssistant spawnAssistant;
+
+    [SerializeField]
+    TextMeshProUGUI timeTxt;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        spawnAssistant = GameObject.FindWithTag("Player").GetComponentInChildren<SpawnAssistant>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (spawnAssistant == null) return;
+
         time += Time.deltaTime;
+        timeTxt.text = string.Format("{0:F0}", time);
 
         if (spawnDatas.Count - 1 < level) return;
 
         bool nowCanSpawn = spawnDatas[level].NowCanSpawn(time);
         if (nowCanSpawn == true)
         {
-            //List<Transform> spawnPoints = PlayManager.Instance.player.SpawnAssistant.FindSpawnPoint();
-            //if(spawnPoints.Count > 0)
-            //{
-            //    Vector3 pos = spawnPoints[Random.Range(0, spawnPoints.Count)].position;
-            //    Spawn(pos, spawnDatas[level].spawnCount, spawnDatas[level].spawnEntityName);
-            //}
-           
+            if(spawnDatas[level].spawnEntityName.Contains("Octagon"))
+            {
+                Vector3 pos = octagonSpawnPoints[Random.Range(0, octagonSpawnPoints.Length)].position;
+                Spawn(pos, spawnDatas[level].spawnCount, spawnDatas[level].spawnEntityName);
+            }
+            else
+            {
+                List<Transform> spawnAssistantPoints = spawnAssistant.FindSpawnPoint();
+                if (spawnAssistantPoints.Count > 0)
+                {
+                    Vector3 pos = spawnAssistantPoints[Random.Range(0, spawnAssistantPoints.Count)].position;
+                    Spawn(pos, spawnDatas[level].spawnCount, spawnDatas[level].spawnEntityName);
+                }
+                else
+                {
+                    Vector3 pos = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
+                    Spawn(pos, spawnDatas[level].spawnCount, spawnDatas[level].spawnEntityName);
+                }
+            }
+
             // 여기에 스폰 데이터 넣기
             level += 1;
         }
@@ -95,10 +119,8 @@ public class Spawner : MonoBehaviour
 
         for (int i = 0; i < spawnCount; i++)
         {
-            //EnemyData enemyData = DatabaseManager.Instance.ReturnEnemyData(spawnEntityName);
             Entity entity = ObjectPooler.SpawnFromPool<Entity>(spawnEntityName);
-            //entity.GetComponent<Enemy>().Init(enemyData);
-
+            entity.InitData();
             Vector3 resetPos = SpawnNotOverlap(pos, loadSpawnPos);
             entity.transform.position = resetPos;
         }

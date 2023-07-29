@@ -5,17 +5,21 @@ using UnityEngine;
 public class RepositionEnemy : MonoBehaviour
 {
     Player player;
+    SpawnAssistant spawnAssistant;
 
     private void Start()
     {
         player = PlayManager.Instance.Player;
+        spawnAssistant = GameObject.FindWithTag("Player").GetComponentInChildren<SpawnAssistant>();
     }
 
     private void OnTriggerExit2D(Collider2D col)
     {
         if(col.gameObject.CompareTag("Enemy") == true)
         {
-            //Reposition(col);
+            if (col.name.Contains("Heptagon") || col.name.Contains("Octagon")) return; // Heptagon, Octagon Á¦¿Ü
+
+            Reposition(col);
         }
     }
 
@@ -45,17 +49,18 @@ public class RepositionEnemy : MonoBehaviour
         return points[loadIndex].position;
     }
 
-    //void Reposition(Collider2D col)
-    //{
-    //    List<Transform> closePoints = player.SpawnAssistant.FindSpawnPoint();
-    //    if (closePoints.Count <= 0) return;
+    void Reposition(Collider2D col)
+    {
+        List<Transform> closePoints = spawnAssistant.FindSpawnPoint();
+        if (closePoints.Count <= 0) return;
 
-    //    col.transform.position = FindClosestPoint(closePoints);
-    //    col.GetComponent<Entity>().rigid.velocity = Vector2.zero;
-    //}
+        col.transform.position = FindClosestPoint(closePoints);
+        col.GetComponent<MoveComponent>().Stop();
+    }
 
     private void Update()
     {
+        if (player == null) return;
         transform.position = player.transform.position;
     }
 }

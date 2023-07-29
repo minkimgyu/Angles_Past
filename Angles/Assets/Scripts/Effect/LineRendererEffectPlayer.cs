@@ -12,7 +12,7 @@ public class LineRendererEffectPlayer : BasicEffectPlayer
     float storedTime;
 
     [SerializeField]
-    float maxLineWidth = 1.5f;
+    float maxLineWidthRatio = 0.5f;
 
     bool overHalf = false;
     bool nowFinished = false;
@@ -36,12 +36,6 @@ public class LineRendererEffectPlayer : BasicEffectPlayer
         m_lineRenderer = GetComponent<LineRenderer>();
     }
 
-    private void Start()
-    {
-        m_duration = 3;
-        PlayEffect();
-    }
-
     public override void Init(Transform tr, float duration, List<Vector3> pos)
     {
         m_posTr = tr;
@@ -59,7 +53,7 @@ public class LineRendererEffectPlayer : BasicEffectPlayer
         if(overHalf == false)
         {
             storedTime += Time.deltaTime;
-            LineWidth = storedTime / HalfDuration;
+            LineWidth = (storedTime / HalfDuration) * maxLineWidthRatio;
 
             if (storedTime >= HalfDuration)
             {
@@ -70,7 +64,7 @@ public class LineRendererEffectPlayer : BasicEffectPlayer
         else
         {
             storedTime -= Time.deltaTime;
-            LineWidth = storedTime / HalfDuration;
+            LineWidth = (storedTime / HalfDuration) * maxLineWidthRatio;
 
             if (storedTime <= 0)
             {
@@ -82,6 +76,7 @@ public class LineRendererEffectPlayer : BasicEffectPlayer
 
     public override void PlayEffect()
     {
+        ResetLine();
         InitLine();
 
         Invoke("DisableObject", m_duration + 0.5f);

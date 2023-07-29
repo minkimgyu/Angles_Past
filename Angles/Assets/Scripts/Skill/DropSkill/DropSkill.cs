@@ -9,6 +9,7 @@ public class DropSkill : MonoBehaviour
 
     public SkillData ReturnSkill()
     {
+        gameObject.SetActive(false);
         return DatabaseManager.Instance.UtilizationDB.ReturnSkillData(skillName);
     }
 

@@ -21,19 +21,19 @@ abstract public class BaseBuff : MonoBehaviour
     protected bool isFinished;
     public bool IsFinished { get { return isFinished; } }
 
-    protected BasicEffectPlayer m_effectPlayer;
+    //protected BasicEffectPlayer m_effectPlayer;
 
-    [SerializeField]
-    protected EffectMethod effectMethod;
+    //[SerializeField]
+    //protected EffectMethod effectMethod;
 
     public void Init(BuffData data)
     {
         this.data = data;
     }
 
-    public abstract void OnStart(GameObject caster); // getComponent
+    public abstract void OnStart(GameObject caster, BuffEffectComponent effectComponent); // getComponent
 
-    public abstract void OnEnd();
+    public abstract void OnEnd(BuffEffectComponent effectComponen);
 
     public abstract void Tick(float deltaTime);
 
@@ -50,6 +50,7 @@ abstract public class TimeBuff : BaseBuff
     [SerializeField]
     float maxTickTime;
 
+    [SerializeField]
     float buffTime;
     float tickTime;
 

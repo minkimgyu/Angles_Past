@@ -10,9 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1671096347345621386}
   - component: {fileID: 1671096347345621381}
+  - component: {fileID: 594360512044034456}
+  - component: {fileID: 8854282902053621800}
+  - component: {fileID: 3879020322442197397}
   m_Layer: 0
   m_Name: AngelsGearWall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -73,8 +76,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1483472553
   m_SortingLayer: 3
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4404461b642f91e4181173f1267aa28f, type: 3}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: 725425c5f049ae248a2883900fe85d4a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -85,6 +88,66 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &594360512044034456
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671096347345621380}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.012125015, y: -0.012124836}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 5.12, y: 5.12}
+    newSize: {x: 5.12, y: 5.12}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 4.489506, y: 2.4040318}
+  m_EdgeRadius: 0
+--- !u!114 &8854282902053621800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671096347345621380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21244f1969d8cdf47b8d9b39a7ff9889, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inheritedTag: 4
+--- !u!50 &3879020322442197397
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671096347345621380}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!1 &1671096347527197910
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,7 +178,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1671096347527197910}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.49, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -163,7 +226,7 @@ SpriteRenderer:
   m_SortingLayerID: 1483472553
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4d4434cc89644dd46bc4da3d4db2ad07, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1880daa9235663e40bad29d7de58cb28, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -189,7 +252,7 @@ MonoBehaviour:
   inheritedTag: 5
   grantedUtilization:
     skillNames:
-    - Punch
+    - GearAttack
     buffNames: []
 --- !u!114 &1671096347527197913
 MonoBehaviour:
@@ -205,6 +268,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_possessingSkills: []
   m_activeSkills: []
+  m_synthesisComponent:
+    synthesisWays: []
 --- !u!114 &1671096347527197912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,7 +283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_contactDatas: []
-  m_entityTags: 01000000
+  m_entityTags: 0100000000000000
 --- !u!58 &1671096347527197915
 CircleCollider2D:
   m_ObjectHideFlags: 0

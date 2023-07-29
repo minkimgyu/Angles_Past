@@ -23,7 +23,7 @@ MonoBehaviour:
       minValue: 2
       originValue: 5
     stunTime: 0.5
-    weight: 1
+    weight: 0.85
     drag: 1.5
     knockBackThrust: 5
     grantedUtilization:
@@ -48,4 +48,629 @@ MonoBehaviour:
     dashThrust: 20
     dashRatio: 1
     dashRecoverRatio: 0.001
-  enemy: []
+  enemy:
+  - name: YellowTriangle
+    shape: 
+    color: 
+    immortality: 0
+    hp: 2
+    speed:
+      maxValue: 10
+      minValue: 2
+      originValue: 3
+    stunTime: 1
+    weight: 0.2
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames: []
+      buffNames:
+      - SpeedDebuff
+    knockBackDamage: 0
+    skillUseDistance: 2
+    skillUseOffsetDistance: 0.2
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 1.5
+    stopMinDistance: 1.7
+    prefabCount: 0
+  - name: YellowRectangle
+    shape: 
+    color: 
+    immortality: 0
+    hp: 2
+    speed:
+      maxValue: 10
+      minValue: 2
+      originValue: 3
+    stunTime: 1
+    weight: 0.5
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - YellowSelfDestruction
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 2
+    skillUseOffsetDistance: 0.2
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 1.5
+    stopMinDistance: 1.7
+    prefabCount: 0
+  - name: YellowPentagon
+    shape: 
+    color: 
+    immortality: 0
+    hp: 4
+    speed:
+      maxValue: 10
+      minValue: 2
+      originValue: 3
+    stunTime: 2
+    weight: 0.8
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - SpawnBulletClocwise
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 2.5
+    skillUseOffsetDistance: 0
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 2.5
+    stopMinDistance: 2.7
+    prefabCount: 0
+  - name: YellowHexagon
+    shape: 
+    color: 
+    immortality: 0
+    hp: 6
+    speed:
+      maxValue: 10
+      minValue: 2
+      originValue: 3
+    stunTime: 1
+    weight: 1.2
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - HexagonAttack
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 2.5
+    skillUseOffsetDistance: 0
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 2.5
+    stopMinDistance: 2.7
+    prefabCount: 0
+  - name: YellowHeptagon
+    shape: 
+    color: 
+    immortality: 0
+    hp: 5
+    speed:
+      maxValue: 30
+      minValue: 5
+      originValue: 25
+    stunTime: 1
+    weight: 2
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - HeptagonContactAttack
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 2.5
+    skillUseOffsetDistance: 0
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 2.5
+    stopMinDistance: 2.7
+    prefabCount: 0
+  - name: YellowOctagon
+    shape: 
+    color: 
+    immortality: 0
+    hp: 8
+    speed:
+      maxValue: 0
+      minValue: 0
+      originValue: 0
+    stunTime: 1
+    weight: 3
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - OctagonLaserAttack
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 5
+    skillUseOffsetDistance: 0.2
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 0
+    stopMinDistance: 0
+    prefabCount: 0
+  - name: OrangeTriangle
+    shape: 
+    color: 
+    immortality: 0
+    hp: 2
+    speed:
+      maxValue: 10
+      minValue: 2
+      originValue: 3
+    stunTime: 1
+    weight: 0.2
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames: []
+      buffNames:
+      - SpeedDebuff
+    knockBackDamage: 0
+    skillUseDistance: 2
+    skillUseOffsetDistance: 0.2
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 1.5
+    stopMinDistance: 1.7
+    prefabCount: 0
+  - name: OrangeRectangle
+    shape: 
+    color: 
+    immortality: 0
+    hp: 3
+    speed:
+      maxValue: 10
+      minValue: 2
+      originValue: 3
+    stunTime: 1
+    weight: 0.5
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - YellowSelfDestruction
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 2
+    skillUseOffsetDistance: 0.2
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 1.5
+    stopMinDistance: 1.7
+    prefabCount: 0
+  - name: OrangePentagon
+    shape: 
+    color: 
+    immortality: 0
+    hp: 4
+    speed:
+      maxValue: 10
+      minValue: 2
+      originValue: 3
+    stunTime: 2
+    weight: 0.8
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - SpawnBulletClocwise
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 2.5
+    skillUseOffsetDistance: 0
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 2.5
+    stopMinDistance: 2.7
+    prefabCount: 0
+  - name: OrangeHexagon
+    shape: 
+    color: 
+    immortality: 0
+    hp: 6
+    speed:
+      maxValue: 10
+      minValue: 2
+      originValue: 3
+    stunTime: 1
+    weight: 1.2
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - HexagonAttack
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 2.5
+    skillUseOffsetDistance: 0
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 2.5
+    stopMinDistance: 2.7
+    prefabCount: 0
+  - name: OrangeHeptagon
+    shape: 
+    color: 
+    immortality: 0
+    hp: 5
+    speed:
+      maxValue: 30
+      minValue: 5
+      originValue: 25
+    stunTime: 1
+    weight: 2
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - HeptagonContactAttack
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 2.5
+    skillUseOffsetDistance: 0
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 2.5
+    stopMinDistance: 2.7
+    prefabCount: 0
+  - name: OrangeOctagon
+    shape: 
+    color: 
+    immortality: 0
+    hp: 7
+    speed:
+      maxValue: 0
+      minValue: 0
+      originValue: 0
+    stunTime: 1
+    weight: 3
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - OctagonLaserAttack
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 5
+    skillUseOffsetDistance: 0.2
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 0
+    stopMinDistance: 0
+    prefabCount: 0
+  - name: RedTriangle
+    shape: 
+    color: 
+    immortality: 0
+    hp: 2
+    speed:
+      maxValue: 10
+      minValue: 2
+      originValue: 3
+    stunTime: 1
+    weight: 0.2
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames: []
+      buffNames:
+      - SpeedDebuff
+    knockBackDamage: 0
+    skillUseDistance: 2
+    skillUseOffsetDistance: 0.2
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 1.5
+    stopMinDistance: 1.7
+    prefabCount: 0
+  - name: RedRectangle
+    shape: 
+    color: 
+    immortality: 0
+    hp: 3
+    speed:
+      maxValue: 10
+      minValue: 2
+      originValue: 3
+    stunTime: 1
+    weight: 0.5
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - RedSelfDestruction
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 2
+    skillUseOffsetDistance: 0.2
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 1.5
+    stopMinDistance: 1.7
+    prefabCount: 0
+  - name: RedPentagon
+    shape: 
+    color: 
+    immortality: 0
+    hp: 4
+    speed:
+      maxValue: 10
+      minValue: 2
+      originValue: 3
+    stunTime: 2
+    weight: 0.8
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - SpawnBulletReverseClocwise
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 2.5
+    skillUseOffsetDistance: 0
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 2.5
+    stopMinDistance: 2.7
+    prefabCount: 0
+  - name: RedHexagon
+    shape: 
+    color: 
+    immortality: 0
+    hp: 6
+    speed:
+      maxValue: 10
+      minValue: 2
+      originValue: 3
+    stunTime: 1
+    weight: 1.2
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - HexagonAttack
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 2.5
+    skillUseOffsetDistance: 0
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 2.5
+    stopMinDistance: 2.7
+    prefabCount: 0
+  - name: RedHeptagon
+    shape: 
+    color: 
+    immortality: 0
+    hp: 5
+    speed:
+      maxValue: 30
+      minValue: 5
+      originValue: 25
+    stunTime: 1
+    weight: 2
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - HeptagonContactAttack
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 2.5
+    skillUseOffsetDistance: 0
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 2.5
+    stopMinDistance: 2.7
+    prefabCount: 0
+  - name: RedOctagon
+    shape: 
+    color: 
+    immortality: 0
+    hp: 7
+    speed:
+      maxValue: 0
+      minValue: 0
+      originValue: 0
+    stunTime: 1
+    weight: 3
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - OctagonLaserAttack
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 5
+    skillUseOffsetDistance: 0.2
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 0
+    stopMinDistance: 0
+    prefabCount: 0
+  - name: OperaTriangle
+    shape: 
+    color: 
+    immortality: 0
+    hp: 2
+    speed:
+      maxValue: 10
+      minValue: 2
+      originValue: 3
+    stunTime: 1
+    weight: 0.2
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames: []
+      buffNames:
+      - SpeedDebuff
+    knockBackDamage: 0
+    skillUseDistance: 2
+    skillUseOffsetDistance: 0.2
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 1.5
+    stopMinDistance: 1.7
+    prefabCount: 0
+  - name: OperaRectangle
+    shape: 
+    color: 
+    immortality: 0
+    hp: 3
+    speed:
+      maxValue: 10
+      minValue: 2
+      originValue: 3
+    stunTime: 1
+    weight: 0.5
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - OperaSelfDestruction
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 2
+    skillUseOffsetDistance: 0.2
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 1.5
+    stopMinDistance: 1.7
+    prefabCount: 0
+  - name: OperaPentagon
+    shape: 
+    color: 
+    immortality: 0
+    hp: 4
+    speed:
+      maxValue: 10
+      minValue: 2
+      originValue: 3
+    stunTime: 2
+    weight: 0.8
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - SpawnBulletFastClocwise
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 2.5
+    skillUseOffsetDistance: 0
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 2.5
+    stopMinDistance: 2.7
+    prefabCount: 0
+  - name: OperaHexagon
+    shape: 
+    color: 
+    immortality: 0
+    hp: 6
+    speed:
+      maxValue: 10
+      minValue: 2
+      originValue: 3
+    stunTime: 1
+    weight: 1.2
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - BigHexagonAttack
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 2.5
+    skillUseOffsetDistance: 0
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 2.5
+    stopMinDistance: 2.7
+    prefabCount: 0
+  - name: OperaHeptagon
+    shape: 
+    color: 
+    immortality: 0
+    hp: 5
+    speed:
+      maxValue: 30
+      minValue: 5
+      originValue: 25
+    stunTime: 1
+    weight: 2
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - OperaHeptagonContactAttack
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 2.5
+    skillUseOffsetDistance: 0
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 2.5
+    stopMinDistance: 2.7
+    prefabCount: 0
+  - name: OperaOctagon
+    shape: 
+    color: 
+    immortality: 0
+    hp: 7
+    speed:
+      maxValue: 0
+      minValue: 0
+      originValue: 0
+    stunTime: 1
+    weight: 3
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - OperaOctagonLaserAttack
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 5
+    skillUseOffsetDistance: 0.2
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 0
+    stopMinDistance: 0
+    prefabCount: 0
+  - name: Boss
+    shape: 
+    color: 
+    immortality: 0
+    hp: 10
+    speed:
+      maxValue: 10
+      minValue: 2
+      originValue: 3
+    stunTime: 1
+    weight: 1.2
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames:
+      - BossAttack
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 2.5
+    skillUseOffsetDistance: 0
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 2.5
+    stopMinDistance: 2.7
+    prefabCount: 0

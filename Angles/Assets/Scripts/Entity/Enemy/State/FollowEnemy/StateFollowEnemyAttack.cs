@@ -25,6 +25,7 @@ abstract public class StateFollowEnemyAttack : IState<BaseFollowEnemy.State>
     public void OnSetToGlobalState()
     {
         loadFollowEnemy.WhenEnable += ResetIsInAttackRange;
+        loadFollowEnemy.UnderAttackAction += GoToGetDamageState;
     }
 
     public void OperateEnter()
@@ -35,8 +36,21 @@ abstract public class StateFollowEnemyAttack : IState<BaseFollowEnemy.State>
     {
     }
 
+    void GoToGetDamageState(float damage, Vector2 dir, float thrust)
+    {
+        Message<BaseFollowEnemy.State> message = new Message<BaseFollowEnemy.State>();
+        message.dir = dir;
+        message.damage = damage;
+        message.thrust = thrust;
+
+        Telegram<BaseFollowEnemy.State> telegram = new Telegram<BaseFollowEnemy.State>(BaseFollowEnemy.State.Damaged, message);
+        loadFollowEnemy.SetState(BaseFollowEnemy.State.Damaged, telegram);
+    }
+
     void ResetIsInAttackRange() // 처음에 근거리인지 원거리인지 채크해서 OperateUpdate에 적용
     {
+        if (loadFollowEnemy.LoadPlayer == null) return;
+
         if (loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.Data.SkillUseDistance))
         {
             isInAttackRange = false;
@@ -49,6 +63,10 @@ abstract public class StateFollowEnemyAttack : IState<BaseFollowEnemy.State>
 
     public virtual void OperateUpdate()
     {
+        if (loadFollowEnemy.CurrentStateName == BaseFollowEnemy.State.Damaged) return;
+
+        if(loadFollowEnemy.LoadPlayer == null) return;
+
         if (loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.Data.SkillUseDistance) && isInAttackRange == false)
         {
             ExecuteInRangeMethod();

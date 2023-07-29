@@ -14,10 +14,12 @@ public abstract class Enemy<T> : StateMachineEntity<T>, IHealth
     //private Player m_loadPlayer;
     //public Player LoadPlayer { get { return m_loadPlayer; } }
 
-    protected BuffComponent buffComponent;
-    [SerializeField]
-    public BuffComponent BuffComponent { get { return buffComponent; } }
+    //[SerializeField]
+    //protected BuffComponent buffComponent;
+    //public BuffComponent BuffComponent { get { return buffComponent; } }
 
+    [SerializeField]
+    protected EffectMethod dieEffectMethod;
 
     public EnemyData m_data;
 
@@ -40,15 +42,23 @@ public abstract class Enemy<T> : StateMachineEntity<T>, IHealth
     private Rigidbody2D m_rigid;
     public Rigidbody2D Rigid { get { return m_rigid; } }
 
+    public Action<float, Vector2, float> UnderAttackAction;
+
+    [SerializeField]
+    float spawnPercentage = 0.1f;
+
+    string[] dropSkills = { "GhostItem", "BarrierItem", "BladeItem", "KnockbackItem", "ShockwaveItem", "SpawnBallItem", "SpawnGravityBallItem", "StickyBombItem" };
+
     protected virtual void Awake()
     {
         m_rigid = GetComponent<Rigidbody2D>();
+        //m_rigid.mass = m_data.Weight;
+        //m_rigid.drag = m_data.Drag;
     }
 
-    public void Init(EnemyData enemyData)
+    public override void InitData()
     {
-        m_data = enemyData;
-        //hp = enemyData.Hp;
+        m_data = DatabaseManager.Instance.EntityDB.ReturnEnemyData(name);
     }
 
     // Update is called once per frame
@@ -64,19 +74,17 @@ public abstract class Enemy<T> : StateMachineEntity<T>, IHealth
 
     public void UnderAttack(float healthPoint, Vector2 dir, float thrust)
     {
-        //print("UnderAttack");
-
         if (m_data.Hp > 0)
         {
             m_data.Hp -= healthPoint;
-            WhenUnderAttack();
-
             if (m_data.Hp <= 0)
             {
                 Die();
                 m_data.Hp = 0;
             }
         }
+
+        if (UnderAttackAction != null) UnderAttackAction(healthPoint, dir, thrust);
     }
 
     public void WhenUnderAttack() // ---> 색상 변화 or 이펙트 적용
@@ -88,9 +96,34 @@ public abstract class Enemy<T> : StateMachineEntity<T>, IHealth
         throw new NotImplementedException();
     }
 
-    public void Die()
+    void ShowDieEffect()
     {
-        throw new NotImplementedException();
+        BasicEffectPlayer effectPlayer = dieEffectMethod.ReturnEffectFromPool();
+        if (effectPlayer == null) return;
+
+        effectPlayer.Init(transform.position, 2f);
+        effectPlayer.PlayEffect();
+    }
+
+    void SpawnRandomItem()
+    {
+        float percentage = UnityEngine.Random.Range(0.0f, 1.0f);
+
+        if(percentage <= spawnPercentage)
+        {
+            string name = dropSkills[UnityEngine.Random.Range(0, dropSkills.Length)];
+            DropSkill skill = ObjectPooler.SpawnFromPool<DropSkill>(name);
+            skill.transform.position = transform.position;
+        }
+    }
+
+    public virtual void Die()
+    {
+        Debug.Log("Die");
+        ShowDieEffect();
+
+        SpawnRandomItem();
+        gameObject.SetActive(false);
     }
 
     public EntityTag ReturnTag()
@@ -98,13 +131,10 @@ public abstract class Enemy<T> : StateMachineEntity<T>, IHealth
         return inheritedTag;
     }
 
-    public void Knockback(Vector2 dir, float thrust)
-    {
-        //print("Knockback");
-    }
-
     protected virtual void OnDisable()
     {
+        if (UnderAttackAction != null) UnderAttackAction = null;
+
         ObjectPooler.ReturnToPool(gameObject);
     }
 }

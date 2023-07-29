@@ -33,12 +33,17 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
     BuffComponent m_buffComponent;
     public BuffComponent BuffComponent { get { return m_buffComponent; } }
 
+    BarrierComponent m_barrierComponent;
+    public BarrierComponent BarrierComponent { get { return m_barrierComponent; } }
+
 
     ActionJoystick actionJoycstick;
     public ActionJoystick ActionJoystick { get { return actionJoycstick; } }
 
     MoveJoystick moveJoystick;
     public MoveJoystick MoveJoystick { get { return moveJoystick; } }
+
+    Rigidbody2D m_rigid;
 
     // 조이스틱 프로퍼티
     public Vector2 ActionVec { get { return actionJoycstick.MainVec; } }
@@ -48,13 +53,16 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
 
     public Action<Collision2D> ContactAction;
 
-    public Action<Vector2, float> KnockbackAction;
+    public Action<float, Vector2, float> UnderAttackAction;
 
     [SerializeField]
     PlayerData _data;
     public PlayerData Data { get { return _data; } }
 
-    public void ResetPlayerData(PlayerData data) => _data = data;
+    public override void InitData()
+    {
+        _data = DatabaseManager.Instance.EntityDB.Player.CopyData();
+    }
 
     public enum State
     {      
@@ -64,7 +72,8 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
         Move,
         Die,
         Reflect,
-        Battle
+        Battle,
+        Damaged
     }
 
     public enum ObserverType
@@ -96,9 +105,12 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
         m_reflectComponent = GetComponent<ReflectComponent>();
         m_battleComponent = GetComponent<BattleComponent>();
         m_animator = GetComponent<Animator>();
+        m_rigid = GetComponent<Rigidbody2D>();
 
         m_contactComponent = GetComponent<ContactComponent>();
         m_buffComponent = GetComponent<BuffComponent>();
+
+        m_barrierComponent = GetComponent<BarrierComponent>();
 
         moveJoystick = GameObject.FindWithTag("MoveJoystick").GetComponent<MoveJoystick>();
         actionJoycstick = GameObject.FindWithTag("AttackJoystick").GetComponent<ActionJoystick>();
@@ -127,6 +139,7 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
         IState<State> dash = new StatePlayerDash(this);
         IState<State> dead = new StatePlayerDie(this);
         IState<State> reflect = new StatePlayerReflect(this);
+        IState<State> damaged = new StatePlayerDamaged(this);
 
         IState<State> global = new StatePlayerGlobal(this);
 
@@ -137,8 +150,12 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
         m_dicState.Add(State.Dash, dash);
         m_dicState.Add(State.Die, dead);
         m_dicState.Add(State.Reflect, reflect);
+        m_dicState.Add(State.Damaged, damaged);
 
         Data.GrantedUtilization.LootSkillFromDB(BattleComponent);
+
+        m_rigid.mass = _data.Weight;
+        m_rigid.angularDrag = _data.Drag;
 
         SetUp(State.Move);
         SetGlobalState(global);
@@ -217,38 +234,62 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
         });
     }
 
+    private void OnDestroy()
+    {
+        if (UnderAttackAction != null) UnderAttackAction = null;
+    }
 
-   
 
     public bool IsTarget(EntityTag tag)
     {
         return inheritedTag == tag;
     }
 
-    public void UnderAttack(float healthPoint, Vector2 dir, float thrust)
-    {
-        
-    }
+    
 
     public void Heal(float healthPoint)
     {
         
     }
 
-    public void Die()
-    {
+    //public void Die()
+    //{
         
-    }
+    //}
 
     public EntityTag ReturnTag()
     {
         return inheritedTag;
     }
 
-    public void Knockback(Vector2 dir, float thrust)
+    public void UnderAttack(float healthPoint, Vector2 dir, float thrust)
     {
-        KnockbackAction(dir, thrust);
+        if (UnderAttackAction != null) UnderAttackAction(healthPoint, dir, thrust);
     }
+
+    public void DestoryThis()
+    {
+        gameObject.SetActive(false);
+        //Destroy(gameObject);
+    }
+
+    //public void GetDamage(float healthPoint)
+    //{
+    //    if (_data.Hp > 0)
+    //    {
+    //        _data.Hp -= healthPoint;
+    //        if (_data.Hp <= 0)
+    //        {
+    //            Die();
+    //            _data.Hp = 0;
+    //        }
+    //    }
+    //}
+
+    //public void Knockback(Vector2 dir, float thrust)
+    //{
+
+    //}
 
     public PlayerData GetData()
     {

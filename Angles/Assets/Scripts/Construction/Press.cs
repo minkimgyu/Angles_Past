@@ -8,6 +8,10 @@ public class Press : BasicConstruction
     Transform endTr;
     public Transform EndTr { get { return endTr; } }
 
+
+    Vector3 startPos;
+    public Vector3 StartPos { get { return startPos; } }
+
     Rigidbody2D rigid;
     public Rigidbody2D Rigid { get { return rigid; } }
 
@@ -18,6 +22,8 @@ public class Press : BasicConstruction
 
     public override void Init()
     {
+        startPos = transform.position;
+
         rigid = GetComponent<Rigidbody2D>();
 
         IState<State> push = new StatePressPush(this);
@@ -35,7 +41,6 @@ public class Press : BasicConstruction
 public class StatePressPush : IState<BasicConstruction.State>
 {
     Press loadPress;
-    Vector3 nowPos;
 
     // This at the top of your script
     public float speedOfChange = 1f;
@@ -68,7 +73,6 @@ public class StatePressPush : IState<BasicConstruction.State>
         loadPress.ContactAction += GoToAttackState;
         // This code should be maybe in a function that you call which starts the ExponentialLerp
         timeWeStarted = Time.time;
-        nowPos = loadPress.transform.position;
     }
 
     public void OperateExit()
@@ -90,10 +94,15 @@ public class StatePressPush : IState<BasicConstruction.State>
         float ratio = Mathf.MoveTowards(0f, 1f, stepAmount);
 
         // FOR VECTOR3s
-        loadPress.transform.localPosition = Vector3.Lerp (Vector3.zero, loadPress.EndTr.localPosition, ratio);
+        //loadPress.transform.localPosition = Vector3.Lerp (Vector3.zero, loadPress.EndTr.localPosition, ratio);
+
+
+        loadPress.Rigid.MovePosition(Vector3.Lerp(loadPress.transform.position, loadPress.EndTr.position, ratio));
+
+
         // 밀어내는 함수
 
-        if(ratio >= 0.99)
+        if (ratio >= 0.99)
         {
             loadPress.SetState(BasicConstruction.State.Pull);
         }
@@ -152,7 +161,10 @@ public class StatePressPull : IState<BasicConstruction.State>
         float ratio = Mathf.MoveTowards(0f, 1f, stepAmount);
 
         // FOR VECTOR3s
-        loadPress.transform.localPosition = Vector3.Lerp(loadPress.EndTr.localPosition, Vector3.zero, ratio);
+        //loadPress.transform.localPosition = Vector3.Lerp(loadPress.EndTr.localPosition, Vector3.zero, ratio);
+
+        loadPress.Rigid.MovePosition(Vector3.Lerp(loadPress.transform.position, loadPress.StartPos, ratio));
+
 
         if (ratio >= 0.99)
         {

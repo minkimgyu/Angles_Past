@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: HexagonCircleRangeAttack
   m_EditorClassIdentifier: 
   effectMethod: {fileID: 11400000, guid: 4ebad0d8b5aca314396914026050de83, type: 2}
+  exceptMe: 1

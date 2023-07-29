@@ -21,8 +21,8 @@ MonoBehaviour:
     useConditionType: 0
     countSubtractType: 1
     synthesisType: 0
-    damage: 10
-    knockBackThrust: 10
+    damage: 4
+    knockBackThrust: 8
     hitTarget: 0000000001000000
     prefabCount: 0
     preDelay: 2
@@ -43,8 +43,8 @@ MonoBehaviour:
     useConditionType: 1
     countSubtractType: 1
     synthesisType: 0
-    damage: 10
-    knockBackThrust: 10
+    damage: 3
+    knockBackThrust: 6
     hitTarget: 01000000
     prefabCount: 0
     preDelay: 0
@@ -65,13 +65,13 @@ MonoBehaviour:
     useConditionType: 1
     countSubtractType: 1
     synthesisType: 0
-    damage: 10
-    knockBackThrust: 10
+    damage: 2
+    knockBackThrust: 2
     hitTarget: 01000000
     prefabCount: 0
     preDelay: 0
-    tickCount: 5
-    duration: 6
+    tickCount: 8
+    duration: 9
     radiusRange: 2
     boxRange: {x: 0, y: 0}
     offsetRange: {x: 0, y: 0}
@@ -87,8 +87,8 @@ MonoBehaviour:
     useConditionType: 0
     countSubtractType: 1
     synthesisType: 1
-    damage: 10
-    knockBackThrust: 10
+    damage: 5
+    knockBackThrust: 5
     hitTarget: 01000000
     prefabCount: 0
     preDelay: 2
@@ -109,8 +109,8 @@ MonoBehaviour:
     useConditionType: 0
     countSubtractType: 0
     synthesisType: 0
-    damage: 10
-    knockBackThrust: 10
+    damage: 1
+    knockBackThrust: 2
     hitTarget: 01000000
     prefabCount: 0
     preDelay: 0
@@ -145,116 +145,6 @@ MonoBehaviour:
     spawnCount: 3
     rotationSpeed: 30
     disableTime: 3
-  - name: SelfDestruction
-    prefabName: SelfDestruction
-    maxUseCount: 1
-    useCount: 1
-    overlapType: 0
-    useConditionType: 2
-    countSubtractType: 0
-    synthesisType: 0
-    damage: 10
-    knockBackThrust: 10
-    hitTarget: 0000000001000000
-    prefabCount: 0
-    preDelay: 2
-    tickCount: 0
-    duration: 0
-    radiusRange: 5
-    boxRange: {x: 0, y: 0}
-    offsetRange: {x: 0, y: 0}
-    directions: []
-    spawnCount: 0
-    rotationSpeed: 0
-    disableTime: 3
-  - name: PentagonSpawnBulletClocwise
-    prefabName: SpawnBulletClocwise
-    maxUseCount: 1
-    useCount: 1
-    overlapType: 0
-    useConditionType: 2
-    countSubtractType: 0
-    synthesisType: 0
-    damage: 0
-    knockBackThrust: 0
-    hitTarget: 
-    prefabCount: 0
-    preDelay: 0
-    tickCount: 5
-    duration: 2
-    radiusRange: 0
-    boxRange: {x: 0, y: 0}
-    offsetRange: {x: 0, y: 0}
-    directions: []
-    spawnCount: 1
-    rotationSpeed: 0
-    disableTime: 3
-  - name: HexagonAttack
-    prefabName: HexagonAttack
-    maxUseCount: 1
-    useCount: 1
-    overlapType: 0
-    useConditionType: 2
-    countSubtractType: 0
-    synthesisType: 0
-    damage: 10
-    knockBackThrust: 10
-    hitTarget: 0000000001000000
-    prefabCount: 0
-    preDelay: 2
-    tickCount: 0
-    duration: 0
-    radiusRange: 5
-    boxRange: {x: 0, y: 0}
-    offsetRange: {x: 0, y: 0}
-    directions: []
-    spawnCount: 0
-    rotationSpeed: 0
-    disableTime: 3
-  - name: HeptagonContactAttack
-    prefabName: HeptagonContactAttack
-    maxUseCount: 1
-    useCount: 1
-    overlapType: 0
-    useConditionType: 0
-    countSubtractType: 0
-    synthesisType: 0
-    damage: 10
-    knockBackThrust: 10
-    hitTarget: 00000000
-    prefabCount: 0
-    preDelay: 0
-    tickCount: 0
-    duration: 0
-    radiusRange: 5
-    boxRange: {x: 0, y: 0}
-    offsetRange: {x: 0, y: 0}
-    directions: []
-    spawnCount: 0
-    rotationSpeed: 0
-    disableTime: 3
-  - name: OctagonLaserAttack
-    prefabName: OctagonLaserAttack
-    maxUseCount: 1
-    useCount: 1
-    overlapType: 0
-    useConditionType: 2
-    countSubtractType: 0
-    synthesisType: 0
-    damage: 10
-    knockBackThrust: 10
-    hitTarget: 00000000
-    prefabCount: 0
-    preDelay: 0
-    tickCount: 2
-    duration: 0
-    radiusRange: 0
-    boxRange: {x: 0, y: 0}
-    offsetRange: {x: 0, y: 0}
-    directions: []
-    spawnCount: 0
-    rotationSpeed: 0
-    disableTime: 0.8
   - name: SpawnGravityBall
     prefabName: SpawnGravityBall
     maxUseCount: 1
@@ -329,8 +219,8 @@ MonoBehaviour:
     useConditionType: 4
     countSubtractType: 1
     synthesisType: 0
-    damage: 10
-    knockBackThrust: 10
+    damage: 5
+    knockBackThrust: 5
     hitTarget: 01000000
     prefabCount: 0
     preDelay: 5
@@ -343,8 +233,474 @@ MonoBehaviour:
     spawnCount: 0
     rotationSpeed: 0
     disableTime: 3
+  - name: EnemyContactKnockback
+    prefabName: EnemyContactKnockback
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 0
+    countSubtractType: 1
+    synthesisType: 0
+    damage: 0
+    knockBackThrust: 2
+    hitTarget: 01000000
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 0
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
+  - name: GearAttack
+    prefabName: Punch
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 0
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 1
+    knockBackThrust: 3
+    hitTarget: 0100000000000000
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 0
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
+  - name: SpikeAttack
+    prefabName: Punch
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 0
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 1
+    knockBackThrust: 2
+    hitTarget: 0100000000000000
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 0
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
+  - name: PressAttack
+    prefabName: Punch
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 0
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 20
+    knockBackThrust: 5
+    hitTarget: 0100000000000000
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 0
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
+  - name: PressJustPush
+    prefabName: Punch
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 0
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 0
+    knockBackThrust: 10
+    hitTarget: 0100000000000000
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 0
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
+  - name: YellowSelfDestruction
+    prefabName: SelfDestruction
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 2
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 4
+    knockBackThrust: 7
+    hitTarget: 0000000001000000
+    prefabCount: 0
+    preDelay: 2
+    tickCount: 0
+    duration: 0
+    radiusRange: 2.5
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
+  - name: RedSelfDestruction
+    prefabName: SelfDestruction
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 2
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 4
+    knockBackThrust: 7
+    hitTarget: 0000000001000000
+    prefabCount: 0
+    preDelay: 1
+    tickCount: 0
+    duration: 0
+    radiusRange: 2.5
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
+  - name: OperaSelfDestruction
+    prefabName: BigSelfDestruction
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 2
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 7
+    knockBackThrust: 10
+    hitTarget: 0000000001000000
+    prefabCount: 0
+    preDelay: 1
+    tickCount: 0
+    duration: 0
+    radiusRange: 5
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
+  - name: HeptagonContactAttack
+    prefabName: HeptagonContactAttack
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 0
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 0
+    knockBackThrust: 10
+    hitTarget: 00000000
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 0
+    duration: 0
+    radiusRange: 5
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
+  - name: OperaHeptagonContactAttack
+    prefabName: HeptagonContactAttack
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 0
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 1
+    knockBackThrust: 15
+    hitTarget: 00000000
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 0
+    duration: 0
+    radiusRange: 5
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
+  - name: OctagonLaserAttack
+    prefabName: OctagonLaserAttack
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 2
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 1
+    knockBackThrust: 10
+    hitTarget: 00000000
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 2
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 0.8
+  - name: OperaOctagonLaserAttack
+    prefabName: OperaOctagonLaserAttack
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 2
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 1
+    knockBackThrust: 10
+    hitTarget: 00000000
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 3
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 0.8
+  - name: SpawnBulletClocwise
+    prefabName: SpawnBulletClocwise
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 2
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 0
+    knockBackThrust: 0
+    hitTarget: 
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 5
+    duration: 2
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 1
+    rotationSpeed: 0
+    disableTime: 3
+  - name: SpawnBulletFastClocwise
+    prefabName: SpawnBulletFastClocwise
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 2
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 0
+    knockBackThrust: 0
+    hitTarget: 
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 5
+    duration: 2
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 1
+    rotationSpeed: 0
+    disableTime: 3
+  - name: SpawnBulletReverseClocwise
+    prefabName: SpawnBulletReverseClocwise
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 2
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 0
+    knockBackThrust: 0
+    hitTarget: 
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 5
+    duration: 2
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 1
+    rotationSpeed: 0
+    disableTime: 3
+  - name: HexagonAttack
+    prefabName: HexagonAttack
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 2
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 3
+    knockBackThrust: 5
+    hitTarget: 0000000001000000
+    prefabCount: 0
+    preDelay: 2
+    tickCount: 0
+    duration: 0
+    radiusRange: 5
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
+  - name: BigHexagonAttack
+    prefabName: BigHexagonAttack
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 2
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 3
+    knockBackThrust: 5
+    hitTarget: 0000000001000000
+    prefabCount: 0
+    preDelay: 1
+    tickCount: 0
+    duration: 0
+    radiusRange: 8
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
+  - name: BossAttack
+    prefabName: BossAttack
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 2
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 8
+    knockBackThrust: 10
+    hitTarget: 0000000001000000
+    prefabCount: 0
+    preDelay: 1
+    tickCount: 3
+    duration: 2
+    radiusRange: 8
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
+  - name: BulletAttack
+    prefabName: Punch
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 0
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 1
+    knockBackThrust: 3
+    hitTarget: 00000000
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 0
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
+  - name: CreateBarrier
+    prefabName: CreateBarrier
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 1
+    countSubtractType: 1
+    synthesisType: 0
+    damage: 0
+    knockBackThrust: 0
+    hitTarget: 
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 0
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
+  - name: CastGhost
+    prefabName: CastGhost
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 1
+    countSubtractType: 1
+    synthesisType: 0
+    damage: 0
+    knockBackThrust: 0
+    hitTarget: 
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 0
+    duration: 0
+    radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
   buffDatas:
   - name: SpeedDebuff
     maxCount: 3
+    duration: 0
+    tickTime: 0
+  - name: SpeedBuff
+    maxCount: 1
     duration: 0
     tickTime: 0

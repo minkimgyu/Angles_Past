@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Cinemachine;
 
-public class PlayManager : Singleton<PlayManager>
+public class PlayManager : MonoBehaviour //Singleton<PlayManager>
 {
     Player player;
     public Player Player
@@ -14,17 +15,42 @@ public class PlayManager : Singleton<PlayManager>
 
     public CinemachineVirtualCamera virtualCamera;
 
+    public GameObject gameOverPanel;
+
+    public static PlayManager instance;
+    public static PlayManager Instance { get { return instance; } }
+
     // Start is called before the first frame update
-    protected override void Awake()
-    {
+    protected void Awake()
+    { 
+        instance = this;
+
         //Application.targetFrameRate = 60;
 
-        base.Awake();
-
+        //base.Awake();
         GameObject go = Resources.Load("Prefabs/Entity/Player") as GameObject;
         player = Instantiate(go).GetComponent<Player>();
+    }
 
-        player.ResetPlayerData(DatabaseManager.Instance.EntityDB.Player.CopyData());
+    private void Start()
+    {
+        player.InitData();
         virtualCamera.Follow = player.transform;
+    }
+
+    public void GameOver()
+    {
+        Debug.Log("GameOver");
+        gameOverPanel.SetActive(true);
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene("PlayScene");
+    }
+
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene("MenuScene");
     }
 }

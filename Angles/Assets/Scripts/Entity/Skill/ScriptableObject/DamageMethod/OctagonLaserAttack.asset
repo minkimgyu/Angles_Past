@@ -13,5 +13,8 @@ MonoBehaviour:
   m_Name: OctagonLaserAttack
   m_EditorClassIdentifier: 
   effectMethod: {fileID: 11400000, guid: 3b746b776b373ff4cbc31a564e819b67, type: 2}
+  hitEffectMethod: {fileID: 11400000, guid: ef2a6b62d0790b749aadb06ba949775a, type: 2}
+  hitEffectDisableTime: 1.5
+  maxDistance: 30
   blockedTag:
   - Wall

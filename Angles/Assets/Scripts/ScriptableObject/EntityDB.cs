@@ -278,7 +278,7 @@ public class PlayerData : HealthEntityData, IData<PlayerData>
     {
         if(ratio < 1)
         {
-            ratio += recoverRatio;
+            ratio += recoverRatio * Time.deltaTime * 100;
             if(ratio > 1) ratio = 1;
 
             return true;
@@ -385,6 +385,10 @@ public class EntityDB : ScriptableObject
     List<EnemyData> enemy;
     public List<EnemyData> Enemy { get { return enemy; } }
 
+    public EnemyData ReturnEnemyData(string name)
+    {
+        return enemy.Find(x => x.Name == name).CopyData();
+    }
     public void ResetData()
     {
         player = new PlayerData();
