@@ -16,7 +16,7 @@ MonoBehaviour:
     name: Player
     shape: White
     color: Circle
-    immortality: 0
+    immortality: 1
     hp: 1
     speed:
       maxValue: 10

@@ -8,6 +8,10 @@ using System;
 public class YellowOctagonEnemy : BaseFollowEnemy
 {
     [SerializeField]
+    GameObject[] expectationDirs;
+    public GameObject[] ExpectationDirs { get { return expectationDirs; } }
+
+    [SerializeField]
     float delay;
     public float Delay { get { return delay; } }
 

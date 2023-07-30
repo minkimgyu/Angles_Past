@@ -497,28 +497,6 @@ MonoBehaviour:
     spawnCount: 1
     rotationSpeed: 0
     disableTime: 3
-  - name: BossAttack
-    prefabName: BossAttack
-    maxUseCount: 1
-    useCount: 1
-    overlapType: 0
-    useConditionType: 2
-    countSubtractType: 0
-    synthesisType: 0
-    damage: 8
-    knockBackThrust: 10
-    hitTarget: 0000000001000000
-    prefabCount: 0
-    preDelay: 1
-    tickCount: 3
-    duration: 2
-    radiusRange: 8
-    boxRange: {x: 0, y: 0}
-    offsetRange: {x: 0, y: 0}
-    directions: []
-    spawnCount: 0
-    rotationSpeed: 0
-    disableTime: 3
   - name: BulletAttack
     prefabName: Punch
     maxUseCount: 1
@@ -663,7 +641,7 @@ MonoBehaviour:
     knockBackThrust: 10
     hitTarget: 00000000
     prefabCount: 0
-    preDelay: 0
+    preDelay: 1.5
     tickCount: 2
     duration: 0
     radiusRange: 0
@@ -685,7 +663,7 @@ MonoBehaviour:
     knockBackThrust: 10
     hitTarget: 00000000
     prefabCount: 0
-    preDelay: 0
+    preDelay: 1.5
     tickCount: 3
     duration: 0
     radiusRange: 0
@@ -755,6 +733,28 @@ MonoBehaviour:
     tickCount: 0
     duration: 0
     radiusRange: 0
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
+    spawnCount: 0
+    rotationSpeed: 0
+    disableTime: 3
+  - name: BossAttack
+    prefabName: BossAttack
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 0
+    useConditionType: 2
+    countSubtractType: 0
+    synthesisType: 0
+    damage: 1
+    knockBackThrust: 7
+    hitTarget: 00000000
+    prefabCount: 0
+    preDelay: 1
+    tickCount: 3
+    duration: 1
+    radiusRange: 1.5
     boxRange: {x: 0, y: 0}
     offsetRange: {x: 0, y: 0}
     directions: []
