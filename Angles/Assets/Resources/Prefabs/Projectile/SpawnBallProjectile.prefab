@@ -4839,7 +4839,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grantedUtilization:
     skillNames:
-    - Punch
+    - SpawnBallPunch
     buffNames: []
 --- !u!58 &3286443389367354579
 CircleCollider2D:
@@ -4871,6 +4871,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_possessingSkills: []
   m_activeSkills: []
+  m_synthesisComponent:
+    synthesisWays: []
 --- !u!114 &5504882030948801225
 MonoBehaviour:
   m_ObjectHideFlags: 0

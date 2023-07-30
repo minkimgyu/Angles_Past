@@ -17,7 +17,7 @@ public class RepositionEnemy : MonoBehaviour
     {
         if(col.gameObject.CompareTag("Enemy") == true)
         {
-            if (col.name.Contains("Heptagon") || col.name.Contains("Octagon")) return; // Heptagon, Octagon 제외
+            if (col.name.Contains("Heptagon") || col.name.Contains("Octagon") || col.name.Contains("Boss")) return; // Heptagon, Octagon 제외
 
             Reposition(col);
         }

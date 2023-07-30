@@ -10,8 +10,9 @@ public class OrangeSquareEnemy : YellowSquareEnemy
         for (int i = 0; i < 4; i++)
         {
             Vector3 offset = new Vector3(Random.Range(1, 6), Random.Range(1, 6), 0);
-            Transform yellowTr = ObjectPooler.SpawnFromPool<Transform>("YellowRectangle");
-            yellowTr.position = transform.position + offset;
+            YellowSquareEnemy yellow = ObjectPooler.SpawnFromPool<YellowSquareEnemy>("YellowRectangle");
+            yellow.InitData();
+            yellow.transform.position = transform.position + offset;
         }
         base.Die();
     }

@@ -36,7 +36,7 @@ public class GravityBallProjectile : BasicProjectile
         for (int i = 0; i < rigidbodies.Count; i++)
         {
             Vector3 dir = -(rigidbodies[i].transform.position - transform.position).normalized * absorbThrust;
-            rigidbodies[i].AddForce(dir, ForceMode2D.Force);
+            rigidbodies[i].AddForce(dir, ForceMode2D.Impulse);
         }
     }
 

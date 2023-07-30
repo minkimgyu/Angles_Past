@@ -103,7 +103,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 2
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 0
@@ -206,6 +206,7 @@ MonoBehaviour:
     followMinDistance: 0
     stopMinDistance: 0
     prefabCount: 0
+  spawnPercentage: 0.1
   rushVec: {x: 0, y: 0}
   minRushVec: 3
 --- !u!58 &1693639870318632581

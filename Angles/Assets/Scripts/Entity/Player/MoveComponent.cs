@@ -7,7 +7,7 @@ public class MoveComponent : MonoBehaviour
     Rigidbody2D rigid;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
     }
@@ -63,6 +63,7 @@ public class MoveComponent : MonoBehaviour
         //{
         //    rigid.velocity = PlayManager.Instance.moveJoy.moveInputComponent.ReturnMoveVec().normalized * DatabaseManager.Instance.PlayerData.Speed * DatabaseManager.Instance.PlayerData.SpeedRatio;
         //}
+
 
         rigid.velocity = moveDir.normalized * speed;
 

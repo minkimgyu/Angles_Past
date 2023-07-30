@@ -9761,7 +9761,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grantedUtilization:
     skillNames:
-    - Punch
+    - BoomerangPunch
     buffNames: []
   endTime: 10
   speed: 10
@@ -9779,6 +9779,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_possessingSkills: []
   m_activeSkills: []
+  m_synthesisComponent:
+    synthesisWays: []
 --- !u!114 &6998204570039686488
 MonoBehaviour:
   m_ObjectHideFlags: 0

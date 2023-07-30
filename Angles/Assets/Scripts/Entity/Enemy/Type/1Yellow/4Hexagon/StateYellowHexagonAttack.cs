@@ -97,6 +97,8 @@ public class StateYellowHexaagonFix : IState<BaseFollowEnemy.State>
 
     public void OperateUpdate()
     {
+        loadYellowHexagonEnemy.Rigid.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+
         if (canRevertToPreviousState == false)
         {
             storedTime += Time.deltaTime;
@@ -107,6 +109,10 @@ public class StateYellowHexaagonFix : IState<BaseFollowEnemy.State>
             }
         }
 
-        if (canRevertToPreviousState) loadYellowHexagonEnemy.RevertToPreviousState();
+        if (canRevertToPreviousState)
+        {
+            loadYellowHexagonEnemy.Rigid.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+            loadYellowHexagonEnemy.RevertToPreviousState();
+        } 
     }
 }

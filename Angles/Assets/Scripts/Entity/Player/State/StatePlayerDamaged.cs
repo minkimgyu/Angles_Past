@@ -45,6 +45,8 @@ public class StatePlayerDamaged : IState<Player.State>
     {
         if (loadPlayer.BarrierComponent.CanBarrierAbsorb() == true) return;
 
+        if (loadPlayer.Data.Immortality == true) return;
+
         if (loadPlayer.Data.Hp > 0)
         {
             loadPlayer.Data.Hp -= healthPoint;

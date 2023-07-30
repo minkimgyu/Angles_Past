@@ -17,4 +17,4 @@ MonoBehaviour:
   angleCount: 5
   distanceFromOrigin: 2
   isClockwise: 1
-  bulletThrust: 16
+  bulletThrust: 12
