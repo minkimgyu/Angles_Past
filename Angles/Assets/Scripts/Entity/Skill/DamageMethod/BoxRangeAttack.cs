@@ -17,6 +17,8 @@ public class BoxRangeAttack : DamageMethod
         }
 
 
+        SoundManager.Instance.PlaySFX(supportData.Me.transform.position, supportData.Me.Data.SfxName, supportData.Me.Data.Volume);
+
         BasicEffectPlayer effectPlayer = effectMethod.ReturnEffectFromPool();
         if (effectPlayer == null) return;
 

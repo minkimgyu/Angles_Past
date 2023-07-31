@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: ShockwaveCircleRangeAttack
   m_EditorClassIdentifier: 
   effectMethod: {fileID: 11400000, guid: 86b18972716475841bbbc1e8522d46f4, type: 2}
+  hitEffect: {fileID: 11400000, guid: 70a4f770cb119ad458e084d7bc4acc72, type: 2}
+  exceptMe: 0

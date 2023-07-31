@@ -20,6 +20,14 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
     public GameObject gameOverPanel;
     public GameObject pausePanel;
 
+    public GameObject gameClearPanel;
+
+    [SerializeField]
+    TMP_Text finalScoreTxt;
+
+    [SerializeField]
+    TMP_Text scoreTxt;
+
     public static PlayManager instance;
     public static PlayManager Instance { get { return instance; } }
 
@@ -34,6 +42,9 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
 
     [SerializeField]
     TMP_Text sfxTxt;
+
+    [SerializeField]
+    int totalScore = 0;
 
     // Start is called before the first frame update
     protected void Awake()
@@ -51,12 +62,26 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
     {
         player.InitData();
         virtualCamera.Follow = player.transform;
+
+        SoundManager.Instance.PlayBGM("BGM");
     }
 
     public void GameOver()
     {
         Debug.Log("GameOver");
         gameOverPanel.SetActive(true);
+    }
+
+    public void ScoreUp(int score)
+    {
+        totalScore += score;
+        scoreTxt.text = totalScore.ToString();
+    }
+
+    public void GameClear()
+    {
+        finalScoreTxt.text = totalScore.ToString();
+        gameClearPanel.SetActive(true);
     }
 
     public void RestartGame()

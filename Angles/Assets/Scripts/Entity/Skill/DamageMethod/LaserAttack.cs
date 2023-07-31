@@ -69,6 +69,7 @@ public class LaserAttack : DamageMethod
             hitEffectPlayer.PlayEffect();
         }
 
+        SoundManager.Instance.PlaySFX(supportData.Me.transform.position, supportData.Me.Data.SfxName, supportData.Me.Data.Volume);
 
         BasicEffectPlayer effectPlayer = effectMethod.ReturnEffectFromPool();
         if (effectPlayer == null) return;

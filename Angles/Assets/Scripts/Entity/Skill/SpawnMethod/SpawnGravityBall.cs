@@ -8,6 +8,8 @@ public class SpawnGravityBall : SpawnMethod
 {
     public override void Execute(SpawnSupportData supportData)
     {
+        SoundManager.Instance.PlaySFX(supportData.Me.transform.position, "GravityBall", 0.2f);
+
         BasicProjectile projectile = ObjectPooler.SpawnFromPool<BasicProjectile>(projectileName);
         projectile.Init(supportData.Caster.transform.position);
         supportData.Me.SpawnedObjects.Add(projectile);

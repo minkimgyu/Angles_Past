@@ -22,7 +22,7 @@ public class BoomerangProjectile : BasicProjectile
 
     protected override void OnCollisionEnter2D(Collision2D col) // 충돌 시 상태 변환
     {
-        base.OnCollisionEnter2D(col);
+        //base.OnCollisionEnter2D(col);
         if(col.gameObject.tag == "Wall")
         {
             ReturnToPlayer();

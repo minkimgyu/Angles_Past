@@ -16,10 +16,7 @@ public class PreDelaySkill : TickAttackSkill // --> 프리팹으로 생성해서 오브젝트
 
     private async UniTaskVoid DamageTask(GameObject caster)
     {
-        print("PreDelay");
         await UniTask.Delay(TimeSpan.FromSeconds(Data.PreDelay), cancellationToken: m_source.Token);
-
-        print("Attack");
 
         damageMethod.Execute(new DamageSupportData(caster, this, 1));
         OnEnd();

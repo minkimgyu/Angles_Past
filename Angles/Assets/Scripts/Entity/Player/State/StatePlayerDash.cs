@@ -32,6 +32,7 @@ public class StatePlayerDash : IState<Player.State>
 
     public void OperateEnter()
     {
+        SoundManager.Instance.PlaySFX(m_loadPlayer.transform.position, "Dash", 1.5f);
         m_loadPlayer.DashComponent.PlayDash(m_loadPlayer.MoveVec, m_loadPlayer.Data.DashThrust, m_loadPlayer.Data.DashTime);
         m_loadPlayer.Data.SubtractDashRatio();
     }

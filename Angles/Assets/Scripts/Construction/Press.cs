@@ -141,6 +141,7 @@ public class StatePressPull : IState<BasicConstruction.State>
 
     public void OperateEnter()
     {
+        SoundManager.Instance.PlaySFX(loadPress.transform.position, "Push", 0.5f);
         timeWeStarted = Time.time;
     }
 

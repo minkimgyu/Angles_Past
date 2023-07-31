@@ -23,16 +23,47 @@ public class SpawnData
     }
 }
 
+[System.Serializable]
+public class OctaPoint
+{
+    public GameObject octaGo;
+    public Transform tr;
+
+    public Vector3 Pos { get { return tr.position; } }
+
+    public bool CheckAleadySpawn()
+    {
+        if (octaGo == null) return true;
+        else
+        {
+            if(octaGo.activeSelf == true)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+    }
+
+    public void SpawnToPoint(GameObject go)
+    {
+        octaGo = null;
+        octaGo = go;
+    }
+}
+
 public class Spawner : MonoBehaviour
 {
     public Transform[] spawnPoints;
 
-    public Transform[] octagonSpawnPoints;
+    public OctaPoint[] octagonSpawnPoints;
 
     public int level = 0;
     public float time;
 
-    public List<SpawnData> spawnDatas = new List<SpawnData>();
+    public SpawnDatas data;
 
     SpawnAssistant spawnAssistant;
 
@@ -53,15 +84,19 @@ public class Spawner : MonoBehaviour
         time += Time.deltaTime;
         timeTxt.text = string.Format("{0:F0}", time);
 
-        if (spawnDatas.Count - 1 < level) return;
+        if (data.SpawnDataCollection.Count - 1 < level) return;
 
-        bool nowCanSpawn = spawnDatas[level].NowCanSpawn(time);
+        bool nowCanSpawn = data.SpawnDataCollection[level].NowCanSpawn(time);
         if (nowCanSpawn == true)
         {
-            if(spawnDatas[level].spawnEntityName.Contains("Octagon"))
+            if(data.SpawnDataCollection[level].spawnEntityName.Contains("Octagon"))
             {
-                Vector3 pos = octagonSpawnPoints[Random.Range(0, octagonSpawnPoints.Length)].position;
-                Spawn(pos, spawnDatas[level].spawnCount, spawnDatas[level].spawnEntityName);
+                int index = ReturnCorrectPointIndex();
+
+                if(index == -1) return;
+
+                Vector3 pos = octagonSpawnPoints[index].Pos;
+                Spawn(pos, data.SpawnDataCollection[level].spawnEntityName, index);
             }
             else
             {
@@ -69,18 +104,52 @@ public class Spawner : MonoBehaviour
                 if (spawnAssistantPoints.Count > 0)
                 {
                     Vector3 pos = spawnAssistantPoints[Random.Range(0, spawnAssistantPoints.Count)].position;
-                    Spawn(pos, spawnDatas[level].spawnCount, spawnDatas[level].spawnEntityName);
+                    Spawn(pos, data.SpawnDataCollection[level].spawnCount, data.SpawnDataCollection[level].spawnEntityName);
                 }
                 else
                 {
                     Vector3 pos = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
-                    Spawn(pos, spawnDatas[level].spawnCount, spawnDatas[level].spawnEntityName);
+                    Spawn(pos, data.SpawnDataCollection[level].spawnCount, data.SpawnDataCollection[level].spawnEntityName);
                 }
             }
 
             // 여기에 스폰 데이터 넣기
             level += 1;
         }
+    }
+
+    bool CheckHasEmptyPoint()
+    {
+        for (int i = 0; i < octagonSpawnPoints.Length; i++)
+        {
+            if (octagonSpawnPoints[i].CheckAleadySpawn() == true)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    int ReturnCorrectPointIndex()
+    {
+        int index = -1;
+
+        if (CheckHasEmptyPoint() == false) return index;
+
+        while (true)
+        {
+            int tmp = Random.Range(0, octagonSpawnPoints.Length);
+
+            bool canSpawn = octagonSpawnPoints[tmp].CheckAleadySpawn();
+            if(canSpawn == true)
+            {
+                index = tmp;
+                break;
+            }
+        }
+
+        return index;
     }
 
     Vector3 ReturnRandomPos(Vector2 pos) 
@@ -124,5 +193,14 @@ public class Spawner : MonoBehaviour
             Vector3 resetPos = SpawnNotOverlap(pos, loadSpawnPos);
             entity.transform.position = resetPos;
         }
+    }
+
+    public void Spawn(Vector3 pos, string spawnEntityName, int indexOfPoint)
+    {
+        Entity entity = ObjectPooler.SpawnFromPool<Entity>(spawnEntityName);
+
+        octagonSpawnPoints[indexOfPoint].SpawnToPoint(entity.gameObject);
+        entity.InitData();
+        entity.transform.position = pos;
     }
 }

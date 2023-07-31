@@ -91,6 +91,8 @@ public class StatePlayerAttack : IState<Player.State>
     {
         //m_loadPlayer.BattleComponent.UseSkill(SkillUseConditionType.Rush);
 
+        //SoundManager.Instance.PlaySFX(m_loadPlayer.transform.position, "Rush", 0.3f);
+
         m_loadPlayer.Animator.SetBool("NowAttack", true);
         m_loadPlayer.DashComponent.PlayDash(savedAttackVec, m_loadPlayer.Data.RushThrust * m_loadPlayer.Data.RushRatio, m_loadPlayer.Data.RushTime);
 

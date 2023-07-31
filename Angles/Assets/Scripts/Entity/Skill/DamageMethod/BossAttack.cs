@@ -35,6 +35,8 @@ public class BossAttack : DamageMethod
             Attack(supportData);
             Effect(supportData, effectMethod3);
         }
+
+        SoundManager.Instance.PlaySFX(supportData.Me.transform.position, supportData.Me.Data.SfxName, supportData.Me.Data.Volume);
     }
 
     void Attack(DamageSupportData supportData)

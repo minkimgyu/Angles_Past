@@ -31,7 +31,9 @@ public class SoundManager : Singleton<SoundManager>
     float sfxMasterVolume = 1;
     public float SfxMasterVolume { get { return sfxMasterVolume; } set { sfxMasterVolume = value; } }
 
-    public float BgmMasterVolume { get { return bgmPlayer.volume; }  set { bgmPlayer.volume = value; } }
+    [SerializeField]
+    float bgmMasterVolume = 1;
+    public float BgmMasterVolume { get { return bgmPlayer.volume; }  set { bgmPlayer.volume = bgmMasterVolume; } }
 
 
     protected override void Awake()

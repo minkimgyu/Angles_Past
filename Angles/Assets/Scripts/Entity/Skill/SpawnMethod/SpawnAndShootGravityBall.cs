@@ -11,6 +11,8 @@ public class SpawnAndShootGravityBall : SpawnMethod
 
     public override void Execute(SpawnSupportData supportData)
     {
+        SoundManager.Instance.PlaySFX(supportData.Me.transform.position, "GravityBall", 0.2f);
+
         GravityBallProjectile projectile = ObjectPooler.SpawnFromPool<GravityBallProjectile>(projectileName);
         projectile.Init(supportData.Caster.transform.position);
         supportData.Me.SpawnedObjects.Add(projectile);

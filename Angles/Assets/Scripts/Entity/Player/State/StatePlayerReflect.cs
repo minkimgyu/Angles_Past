@@ -39,6 +39,9 @@ public class StatePlayerReflect : IState<Player.State>
         Message<Player.State> message = new Message<Player.State>();
         message.dir = savedReflectVec;
         Telegram<Player.State> telegram = new Telegram<Player.State>(Player.State.Reflect, Player.State.Attack, message);
+
+        SoundManager.Instance.PlaySFX(loadPlayer.transform.position, "Reflect", 0.3f);
+
         loadPlayer.RevertToPreviousState(telegram);
     }
 

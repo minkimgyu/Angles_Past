@@ -353,10 +353,18 @@ public class EnemyData : HealthEntityData, IData<EnemyData>
     int prefabCount;
     public int PrefabCount { get { return prefabCount; } set { prefabCount = value; } }
 
+    [SerializeField]
+    protected int score;
+    public int Score { get { return score; } set { score = value; } }
+
+    [SerializeField]
+    protected float spawnPercentage;
+    public float SpawnPercentage { get { return spawnPercentage; } set { spawnPercentage = value; } }
+
     public EnemyData() { }
 
     public EnemyData(string name, string shape, string color, bool immortality, float hp, BuffFloat speed, float stunTime, float weight, float drag, float knockBackThrust, GrantedUtilization grantedUtilization, float knockBackDamage, 
-        float skillUseDistance, float skillUseOffsetDistance, float skillUseRange, float skillReuseTime, float followMinDistance, float stopMinDistance, int prefabCount) : base(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust, grantedUtilization)
+        float skillUseDistance, float skillUseOffsetDistance, float skillUseRange, float skillReuseTime, float followMinDistance, float stopMinDistance, int prefabCount, int score, float spawnPercentage) : base(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust, grantedUtilization)
     {
         this.knockBackDamage = knockBackDamage;
         this.skillUseDistance = skillUseDistance;
@@ -366,11 +374,13 @@ public class EnemyData : HealthEntityData, IData<EnemyData>
         this.followMinDistance = followMinDistance;
         this.stopMinDistance = stopMinDistance;
         this.prefabCount = prefabCount;
+        this.score = score;
+        this.spawnPercentage = spawnPercentage;
     }
 
     public EnemyData CopyData()
     {
-        return new EnemyData(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust, grantedUtilization, knockBackDamage, skillUseDistance, skillUseOffsetDistance, skillUseRange, skillReuseTime, followMinDistance, stopMinDistance, prefabCount);
+        return new EnemyData(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust, grantedUtilization, knockBackDamage, skillUseDistance, skillUseOffsetDistance, skillUseRange, skillReuseTime, followMinDistance, stopMinDistance, prefabCount, score, spawnPercentage);
     }
 }
 

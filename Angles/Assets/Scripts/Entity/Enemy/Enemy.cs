@@ -44,9 +44,6 @@ public abstract class Enemy<T> : StateMachineEntity<T>, IHealth
 
     public Action<float, Vector2, float> UnderAttackAction;
 
-    [SerializeField]
-    float spawnPercentage = 0.1f;
-
     string[] dropSkills = { "GhostItem", "BarrierItem", "BladeItem", "KnockbackItem", "ShockwaveItem", "SpawnBallItem", "SpawnGravityBallItem", "StickyBombItem" };
 
     protected virtual void Awake()
@@ -76,6 +73,7 @@ public abstract class Enemy<T> : StateMachineEntity<T>, IHealth
     {
         if (m_data.Hp > 0)
         {
+            SoundManager.Instance.PlaySFX(transform.position, "Hit", 0.7f);
             m_data.Hp -= healthPoint;
             if (m_data.Hp <= 0)
             {
@@ -109,7 +107,7 @@ public abstract class Enemy<T> : StateMachineEntity<T>, IHealth
     {
         float percentage = UnityEngine.Random.Range(0.0f, 1.0f);
 
-        if(percentage <= spawnPercentage)
+        if(percentage <= m_data.SpawnPercentage)
         {
             string name = dropSkills[UnityEngine.Random.Range(0, dropSkills.Length)];
             DropSkill skill = ObjectPooler.SpawnFromPool<DropSkill>(name);
@@ -119,8 +117,11 @@ public abstract class Enemy<T> : StateMachineEntity<T>, IHealth
 
     public virtual void Die()
     {
-        Debug.Log("Die");
+        SoundManager.Instance.PlaySFX(transform.position, "Die", 0.3f);
+
         ShowDieEffect();
+
+        PlayManager.instance.ScoreUp(m_data.Score);
 
         SpawnRandomItem();
         gameObject.SetActive(false);

@@ -18,7 +18,8 @@ public class BarrierComponent : MonoBehaviour
     public void AddBarrier()
     {
         if (maxBarrierCount <= barrierCount) return;
-
+        
+        SoundManager.Instance.PlaySFX(transform.position, "SpawnBall", 0.05f);
         barrierCount += 1;
         effectPlayer = effectMethod.ReturnEffectFromPool();
         effectPlayer.Init(transform, 10000000000000f);
@@ -27,6 +28,7 @@ public class BarrierComponent : MonoBehaviour
 
     public void RemoveBarrier()
     {
+        SoundManager.Instance.PlaySFX(transform.position, "BarrierCrack", 0.3f);
         effectPlayer.StopEffect();
         effectPlayer = null;
     }

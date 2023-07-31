@@ -17,4 +17,10 @@ public class BossEnemy : BaseFollowEnemy
         SetUp(State.Follow);
         SetGlobalState(attack);
     }
+
+    public override void Die()
+    {
+        base.Die();
+        PlayManager.instance.GameClear();
+    }
 }
