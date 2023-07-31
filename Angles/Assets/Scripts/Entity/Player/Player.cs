@@ -200,6 +200,7 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
         if (col.gameObject.CompareTag("DropItem"))
         {
             DropSkill dropSkill = col.GetComponent<DropSkill>();
+            SoundManager.Instance.PlaySFX(transform.position, "GetItem", 0.1f);
             m_battleComponent.LootingSkill(dropSkill.ReturnSkill());
         }
     }
@@ -264,6 +265,7 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
 
     public void UnderAttack(float healthPoint, Vector2 dir, float thrust)
     {
+        SoundManager.Instance.PlaySFX(transform.position, "Hit", 0.7f);
         if (UnderAttackAction != null) UnderAttackAction(healthPoint, dir, thrust);
     }
 

@@ -44,6 +44,7 @@ public class StatePlayerAttackReady : IState<Player.State>
         message.dir = -m_loadPlayer.ActionVec;
         Telegram<Player.State> telegram = new Telegram<Player.State>(Player.State.AttackReady, Player.State.Attack, message);
 
+        SoundManager.Instance.PlaySFX(m_loadPlayer.transform.position, "Rush", 0.3f);
         m_loadPlayer.SetState(Player.State.Attack, telegram);
     }
 

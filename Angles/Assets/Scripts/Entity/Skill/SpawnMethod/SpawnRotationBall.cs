@@ -12,6 +12,8 @@ public class SpawnRotationBall : SpawnMethod
 
     public override void Execute(SpawnSupportData supportData)
     {
+        SoundManager.Instance.PlaySFX(supportData.Caster.transform.position, "SpawnBall", 0.05f);
+
         for (int i = 0; i < supportData.Me.Data.SpawnCount; i++)
         {
             BasicProjectile projectile = ObjectPooler.SpawnFromPool<BasicProjectile>(projectileName);

@@ -33,6 +33,15 @@ public class BuffData : BaseData, IData<BuffData>
 [System.Serializable]
 public class SkillData : BaseData, IData<SkillData>
 {
+    [Header("Sound")]
+    [SerializeField]
+    string sfxName;
+    public string SfxName { get { return sfxName; } set { sfxName = value; } }
+
+    [SerializeField]
+    float volume;
+    public float Volume { get { return volume; } set { volume = value; } }
+
     [Header("Call")]
 
     [SerializeField]
@@ -197,11 +206,14 @@ public class SkillData : BaseData, IData<SkillData>
         return false;
     }
 
-    public SkillData(string name, string prefabName, int maxUseCount, int useCount, SkillOverlapType overlapType, SkillUseConditionType useConditionType, SkillUseCountSubtractType countSubtractType, SkillSynthesisType synthesisType,
+    public SkillData(string name, string sfxName, float volume, string prefabName, int maxUseCount, int useCount, SkillOverlapType overlapType, SkillUseConditionType useConditionType, SkillUseCountSubtractType countSubtractType, SkillSynthesisType synthesisType,
         int tickCount, float preDelay, float duration, float radiusRange, Vector2 boxRange, Vector2 offsetRange, float damage, float knockBackThrust, float disableTime, EntityTag[] hitTarget, int prefabCount, 
         int spawnCount, float rotationSpeed)
     : base(name)
     {
+        this.sfxName = sfxName;
+        this.volume = volume;
+
         this.prefabName = prefabName;
         this.maxUseCount = maxUseCount;
         this.useCount = useCount; 
@@ -230,7 +242,7 @@ public class SkillData : BaseData, IData<SkillData>
 
     public SkillData CopyData()
     {
-        return new SkillData(name, prefabName, maxUseCount, useCount, overlapType, useConditionType, countSubtractType, synthesisType, tickCount, preDelay, duration, radiusRange, boxRange, offsetRange, damage, knockBackThrust, 
+        return new SkillData(name, sfxName, volume, prefabName, maxUseCount, useCount, overlapType, useConditionType, countSubtractType, synthesisType, tickCount, preDelay, duration, radiusRange, boxRange, offsetRange, damage, knockBackThrust, 
             disableTime, hitTarget, prefabCount, spawnCount, rotationSpeed);
     }
 

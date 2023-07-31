@@ -8,6 +8,9 @@ using UnityEngine;
 public class CircleRangeAttack : DamageMethod
 {
     [SerializeField]
+    EffectMethod hitEffect;
+
+    [SerializeField]
     bool exceptMe;
 
     public override void Execute(DamageSupportData supportData)
@@ -22,9 +25,14 @@ public class CircleRangeAttack : DamageMethod
                 if (hit[i].transform.gameObject == supportData.Caster) continue;
             }
 
-            DamageToEntity(supportData.Me.gameObject, hit[i].transform, supportData.Me.Data);
+
+            if(!DamageToEntity(supportData.Me.gameObject, hit[i].transform, supportData.Me.Data)) continue;
+
+            ShowNomalHitEffect(supportData, hit[i].transform);
         }
 
+
+        SoundManager.Instance.PlaySFX(supportData.Me.transform.position, supportData.Me.Data.SfxName, supportData.Me.Data.Volume);
 
         BasicEffectPlayer effectPlayer = effectMethod.ReturnEffectFromPool();
 
@@ -33,6 +41,18 @@ public class CircleRangeAttack : DamageMethod
         supportData.Me.EffectPlayer = effectPlayer; // Effect 변수 초기화
 
         effectPlayer.Init(supportData.Me.transform, supportData.Me.Data.DisableTime);
+        effectPlayer.PlayEffect();
+    }
+    
+    void ShowNomalHitEffect(DamageSupportData supportData, Transform hitTr)
+    {
+        BasicEffectPlayer effectPlayer = hitEffect.ReturnEffectFromPool();
+
+        if (effectPlayer == null) return;
+
+        supportData.Me.EffectPlayer = effectPlayer; // Effect 변수 초기화
+
+        effectPlayer.Init(hitTr.position, supportData.Me.Data.DisableTime);
         effectPlayer.PlayEffect();
     }
 }

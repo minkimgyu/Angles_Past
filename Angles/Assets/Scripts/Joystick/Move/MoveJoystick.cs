@@ -58,6 +58,7 @@ public class MoveJoystick : VariableJoystick
 
     private void Awake()
     {
+        joystickType = JoystickType.Floating;
         joyController = new JoyController(this);
         keyController = new KeyController();
     }

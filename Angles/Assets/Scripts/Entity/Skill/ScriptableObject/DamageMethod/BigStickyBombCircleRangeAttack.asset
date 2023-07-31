@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: BigStickyBombCircleRangeAttack
   m_EditorClassIdentifier: 
   effectMethod: {fileID: 11400000, guid: d7b4ac760f6fd044782e5464b5ce61df, type: 2}
+  hitEffect: {fileID: 11400000, guid: 70a4f770cb119ad458e084d7bc4acc72, type: 2}
+  exceptMe: 0

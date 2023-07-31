@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillDatas:
   - name: Knockback
+    sfxName: HexagonAttack
+    volume: 0.7
     prefabName: Knockback
     maxUseCount: 1
     useCount: 1
@@ -36,6 +38,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: Shockwave
+    sfxName: HexagonAttack
+    volume: 0.3
     prefabName: Shockwave
     maxUseCount: 1
     useCount: 1
@@ -58,6 +62,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: Blade
+    sfxName: Blade
+    volume: 0.3
     prefabName: Blade
     maxUseCount: 1
     useCount: 1
@@ -65,13 +71,13 @@ MonoBehaviour:
     useConditionType: 1
     countSubtractType: 1
     synthesisType: 0
-    damage: 2
-    knockBackThrust: 2
+    damage: 1
+    knockBackThrust: 3
     hitTarget: 01000000
     prefabCount: 0
     preDelay: 0
-    tickCount: 8
-    duration: 9
+    tickCount: 20
+    duration: 10
     radiusRange: 2
     boxRange: {x: 0, y: 0}
     offsetRange: {x: 0, y: 0}
@@ -80,6 +86,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 1.2
   - name: StickyBomb
+    sfxName: 
+    volume: 0
     prefabName: StickyBomb
     maxUseCount: 2
     useCount: 2
@@ -102,6 +110,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: SpawnBall
+    sfxName: 
+    volume: 0
     prefabName: SpawnBall
     maxUseCount: 1
     useCount: 1
@@ -124,6 +134,8 @@ MonoBehaviour:
     rotationSpeed: 30
     disableTime: 3
   - name: SpawnGravityBall
+    sfxName: 
+    volume: 0
     prefabName: SpawnGravityBall
     maxUseCount: 1
     useCount: 1
@@ -145,29 +157,9 @@ MonoBehaviour:
     spawnCount: 1
     rotationSpeed: 0
     disableTime: 0.8
-  - name: SpawnBoomerang
-    prefabName: SpawnBoomerang
-    maxUseCount: 1
-    useCount: 1
-    overlapType: 0
-    useConditionType: 1
-    countSubtractType: 1
-    synthesisType: 0
-    damage: 0
-    knockBackThrust: 0
-    hitTarget: 01000000
-    prefabCount: 0
-    preDelay: 0
-    tickCount: 0
-    duration: 0
-    radiusRange: 0
-    boxRange: {x: 0, y: 0}
-    offsetRange: {x: 0, y: 0}
-    directions: []
-    spawnCount: 1
-    rotationSpeed: 0
-    disableTime: 0.8
   - name: SpawnTornado
+    sfxName: 
+    volume: 0
     prefabName: SpawnTornado
     maxUseCount: 1
     useCount: 1
@@ -190,6 +182,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 0.8
   - name: TornadoExplosion
+    sfxName: RectangleAttack
+    volume: 0.4
     prefabName: TornadoExplosion
     maxUseCount: 1
     useCount: 1
@@ -212,6 +206,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: EnemyContactKnockback
+    sfxName: 
+    volume: 0
     prefabName: EnemyContactKnockback
     maxUseCount: 1
     useCount: 1
@@ -234,6 +230,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: GearAttack
+    sfxName: 
+    volume: 0
     prefabName: Punch
     maxUseCount: 1
     useCount: 1
@@ -256,6 +254,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: SpikeAttack
+    sfxName: 
+    volume: 0
     prefabName: Punch
     maxUseCount: 1
     useCount: 1
@@ -278,6 +278,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: PressAttack
+    sfxName: 
+    volume: 0
     prefabName: Punch
     maxUseCount: 1
     useCount: 1
@@ -300,6 +302,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: PressJustPush
+    sfxName: 
+    volume: 0
     prefabName: Punch
     maxUseCount: 1
     useCount: 1
@@ -322,6 +326,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: YellowSelfDestruction
+    sfxName: RectangleAttack
+    volume: 0.2
     prefabName: SelfDestruction
     maxUseCount: 1
     useCount: 1
@@ -344,6 +350,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: RedSelfDestruction
+    sfxName: RectangleAttack
+    volume: 0.2
     prefabName: SelfDestruction
     maxUseCount: 1
     useCount: 1
@@ -355,7 +363,7 @@ MonoBehaviour:
     knockBackThrust: 7
     hitTarget: 0000000001000000
     prefabCount: 0
-    preDelay: 1
+    preDelay: 1.5
     tickCount: 0
     duration: 0
     radiusRange: 2.5
@@ -366,6 +374,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: OperaSelfDestruction
+    sfxName: RectangleAttack
+    volume: 0.2
     prefabName: SelfDestruction
     maxUseCount: 1
     useCount: 1
@@ -377,7 +387,7 @@ MonoBehaviour:
     knockBackThrust: 10
     hitTarget: 00000000
     prefabCount: 0
-    preDelay: 1
+    preDelay: 1.5
     tickCount: 0
     duration: 0
     radiusRange: 2.5
@@ -388,6 +398,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: HeptagonContactAttack
+    sfxName: 
+    volume: 0
     prefabName: HeptagonContactAttack
     maxUseCount: 1
     useCount: 1
@@ -410,6 +422,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: OperaHeptagonContactAttack
+    sfxName: 
+    volume: 0
     prefabName: HeptagonContactAttack
     maxUseCount: 1
     useCount: 1
@@ -432,6 +446,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: SpawnBulletClocwise
+    sfxName: PentagonAttack
+    volume: 0.5
     prefabName: SpawnBulletClocwise
     maxUseCount: 1
     useCount: 1
@@ -443,7 +459,7 @@ MonoBehaviour:
     knockBackThrust: 0
     hitTarget: 
     prefabCount: 0
-    preDelay: 0
+    preDelay: 0.5
     tickCount: 5
     duration: 2
     radiusRange: 0
@@ -454,6 +470,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: SpawnBulletFastClocwise
+    sfxName: PentagonAttack
+    volume: 0.5
     prefabName: SpawnBulletFastClocwise
     maxUseCount: 1
     useCount: 1
@@ -465,7 +483,7 @@ MonoBehaviour:
     knockBackThrust: 0
     hitTarget: 
     prefabCount: 0
-    preDelay: 0
+    preDelay: 0.5
     tickCount: 5
     duration: 2
     radiusRange: 0
@@ -476,6 +494,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: SpawnBulletReverseClocwise
+    sfxName: PentagonAttack
+    volume: 0.5
     prefabName: SpawnBulletReverseClocwise
     maxUseCount: 1
     useCount: 1
@@ -487,7 +507,7 @@ MonoBehaviour:
     knockBackThrust: 0
     hitTarget: 
     prefabCount: 0
-    preDelay: 0
+    preDelay: 0.5
     tickCount: 5
     duration: 2
     radiusRange: 0
@@ -498,6 +518,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: BulletAttack
+    sfxName: 
+    volume: 0
     prefabName: Punch
     maxUseCount: 1
     useCount: 1
@@ -520,6 +542,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: CreateBarrier
+    sfxName: 
+    volume: 0
     prefabName: CreateBarrier
     maxUseCount: 1
     useCount: 1
@@ -542,6 +566,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: CastGhost
+    sfxName: 
+    volume: 0
     prefabName: CastGhost
     maxUseCount: 1
     useCount: 1
@@ -564,6 +590,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: HexagonAttack
+    sfxName: HexagonAttack
+    volume: 0.3
     prefabName: HexagonAttack
     maxUseCount: 1
     useCount: 1
@@ -586,6 +614,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: RedHexagonAttack
+    sfxName: HexagonAttack
+    volume: 0.3
     prefabName: RedHexagonAttack
     maxUseCount: 1
     useCount: 1
@@ -608,6 +638,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: BigHexagonAttack
+    sfxName: HexagonAttack
+    volume: 0.3
     prefabName: BigHexagonAttack
     maxUseCount: 1
     useCount: 1
@@ -630,6 +662,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: OctagonLaserAttack
+    sfxName: OctagonAttack
+    volume: 0.15
     prefabName: OctagonLaserAttack
     maxUseCount: 1
     useCount: 1
@@ -652,6 +686,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 0.8
   - name: OperaOctagonLaserAttack
+    sfxName: OctagonAttack
+    volume: 0.15
     prefabName: OctagonLaserAttack
     maxUseCount: 1
     useCount: 1
@@ -674,6 +710,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 0.8
   - name: Punch
+    sfxName: 
+    volume: 0
     prefabName: Punch
     maxUseCount: 1
     useCount: 1
@@ -696,6 +734,8 @@ MonoBehaviour:
     rotationSpeed: 0
     disableTime: 3
   - name: SpawnBallPunch
+    sfxName: 
+    volume: 0
     prefabName: Punch
     maxUseCount: 1
     useCount: 1
@@ -717,16 +757,18 @@ MonoBehaviour:
     spawnCount: 0
     rotationSpeed: 0
     disableTime: 3
-  - name: BoomerangPunch
-    prefabName: Punch
+  - name: SpawnBoomerang
+    sfxName: 
+    volume: 0
+    prefabName: SpawnBoomerang
     maxUseCount: 1
     useCount: 1
     overlapType: 0
-    useConditionType: 0
-    countSubtractType: 0
+    useConditionType: 1
+    countSubtractType: 1
     synthesisType: 0
-    damage: 2
-    knockBackThrust: 7
+    damage: 0
+    knockBackThrust: 0
     hitTarget: 01000000
     prefabCount: 0
     preDelay: 0
@@ -736,10 +778,36 @@ MonoBehaviour:
     boxRange: {x: 0, y: 0}
     offsetRange: {x: 0, y: 0}
     directions: []
+    spawnCount: 1
+    rotationSpeed: 0
+    disableTime: 0.8
+  - name: Boomerang
+    sfxName: Blade
+    volume: 0.3
+    prefabName: Boomerang
+    maxUseCount: 1
+    useCount: 1
+    overlapType: 1
+    useConditionType: 4
+    countSubtractType: 1
+    synthesisType: 0
+    damage: 2
+    knockBackThrust: 5
+    hitTarget: 01000000
+    prefabCount: 0
+    preDelay: 0
+    tickCount: 20
+    duration: 10
+    radiusRange: 3.6
+    boxRange: {x: 0, y: 0}
+    offsetRange: {x: 0, y: 0}
+    directions: []
     spawnCount: 0
     rotationSpeed: 0
-    disableTime: 3
+    disableTime: 1.2
   - name: BossAttack
+    sfxName: HexagonAttack
+    volume: 0.3
     prefabName: BossAttack
     maxUseCount: 1
     useCount: 1

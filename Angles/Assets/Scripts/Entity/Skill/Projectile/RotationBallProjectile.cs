@@ -12,7 +12,11 @@ public class RotationBallProjectile : BasicProjectile
         base.OnCollisionEnter2D(col);
 
         if(col.gameObject.tag == "Enemy")
+        {
             NowFinish(); //  조건도 추가
+            SoundManager.Instance.PlaySFX(transform.position, "SpawnBallDestroy", 0.25f);
+        }
+            
     }
 
     public override void OnEnd()

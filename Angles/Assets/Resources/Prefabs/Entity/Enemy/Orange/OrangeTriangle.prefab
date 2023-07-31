@@ -252,5 +252,6 @@ MonoBehaviour:
     followMinDistance: 0
     stopMinDistance: 0
     prefabCount: 0
-  spawnPercentage: 0.13
+    score: 0
+  spawnPercentage: 0.2
   effectMethod: {fileID: 11400000, guid: d778085dbc6cd1445a1a4fae5c197e74, type: 2}

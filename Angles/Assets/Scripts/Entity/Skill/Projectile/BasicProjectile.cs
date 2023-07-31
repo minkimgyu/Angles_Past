@@ -54,7 +54,6 @@ abstract public class BasicProjectile : MonoBehaviour
 
     public virtual void OnEnd()
     {
-        print("End");
         isFinished = false;
         gameObject.SetActive(false);
     }
