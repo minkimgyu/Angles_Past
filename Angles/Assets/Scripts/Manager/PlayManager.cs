@@ -68,7 +68,6 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
 
     public void GameOver()
     {
-        Debug.Log("GameOver");
         gameOverPanel.SetActive(true);
     }
 

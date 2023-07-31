@@ -20,8 +20,11 @@ public class Sound
     public AudioClip AudioClip { get { return audioClip; } }
 }
 
-public class SoundManager : Singleton<SoundManager>
+public class SoundManager : MonoBehaviour
 {
+    public static SoundManager instance;
+    public static SoundManager Instance { get { return instance; } }
+
     [SerializeField]
     List<Sound> sounds;
 
@@ -36,9 +39,9 @@ public class SoundManager : Singleton<SoundManager>
     public float BgmMasterVolume { get { return bgmPlayer.volume; }  set { bgmPlayer.volume = bgmMasterVolume; } }
 
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
+        instance = this;
         bgmPlayer = GetComponent<AudioSource>();
     }
 

@@ -40,7 +40,7 @@ MonoBehaviour:
     rushThrust: 30
     rushRatio: 0
     rushRecoverRatio: 0.01
-    rushTime: 3
+    rushTime: 2
     attackCancelOffset: 0.2
     reflectThrust: 20
     maxDashCount: 3
