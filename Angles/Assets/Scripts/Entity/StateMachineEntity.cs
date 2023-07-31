@@ -74,7 +74,8 @@ abstract public class StateMachineEntity<T> : Entity // T는 Entity, W는 State
     public IState<T> GlobalState { get; private set; }
     public IState<T> PreviousState { get; private set; }
 
-    
+    protected bool fixState = false;
+    public bool FixState { get { return fixState; } set { fixState = value; } }
 
     //기본 상태를 생성시에 설정하게 생성자 만들기.
     protected void SetUp(T defaultState) // 가상 함수 처리
@@ -142,6 +143,8 @@ abstract public class StateMachineEntity<T> : Entity // T는 Entity, W는 State
     //외부에서 현재상태를 바꿔주는 부분.
     public bool SetState(T state)//IState<T, W> state) // 추상 함수 처리
     {
+
+        if (fixState == true) return false;
         //같은 행동을 연이어서 세팅하지 못하도록 예외처리.
         //예를 들어, 지금 점프중인데 또 점프를 하는 무한점프 버그를 예방할수도 있다.
 
@@ -170,6 +173,8 @@ abstract public class StateMachineEntity<T> : Entity // T는 Entity, W는 State
     //외부에서 현재상태를 바꿔주는 부분.
     public bool SetState(T state, Telegram<T> message) // 추상 함수 처리
     {
+        if (fixState == true) return false;
+
         //같은 행동을 연이어서 세팅하지 못하도록 예외처리.
         //예를 들어, 지금 점프중인데 또 점프를 하는 무한점프 버그를 예방할수도 있다.
         if (CurrentState == m_dicState[state])

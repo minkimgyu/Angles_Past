@@ -14,8 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnDatas:
   - levelUpTime: 3
-    spawnEntityName: RedRectangle
-    spawnCount: 0
-  - levelUpTime: 5
-    spawnEntityName: OperaRectangle
+    spawnEntityName: YellowHexagon
     spawnCount: 1

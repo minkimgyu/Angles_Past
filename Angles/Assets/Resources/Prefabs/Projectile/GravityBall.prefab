@@ -9452,7 +9452,7 @@ MonoBehaviour:
     buffNames: []
   rigidbodies: []
   endTime: 5
-  absorbThrust: 40
+  absorbThrust: 30
 --- !u!114 &4700921922852446071
 MonoBehaviour:
   m_ObjectHideFlags: 0

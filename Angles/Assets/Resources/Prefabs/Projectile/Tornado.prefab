@@ -14378,7 +14378,7 @@ MonoBehaviour:
     buffNames: []
   rigidbodies: []
   endTime: 4.9
-  absorbThrust: 40
+  absorbThrust: 30
 --- !u!58 &2363303874491838153
 CircleCollider2D:
   m_ObjectHideFlags: 0

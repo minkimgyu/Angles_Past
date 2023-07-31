@@ -20,7 +20,7 @@ public class StateFollowEnemyDamaged : IState<BaseFollowEnemy.State>
         if (loadFollowEnemy.DashComponent.NowFinish == true)
         {
             ExitStun();
-            loadFollowEnemy.RevertToPreviousState();
+            loadFollowEnemy.SetState(BaseFollowEnemy.State.Follow);
         }
     }
 
