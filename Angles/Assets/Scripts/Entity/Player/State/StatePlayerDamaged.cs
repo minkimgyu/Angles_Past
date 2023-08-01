@@ -43,7 +43,7 @@ public class StatePlayerDamaged : IState<Player.State>
 
     void GetDamage(float healthPoint)
     {
-        if (loadPlayer.BarrierComponent.CanBarrierAbsorb() == true) return;
+        if (loadPlayer.BarrierComponent.CanBarrierAbsorb(healthPoint) == true) return;
 
         if (loadPlayer.Data.Immortality == true) return;
 

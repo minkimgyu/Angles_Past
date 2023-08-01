@@ -21241,10 +21241,10 @@ MonoBehaviour:
     size: 1
   - tag: Punch
     prefab: {fileID: 7087183545528624674, guid: 268ac42fcaa7ab743a1c316b42102b16, type: 3}
-    size: 1
+    size: 5
   - tag: PunchEffect
     prefab: {fileID: 2395108631336689389, guid: 80d2eb4d8a35c08408ca42d196f5553d, type: 3}
-    size: 1
+    size: 15
   - tag: SpawnBall
     prefab: {fileID: 4963802983030721370, guid: 6557558b6295c864bac3ff5056864b08, type: 3}
     size: 1
@@ -21268,7 +21268,7 @@ MonoBehaviour:
     size: 1
   - tag: Bullet
     prefab: {fileID: 5294362089191587272, guid: 9d878cc0c450a7a45b03d7081612f017, type: 3}
-    size: 1
+    size: 15
   - tag: HeptagonContactAttack
     prefab: {fileID: 5562373666600423719, guid: 9b1d2b46b89ceac4ea10201d4f7c4b98, type: 3}
     size: 1
@@ -21382,16 +21382,16 @@ MonoBehaviour:
     size: 1
   - tag: YellowTriangle
     prefab: {fileID: 2375395198625037887, guid: 3b50184f7db2b134e84e94284dde5f02, type: 3}
-    size: 1
+    size: 5
   - tag: YellowRectangle
     prefab: {fileID: 4160956994482129137, guid: 162f2e699f0a8014c8852959662bc600, type: 3}
-    size: 1
+    size: 5
   - tag: YellowPentagon
     prefab: {fileID: 4878745538717634273, guid: 0af5a723745fa0047959e7e0ef3ce0b8, type: 3}
-    size: 1
+    size: 2
   - tag: YellowHexagon
     prefab: {fileID: 1610933736780651266, guid: 66b370497636cd842a8a1bd037219141, type: 3}
-    size: 1
+    size: 2
   - tag: YellowHeptagon
     prefab: {fileID: 7918802028062063658, guid: a7d9f4d52516c554b9acc3a67a547204, type: 3}
     size: 1
@@ -21400,34 +21400,34 @@ MonoBehaviour:
     size: 1
   - tag: OrangeTriangle
     prefab: {fileID: 2375395198625037887, guid: 85d47b562d48c3347aa0a5bc9c20a1d9, type: 3}
-    size: 1
+    size: 5
   - tag: OrangeRectangle
     prefab: {fileID: 4160956994482129137, guid: 5bfc81caa62d3f443992904666359049, type: 3}
-    size: 1
+    size: 5
   - tag: OrangePentagon
     prefab: {fileID: 4878745538717634273, guid: 4a7796ec272b06647aa6cf9f952bb726, type: 3}
-    size: 1
+    size: 2
   - tag: OrangeHexagon
     prefab: {fileID: 1610933736780651266, guid: c3785cbf88de7fe4b8eadbffb7f402cc, type: 3}
-    size: 1
+    size: 2
   - tag: OrangeHeptagon
     prefab: {fileID: 7918802028062063658, guid: ff34b1b9bea8c4a4aa7ffecc2185a0ef, type: 3}
-    size: 1
+    size: 2
   - tag: OrangeOctagon
     prefab: {fileID: 6379353961815610340, guid: cd19f99ac4fca4044a568ab9561c3d2b, type: 3}
     size: 1
   - tag: RedTriangle
     prefab: {fileID: 2375395198625037887, guid: 5fe904693bb59a74298382cb1e6d3562, type: 3}
-    size: 1
+    size: 3
   - tag: RedRectangle
     prefab: {fileID: 4160956994482129137, guid: f389c8562774f0d46aa3498ce619e633, type: 3}
-    size: 1
+    size: 3
   - tag: RedPentagon
     prefab: {fileID: 4878745538717634273, guid: 2660409e85266ba48b8cc48fdb80d58a, type: 3}
-    size: 1
+    size: 2
   - tag: RedHexagon
     prefab: {fileID: 1610933736780651266, guid: 4004380c685ade044b2279b3dd3d7d62, type: 3}
-    size: 1
+    size: 2
   - tag: RedHeptagon
     prefab: {fileID: 7918802028062063658, guid: 350e8d7abb4558a4bb0e35361c27f5c1, type: 3}
     size: 1
@@ -21436,16 +21436,16 @@ MonoBehaviour:
     size: 1
   - tag: OperaTriangle
     prefab: {fileID: 2375395198625037887, guid: 5369ff9513ee3a74aab67d6c440b7395, type: 3}
-    size: 1
+    size: 3
   - tag: OperaRectangle
     prefab: {fileID: 4160956994482129137, guid: cd74b16660da1134f83c666bfdb4b23b, type: 3}
-    size: 1
+    size: 3
   - tag: OperaPentagon
     prefab: {fileID: 4878745538717634273, guid: 8fe4978e98468d340ba6e42f626a6acd, type: 3}
-    size: 1
+    size: 2
   - tag: OperaHexagon
     prefab: {fileID: 1610933736780651266, guid: d3739c15c22c2204fa4051ba3e917101, type: 3}
-    size: 1
+    size: 2
   - tag: OperaHeptagon
     prefab: {fileID: 7918802028062063658, guid: 9c936b47466033b4ab3ae8a1e87c5154, type: 3}
     size: 1

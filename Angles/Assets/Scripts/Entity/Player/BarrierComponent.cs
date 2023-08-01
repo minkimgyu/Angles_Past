@@ -26,14 +26,16 @@ public class BarrierComponent : MonoBehaviour
         effectPlayer.PlayEffect();
     }
 
-    public void RemoveBarrier()
+    public void RemoveBarrier(float damage)
     {
+        if (damage == 0f) return;
+
         SoundManager.Instance.PlaySFX(transform.position, "BarrierCrack", 0.3f);
         effectPlayer.StopEffect();
         effectPlayer = null;
     }
 
-    public bool CanBarrierAbsorb()
+    public bool CanBarrierAbsorb(float damage)
     {
         if (barrierCount <= 0) return false;
 
@@ -42,7 +44,7 @@ public class BarrierComponent : MonoBehaviour
         if (barrierCount <= 0)
         {
             barrierCount = 0;
-            RemoveBarrier();
+            RemoveBarrier(damage);
         }
 
         return true;

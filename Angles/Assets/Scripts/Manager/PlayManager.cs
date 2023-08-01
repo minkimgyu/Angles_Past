@@ -46,6 +46,10 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
     [SerializeField]
     int totalScore = 0;
 
+    [SerializeField]
+    bool m_gameClear = false;
+    public bool GameClearCheck { get { return m_gameClear; }}
+
     // Start is called before the first frame update
     protected void Awake()
     { 
@@ -79,6 +83,7 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
 
     public void GameClear()
     {
+        m_gameClear = true;
         finalScoreTxt.text = totalScore.ToString();
         gameClearPanel.SetActive(true);
     }
@@ -91,6 +96,11 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
     public void ReturnToMenu()
     {
         SceneManager.LoadScene("MenuScene");
+
+        if (Time.timeScale == 0)
+        {
+            Time.timeScale = 1;
+        }
     }
 
     public void OnOffBGM()

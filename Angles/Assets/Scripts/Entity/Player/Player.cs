@@ -265,6 +265,8 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
 
     public void UnderAttack(float healthPoint, Vector2 dir, float thrust)
     {
+        if(PlayManager.Instance.GameClearCheck == true) return;
+
         SoundManager.Instance.PlaySFX(transform.position, "Hit", 0.7f);
         if (UnderAttackAction != null) UnderAttackAction(healthPoint, dir, thrust);
     }
