@@ -24,7 +24,7 @@ MonoBehaviour:
     countSubtractType: 1
     synthesisType: 0
     damage: 10
-    knockBackThrust: 8
+    knockBackThrust: 12
     hitTarget: 01000000
     prefabCount: 0
     preDelay: 2
