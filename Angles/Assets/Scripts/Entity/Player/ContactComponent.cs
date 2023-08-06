@@ -2,30 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ContactSupportData // 이런식으로 스킬에 필요한 데이터 묶어서 보내기
-{
-    List<Vector3> contactPos;
-    public List<Vector3> ContactPos { get { return contactPos; } }
+//public class ContactSupportData // 이런식으로 스킬에 필요한 데이터 묶어서 보내기
+//{
+//    List<Vector3> contactPos;
+//    public List<Vector3> ContactPos { get { return contactPos; } }
 
-    List<Entity> contactEntity;
-    public List<Entity> ContactEntity { get { return contactEntity; } }
+//    List<Entity> contactEntity;
+//    public List<Entity> ContactEntity { get { return contactEntity; } }
 
-    public ContactSupportData(List<Entity> contactEntity, List<Vector3> contactPos)
-    {
-        this.contactEntity = contactEntity;
-        this.contactPos = contactPos;
-    }
-}
+//    public ContactSupportData(List<Entity> contactEntity, List<Vector3> contactPos)
+//    {
+//        this.contactEntity = contactEntity;
+//        this.contactPos = contactPos;
+//    }
+//}
 
 [System.Serializable]
 public struct ContactData
 {
-    public GameObject go;
+    public Transform tr;
     public Vector3 pos;
 
-    public ContactData(GameObject go, Vector3 pos)
+    public ContactData(Transform tr, Vector3 pos)
     {
-        this.go = go;
+        this.tr = tr;
         this.pos = pos;
     }
 }
@@ -40,13 +40,13 @@ public class ContactComponent : MonoBehaviour
 
     public void CallWhenCollisionEnter(Collision2D col)
     {
-        ContactData contactData = new ContactData(col.gameObject, col.contacts[0].point);
+        ContactData contactData = new ContactData(col.transform, col.contacts[0].point);
         m_contactDatas.Add(contactData);
     }
 
     public void CallWhenCollisionExit(Collision2D col)
     {
-        ContactData contactData = m_contactDatas.Find(x => x.go == col.gameObject);
+        ContactData contactData = m_contactDatas.Find(x => x.tr == col.transform);
         m_contactDatas.Remove(contactData);
     }
 
@@ -60,21 +60,18 @@ public class ContactComponent : MonoBehaviour
         return false;
     }
 
-    public ContactSupportData ReturnContactSupportData()
+    public List<ContactData> ReturnContactSupportData()
     {
-        List<Vector3> pos = new List<Vector3>();
-        List<Entity> entities = new List<Entity>();
+        List<ContactData> tmpContactDatas = new List<ContactData>();
 
         for (int i = 0; i < m_contactDatas.Count; i++)
         {
-            m_contactDatas[i].go.TryGetComponent(out Entity entity);
+            m_contactDatas[i].tr.TryGetComponent(out Entity entity);
             if (entity == null || !CheckCorrectEntity(entity.InheritedTag)) continue;
 
-            pos.Add(m_contactDatas[i].pos);
-            entities.Add(entity);
+            tmpContactDatas.Add(m_contactDatas[i]);
         }
 
-        ContactSupportData supportData = new ContactSupportData(entities, pos);
-        return supportData;
+        return tmpContactDatas;
     }
 }

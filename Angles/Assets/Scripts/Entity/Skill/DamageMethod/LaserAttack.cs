@@ -24,8 +24,6 @@ public class LaserAttack : DamageMethod
         List<Vector3> hitPos = new List<Vector3>();
         List<Vector3> hitEffectPos = new List<Vector3>();
 
-        int ignoreLayer = supportData.Caster.layer;
-
         RaycastHit2D[] hits = Physics2D.RaycastAll(supportData.Me.transform.position, supportData.Me.Data.Directions[supportData.m_TickCount - 1], maxDistance);
         Debug.DrawRay(supportData.Me.transform.position, supportData.Me.Data.Directions[supportData.m_TickCount - 1].normalized, Color.green, maxDistance);
 
