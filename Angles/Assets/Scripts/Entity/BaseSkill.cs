@@ -2,137 +2,369 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//[CreateAssetMenu(fileName = "BaseSkill", menuName = "Scriptable Object/BaseSkill", order = int.MaxValue)]
-//[System.Serializable]
-//public class BaseSkill : ScriptableObject
-//{
-//    [SerializeField]
-//    protected SkillData data; // --> 데미지, 범위 등등 공통된 변수만 넣어주자
-//    public SkillData Data{ get { return data; } }
 
-//    //--> 앞으로 이펙트 데이터도 필요할 것
+public struct SkillSupportData // --> 추후에 버프 추가
+{
+    public SkillSupportData(GameObject caster, SkillData data, Vector3 pos, int tickCount)//, int tickCount)
+    {
+        m_caster = caster;
+        m_data = data;
+        m_Pos = pos;
+        m_tickCount = tickCount;
+    }
 
-//    // 추가로 들어갈 수 있는 것 --> 사용 조건, 
+    GameObject m_caster;
+    public GameObject Caster { get { return m_caster; } }
 
-//    [SerializeField]
-//    DamageMethod damageMethod; // 원거리 공격, 근거리 공격 등등
-//    public DamageMethod DamageMethod { get { return damageMethod; } }
+    SkillData m_data;
+    public SkillData Data { get { return m_data; } }
 
-//    [SerializeField]
-//    EffectMethod effectMethod; // 효과들 모음
-//    public EffectMethod EffectMethod { get { return effectMethod; } }
+    Vector3 m_Pos;
+    public Vector3 Pos { get { return m_Pos; } }
 
-//    public void Execute(BattleComponent battle)
-//    {
-//        damageMethod.Attack(battle.gameObject, data);
-//    }
+    int m_tickCount;
+    public int TickCount { get { return m_tickCount; } }
+}
 
-    //public void Execute(BattleComponent battle, SkillUseType useType)
-    //{
-    //    if (data.UseType != useType) return; // -->  조건 체크
 
-    //    //damageMethod.Attack(battle.gameObject, data);
-    //    //effectMethod.Show(battle.gameObject);
+abstract public class SpecifyLocation
+{
+    protected Transform m_posTr;
+    protected Vector3 m_pos;
+    protected bool m_isFix;
 
-    //    // 오브젝트 풀링에서 스킬 꺼내서 사용
-    //    //Init(this);
-    //}
+    protected GameObject m_caster;
+    public GameObject Caster { get{ return m_caster; } }
 
-    //public void Execute(BattleComponent battle, string name)
-    //{
-    //    if (data.Name != name) return; // -->  조건 체크
+    public virtual void Init(Transform caster, bool isFix)
+    {
+        m_caster = caster.gameObject;
+    }
 
-    //    //damageMethod.Attack(battle.gameObject, data);
-    //    //effectMethod.Show(battle.gameObject);
+    public virtual Vector3 ReturnPos()
+    {
+        if (m_isFix) return m_posTr.position;
+        else return m_pos;
+    }
+}
 
-    //    // 오브젝트 풀링에서 스킬 꺼내서 사용
-    //    //Init(this);
-    //}
+abstract public class LocationToCaster : SpecifyLocation
+{
+    public override void Init(Transform caster, bool isFix)
+    {
+        base.Init(caster, isFix);
 
-    //protected GameObject GetEffectUsingName(string name, Vector3 pos, Quaternion rotation, Transform tr = null)
-    //{
-    //    return ObjectPooler.SpawnFromPool(name, pos, rotation, tr);
-    //}
-//}
+        m_isFix = isFix;
 
-///// <summary>
-///// 사용해도 스킬 사용 카운트가 안 줄음
-///// </summary>
-///// 
-////[CreateAssetMenu(fileName = "InnumerableSkill", menuName = "Scriptable Object/Skill/InnumerableSkill", order = int.MaxValue)]
-//[System.Serializable]
-//public class InnumerableSkill : BaseSkill
-//{
-//    public override void Init(BattleComponent battle)
-//    {
+        if (m_isFix) m_posTr = caster;
+        else m_pos = caster.position;
+    }
+}
 
-//    }
+abstract public class LocationToContactor : SpecifyLocation
+{
+    public override void Init(Transform caster, bool isFix)
+    {
+        base.Init(caster, isFix);
 
-//    public override void Loot(BattleComponent battle)
-//    {
-//        // 비어 놓자
-//    }
-//}
+        caster.TryGetComponent(out ContactComponent contact);
+        if (contact == null) return;
 
-///// <summary>
-///// 사용하면 스킬 사용 카운트가 줄어들음
-///// </summary>
-///// 
-////[CreateAssetMenu(fileName = "CountableSkill", menuName = "Scriptable Object/Skill/CountableSkill", order = int.MaxValue)]
-//[System.Serializable]
-//public class CountableSkill : BaseSkill
-//{
-//    BattleComponent battleComponent;
+        List<ContactData> supportData = contact.ReturnContactSupportData();
 
-//    [SerializeField]
-//    protected int count;
+        m_isFix = isFix;
 
-//    bool IsCountZero()
-//    {
-//        if (count > 0)
-//        {
-//            count -= 1;
-//            if (count == 0) return true;
-//        }
+        if (m_isFix) m_posTr = supportData[0].tr;
+        else m_pos = supportData[0].tr.position;
+    }
+}
 
-//        return false;
-//    }
+abstract public class BaseMethod<T>
+{
+    List<BasicEffectPlayer> effectPlayers;
 
-//    public override void Init(BattleComponent battle)
-//    {
-//        battleComponent = battle;
-//    }
+    public abstract void Execute(SkillSupportData supportData, T value);
 
-//    public override void Execute(BattleComponent battle)
-//    {
-//        base.Execute(battle);
-//        if (IsCountZero()) battleComponent.RemoveSkillData(this);
-//    }
+    protected bool PlayEffect(Transform target, SkillData data)
+    {
+        BasicEffectPlayer player = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(data.Name); // 이팩트 이름 추가
+        if (player == null) return false;
 
-//    public override void Loot(BattleComponent battle)
-//    {
-//        // 비어 놓자
-//    }
-//}
+        player.IsFixed = true;
+        player.Init(target, data.DisableTime);
+        player.PlayEffect();
 
-///// <summary>
-///// 획득하면 스킬 사용 카운트가 올라감
-///// </summary>
-///// 
-////[CreateAssetMenu(fileName = "CountUpSkill", menuName = "Scriptable Object/Skill/CountUpSkill", order = int.MaxValue)]
-//[System.Serializable]
-//public class CountUpSkill : CountableSkill
-//{
-//    [SerializeField]
-//    int upCount;
+        effectPlayers.Add(player);
+        return true;
+    }
 
-//    void CountUp()
-//    {
-//        count += upCount;
-//    }
+    protected bool PlayEffect(Vector3 pos, SkillData data)
+    {
+        BasicEffectPlayer player = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(data.Name); // 이팩트 이름 추가
+        if (player == null) return false;
 
-//    public override void Loot(BattleComponent battle)
-//    {
-//        CountUp();
-//    }
-//}
+        player.IsFixed = false;
+        player.Init(pos, data.DisableTime);
+        player.PlayEffect();
+
+        effectPlayers.Add(player);
+        return true;
+    }
+
+    protected void StopEffect()
+    {
+        for (int i = 0; i < effectPlayers.Count; i++)
+        {
+            effectPlayers[i].StopEffect();
+            effectPlayers[i] = null;
+        }
+    }
+}
+
+abstract public class DamageMethod<T> : BaseMethod<T>
+{
+    protected bool DamageToEntity(GameObject me, Transform enemy, SkillData data)
+    {
+        enemy.TryGetComponent(out IHealth health);
+
+        if (health == null || data.CanHitSkill(health.ReturnEntityTag()) == false) return false;
+
+        health.UnderAttack(health.ReturnHealthEntityData(), data.Damage, -(me.transform.position - enemy.position).normalized, data.KnockBackThrust);
+        return true;
+    }
+}
+
+public class DamageToContactors : DamageMethod<List<ContactData>>
+{
+    public override void Execute(SkillSupportData supportData, List<ContactData> contactData)
+    {
+        for (int i = 0; i < contactData.Count; i++)
+        {
+            DamageToEntity(supportData.Caster, contactData[i].tr, supportData.Data); // 이렇게 진행
+            PlayEffect(contactData[i].tr, supportData.Data);
+        }
+    }
+}
+
+public class DamageToRaycastHit : DamageMethod<RaycastHit2D[]>
+{
+    public override void Execute(SkillSupportData supportData, RaycastHit2D[] hits)
+    {
+        for (int i = 0; i < hits.Length; i++)
+        {
+            DamageToEntity(supportData.Caster, hits[i].transform, supportData.Data); // 이렇게 진행
+        }
+
+        PlayEffect(supportData.Caster.transform, supportData.Data);
+    }
+}
+
+public class DamageToLaserHit : DamageMethod<RaycastHit2D[]>
+{
+    [SerializeField]
+    float hitEffectDisableTime = 1.5f;
+
+    [SerializeField]
+    float maxDistance = 20;
+
+    [SerializeField]
+    List<string> blockedTag = new List<string>();
+
+    public override void Execute(SkillSupportData supportData, RaycastHit2D[] hits)
+    {
+        blockedTag.Add("Wall");
+
+        List<Vector3> hitPos = new List<Vector3>();
+        List<Vector3> hitEffectPos = new List<Vector3>();
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            if (hits[i].transform == null || hits[i].transform == supportData.Caster.transform) continue;
+
+            bool isBlocked = false;
+
+            for (int j = 0; j < blockedTag.Count; j++)
+            {
+                if (hits[i].transform.tag == blockedTag[j])
+                {
+                    hitPos.Add(hits[i].point - (Vector2)supportData.Caster.transform.position);
+                    hitEffectPos.Add(hits[i].point);
+                    isBlocked = true;
+                    break;
+                }
+            }
+
+            if (isBlocked) break;
+
+            if (DamageToEntity(supportData.Caster, hits[i].transform, supportData.Data) == false) continue;
+
+            hitPos.Add(hits[i].point - (Vector2)supportData.Caster.transform.position);
+            hitEffectPos.Add(hits[i].point);
+
+            break;
+        }
+
+        if (hitPos.Count == 0)
+        {
+            hitPos.Add(supportData.Data.Directions[supportData.TickCount - 1] * maxDistance / 2);
+        }
+
+        for (int i = 0; i < hitEffectPos.Count; i++)
+        {
+            PlayEffect(hitEffectPos[i], supportData.Data);
+        }
+
+        PlayEffect(supportData.Caster.transform, supportData.Data);
+        SoundManager.Instance.PlaySFX(supportData.Caster.transform.position, supportData.Data.SfxName, supportData.Data.Volume);
+    }
+}
+public interface ISkill
+{
+    public bool CheckIsFinish();
+
+    public void Init(Transform caster);
+    public void Execute();
+    public void End();
+}
+
+public class BaseSkill<T> : ISkill
+{
+    [SerializeField]
+    protected SkillData data; // --> 데미지, 범위 등등 공통된 변수만 넣어주자
+    public SkillData Data { get { return data; } }
+
+    SpecifyLocation specifyLocation;
+    public SpecifyLocation SpecifyLocation { get { return specifyLocation; } }
+
+    TargetDesignation<T> targetDesignation;
+    public TargetDesignation<T> TargetDesignation { get { return targetDesignation; } }
+
+    [SerializeField]
+    List<BaseMethod<T>> baseMethods;
+
+    public BaseSkill(SpecifyLocation specifyLocation, TargetDesignation<T> targetDesignation, List<BaseMethod<T>> baseMethods)
+    {
+        this.specifyLocation = specifyLocation;
+        this.targetDesignation = targetDesignation;
+        this.baseMethods = baseMethods;
+    }
+
+    float m_preDelay = 0;
+
+    int m_tickCount = 0;
+
+    float m_storedDuration = 0;
+
+    bool m_nowFinish = false;
+    public bool NowFinish { get { return m_nowFinish; } }
+
+    public virtual void Init(Transform caster)
+    {
+        specifyLocation.Init(caster, true); // IsFix는 data 변수로 지정
+    }
+
+    public virtual void Execute() // 여기에서 Unitask 호출해서 틱 당 데미지 적용 함수 추가
+    {
+        float tickDuration = data.Duration / data.TickCount;
+        if (data.PreDelay >= m_preDelay)
+        {
+            m_preDelay += Time.deltaTime;
+            return;
+        }
+
+        if (data.TickCount > m_tickCount)
+        {
+            SkillRoutine(data.TickCount);
+
+            m_storedDuration += Time.deltaTime;
+            if (m_storedDuration > tickDuration)
+            {
+                m_storedDuration = 0;
+                m_tickCount += 1;
+            }
+            else
+            {
+                m_nowFinish = true;
+            }
+        }
+    }
+
+    public virtual void SkillRoutine(int tickCount)
+    {
+        Vector3 myPos = specifyLocation.ReturnPos();
+
+        SkillSupportData supportData = new SkillSupportData(specifyLocation.Caster, data, myPos, tickCount);
+        T value = targetDesignation.Execute(supportData);
+
+        for (int i = 0; i < baseMethods.Count; i++)
+        {
+            baseMethods[i].Execute(supportData, value);
+        }
+    }
+
+    public virtual void End()
+    {
+        // 종료 시퀀스
+        m_preDelay = 0;
+        m_tickCount = 0;
+        m_nowFinish = false;
+    }
+     
+    public bool CheckIsFinish()
+    {
+        return NowFinish;
+    }
+}
+
+public class StickyBomb : BaseSkill<RaycastHit2D[]>
+{
+    public StickyBomb(SpecifyLocation specifyLocation, TargetDesignation<RaycastHit2D[]> targetDesignation, List<BaseMethod<RaycastHit2D[]>> baseMethods) 
+        : base(specifyLocation, targetDesignation, baseMethods) { }
+}
+
+abstract public class TargetDesignation<T>
+{
+    public abstract T Execute(SkillSupportData supportData);
+}
+
+public class FindInCircleRange : TargetDesignation<RaycastHit2D[]>
+{
+    public override RaycastHit2D[] Execute(SkillSupportData supportData)
+    {
+        RaycastHit2D[] hit = Physics2D.CircleCastAll(supportData.Pos, supportData.Data.RadiusRange, Vector2.up, 0);
+        return hit;
+    }
+}
+
+public class FindInBoxRange : TargetDesignation<RaycastHit2D[]>
+{
+    public override RaycastHit2D[] Execute(SkillSupportData supportData)
+    {
+        RaycastHit2D[] hit = Physics2D.BoxCastAll(supportData.Pos, supportData.Data.BoxRange,
+            supportData.Caster.transform.rotation.z, Vector2.right, supportData.Data.OffsetRange.magnitude);
+        return hit;
+    }
+}
+
+public class FindAllUsingRaycast : TargetDesignation<RaycastHit2D[]>
+{
+    public override RaycastHit2D[] Execute(SkillSupportData supportData)
+    {
+        RaycastHit2D[] hits = Physics2D.RaycastAll(supportData.Pos, supportData.Data.Directions[supportData.TickCount - 1], 100);
+        Debug.DrawRay(supportData.Pos, supportData.Data.Directions[supportData.TickCount - 1].normalized, Color.green, 100);
+
+        return hits;
+    }
+}
+
+public class FindInContacted : TargetDesignation<List<ContactData>>
+{
+    public override List<ContactData> Execute(SkillSupportData supportData)
+    {
+        supportData.Caster.TryGetComponent(out ContactComponent contact);
+        if (contact == null) return null;
+
+        return contact.ReturnContactSupportData();
+    }
+}
+

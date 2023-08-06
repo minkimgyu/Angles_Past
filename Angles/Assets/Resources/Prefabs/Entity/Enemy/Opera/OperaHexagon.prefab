@@ -198,7 +198,8 @@ MonoBehaviour:
     followMinDistance: 0
     stopMinDistance: 0
     prefabCount: 0
-  spawnPercentage: 0.3
+    score: 0
+    spawnPercentage: 0
   delay: 4
   fixTime: 2
 --- !u!114 &1610933736780651315

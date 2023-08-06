@@ -33,6 +33,8 @@ abstract public class BasicSkill : MonoBehaviour // --> 프리팹으로 생성해서 오브
 
     public void Init(BattleComponent battleComponent, SkillData data)
     {
+        
+
         m_data = data;
         RemoveFromList += battleComponent.RemoveFromActiveSkills;
     }
