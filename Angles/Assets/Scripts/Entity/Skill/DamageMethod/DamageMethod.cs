@@ -39,7 +39,7 @@ abstract public class DamageMethod : ScriptableObject
     {
         enemy.TryGetComponent(out IHealth health);
 
-        if (health == null || data.CanHitSkill(health.ReturnTag()) == false) return false;
+        if (health == null || data.CanHitSkill(health.ReturnEntityTag()) == false) return false;
 
         health.UnderAttack(data.Damage, -(me.transform.position - enemy.position).normalized, data.KnockBackThrust);
         return true;

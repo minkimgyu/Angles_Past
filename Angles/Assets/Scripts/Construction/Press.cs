@@ -26,8 +26,8 @@ public class Press : BasicConstruction
 
         rigid = GetComponent<Rigidbody2D>();
 
-        IState<State> push = new StatePressPush(this);
-        IState<State> pull = new StatePressPull(this);
+        BaseState<State> push = new StatePressPush(this);
+        BaseState<State> pull = new StatePressPull(this);
 
         //키입력 등에 따라서 언제나 상태를 꺼내 쓸 수 있게 딕셔너리에 보관
         m_dicState.Add(State.Push, push);
@@ -38,7 +38,7 @@ public class Press : BasicConstruction
     }
 }
 
-public class StatePressPush : IState<BasicConstruction.State>
+public class StatePressPush : BaseState<BasicConstruction.State>
 {
     Press loadPress;
 
@@ -52,40 +52,25 @@ public class StatePressPush : IState<BasicConstruction.State>
         loadPress = press;
     }
 
-    public void CheckSwitchStates()
+    public override void OnMessage(Telegram<BasicConstruction.State> telegram)
     {
     }
 
-    public void OnAwakeMessage(Telegram<BasicConstruction.State> telegram)
+    public override void OperateEnter()
     {
-    }
-
-    public void OnProcessingMessage(Telegram<BasicConstruction.State> telegram)
-    {
-    }
-
-    public void OnSetToGlobalState()
-    {
-    }
-
-    public void OperateEnter()
-    {
-        loadPress.ContactAction += GoToAttackState;
-        // This code should be maybe in a function that you call which starts the ExponentialLerp
         timeWeStarted = Time.time;
     }
 
-    public void OperateExit()
+    public override void OperateExit()
     {
-        loadPress.ContactAction -= GoToAttackState;
     }
 
-    void GoToAttackState()
+    public override void ReceiveCollisionEnter(Collision2D collision) 
     {
         loadPress.BattleComponent.UseSkill(SkillUseConditionType.Contact);
     }
 
-    public void OperateUpdate()
+    public override void OperateUpdate()
     {
         // This is somehwere in the update where you are trying to ExponentialLerp
         float elapsedTime = Time.time - timeWeStarted;
@@ -109,7 +94,7 @@ public class StatePressPush : IState<BasicConstruction.State>
     }
 }
 
-public class StatePressPull : IState<BasicConstruction.State>
+public class StatePressPull : BaseState<BasicConstruction.State>
 {
     Press loadPress;
 
@@ -123,37 +108,21 @@ public class StatePressPull : IState<BasicConstruction.State>
         loadPress = press;
     }
 
-    public void CheckSwitchStates()
+    public override void OnMessage(Telegram<BasicConstruction.State> telegram)
     {
     }
 
-    public void OnAwakeMessage(Telegram<BasicConstruction.State> telegram)
-    {
-    }
-
-    public void OnProcessingMessage(Telegram<BasicConstruction.State> telegram)
-    {
-    }
-
-    public void OnSetToGlobalState()
-    {
-    }
-
-    public void OperateEnter()
+    public override void OperateEnter()
     {
         SoundManager.Instance.PlaySFX(loadPress.transform.position, "Push", 0.5f);
         timeWeStarted = Time.time;
     }
 
-    public void OperateExit()
+    public override void OperateExit()
     {
     }
 
-    void GoToAttackState()
-    {
-    }
-
-    public void OperateUpdate()
+    public override void OperateUpdate()
     {
         // This is somehwere in the update where you are trying to ExponentialLerp
         float elapsedTime = Time.time - timeWeStarted;

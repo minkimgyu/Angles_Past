@@ -4,10 +4,8 @@ using UnityEngine;
 using System.Linq;
 using System;
 
-public class Player : StateMachineEntity<Player.State>, ISubject<Player.ObserverType, PlayerData>, IHealth, IBuff<PlayerData>
+public class Player : HealthEntity<Player.State>, ISubject<Player.ObserverType, PlayerData>
 {
-    //private StateMachine<Player, Telegram<State>> m_stateMachine;
-
     Animator m_animator;
     public Animator Animator { get { return m_animator; } }
 
@@ -29,9 +27,10 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
     ReflectComponent m_reflectComponent;
     public ReflectComponent ReflectComponent { get { return m_reflectComponent; } }
 
+    LootingItemComponent m_lootingItemComponent;
+    public LootingItemComponent LootingItemComponent { get { return m_lootingItemComponent; } }
 
-    BuffComponent m_buffComponent;
-    public BuffComponent BuffComponent { get { return m_buffComponent; } }
+
 
     BarrierComponent m_barrierComponent;
     public BarrierComponent BarrierComponent { get { return m_barrierComponent; } }
@@ -43,25 +42,26 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
     MoveJoystick moveJoystick;
     public MoveJoystick MoveJoystick { get { return moveJoystick; } }
 
-    Rigidbody2D m_rigid;
-
     // 조이스틱 프로퍼티
     public Vector2 ActionVec { get { return actionJoycstick.MainVec; } }
 
     public Vector2 MoveVec { get { return moveJoystick.ReturnMoveVec(); } }
 
 
-    public Action<Collision2D> ContactAction;
+    //public Action<Collision2D> ContactAction;
 
-    public Action<float, Vector2, float> UnderAttackAction;
+    //public Action<float, Vector2, float> UnderAttackAction;
 
     [SerializeField]
-    PlayerData _data;
-    public PlayerData Data { get { return _data; } }
+    PlayerData m_playerData;
+    public PlayerData PlayerData { get { return m_playerData; } }
 
     public override void InitData()
     {
-        _data = DatabaseManager.Instance.EntityDB.Player.CopyData();
+        PlayerStat playerStat = DatabaseManager.Instance.EntityDB.PlayerStat;
+
+        HealthData = playerStat.HealthData;
+        m_playerData = playerStat.PlayerData;
     }
 
     public enum State
@@ -82,66 +82,46 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
 
        ShowRushUI,
        HideRushUI,
-
-       Damaged,
-       Die,
-       Heal,
-       Attack,
-       AttackCancle,
-       AttackReady
     }
 
-    float minJoyVal = 0.25f;
+    //float minJoyVal = 0.25f;
 
     //스테이트들을 보관
     //private Dictionary<State, IState<Player, Telegram<State>>> m_dicState = new Dictionary<State, IState<Player, Telegram<State>>>();
     private List<IObserver<ObserverType, PlayerData>> m_observers = new List<IObserver<ObserverType, PlayerData>>();
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         m_dashComponent = GetComponent<DashComponent>();
         m_attackComponent = GetComponent<AttackComponent>();
         m_moveComponent = GetComponent<MoveComponent>();
         m_reflectComponent = GetComponent<ReflectComponent>();
         m_battleComponent = GetComponent<BattleComponent>();
         m_animator = GetComponent<Animator>();
-        m_rigid = GetComponent<Rigidbody2D>();
+
+        m_lootingItemComponent = GetComponent<LootingItemComponent>();
 
         m_contactComponent = GetComponent<ContactComponent>();
-        m_buffComponent = GetComponent<BuffComponent>();
-
         m_barrierComponent = GetComponent<BarrierComponent>();
 
         moveJoystick = GameObject.FindWithTag("MoveJoystick").GetComponent<MoveJoystick>();
         actionJoycstick = GameObject.FindWithTag("AttackJoystick").GetComponent<ActionJoystick>();
-        
-        m_reflectComponent.AbleTags.Add(EntityTag.Wall);
-
-        //m_battleComponent.AbleTags.Add(EntityTag.Enemy);
-
-
-        //actionJoycstick.DashAction += Dash;
-        //actionJoycstick.AttackReadyAction += AttackReady;
-        //actionJoycstick.AttackAction += Attack;
-
-        // action, move 입력 받는 부분 찾아서 넣기
-        // 델리게이트 연결시켜주기
-        // 데이터 값 넘겨서 UI 초기화 해주기
-        // 데이터 여기서 저장하기
     }
 
     private void Start()
     {
         //상태 생성
-        IState<State> move = new StatePlayerMove(this);
-        IState<State> attack = new StatePlayerAttack(this);
-        IState<State> attackReady = new StatePlayerAttackReady(this);
-        IState<State> dash = new StatePlayerDash(this);
-        IState<State> dead = new StatePlayerDie(this);
-        IState<State> reflect = new StatePlayerReflect(this);
-        IState<State> damaged = new StatePlayerDamaged(this);
+        BaseState<State> move = new StatePlayerMove(this);
+        BaseState<State> attack = new StatePlayerAttack(this);
+        BaseState<State> attackReady = new StatePlayerAttackReady(this);
+        BaseState<State> dash = new StatePlayerDash(this);
+        BaseState<State> dead = new StatePlayerDie(this);
+        BaseState<State> reflect = new StatePlayerReflect(this);
+        BaseState<State> damaged = new StatePlayerDamaged(this);
 
-        IState<State> global = new StatePlayerGlobal(this);
+        BaseState<State> global = new StatePlayerGlobal(this);
 
         //키입력 등에 따라서 언제나 상태를 꺼내 쓸 수 있게 딕셔너리에 보관
         m_dicState.Add(State.Move, move);
@@ -152,69 +132,16 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
         m_dicState.Add(State.Reflect, reflect);
         m_dicState.Add(State.Damaged, damaged);
 
-        Data.GrantedUtilization.LootSkillFromDB(BattleComponent);
-
-        m_rigid.mass = _data.Weight;
-        m_rigid.angularDrag = _data.Drag;
+        PlayerData.GrantedUtilization.LootSkillFromDB(BattleComponent);
 
         SetUp(State.Move);
         SetGlobalState(global);
     }
 
-    public bool CanUseDash()
-    {
-        if (Data.DashRatio - 1 / Data.MaxDashCount >= 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
     public bool CheckOverMinValue(Vector2 dir)
     {
-        if (Mathf.Abs(dir.x) > minJoyVal || Mathf.Abs(dir.y) > minJoyVal) return true;// 공격인 경우
+        if (Mathf.Abs(dir.x) > m_playerData.AttackCancelOffset || Mathf.Abs(dir.y) > m_playerData.AttackCancelOffset) return true;// 공격인 경우
         else return false;
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-        //if(Input.GetKeyDown(KeyCode.K))
-        //{
-        //    m_buffComponent.AddBuff("SpeedDebuff");
-        //}
-        //else if(Input.GetKeyDown(KeyCode.T))
-        //{
-        //    m_buffComponent.RemoveBuff("SpeedDebuff");
-        //}
-
-        DoOperateUpdate();
-        // 움직임이 감지되면 move state로 넘어감
-    }
-
-    private void OnTriggerEnter2D(Collider2D col)
-    {
-        if (col.gameObject.CompareTag("DropItem"))
-        {
-            DropSkill dropSkill = col.GetComponent<DropSkill>();
-            SoundManager.Instance.PlaySFX(transform.position, "GetItem", 0.1f);
-            m_battleComponent.LootingSkill(dropSkill.ReturnSkill());
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D col) // 충돌 시 상태 변환
-    {
-        ContactComponent.CallWhenCollisionEnter(col);
-
-        if (ContactAction != null) ContactAction(col);
-    }
-
-    private void OnCollisionExit2D(Collision2D col)
-    {
-        ContactComponent.CallWhenCollisionExit(col);
     }
 
     public void AddObserver(IObserver<ObserverType, PlayerData> observer)
@@ -235,68 +162,32 @@ public class Player : StateMachineEntity<Player.State>, ISubject<Player.Observer
         });
     }
 
-    private void OnDestroy()
-    {
-        if (UnderAttackAction != null) UnderAttackAction = null;
-    }
-
-
-    public bool IsTarget(EntityTag tag)
-    {
-        return inheritedTag == tag;
-    }
-
-    
-
-    public void Heal(float healthPoint)
-    {
-        
-    }
-
-    //public void Die()
+    //public EntityTag ReturnTag()
     //{
-        
+    //    return inheritedTag;
     //}
 
-    public EntityTag ReturnTag()
-    {
-        return inheritedTag;
-    }
-
-    public void UnderAttack(float healthPoint, Vector2 dir, float thrust)
-    {
-        if(PlayManager.Instance.GameClearCheck == true) return;
-
-        SoundManager.Instance.PlaySFX(transform.position, "Hit", 0.7f);
-        if (UnderAttackAction != null) UnderAttackAction(healthPoint, dir, thrust);
-    }
-
-    public void DestoryThis()
-    {
-        gameObject.SetActive(false);
-        //Destroy(gameObject);
-    }
-
-    //public void GetDamage(float healthPoint)
+    //public void UnderAttack(float healthPoint, Vector2 dir, float thrust)
     //{
-    //    if (_data.Hp > 0)
-    //    {
-    //        _data.Hp -= healthPoint;
-    //        if (_data.Hp <= 0)
-    //        {
-    //            Die();
-    //            _data.Hp = 0;
-    //        }
-    //    }
+    //    if(PlayManager.Instance.GameClearCheck == true) return;
+
+    //    SoundManager.Instance.PlaySFX(transform.position, "Hit", 0.7f);
+    //    //if (UnderAttackAction != null) UnderAttackAction(healthPoint, dir, thrust);
     //}
 
-    //public void Knockback(Vector2 dir, float thrust)
+    //public void DestoryThis()
     //{
-
+    //    gameObject.SetActive(false);
+    //    //Destroy(gameObject);
     //}
 
-    public PlayerData GetData()
-    {
-        return Data;
-    }
+    //public override void Die()
+    //{
+    //    base.Die();
+    //}
+
+    //public override HealthEntityData ReturnHealthEntityData()
+    //{
+    //    return Data;
+    //}
 }

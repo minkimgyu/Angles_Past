@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateReflectEnemyRush : IState<BaseReflectEnemy.State>
+public class StateReflectEnemyRush : BaseState<BaseReflectEnemy.State>
 {
     BaseReflectEnemy enemy;
 
@@ -11,46 +11,29 @@ public class StateReflectEnemyRush : IState<BaseReflectEnemy.State>
         enemy = baseReflectEnemy;
     }
 
-    public void CheckSwitchStates()
+    public override void OnMessage(Telegram<BaseReflectEnemy.State> telegram)
     {
     }
 
-    public void OnAwakeMessage(Telegram<BaseReflectEnemy.State> telegram)
+    public override void OperateUpdate()
     {
-    }
-
-    public void OnProcessingMessage(Telegram<BaseReflectEnemy.State> telegram)
-    {
-    }
-
-    public void OnSetToGlobalState()
-    {
-    }
-
-    public void OperateUpdate()
-    {
-        if(enemy.Rigid.velocity.magnitude < enemy.MinRushVec)
+        if(enemy.Rigidbody.velocity.magnitude < enemy.MinRushVec)
         {
             enemy.RushVec = enemy.ResetRushVec();
             enemy.DashComponent.QuickEndTask();
-            enemy.DashComponent.PlayDash(enemy.RushVec.normalized, enemy.Data.Speed.IntervalValue);
+            enemy.DashComponent.PlayDash(enemy.RushVec.normalized, enemy.HealthData.Speed.IntervalValue);
         }
     }
 
-    public void OperateEnter()
+    public override void OperateEnter()
     {
-        enemy.ContactAction += GoToReflectState;
-        enemy.UnderAttackAction += GoToGetDamageState;
-
         enemy.DashComponent.QuickEndTask();
-        enemy.DashComponent.PlayDash(enemy.RushVec.normalized, enemy.Data.Speed.IntervalValue);
+        enemy.DashComponent.PlayDash(enemy.RushVec.normalized, enemy.HealthData.Speed.IntervalValue);
 
     }
 
-    public void OperateExit()
+    public override void OperateExit()
     {
-        enemy.ContactAction -= GoToReflectState;
-        enemy.UnderAttackAction -= GoToGetDamageState;
     }
 
     void GoToGetDamageState(float damage, Vector2 dir, float thrust)
@@ -78,5 +61,21 @@ public class StateReflectEnemyRush : IState<BaseReflectEnemy.State>
 
             enemy.SetState(BaseReflectEnemy.State.Reflect, telegram);
         }
+    }
+
+    public override void ReceiveCollisionEnter(Collision2D collision)
+    {
+        enemy.ContactComponent.CallWhenCollisionEnter(collision);
+        GoToReflectState(collision);
+    }
+
+    public override void ReceiveCollisionExit(Collision2D collision)
+    {
+        enemy.ContactComponent.CallWhenCollisionExit(collision);
+    }
+
+    public override void ReceiveUnderAttack(float healthPoint, Vector2 dir, float thrust)
+    {
+        GoToGetDamageState(healthPoint, dir, thrust);
     }
 }

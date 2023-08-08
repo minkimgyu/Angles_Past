@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateFollowEnemyDamaged : IState<BaseFollowEnemy.State>
+public class StateFollowEnemyDamaged : BaseState<BaseFollowEnemy.State>
 {
     BaseFollowEnemy loadFollowEnemy;
 
@@ -15,7 +15,7 @@ public class StateFollowEnemyDamaged : IState<BaseFollowEnemy.State>
         loadFollowEnemy = followEnemy;
     }
 
-    public void CheckSwitchStates()
+    public override void CheckSwitchStates()
     {
         if (loadFollowEnemy.DashComponent.NowFinish == true)
         {
@@ -24,22 +24,14 @@ public class StateFollowEnemyDamaged : IState<BaseFollowEnemy.State>
         }
     }
 
-    public void OnAwakeMessage(Telegram<BaseFollowEnemy.State> telegram)
+    public override void OnMessage(Telegram<BaseFollowEnemy.State> telegram)
     {
         storedDamage = telegram.Message.damage;
         storedThrust = telegram.Message.thrust;
         storedDir = telegram.Message.dir;
     }
 
-    public void OnProcessingMessage(Telegram<BaseFollowEnemy.State> telegram)
-    {
-    }
-
-    public void OnSetToGlobalState()
-    {
-    }
-
-    public void OperateEnter()
+    public override void OperateEnter()
     {
         Knockback(storedDir, storedThrust);
     }
@@ -54,18 +46,17 @@ public class StateFollowEnemyDamaged : IState<BaseFollowEnemy.State>
     void Knockback(Vector2 dir, float thrust)
     {
         loadFollowEnemy.DashComponent.CancelDash(false);
-        loadFollowEnemy.DashComponent.PlayDash(dir, thrust / loadFollowEnemy.Data.Weight, loadFollowEnemy.Data.StunTime, false); // 스턴은 무계 비율에 맞게 조정하기
+        loadFollowEnemy.DashComponent.PlayDash(dir, thrust / loadFollowEnemy.HealthData.Weight, loadFollowEnemy.HealthData.StunTime, false); // 스턴은 무계 비율에 맞게 조정하기
 
         SkillData skillData = DatabaseManager.Instance.UtilizationDB.ReturnSkillData("EnemyContactKnockback");
         loadFollowEnemy.BattleComponent.LootingSkill(skillData);
     }
 
-    public void OperateExit()
+    public override void OperateExit()
     {
     }
 
-    public void OperateUpdate()
+    public override void OperateUpdate()
     {
-        CheckSwitchStates();
     }
 }

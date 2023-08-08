@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatePlayerDie : IState<Player.State>
+public class StatePlayerDie : BaseState<Player.State>
 {
     Player m_loadPlayer;
 
@@ -11,37 +11,27 @@ public class StatePlayerDie : IState<Player.State>
         m_loadPlayer = player;
     }
 
-    public void CheckSwitchStates()
+    public override void CheckSwitchStates()
     {
-        throw new System.NotImplementedException();
     }
 
-    public void OnAwakeMessage(Telegram<Player.State> telegram)
+    public override void OnMessage(Telegram<Player.State> telegram)
     {
-        throw new System.NotImplementedException();
     }
 
     public void OnProcessingMessage(Telegram<Player.State> telegram)
     {
-        throw new System.NotImplementedException();
     }
 
-    public void OnSetToGlobalState()
+    public override void OperateEnter()
     {
     }
 
-    public void OperateEnter()
+    public override void OperateExit()
     {
-
     }
 
-    public void OperateExit()
+    public override void OperateUpdate()
     {
-
-    }
-
-    public void OperateUpdate()
-    {
-
     }
 }

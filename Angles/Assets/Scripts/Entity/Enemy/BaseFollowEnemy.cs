@@ -5,25 +5,15 @@ using System;
 
 abstract public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
 {
-    public Action WhenEnable;
+    protected FollowEnemyData m_followEnemyData;
+    public FollowEnemyData FollowEnemyData { get { return m_followEnemyData; } }
+
 
     protected Player m_loadPlayer;
     public Player LoadPlayer { get { return m_loadPlayer; } }
 
     private FollowComponent m_followComponent;
     public FollowComponent FollowComponent { get { return m_followComponent; } }
-
-    MoveComponent m_moveComponent;
-    public MoveComponent MoveComponent { get { return m_moveComponent; } }
-
-    BattleComponent m_battleComponent;
-    public BattleComponent BattleComponent { get { return m_battleComponent; } }
-
-    DashComponent m_dashComponent;
-    public DashComponent DashComponent { get { return m_dashComponent; } }
-
-    ContactComponent m_contactComponent;
-    public ContactComponent ContactComponent { get { return m_contactComponent; } }
 
     public enum State
     {
@@ -39,13 +29,6 @@ abstract public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
     {
         base.Awake();
         m_followComponent = GetComponent<FollowComponent>();
-        m_moveComponent = GetComponent<MoveComponent>();
-        m_battleComponent = GetComponent<BattleComponent>();
-        m_dashComponent = GetComponent<DashComponent>();
-        m_contactComponent = GetComponent<ContactComponent>();
-
-
-        //m_battleComponent.AbleTags.Add(EntityTag.Player);
     }
 
     // Start is called before the first frame update
@@ -57,51 +40,22 @@ abstract public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
     protected virtual void Init()
     {
         GameObject go = GameObject.FindWithTag("Player");
-        if(go != null)
-        {
-            m_loadPlayer = go.GetComponent<Player>();
-        }
-        
+        if (go == null) return;
 
-        IState<State> follow = new StateFollowEnemyFollow(this);
-        IState<State> stop = new StateFollowEnemyStop(this);
-        IState<State> die = new StateFollowEnemyDie(this);
-        IState<State> damaged = new StateFollowEnemyDamaged(this);
+        m_loadPlayer = go.GetComponent<Player>();
+    }
+
+    protected virtual void AddBaseState()
+    {
+        BaseState<State> follow = new StateFollowEnemyFollow(this);
+        BaseState<State> stop = new StateFollowEnemyStop(this);
+        BaseState<State> die = new StateFollowEnemyDie(this);
+        BaseState<State> damaged = new StateFollowEnemyDamaged(this);
 
         //키입력 등에 따라서 언제나 상태를 꺼내 쓸 수 있게 딕셔너리에 보관
         m_dicState.Add(State.Follow, follow); // 기본 상태가 추적 --> 거리에 따라 정지 or 움직임
         m_dicState.Add(State.Stop, stop);
         m_dicState.Add(State.Die, die);
         m_dicState.Add(State.Damaged, damaged);
-
-        Data.GrantedUtilization.LootSkillFromDB(BattleComponent);
-    }
-
-    private void OnCollisionEnter2D(Collision2D col) // 충돌 시 상태 변환
-    {
-        m_contactComponent.CallWhenCollisionEnter(col);
-
-        BattleComponent.UseSkill(SkillUseConditionType.Contact);
-    }
-
-    private void OnCollisionExit2D(Collision2D col)
-    {
-        m_contactComponent.CallWhenCollisionExit(col);
-    }
-
-    protected virtual void OnEnable()
-    {
-        if (WhenEnable != null)
-        {
-            WhenEnable();
-        }
-    }
-
-    protected virtual void OnDestroy()
-    {
-        if (WhenEnable != null)
-        {
-            WhenEnable = null;
-        }
     }
 }

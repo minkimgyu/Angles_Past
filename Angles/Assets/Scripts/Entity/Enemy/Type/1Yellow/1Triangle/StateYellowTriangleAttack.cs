@@ -11,25 +11,26 @@ public class StateYellowTriangleAttack : StateFollowEnemyAttack
     public StateYellowTriangleAttack(YellowTriangleEnemy yellowTriangle) : base(yellowTriangle)
     {
         enemy = yellowTriangle;
-        yellowTriangle.WhenDisable += ExecuteInOutsideMethod;
     }
 
     public override void ExecuteInRangeMethod()
     {
-        List<BuffData> tmpData = enemy.Data.GrantedUtilization.LootBuffFromDB();
+        //List<BuffData> tmpData = enemy.HealthData.GrantedUtilization.LootBuffFromDB(); // --> 스킬로 변경
 
-        for (int i = 0; i < tmpData.Count; i++)
-        {
-            BaseBuff tmpBuff = enemy.LoadPlayer.BuffComponent.AddBuff(tmpData[i]);
-            if (tmpBuff == null) continue;
-            else storedBuff.Add(tmpBuff);
-        }
+        //for (int i = 0; i < tmpData.Count; i++)
+        //{
+        //    BaseBuff tmpBuff = enemy.LoadPlayer.BuffComponent.AddBuff(tmpData[i]);
+        //    if (tmpBuff == null) continue;
+        //    else storedBuff.Add(tmpBuff);
+        //}
+
+        // 버프 넣는 부분 스킬로 수정
 
         BasicEffectPlayer effectPlayer = enemy.EffectMethod.ReturnEffectFromPool();
         if (effectPlayer == null) return;
 
         enemy.EffectPlayer = effectPlayer;
-        enemy.EffectPlayer.Init(enemy.transform, 1000f);
+        enemy.EffectPlayer.Init(enemy.transform);
         enemy.EffectPlayer.PlayEffect();
     }
 
@@ -44,5 +45,32 @@ public class StateYellowTriangleAttack : StateFollowEnemyAttack
 
         if (enemy.EffectPlayer == null) return;
         enemy.EffectPlayer.StopEffect();
+    }
+
+    void AddEffect()
+    {
+        BasicEffectPlayer effectPlayer = enemy.EffectMethod.ReturnEffectFromPool();
+        if (effectPlayer == null) return;
+
+        enemy.EffectPlayer = effectPlayer;
+        enemy.EffectPlayer.Init(enemy.transform, 1000f);
+        enemy.EffectPlayer.PlayEffect();
+    }
+
+    void RemoveEffect()
+    {
+        if (enemy.EffectPlayer == null) return;
+        enemy.EffectPlayer.StopEffect();
+    }
+
+    public virtual void ReceiveOnDisable()
+    {
+        ExecuteInRangeMethod();
+
+        if (enemy.EffectPlayer != null)
+        {
+            enemy.EffectPlayer.StopEffect();
+            enemy.EffectPlayer = null;
+        }
     }
 }

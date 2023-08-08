@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatePlayerGlobal : IState<Player.State>
+public class StatePlayerGlobal : BaseState<Player.State>
 {
     Player m_loadPlayer;
 
@@ -11,24 +11,17 @@ public class StatePlayerGlobal : IState<Player.State>
         m_loadPlayer = player;
     }
 
-    public void CheckSwitchStates()
+    public override void CheckSwitchStates()
     {
-        throw new System.NotImplementedException();
     }
 
-    public void OnAwakeMessage(Telegram<Player.State> telegram)
+    public override void OnMessage(Telegram<Player.State> telegram)
     {
-        throw new System.NotImplementedException();
     }
 
-    public void OnProcessingMessage(Telegram<Player.State> telegram)
+    public override void ReceiveUnderAttack(float damage, Vector2 dir, float thrust) 
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnSetToGlobalState()
-    {
-        m_loadPlayer.UnderAttackAction += GoToGetDamageState;
+        GoToGetDamageState(damage, dir, thrust);
     }
 
     void GoToGetDamageState(float damage, Vector2 dir, float thrust)
@@ -46,19 +39,32 @@ public class StatePlayerGlobal : IState<Player.State>
         }
     }
 
-    public void OperateEnter()
+    public override void ReceiveTriggerEnter(Collider2D collider) 
     {
-
+        m_loadPlayer.LootingItemComponent.LootingItem(collider, m_loadPlayer.BattleComponent);
     }
 
-    public void OperateExit()
+    public override void ReceiveCollisionEnter(Collision2D collision) 
     {
-
+        m_loadPlayer.ContactComponent.CallWhenCollisionEnter(collision);
     }
 
-    public void OperateUpdate()
+    public override void ReceiveCollisionExit(Collision2D collision) 
     {
-        if(m_loadPlayer.Data.RestoreDashRatio())
-            m_loadPlayer.NotifyObservers(Player.ObserverType.ShowDashUI, m_loadPlayer.Data);
+        m_loadPlayer.ContactComponent.CallWhenCollisionExit(collision);
+    }
+
+    public override void OperateEnter()
+    {
+    }
+
+    public override void OperateExit()
+    {
+    }
+
+    public override void OperateUpdate()
+    {
+        if(m_loadPlayer.PlayerData.RestoreDashRatio())
+            m_loadPlayer.NotifyObservers(Player.ObserverType.ShowDashUI, m_loadPlayer.PlayerData);
     }
 }

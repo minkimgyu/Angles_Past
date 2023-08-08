@@ -16,14 +16,14 @@ public class InitPoolComponent : MonoBehaviour
 
     void Init()
     {
-        List<EnemyData> enemyData = DatabaseManager.Instance.EntityDB.Enemy;
+        //List<EnemyData> enemyData = DatabaseManager.Instance.EntityDB.Enemy;
         //List<SkillData> skillData = DatabaseManager.Instance.EntityDB.Skill;
         //List<AdditionalPrefabData> additionalPrefab = DatabaseManager.Instance.EntityDB.AdditionalPrefab;
 
-        for (int i = 0; i < enemyData.Count; i++)
-        {
-            AddToPool(enemyData[i].Name, "Prefabs/Entity/" + enemyData[i].Name, enemyData[i].PrefabCount);
-        }
+        //for (int i = 0; i < enemyData.Count; i++)
+        //{
+        //    AddToPool(enemyData[i].Name, "Prefabs/Entity/" + enemyData[i].Name, enemyData[i].PrefabCount);
+        //}
 
         //for (int i = 0; i < skillData.Count; i++)
         //{

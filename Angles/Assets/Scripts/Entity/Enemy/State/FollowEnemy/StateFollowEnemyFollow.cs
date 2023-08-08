@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class StateFollowEnemyFollow : IState<BaseFollowEnemy.State>
+public class StateFollowEnemyFollow : BaseState<BaseFollowEnemy.State>
 {
     BaseFollowEnemy loadFollowEnemy;
 
@@ -9,52 +9,35 @@ public class StateFollowEnemyFollow : IState<BaseFollowEnemy.State>
         loadFollowEnemy = followEnemy;
     }
 
-    public void OnAwakeMessage(Telegram<BaseFollowEnemy.State> telegram)
+    public override void OnMessage(Telegram<BaseFollowEnemy.State> telegram)
     {
-        throw new System.NotImplementedException();
     }
 
-    public void OnProcessingMessage(Telegram<BaseFollowEnemy.State> telegram)
+    public override void OperateEnter()
     {
-        throw new System.NotImplementedException();
     }
 
-    public void OperateEnter()
+    public override void OperateExit()
     {
-
     }
 
-    public void OperateExit()
-    {
-       
-    }
-
-    public void OperateUpdate()
-    {
-        CheckSwitchStates();
-    }
-
-    public void CheckSwitchStates()
+    public override void OperateUpdate()
     {
         if (loadFollowEnemy.LoadPlayer == null) return;
 
-        if (!loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.Data.FollowMinDistance))
+        if (!loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.FollowEnemyData.FollowMinDistance))
         {
             Vector2 dir = loadFollowEnemy.FollowComponent.ReturnDirVec(loadFollowEnemy.LoadPlayer.transform.position);
-            loadFollowEnemy.MoveComponent.Move(dir, loadFollowEnemy.Data.Speed.IntervalValue);
+            loadFollowEnemy.MoveComponent.Move(dir, loadFollowEnemy.HealthData.Speed.IntervalValue);
         }
         else
         {
             loadFollowEnemy.SetState(BaseFollowEnemy.State.Stop);
         }
     }
-
-    public void OnSetToGlobalState()
-    {
-    }
 }
 
-public class StateTriangleEnemyFollow : IState<BaseFollowEnemy.State>
+public class StateTriangleEnemyFollow : BaseState<BaseFollowEnemy.State>
 {
     YellowTriangleEnemy loadFollowEnemy;
 
@@ -63,44 +46,29 @@ public class StateTriangleEnemyFollow : IState<BaseFollowEnemy.State>
         loadFollowEnemy = followEnemy;
     }
 
-    public void OnAwakeMessage(Telegram<BaseFollowEnemy.State> telegram)
+    public override void OnMessage(Telegram<BaseFollowEnemy.State> telegram)
     {
     }
 
-    public void OnProcessingMessage(Telegram<BaseFollowEnemy.State> telegram)
+    public override void OperateEnter()
     {
     }
 
-    public void OperateEnter()
+    public override void OperateExit()
     {
-
     }
 
-    public void OperateExit()
+    public override void OperateUpdate()
     {
-
-    }
-
-    public void OperateUpdate()
-    {
-        CheckSwitchStates();
-    }
-
-    public void CheckSwitchStates()
-    {
-        if (!loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.Data.FollowMinDistance))
+        if (!loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.FollowEnemyData.FollowMinDistance))
         {
             Vector2 dir = loadFollowEnemy.FollowComponent.ReturnDirVec(loadFollowEnemy.LoadPlayer.transform.position);
-            loadFollowEnemy.MoveComponent.Move(dir, loadFollowEnemy.Data.Speed.IntervalValue);
+            loadFollowEnemy.MoveComponent.Move(dir, loadFollowEnemy.HealthData.Speed.IntervalValue);
             loadFollowEnemy.MoveComponent.RotationPlayer(dir, true);
         }
         else
         {
             loadFollowEnemy.SetState(BaseFollowEnemy.State.Stop);
         }
-    }
-
-    public void OnSetToGlobalState()
-    {
     }
 }

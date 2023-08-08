@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatePlayerDamaged : IState<Player.State>
+public class StatePlayerDamaged : BaseState<Player.State>
 {
     Player loadPlayer;
 
@@ -15,69 +15,60 @@ public class StatePlayerDamaged : IState<Player.State>
         loadPlayer = player;
     }
 
-    public void CheckSwitchStates()
+    public override void CheckSwitchStates()
     {
         if (loadPlayer.DashComponent.NowFinish == true) loadPlayer.RevertToPreviousState();
     }
 
-    public void OnAwakeMessage(Telegram<Player.State> telegram)
+    public override void OnMessage(Telegram<Player.State> telegram)
     {
         storedDamage = telegram.Message.damage;
         storedThrust = telegram.Message.thrust;
         storedDir = telegram.Message.dir;
     }
 
-    public void OnProcessingMessage(Telegram<Player.State> telegram)
+    public override void OperateEnter()
     {
-    }
-
-    public void OnSetToGlobalState()
-    {
-    }
-
-    public void OperateEnter()
-    {
-        GetDamage(storedDamage);
+        //GetDamage(storedDamage);
         Knockback(storedDir, storedThrust);
     }
 
-    void GetDamage(float healthPoint)
-    {
-        if (loadPlayer.BarrierComponent.CanBarrierAbsorb(healthPoint) == true) return;
+    //void GetDamage(float healthPoint)
+    //{
+    //    if (loadPlayer.BarrierComponent.CanBarrierAbsorb(healthPoint) == true) return;
 
-        if (loadPlayer.Data.Immortality == true) return;
+    //    if (loadPlayer.Data.Immortality == true) return;
 
-        if (loadPlayer.Data.Hp > 0)
-        {
-            loadPlayer.Data.Hp -= healthPoint;
-            if (loadPlayer.Data.Hp <= 0)
-            {
-                Die();
-                loadPlayer.Data.Hp = 0;
-            }
-        }
-    }
+    //    if (loadPlayer.Data.Hp > 0)
+    //    {
+    //        loadPlayer.Data.Hp -= healthPoint;
+    //        if (loadPlayer.Data.Hp <= 0)
+    //        {
+    //            Die();
+    //            loadPlayer.Data.Hp = 0;
+    //        }
+    //    }
+    //} 
 
-    void Die()
-    {
-        PlayManager.Instance.GameOver();
-        loadPlayer.DestoryThis();
-    }
+    // --> 베리어랑 무적은 추후에 원본 클레서 가서 수정하기
+
+    //void Die()
+    //{
+    //    PlayManager.Instance.GameOver();
+    //    loadPlayer.DestoryThis();
+    //}
 
     void Knockback(Vector2 dir, float thrust)
     {
         loadPlayer.DashComponent.CancelDash();
-        loadPlayer.DashComponent.PlayDash(dir, thrust / loadPlayer.Data.Weight, loadPlayer.Data.StunTime);
+        loadPlayer.DashComponent.PlayDash(dir, thrust / loadPlayer.HealthData.Weight, loadPlayer.HealthData.StunTime);
     }
 
-
-
-    public void OperateExit()
+    public override void OperateExit()
     {
     }
 
-    public void OperateUpdate()
+    public override void OperateUpdate()
     {
-        CheckSwitchStates();
     }
 }

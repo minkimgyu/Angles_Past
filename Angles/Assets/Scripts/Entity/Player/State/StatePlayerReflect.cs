@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatePlayerReflect : IState<Player.State>
+public class StatePlayerReflect : BaseState<Player.State>
 {
     Vector2 savedReflectVec;
     Player loadPlayer;
@@ -12,27 +12,15 @@ public class StatePlayerReflect : IState<Player.State>
         loadPlayer = player;
     }
 
-    public void CheckSwitchStates()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnAwakeMessage(Telegram<Player.State> telegram)
+    public override void OnMessage(Telegram<Player.State> telegram)
     {
         if (telegram.SenderStateName == Player.State.Attack)
             savedReflectVec = telegram.Message.dir;
     }
 
-    public void OnProcessingMessage(Telegram<Player.State> telegram)
-    {
-        throw new System.NotImplementedException();
-    }
+    public void OnProcessingMessage(Telegram<Player.State> telegram) { }
 
-    public void OnSetToGlobalState()
-    {
-    }
-
-    public void OperateEnter()
+    public override void OperateEnter()
     {
         loadPlayer.DashComponent.QuickEndTask();
 
@@ -45,13 +33,7 @@ public class StatePlayerReflect : IState<Player.State>
         loadPlayer.RevertToPreviousState(telegram);
     }
 
-    public void OperateExit()
-    {
+    public override void OperateExit() { }
 
-    }
-
-    public void OperateUpdate()
-    {
-        
-    }
+    public override void OperateUpdate() { }
 }
