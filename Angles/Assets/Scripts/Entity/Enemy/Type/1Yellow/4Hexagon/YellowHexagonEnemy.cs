@@ -18,10 +18,12 @@ public class YellowHexagonEnemy : BaseFollowEnemy
     protected override void Init()
     {
         base.Init();
-        IState<State> attack = new StateYellowHexaagonAttack(this); // 공격만 따로 추가해주자
-        IState<State> fix = new StateYellowHexaagonFix(this); // 공격만 따로 추가해주자
+        BaseState<State> attack = new StateYellowHexaagonAttack(this); // 공격만 따로 추가해주자
+        BaseState<State> fix = new StateYellowHexaagonFix(this); // 공격만 따로 추가해주자
         m_dicState.Add(State.Attack, attack);
         m_dicState.Add(State.Fix, fix);
+
+        AddBaseState();
 
         SetUp(State.Follow);
         SetGlobalState(attack);

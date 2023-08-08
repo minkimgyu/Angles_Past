@@ -9,6 +9,13 @@ abstract public class BasicEffectPlayer : MonoBehaviour
     public bool IsFixed { set { m_isFix = value; } }
     protected float m_duration;
 
+    public void Init(Transform tr)
+    {
+        m_posTr = tr;
+        transform.position = m_posTr.position;
+        m_duration = -1;
+    }
+
     public void Init(Transform tr, float duration)
     {
         m_posTr = tr;

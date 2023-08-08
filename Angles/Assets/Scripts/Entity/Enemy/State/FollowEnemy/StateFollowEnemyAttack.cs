@@ -1,6 +1,6 @@
 using UnityEngine;
 
-abstract public class StateFollowEnemyAttack : IState<BaseFollowEnemy.State>
+abstract public class StateFollowEnemyAttack : BaseState<BaseFollowEnemy.State>
 {
     private BaseFollowEnemy loadFollowEnemy;
     bool isInAttackRange;
@@ -10,33 +10,29 @@ abstract public class StateFollowEnemyAttack : IState<BaseFollowEnemy.State>
         loadFollowEnemy = followEnemy;
     }
 
-    public void CheckSwitchStates()
+    public override void OnMessage(Telegram<BaseFollowEnemy.State> telegram)
     {
     }
 
-    public void OnAwakeMessage(Telegram<BaseFollowEnemy.State> telegram)
+    public override void OperateEnter()
     {
     }
 
-    public void OnProcessingMessage(Telegram<BaseFollowEnemy.State> telegram)
+    public override void OperateExit()
     {
     }
 
-    public void OnSetToGlobalState()
+    public override void ReceiveOnEnable() 
     {
-        loadFollowEnemy.WhenEnable += ResetIsInAttackRange;
-        loadFollowEnemy.UnderAttackAction += GoToGetDamageState;
+        ResetIsInAttackRange();
     }
 
-    public void OperateEnter()
+    public override void ReceiveUnderAttack(float damage, Vector2 dir, float thrust)
     {
+        GoToGetDamageState(damage, dir, thrust);
     }
 
-    public void OperateExit()
-    {
-    }
-
-    void GoToGetDamageState(float damage, Vector2 dir, float thrust)
+    void GoToGetDamageState(float damage, Vector2 dir, float thrust) // 여기서 빼버리고 follow, stop에만 넣어주기 이 두 가지 경우에만 데미지 스테이트로 넘어가서 넉백됨
     {
         Message<BaseFollowEnemy.State> message = new Message<BaseFollowEnemy.State>();
         message.dir = dir;
@@ -51,7 +47,7 @@ abstract public class StateFollowEnemyAttack : IState<BaseFollowEnemy.State>
     {
         if (loadFollowEnemy.LoadPlayer == null) return;
 
-        if (loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.Data.SkillUseDistance))
+        if (loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.FollowEnemyData.SkillUseDistance))
         {
             isInAttackRange = false;
         }
@@ -61,18 +57,18 @@ abstract public class StateFollowEnemyAttack : IState<BaseFollowEnemy.State>
         }
     }
 
-    public virtual void OperateUpdate()
+    public override void OperateUpdate()
     {
         if (loadFollowEnemy.CurrentStateName == BaseFollowEnemy.State.Damaged) return;
 
         if(loadFollowEnemy.LoadPlayer == null) return;
 
-        if (loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.Data.SkillUseDistance) && isInAttackRange == false)
+        if (loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.FollowEnemyData.SkillUseDistance) && isInAttackRange == false)
         {
             ExecuteInRangeMethod();
             isInAttackRange = true;
         }
-        else if (!loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.Data.SkillUseDistance + loadFollowEnemy.Data.SkillUseOffsetDistance) 
+        else if (!loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.FollowEnemyData.SkillUseDistance + loadFollowEnemy.FollowEnemyData.SkillUseOffsetDistance) 
             && isInAttackRange == true)
         {
             ExecuteInOutsideMethod();

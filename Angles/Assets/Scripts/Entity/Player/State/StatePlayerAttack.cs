@@ -2,16 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatePlayerAttack : IState<Player.State>
+public class StatePlayerAttack : BaseState<Player.State>
 {
+    Dictionary<string, System.Action<Collision2D>> CollisionTask;
+
     Player m_loadPlayer;
+
+    Vector2 savedAttackVec;
+    Vector2 savedMoveVec;
 
     public StatePlayerAttack(Player player)
     {
         m_loadPlayer = player;
+
+        CollisionTask = new Dictionary<string, System.Action<Collision2D>>()
+        {
+            { "Wall", WhenContactWithWall },
+            { "Enemy", WhenContactToEnemy }
+        };
     }
 
-    public void OnAwakeMessage(Telegram<Player.State> telegram)
+    public override void OnMessage(Telegram<Player.State> telegram)
     {
         if (telegram.SenderStateName == Player.State.AttackReady || telegram.SenderStateName == Player.State.Reflect)
         {
@@ -19,100 +30,59 @@ public class StatePlayerAttack : IState<Player.State>
         }
     }
 
-
-    void ContactAct(Collision2D col) // 스킬 사용 + Reflect 채크해서 함수 사용
+    void GoToReflectState(Collision2D collision)
     {
-        col.gameObject.TryGetComponent(out Entity entity);
-        if (entity == null) return;
+        Message<Player.State> message = new Message<Player.State>();
+        message.dir = m_loadPlayer.ReflectComponent.ResetReflectVec(collision.contacts[0].normal);
+        Telegram<Player.State> telegram = new Telegram<Player.State>(Player.State.Attack, Player.State.Reflect, message);
 
+        m_loadPlayer.SetState(Player.State.Reflect, telegram);
+    }
 
-        if (entity.InheritedTag == EntityTag.Enemy)
+    void WhenContactWithWall(Collision2D collision) => GoToReflectState(collision);
+
+    void WhenContactToEnemy(Collision2D collision)
+    {
+        collision.gameObject.TryGetComponent(out IHealth health);
+        if (health == null) return;
+
+        HealthEntityData entityData = health.ReturnHealthEntityData();
+
+        if (entityData.Weight > entityData.Weight)
         {
-            m_loadPlayer.BattleComponent.UseSkill(SkillUseConditionType.Contact);
-
-            
-
-            col.gameObject.TryGetComponent(out BaseFollowEnemy followEnemy);
-            col.gameObject.TryGetComponent(out BaseReflectEnemy reflectEnemy);
-
-
-            if(followEnemy != null)
+            if (collision != null && collision.contacts.Length != 0)
             {
-                if(followEnemy.Data.Weight > m_loadPlayer.Data.Weight)
-                {
-                    if (col != null && col.contacts.Length != 0)
-                    {
-                        Message<Player.State> message = new Message<Player.State>();
-                        message.dir = m_loadPlayer.ReflectComponent.ResetReflectVec(col.contacts[0].normal);
-                        Telegram<Player.State> telegram = new Telegram<Player.State>(Player.State.Attack, Player.State.Reflect, message);
-
-                        m_loadPlayer.SetState(Player.State.Reflect, telegram);
-                    }
-                }
+                GoToReflectState(collision);
             }
-            else if(reflectEnemy != null)
-            {
-                if (reflectEnemy.Data.Weight > m_loadPlayer.Data.Weight)
-                {
-                    if (col != null && col.contacts.Length != 0)
-                    {
-                        Message<Player.State> message = new Message<Player.State>();
-                        message.dir = m_loadPlayer.ReflectComponent.ResetReflectVec(col.contacts[0].normal);
-                        Telegram<Player.State> telegram = new Telegram<Player.State>(Player.State.Attack, Player.State.Reflect, message);
-
-                        m_loadPlayer.SetState(Player.State.Reflect, telegram);
-                    }
-                }
-            }
-            
-
-            // 스킬 사용
         }
+    }
 
-        if (entity.InheritedTag == EntityTag.Wall)
-        {
-            Message<Player.State> message = new Message<Player.State>();
-            message.dir = m_loadPlayer.ReflectComponent.ResetReflectVec(col.contacts[0].normal);
-            Telegram<Player.State> telegram = new Telegram<Player.State>(Player.State.Attack, Player.State.Reflect, message);
-
-            m_loadPlayer.SetState(Player.State.Reflect, telegram);
-        }
+    public override void ReceiveCollisionEnter(Collision2D collision) 
+    {
+        CollisionTask[collision.transform.tag](collision);
     }
 
     public void OnProcessingMessage(Telegram<Player.State> telegram)
     {
-        throw new System.NotImplementedException();
     }
 
-    Vector2 savedAttackVec;
-    Vector2 savedMoveVec;
-
-    public void OperateEnter()
+    public override void OperateEnter()
     {
-        //m_loadPlayer.BattleComponent.UseSkill(SkillUseConditionType.Rush);
-
-        //SoundManager.Instance.PlaySFX(m_loadPlayer.transform.position, "Rush", 0.3f);
-
         m_loadPlayer.Animator.SetBool("NowAttack", true);
-        m_loadPlayer.DashComponent.PlayDash(savedAttackVec, m_loadPlayer.Data.RushThrust * m_loadPlayer.Data.RushRatio, m_loadPlayer.Data.RushTime);
-
-
+        m_loadPlayer.DashComponent.PlayDash(savedAttackVec, m_loadPlayer.PlayerData.RushThrust * m_loadPlayer.PlayerData.RushRatio, m_loadPlayer.PlayerData.RushDuration);
 
         savedMoveVec = m_loadPlayer.MoveVec;
 
         m_loadPlayer.MoveComponent.RotateUsingTransform(savedAttackVec); // 날라가는 방향으로 전환
-
-        m_loadPlayer.ContactAction += ContactAct;
     }
 
-    public void OperateExit()
+    public override void OperateExit()
     {
         m_loadPlayer.DashComponent.QuickEndTask(); // 조건에서 탈출할 때, 한번 리셋해줌
         m_loadPlayer.Animator.SetBool("NowAttack", false);
-        m_loadPlayer.ContactAction -= ContactAct;
     }
 
-    public void OperateUpdate()
+    public override void OperateUpdate()
     {
         CheckSwitchStates();
     }
@@ -125,16 +95,75 @@ public class StatePlayerAttack : IState<Player.State>
         else return true;
     }
 
-    public void CheckSwitchStates()
+    public override void CheckSwitchStates()
     {
-        if (m_loadPlayer.DashComponent.NowFinish == true || CheckOverMinValue(savedMoveVec, m_loadPlayer.MoveVec, m_loadPlayer.Data.AttackCancelOffset) == false)
+        if (m_loadPlayer.DashComponent.NowFinish == true || CheckOverMinValue(savedMoveVec, m_loadPlayer.MoveVec, m_loadPlayer.PlayerData.AttackCancelOffset) == false)
         {
             m_loadPlayer.DashComponent.QuickEndTask();
             m_loadPlayer.SetState(Player.State.Move);
         }
     }
-
-    public void OnSetToGlobalState()
-    {
-    }
 }
+
+
+
+//void ContactAct(Collision2D col) // 스킬 사용 + Reflect 채크해서 함수 사용
+//{
+//    col.gameObject.TryGetComponent(out Entity entity);
+//    if (entity == null) return;
+
+
+//    if (entity.InheritedTag == EntityTag.Enemy)
+//    {
+//        m_loadPlayer.BattleComponent.UseSkill(SkillUseConditionType.Contact);
+
+
+
+//        col.gameObject.TryGetComponent(out BaseFollowEnemy followEnemy);
+//        col.gameObject.TryGetComponent(out BaseReflectEnemy reflectEnemy);
+
+//        col.gameObject.TryGetComponent(out Enemy followEnemy);
+
+
+//        if (followEnemy != null)
+//        {
+//            if(followEnemy.HealthData.Weight > m_loadPlayer.HealthData.Weight)
+//            {
+//                if (col != null && col.contacts.Length != 0)
+//                {
+//                    Message<Player.State> message = new Message<Player.State>();
+//                    message.dir = m_loadPlayer.ReflectComponent.ResetReflectVec(col.contacts[0].normal);
+//                    Telegram<Player.State> telegram = new Telegram<Player.State>(Player.State.Attack, Player.State.Reflect, message);
+
+//                    m_loadPlayer.SetState(Player.State.Reflect, telegram);
+//                }
+//            }
+//        }
+//        else if(reflectEnemy != null)
+//        {
+//            if (reflectEnemy.HealthData.Weight > m_loadPlayer.HealthData.Weight)
+//            {
+//                if (col != null && col.contacts.Length != 0)
+//                {
+//                    Message<Player.State> message = new Message<Player.State>();
+//                    message.dir = m_loadPlayer.ReflectComponent.ResetReflectVec(col.contacts[0].normal);
+//                    Telegram<Player.State> telegram = new Telegram<Player.State>(Player.State.Attack, Player.State.Reflect, message);
+
+//                    m_loadPlayer.SetState(Player.State.Reflect, telegram);
+//                }
+//            }
+//        }
+
+
+//        // 스킬 사용
+//    }
+
+//    if (entity.InheritedTag == EntityTag.Wall)
+//    {
+//        Message<Player.State> message = new Message<Player.State>();
+//        message.dir = m_loadPlayer.ReflectComponent.ResetReflectVec(col.contacts[0].normal);
+//        Telegram<Player.State> telegram = new Telegram<Player.State>(Player.State.Attack, Player.State.Reflect, message);
+
+//        m_loadPlayer.SetState(Player.State.Reflect, telegram);
+//    }
+//}

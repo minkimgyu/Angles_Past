@@ -36,7 +36,7 @@ public class UpdateDBComponent : UnitaskUtility
     protected override void Awake()
     {
         base.Awake();
-        DatabaseManager.Instance.EntityDB.ResetData();
+        //DatabaseManager.Instance.EntityDB.ResetData();
         LoadInitRange().Forget();
     }
 
@@ -137,7 +137,7 @@ public class UpdateDBComponent : UnitaskUtility
         }
         else if (dataName == "Enemy")
         {
-            DatabaseManager.Instance.EntityDB.Enemy.Add(data as EnemyData);
+            //DatabaseManager.Instance.EntityDB.Enemy.Add(data as EnemyData);
         }
         else if (dataName == "Skill")
         {

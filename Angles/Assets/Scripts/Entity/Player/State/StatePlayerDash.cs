@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatePlayerDash : IState<Player.State>
+public class StatePlayerDash : BaseState<Player.State>
 {
     Player m_loadPlayer;
 
@@ -11,39 +11,27 @@ public class StatePlayerDash : IState<Player.State>
         m_loadPlayer = player;
     }
 
-    public void CheckSwitchStates()
+    public override void CheckSwitchStates()
     {
         if (m_loadPlayer.DashComponent.NowFinish == true) m_loadPlayer.SetState(Player.State.Move);
     }
 
-    public void OnAwakeMessage(Telegram<Player.State> telegram)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnProcessingMessage(Telegram<Player.State> telegram)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnSetToGlobalState()
+    public override void OnMessage(Telegram<Player.State> telegram)
     {
     }
 
-    public void OperateEnter()
+    public override void OperateEnter()
     {
         SoundManager.Instance.PlaySFX(m_loadPlayer.transform.position, "Dash", 1.5f);
-        m_loadPlayer.DashComponent.PlayDash(m_loadPlayer.MoveVec, m_loadPlayer.Data.DashThrust, m_loadPlayer.Data.DashTime);
-        m_loadPlayer.Data.SubtractDashRatio();
+        m_loadPlayer.DashComponent.PlayDash(m_loadPlayer.MoveVec, m_loadPlayer.PlayerData.DashThrust, m_loadPlayer.PlayerData.DashDuration);
+        m_loadPlayer.PlayerData.SubtractDashRatio();
     }
 
-    public void OperateExit()
+    public override void OperateExit()
     {
-        
     }
 
-    public void OperateUpdate()
+    public override void OperateUpdate()
     {
-        CheckSwitchStates();
     }
 }

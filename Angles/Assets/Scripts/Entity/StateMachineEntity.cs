@@ -67,15 +67,40 @@ abstract public class StateMachineEntity<T> : Entity // T는 Entity, W는 State
     public T GlobalStateName { get; private set; }
     public T PreviousStateName { get; private set; }
 
-    protected Dictionary<T, IState<T>> m_dicState = new Dictionary<T, IState<T>>();
+    protected Dictionary<T, BaseState<T>> m_dicState = new Dictionary<T, BaseState<T>>();
 
     //현재 상태를 담는 프로퍼티.
-    public IState<T> CurrentState { get; private set; }
-    public IState<T> GlobalState { get; private set; }
-    public IState<T> PreviousState { get; private set; }
+    public BaseState<T> CurrentState { get; private set; }
+    public BaseState<T> GlobalState { get; private set; }
+    public BaseState<T> PreviousState { get; private set; }
 
     protected bool fixState = false;
     public bool FixState { get { return fixState; } set { fixState = value; } }
+
+    protected virtual void OnTriggerEnter2D(Collider2D collider)
+    {
+        m_dicState[CurrentStateName].ReceiveTriggerEnter(collider);
+    }
+
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
+    {
+        m_dicState[CurrentStateName].ReceiveCollisionEnter(collision);
+    }
+
+    protected virtual void OnCollisionExit2D(Collision2D collision)
+    {
+        m_dicState[CurrentStateName].ReceiveCollisionExit(collision);
+    }
+
+    protected virtual void OnEnable()
+    {
+        m_dicState[CurrentStateName].ReceiveOnEnable();
+    }
+
+    protected virtual void OnDisable()
+    {
+        m_dicState[CurrentStateName].ReceiveOnDisable();
+    }
 
     //기본 상태를 생성시에 설정하게 생성자 만들기.
     protected void SetUp(T defaultState) // 가상 함수 처리
@@ -103,22 +128,13 @@ abstract public class StateMachineEntity<T> : Entity // T는 Entity, W는 State
     {
         if (!CanSendMessage(telegram)) return false;
 
-        CurrentState.OnAwakeMessage(telegram);
+        CurrentState.OnMessage(telegram);
         return true;
     }
-
-    public bool HandleProcessingMessage(Telegram<T> telegram)
-    {
-        if (!CanSendMessage(telegram)) return false;
-
-        CurrentState.OnProcessingMessage(telegram);
-        return true;
-    }
-
-    public void SetGlobalState(IState<T> state) // 추상 함수 처리
+    public void SetGlobalState(BaseState<T> state) // 추상 함수 처리
     {
         GlobalState = state;
-        state.OnSetToGlobalState();
+        GlobalState.OperateEnter(); // 이런 식으로 동작
     }
 
     //매프레임마다 호출되는 함수.
@@ -126,9 +142,16 @@ abstract public class StateMachineEntity<T> : Entity // T는 Entity, W는 State
     {
         if (GlobalState != null) GlobalState.OperateUpdate();
 
-        if (CurrentState != null) CurrentState.OperateUpdate();
+        if (CurrentState == null) return;
+
+        CurrentState.OperateUpdate();
+        CurrentState.CheckSwitchStates(); // update에서 스테이트 변경 확인해주기
     }
 
+    private void Update()
+    {
+        DoOperateUpdate();
+    }
 
     public bool RevertToPreviousState()
     {

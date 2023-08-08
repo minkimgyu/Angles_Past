@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public interface IBuff<T>
+public interface IEntityData<T>
 {
-    public T GetData();
+    public T ReturnEntityData();
 }
 
 abstract public class BaseBuff : MonoBehaviour

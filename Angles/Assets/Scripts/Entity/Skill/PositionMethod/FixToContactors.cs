@@ -8,19 +8,19 @@ public class FixToContactors : PositionMethod
 {
     public override void DoUpdate(BasicSkill me)
     {
-        if (me.PosTr == null) return;
+        //if (me.PosTr == null) return;
 
-        me.transform.position = me.PosTr.position; // 계속 고정시킴
+        //me.transform.position = me.PosTr.position; // 계속 고정시킴
     }
 
     public override void Init(Transform caster, BasicSkill me)
     {
-        caster.TryGetComponent(out ContactComponent contact);
-        if (contact == null) return;
+        //caster.TryGetComponent(out ContactComponent contact);
+        //if (contact == null) return;
 
-        ContactSupportData supportData = contact.ReturnContactSupportData();
-        if (supportData.ContactEntity.Count == 0) return;
+        //ContactSupportData supportData = contact.ReturnContactSupportData();
+        //if (supportData.ContactEntity.Count == 0) return;
 
-        me.PosTr = supportData.ContactEntity[0].transform;
+        //me.PosTr = supportData.ContactEntity[0].transform;
     }
 }

@@ -56,7 +56,7 @@ public class StateYellowHexaagonAttack : StateFollowEnemyAttack
     }
 }
 
-public class StateYellowHexaagonFix : IState<BaseFollowEnemy.State>
+public class StateYellowHexaagonFix : BaseState<BaseFollowEnemy.State>
 {
     YellowHexagonEnemy loadYellowHexagonEnemy;
 
@@ -68,37 +68,25 @@ public class StateYellowHexaagonFix : IState<BaseFollowEnemy.State>
         loadYellowHexagonEnemy = yellowHexagonEnemy;
     }
 
-    public void CheckSwitchStates()
+    public override void OnMessage(Telegram<BaseFollowEnemy.State> telegram)
     {
     }
 
-    public void OnAwakeMessage(Telegram<BaseFollowEnemy.State> telegram)
-    {
-    }
-
-    public void OnProcessingMessage(Telegram<BaseFollowEnemy.State> telegram)
-    {
-    }
-
-    public void OnSetToGlobalState()
-    {
-    }
-
-    public void OperateEnter()
+    public override void OperateEnter()
     {
         canRevertToPreviousState = false;
         loadYellowHexagonEnemy.MoveComponent.Stop();
     }
 
-    public void OperateExit()
+    public override void OperateExit()
     {
         canRevertToPreviousState = true;
         storedTime = 0;
     }
 
-    public void OperateUpdate()
+    public override void OperateUpdate()
     {
-        loadYellowHexagonEnemy.Rigid.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+        loadYellowHexagonEnemy.Rigidbody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
         loadYellowHexagonEnemy.FixState = true;
 
         if (canRevertToPreviousState == false)
@@ -113,7 +101,7 @@ public class StateYellowHexaagonFix : IState<BaseFollowEnemy.State>
 
         if (canRevertToPreviousState)
         {
-            loadYellowHexagonEnemy.Rigid.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+            loadYellowHexagonEnemy.Rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
             loadYellowHexagonEnemy.FixState = false;
             loadYellowHexagonEnemy.SetState(BaseFollowEnemy.State.Follow);
         } 

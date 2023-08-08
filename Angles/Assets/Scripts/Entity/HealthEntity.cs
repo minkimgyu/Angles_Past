@@ -3,49 +3,94 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-abstract public class HealthEntity<T> : StateMachineEntity<T>, IHealth
+abstract public class HealthEntity<T> : StateMachineEntity<T>, IHealth//, IEntityData<W>/*, IBuff<W>*/
 {
-    public Action<float, Vector2, float> UnderAttackAction;
+    BuffComponent m_buffComponent;
+    public BuffComponent BuffComponent { get { return m_buffComponent; } }
 
-    public virtual void Heal(HealthEntityData data, float healthPoint)
+    Rigidbody2D m_rigidbody;
+    public Rigidbody2D Rigidbody { get { return m_rigidbody; } }
+
+    bool m_canHit = false;
+    public bool CanHit { get { return m_canHit; } set { m_canHit = value; } }
+
+    HealthEntityData m_healthData;
+
+    public HealthEntityData HealthData
     {
-        if (data.Hp > 0)
+        get
         {
-            WhenUnderAttack();
-            data.Hp -= healthPoint;
-            if (data.Hp <= 0)
-            {
-                Die();
-                data.Hp = 0;
-            }
+            return m_healthData;
         }
-
-    }
-
-    public virtual void UnderAttack(HealthEntityData data, float healthPoint, Vector2 dir, float thrust)
-    {
-        if (data.Hp > 0)
+        set
         {
-            WhenUnderAttack();
-            data.Hp -= healthPoint;
-            if (data.Hp <= 0)
-            {
-                Die();
-                data.Hp = 0;
-            }
+            m_healthData = value;
+            if (m_rigidbody == null) return;
+
+            m_rigidbody.mass = m_healthData.Weight;
+            m_rigidbody.drag = m_healthData.Drag;
         }
     }
 
-    public abstract void WhenUnderAttack();
+    protected virtual void ShowDieEffect()
+    {
+        BasicEffectPlayer effectPlayer = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(m_healthData.DieEffectName);
+        if (effectPlayer == null) return;
 
-    public abstract void WhenHeal();
+        effectPlayer.Init(transform.position, 2f);
+        effectPlayer.PlayEffect();
+    }
 
-    public abstract void Die();
+    protected virtual void Awake()
+    {
+        m_buffComponent = GetComponent<BuffComponent>();
+        m_rigidbody = GetComponent<Rigidbody2D>();
+    }    
 
-    public abstract HealthEntityData ReturnHealthEntityData();
+    public virtual void Heal(float healthPoint) { }
+
+    public virtual void UnderAttack(float damage, Vector2 dir, float thrust)
+    {
+        if (m_canHit) return;
+
+        if (m_healthData.Hp > 0)
+        {
+            WhenUnderAttack(damage, dir, thrust);
+            m_healthData.Hp -= damage;
+            if (m_healthData.Hp <= 0)
+            {
+                Die();
+                m_healthData.Hp = 0;
+            }
+        }
+    }
+
+    public virtual void WhenUnderAttack(float damage, Vector2 dir, float thrust)
+    {
+        m_dicState[CurrentStateName].ReceiveUnderAttack(damage, dir, thrust);
+    }
+
+    public virtual void WhenHeal() { }
+
+    public virtual void Die()
+    {
+        ShowDieEffect();
+        gameObject.SetActive(false);
+    }
+
+    public HealthEntityData ReturnHealthEntityData()
+    {
+        return m_healthData;
+    }
 
     public EntityTag ReturnEntityTag()
     {
         return inheritedTag;
+    }
+
+    protected override void OnDisable()
+    {
+        CancelInvoke();
+        ObjectPooler.ReturnToPool(gameObject);
     }
 }

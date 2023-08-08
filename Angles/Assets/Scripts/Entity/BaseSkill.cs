@@ -33,12 +33,12 @@ abstract public class SpecifyLocation
     protected Vector3 m_pos;
     protected bool m_isFix;
 
-    protected GameObject m_caster;
-    public GameObject Caster { get{ return m_caster; } }
+    protected Transform m_caster;
+    public GameObject Caster { get{ return m_caster.gameObject; } }
 
     public virtual void Init(Transform caster, bool isFix)
     {
-        m_caster = caster.gameObject;
+        m_caster = caster;
     }
 
     public virtual Vector3 ReturnPos()
@@ -48,7 +48,7 @@ abstract public class SpecifyLocation
     }
 }
 
-abstract public class LocationToCaster : SpecifyLocation
+public class LocationToCaster : SpecifyLocation
 {
     public override void Init(Transform caster, bool isFix)
     {
@@ -61,7 +61,7 @@ abstract public class LocationToCaster : SpecifyLocation
     }
 }
 
-abstract public class LocationToContactor : SpecifyLocation
+public class LocationToContactor : SpecifyLocation
 {
     public override void Init(Transform caster, bool isFix)
     {
@@ -82,6 +82,8 @@ abstract public class LocationToContactor : SpecifyLocation
 abstract public class BaseMethod<T>
 {
     List<BasicEffectPlayer> effectPlayers;
+
+    public abstract void Init(SkillData data); // 데이터 베이스에서 Stat을 카피해서 가져옴
 
     public abstract void Execute(SkillSupportData supportData, T value);
 
@@ -123,19 +125,27 @@ abstract public class BaseMethod<T>
 
 abstract public class DamageMethod<T> : BaseMethod<T>
 {
+    protected DamageStat damageStat;
+
     protected bool DamageToEntity(GameObject me, Transform enemy, SkillData data)
     {
         enemy.TryGetComponent(out IHealth health);
 
         if (health == null || data.CanHitSkill(health.ReturnEntityTag()) == false) return false;
 
-        health.UnderAttack(health.ReturnHealthEntityData(), data.Damage, -(me.transform.position - enemy.position).normalized, data.KnockBackThrust);
+        health.UnderAttack(data.Damage, -(me.transform.position - enemy.position).normalized, data.KnockBackThrust);
         return true;
+    }
+
+    public override void Init(SkillData data) // 여기서 불러옴
+    {
+        //damageStat = DatabaseManager.Instance.db
     }
 }
 
 public class DamageToContactors : DamageMethod<List<ContactData>>
 {
+
     public override void Execute(SkillSupportData supportData, List<ContactData> contactData)
     {
         for (int i = 0; i < contactData.Count; i++)
@@ -222,32 +232,32 @@ public interface ISkill
 {
     public bool CheckIsFinish();
 
-    public void Init(Transform caster);
+    public void Init(Transform caster, SkillData data);
     public void Execute();
     public void End();
+
+    public ISkill CreateCopy();
 }
 
 public class BaseSkill<T> : ISkill
 {
-    [SerializeField]
-    protected SkillData data; // --> 데미지, 범위 등등 공통된 변수만 넣어주자
-    public SkillData Data { get { return data; } }
-
-    SpecifyLocation specifyLocation;
-    public SpecifyLocation SpecifyLocation { get { return specifyLocation; } }
-
-    TargetDesignation<T> targetDesignation;
-    public TargetDesignation<T> TargetDesignation { get { return targetDesignation; } }
-
-    [SerializeField]
-    List<BaseMethod<T>> baseMethods;
-
-    public BaseSkill(SpecifyLocation specifyLocation, TargetDesignation<T> targetDesignation, List<BaseMethod<T>> baseMethods)
+    public ISkill CreateCopy()
     {
-        this.specifyLocation = specifyLocation;
-        this.targetDesignation = targetDesignation;
-        this.baseMethods = baseMethods;
+        return new BaseSkill<T>(m_specifyLocation, m_targetDesignation, m_baseMethods);
     }
+
+    [SerializeField]
+    protected SkillData m_data; // --> 데미지, 범위 등등 공통된 변수만 넣어주자
+    public SkillData Data { get { return m_data; } }
+
+    protected SpecifyLocation m_specifyLocation;
+    public SpecifyLocation SpecifyLocation { get { return m_specifyLocation; } }
+
+    protected TargetDesignation<T> m_targetDesignation;
+    public TargetDesignation<T> TargetDesignation { get { return m_targetDesignation; } }
+
+    [SerializeField]
+    protected List<BaseMethod<T>> m_baseMethods;
 
     float m_preDelay = 0;
 
@@ -258,23 +268,36 @@ public class BaseSkill<T> : ISkill
     bool m_nowFinish = false;
     public bool NowFinish { get { return m_nowFinish; } }
 
-    public virtual void Init(Transform caster)
+    public BaseSkill(SpecifyLocation specifyLocation, TargetDesignation<T> targetDesignation, List<BaseMethod<T>> methods)
     {
-        specifyLocation.Init(caster, true); // IsFix는 data 변수로 지정
+        m_specifyLocation = specifyLocation;
+        m_targetDesignation = targetDesignation;
+        m_baseMethods = methods;
+    }
+
+    public virtual void Init(Transform caster, SkillData data)
+    {
+        m_data = data;
+        m_specifyLocation.Init(caster, true); // IsFix는 data 변수로 지정
+
+        for (int i = 0; i < m_baseMethods.Count; i++) // 가져와야할 스탯이 여러 개인 경우, 여기서 인덱스를 넘겨서 호출시키기
+        {
+            m_baseMethods[i].Init(data); // 데이터베이스에서 Stat을 불러옴
+        }
     }
 
     public virtual void Execute() // 여기에서 Unitask 호출해서 틱 당 데미지 적용 함수 추가
     {
-        float tickDuration = data.Duration / data.TickCount;
-        if (data.PreDelay >= m_preDelay)
+        float tickDuration = m_data.Duration / m_data.TickCount;
+        if (m_data.PreDelay >= m_preDelay)
         {
             m_preDelay += Time.deltaTime;
             return;
         }
 
-        if (data.TickCount > m_tickCount)
+        if (m_data.TickCount > m_tickCount)
         {
-            SkillRoutine(data.TickCount);
+            SkillRoutine(m_data.TickCount);
 
             m_storedDuration += Time.deltaTime;
             if (m_storedDuration > tickDuration)
@@ -291,14 +314,14 @@ public class BaseSkill<T> : ISkill
 
     public virtual void SkillRoutine(int tickCount)
     {
-        Vector3 myPos = specifyLocation.ReturnPos();
+        Vector3 myPos = m_specifyLocation.ReturnPos();
 
-        SkillSupportData supportData = new SkillSupportData(specifyLocation.Caster, data, myPos, tickCount);
-        T value = targetDesignation.Execute(supportData);
+        SkillSupportData supportData = new SkillSupportData(m_specifyLocation.Caster, m_data, myPos, tickCount);
+        T value = m_targetDesignation.Execute(supportData);
 
-        for (int i = 0; i < baseMethods.Count; i++)
+        for (int i = 0; i < m_baseMethods.Count; i++)
         {
-            baseMethods[i].Execute(supportData, value);
+            m_baseMethods[i].Execute(supportData, value);
         }
     }
 
@@ -316,10 +339,11 @@ public class BaseSkill<T> : ISkill
     }
 }
 
-public class StickyBomb : BaseSkill<RaycastHit2D[]>
+public class CasterCircleRangeAttack : BaseSkill<RaycastHit2D[]>
 {
-    public StickyBomb(SpecifyLocation specifyLocation, TargetDesignation<RaycastHit2D[]> targetDesignation, List<BaseMethod<RaycastHit2D[]>> baseMethods) 
-        : base(specifyLocation, targetDesignation, baseMethods) { }
+    public CasterCircleRangeAttack(SpecifyLocation specifyLocation, TargetDesignation<RaycastHit2D[]> targetDesignation, List<BaseMethod<RaycastHit2D[]>> methods) : base(specifyLocation, targetDesignation, methods)
+    {
+    }
 }
 
 abstract public class TargetDesignation<T>

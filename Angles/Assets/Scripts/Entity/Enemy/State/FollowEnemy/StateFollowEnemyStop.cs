@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class StateFollowEnemyStop : IState<BaseFollowEnemy.State>
+public class StateFollowEnemyStop : BaseState<BaseFollowEnemy.State>
 {
     BaseFollowEnemy loadFollowEnemy;
 
@@ -9,47 +9,35 @@ public class StateFollowEnemyStop : IState<BaseFollowEnemy.State>
         loadFollowEnemy = followEnemy; 
     }
 
-    public void CheckSwitchStates()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnAwakeMessage(Telegram<BaseFollowEnemy.State> telegram)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnProcessingMessage(Telegram<BaseFollowEnemy.State> telegram)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnSetToGlobalState()
+    public override void OnMessage(Telegram<BaseFollowEnemy.State> telegram)
     {
     }
 
-    public void OperateEnter()
+    public override void OperateEnter()
     {
         loadFollowEnemy.MoveComponent.Stop();
     }
 
-    public void OperateExit()
+    public override void OperateExit()
     {
-       
     }
 
-    public void OperateUpdate()
+    public override void CheckSwitchStates()  // 여기서 State가 변경되는지 확인
     {
         if (loadFollowEnemy.LoadPlayer == null) return;
 
-        if (!loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.Data.StopMinDistance))
+        if (!loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.FollowEnemyData.StopMinDistance))
         {
             loadFollowEnemy.SetState(BaseFollowEnemy.State.Follow);
         }
     }
+
+    public override void OperateUpdate()
+    {
+    }
 }
 
-public class StateTriangleEnemyStop : IState<BaseFollowEnemy.State>
+public class StateTriangleEnemyStop : BaseState<BaseFollowEnemy.State>
 {
     YellowTriangleEnemy loadFollowEnemy;
 
@@ -58,43 +46,30 @@ public class StateTriangleEnemyStop : IState<BaseFollowEnemy.State>
         loadFollowEnemy = followEnemy;
     }
 
-    public void CheckSwitchStates()
+    public override void CheckSwitchStates()
     {
-        throw new System.NotImplementedException();
+        if(!loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.FollowEnemyData.StopMinDistance))
+        {
+            loadFollowEnemy.SetState(BaseFollowEnemy.State.Follow);
+        }
     }
 
-    public void OnAwakeMessage(Telegram<BaseFollowEnemy.State> telegram)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnProcessingMessage(Telegram<BaseFollowEnemy.State> telegram)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnSetToGlobalState()
+    public override void OnMessage(Telegram<BaseFollowEnemy.State> telegram)
     {
     }
 
-    public void OperateEnter()
+    public override void OperateEnter()
     {
         loadFollowEnemy.MoveComponent.Stop();
     }
 
-    public void OperateExit()
+    public override void OperateExit()
     {
-
     }
 
-    public void OperateUpdate()
+    public override void OperateUpdate()
     {
         Vector2 dir = loadFollowEnemy.FollowComponent.ReturnDirVec(loadFollowEnemy.LoadPlayer.transform.position);
         loadFollowEnemy.MoveComponent.RotationPlayer(dir.normalized, true);
-
-        if (!loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.Data.StopMinDistance))
-        {
-            loadFollowEnemy.SetState(BaseFollowEnemy.State.Follow);
-        }
     }
 }

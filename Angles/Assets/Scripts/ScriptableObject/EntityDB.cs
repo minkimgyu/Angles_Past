@@ -121,17 +121,9 @@ public class GrantedUtilization
     }
 }
 
-[System.Serializable]
-public class HealthEntityData : BaseData
+[System.Serializable] // 데이터를 상속으로 처리하지 말고 나눠보자
+public class HealthEntityData : IData<HealthEntityData>
 {
-    [SerializeField]
-    protected string shape;
-    public string Shape { get { return shape; } set { shape = value; } }
-
-    [SerializeField]
-    protected string color;
-    public string Color { get { return color; } set { color = value; } }
-
     [SerializeField]
     protected bool immortality;
     public bool Immortality { get { return immortality; } set { immortality = value; } }
@@ -157,19 +149,15 @@ public class HealthEntityData : BaseData
     public float Drag { get { return drag; } set { drag = value; } }
 
     [SerializeField]
-    protected float knockBackThrust;
-    public float KnockBackThrust { get { return knockBackThrust; } set { knockBackThrust = value; } }
+    protected string dieEffectName;
+    public string DieEffectName { get { return dieEffectName; }}
 
-    [SerializeField]
-    protected GrantedUtilization grantedUtilization;
-    public GrantedUtilization GrantedUtilization { get { return grantedUtilization; } }
+
 
     public HealthEntityData() { }
 
-    public HealthEntityData(string name, string shape, string color, bool immortality, float hp, BuffFloat speed, float stunTime, float weight, float drag, float knockBackThrust, GrantedUtilization grantedUtilization) : base(name)
+    public HealthEntityData(bool immortality, float hp, BuffFloat speed, float stunTime, float weight, float drag)
     {
-        this.shape = shape;
-        this.color = color;
         this.immortality = immortality;
         this.hp = hp;
 
@@ -178,29 +166,20 @@ public class HealthEntityData : BaseData
         this.stunTime = stunTime;
         this.weight = weight;
         this.drag = drag;
-        this.knockBackThrust = knockBackThrust;
-        this.grantedUtilization = grantedUtilization;
+    }
+
+    public HealthEntityData CopyData()
+    {
+        return new HealthEntityData(immortality, hp, speed, stunTime, weight, drag);
     }
 }
 
 [System.Serializable]
-public class PlayerData : HealthEntityData, IData<PlayerData>
+public class PlayerData : IData<PlayerData>
 {
     [SerializeField]
-    BuffFloat readySpeed;
-    public BuffFloat ReadySpeed { get { return readySpeed; } set { readySpeed = value; } }
-
-    [SerializeField]
-    float speedRatio;
-    public float SpeedRatio { get { return speedRatio; } set { speedRatio = value; } }
-
-    [SerializeField]
-    float minSpeedRatio;
-    public float MinSpeedRatio { get { return minSpeedRatio; } set { minSpeedRatio = value; } }
-
-    [SerializeField]
-    float maxSpeedRatio;
-    public float MaxSpeedRatio { get { return maxSpeedRatio; } set { maxSpeedRatio = value; } }
+    float readySpeedDecreaseRatio;
+    public float ReadySpeedDecreaseRatio { get { return readySpeedDecreaseRatio; } set { readySpeedDecreaseRatio = value; } }
 
     [SerializeField]
     float rushThrust;
@@ -215,17 +194,12 @@ public class PlayerData : HealthEntityData, IData<PlayerData>
     public float RushRecoverRatio { get { return rushRecoverRatio; } set { rushRecoverRatio = value; } }
 
     [SerializeField]
-    float rushTime;
-    public float RushTime { get { return rushTime; } set { rushTime = value; } }
+    float rushDuration;
+    public float RushDuration { get { return rushDuration; } set { rushDuration = value; } }
 
     [SerializeField]
     float attackCancelOffset;
     public float AttackCancelOffset { get { return attackCancelOffset; } set { attackCancelOffset = value; } }
-
-
-    [SerializeField]
-    float reflectThrust;
-    public float ReflectThrust { get { return reflectThrust; } set { reflectThrust = value; } }
 
 
     [SerializeField]
@@ -234,8 +208,8 @@ public class PlayerData : HealthEntityData, IData<PlayerData>
 
 
     [SerializeField]
-    float dashTime;
-    public float DashTime { get { return dashTime; } set { dashTime = value; } }
+    float dashDuration;
+    public float DashDuration { get { return dashDuration; } set { dashDuration = value; } }
 
 
     [SerializeField]
@@ -250,6 +224,10 @@ public class PlayerData : HealthEntityData, IData<PlayerData>
     [SerializeField]
     float dashRecoverRatio;
     public float DashRecoverRatio { get { return dashRecoverRatio; } set { dashRecoverRatio = value; } }
+
+    [SerializeField]
+    protected GrantedUtilization grantedUtilization;
+    public GrantedUtilization GrantedUtilization { get { return grantedUtilization; } }
 
     public bool CanUseDash()
     {
@@ -291,40 +269,61 @@ public class PlayerData : HealthEntityData, IData<PlayerData>
 
     public PlayerData() { }
 
-    public PlayerData(string name, string shape, string color, bool immortality, float hp, BuffFloat speed, float stunTime, float weight, float drag, float knockBackThrust, GrantedUtilization grantedUtilization, BuffFloat readySpeed, float speedRatio, float minSpeedRatio, float maxSpeedRatio, float rushThrust,
-        float rushRatio, float rushRecoverRatio, float rushTime, float attackCancelOffset, float reflectThrust, float maxDashCount, float dashTime, float dashThrust, float dashRatio, float dashRecoverRatio) : base(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust, grantedUtilization)
+    public PlayerData(float readySpeedDecreaseRatio, float rushThrust,
+        float rushRatio, float rushRecoverRatio, float rushTime, float attackCancelOffset, float maxDashCount, float dashTime, float dashThrust, float dashRatio, float dashRecoverRatio, GrantedUtilization grantedUtilization)
     {
-        this.readySpeed = readySpeed.CopyData();
-        this.speedRatio = speedRatio;
-        this.minSpeedRatio = minSpeedRatio;
-        this.maxSpeedRatio = maxSpeedRatio;
+        this.readySpeedDecreaseRatio = readySpeedDecreaseRatio;
         this.rushThrust = rushThrust;
         this.rushRatio = rushRatio;
         this.rushRecoverRatio = rushRecoverRatio;
-        this.rushTime = rushTime;
-        this.attackCancelOffset = attackCancelOffset;
-        this.reflectThrust = reflectThrust;
+        this.rushDuration = rushTime; 
         this.maxDashCount = maxDashCount;
-        this.dashTime = dashTime;
+        this.dashDuration = dashTime;
         this.dashThrust = dashThrust;
         this.dashRatio = dashRatio;
         this.dashRecoverRatio = dashRecoverRatio;
+
+        this.grantedUtilization = grantedUtilization;
     }
 
     public PlayerData CopyData()
     {
-        return new PlayerData(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust, grantedUtilization, readySpeed, speedRatio, minSpeedRatio, maxSpeedRatio, rushThrust,
-        rushRatio, rushRecoverRatio, rushTime, attackCancelOffset, reflectThrust, maxDashCount, dashTime, dashThrust, dashRatio, dashRecoverRatio);
+        return new PlayerData(readySpeedDecreaseRatio, rushThrust,
+        rushRatio, rushRecoverRatio, rushDuration, attackCancelOffset, maxDashCount, dashDuration, dashThrust, dashRatio, dashRecoverRatio, grantedUtilization);
     }
 }
 
 [System.Serializable]
-public class EnemyData : HealthEntityData, IData<EnemyData>
+public class BaseEnemyData : IData<BaseEnemyData> // 적끼리 겹치는 데이터 모음
 {
     [SerializeField]
-    protected float knockBackDamage;
-    public float KnockBackDamage { get { return knockBackDamage; } set { knockBackDamage = value; } }
+    protected int score;
+    public int Score { get { return score; } set { score = value; } }
 
+    [SerializeField]
+    protected float spawnPercentage;
+    public float SpawnPercentage { get { return spawnPercentage; } set { spawnPercentage = value; } }
+
+    [SerializeField]
+    protected GrantedUtilization grantedUtilization;
+    public GrantedUtilization GrantedUtilization { get { return grantedUtilization; } }
+
+    public BaseEnemyData(int score, float spawnPercentage, GrantedUtilization grantedUtilization)
+    {
+        this.score = score;
+        this.spawnPercentage = spawnPercentage;
+        this.grantedUtilization = grantedUtilization;
+    }
+
+    public BaseEnemyData CopyData()
+    {
+        return new BaseEnemyData(score, spawnPercentage, grantedUtilization);
+    }
+}
+
+[System.Serializable]
+public class FollowEnemyData : IData<FollowEnemyData> // 추적 하는 적 데이터 모음
+{
     [SerializeField]
     float skillUseDistance;
     public float SkillUseDistance { get { return skillUseDistance; } set { skillUseDistance = value; } }
@@ -338,8 +337,8 @@ public class EnemyData : HealthEntityData, IData<EnemyData>
     public float SkillUseRange { get { return skillUseRange; } set { skillUseRange = value; } }
 
     [SerializeField]
-    float skillReuseTime;
-    public float SkillReuseTime { get { return skillReuseTime; } set { skillReuseTime = value; } }
+    float skillCooldownTime;
+    public float SkillReuseTime { get { return skillCooldownTime; } set { skillCooldownTime = value; } }
 
     [SerializeField]
     float followMinDistance;
@@ -349,59 +348,75 @@ public class EnemyData : HealthEntityData, IData<EnemyData>
     float stopMinDistance;
     public float StopMinDistance { get { return stopMinDistance; } set { stopMinDistance = value; } }
 
-    [SerializeField]
-    int prefabCount;
-    public int PrefabCount { get { return prefabCount; } set { prefabCount = value; } }
+    public FollowEnemyData() { }
 
-    [SerializeField]
-    protected int score;
-    public int Score { get { return score; } set { score = value; } }
-
-    [SerializeField]
-    protected float spawnPercentage;
-    public float SpawnPercentage { get { return spawnPercentage; } set { spawnPercentage = value; } }
-
-    public EnemyData() { }
-
-    public EnemyData(string name, string shape, string color, bool immortality, float hp, BuffFloat speed, float stunTime, float weight, float drag, float knockBackThrust, GrantedUtilization grantedUtilization, float knockBackDamage, 
-        float skillUseDistance, float skillUseOffsetDistance, float skillUseRange, float skillReuseTime, float followMinDistance, float stopMinDistance, int prefabCount, int score, float spawnPercentage) : base(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust, grantedUtilization)
+    public FollowEnemyData(float skillUseDistance, float skillUseOffsetDistance, float skillUseRange, float skillCooldownTime, float followMinDistance, float stopMinDistance)
     {
-        this.knockBackDamage = knockBackDamage;
         this.skillUseDistance = skillUseDistance;
         this.skillUseOffsetDistance = skillUseOffsetDistance;
         this.skillUseRange = skillUseRange;
-        this.skillReuseTime = skillReuseTime;
+        this.skillCooldownTime = skillCooldownTime;
         this.followMinDistance = followMinDistance;
         this.stopMinDistance = stopMinDistance;
-        this.prefabCount = prefabCount;
-        this.score = score;
-        this.spawnPercentage = spawnPercentage;
     }
 
-    public EnemyData CopyData()
+    public FollowEnemyData CopyData()
     {
-        return new EnemyData(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust, grantedUtilization, knockBackDamage, skillUseDistance, skillUseOffsetDistance, skillUseRange, skillReuseTime, followMinDistance, stopMinDistance, prefabCount, score, spawnPercentage);
+        return new FollowEnemyData(skillUseDistance, skillUseOffsetDistance, skillUseRange, skillCooldownTime, followMinDistance, stopMinDistance);
     }
+}
+
+public class PlayerStat
+{
+    [SerializeField]
+    HealthEntityData healthData;
+    public HealthEntityData HealthData { get { return healthData; } }
+
+    [SerializeField]
+    PlayerData playerData;
+    public PlayerData PlayerData { get { return playerData; } }
+
+    
+}
+
+public class FollowEnemyStat
+{
+    [SerializeField]
+    HealthEntityData healthData;
+    public HealthEntityData HealthData { get { return healthData; } }
+
+    [SerializeField]
+    BaseEnemyData baseEnemyData;
+    public BaseEnemyData BaseEnemyData { get { return baseEnemyData; } }
+
+    [SerializeField]
+    FollowEnemyData followEnemyData;
+    public FollowEnemyData FollowEnemyData { get { return followEnemyData; } }
+}
+
+public class ReflectEnemyStat
+{
+    [SerializeField]
+    HealthEntityData healthData;
+    public HealthEntityData HealthData { get { return healthData; } }
+
+    [SerializeField]
+    BaseEnemyData baseEnemyData;
+    public BaseEnemyData BaseEnemyData { get { return baseEnemyData; } }
 }
 
 [CreateAssetMenu(fileName = "EntityDB", menuName = "Scriptable Object/DB/EntityDB")]
 public class EntityDB : ScriptableObject
 {
     [SerializeField]
-    PlayerData player;
-    public PlayerData Player { get { return player; } }
+    PlayerStat playerStat;
+    public PlayerStat PlayerStat { get { return playerStat; } }
 
     [SerializeField]
-    List<EnemyData> enemy;
-    public List<EnemyData> Enemy { get { return enemy; } }
+    StringFollowEnemyStatDictionary followEnemyStats;
+    public StringFollowEnemyStatDictionary FollowEnemyStats { get { return followEnemyStats; } }
 
-    public EnemyData ReturnEnemyData(string name)
-    {
-        return enemy.Find(x => x.Name == name).CopyData();
-    }
-    public void ResetData()
-    {
-        player = new PlayerData();
-        enemy = new List<EnemyData>();
-    }
+    [SerializeField]
+    StringReflectEnemyStatDictionary reflectEnemyStats;
+    public StringReflectEnemyStatDictionary ReflectEnemyStats { get { return reflectEnemyStats; } }
 }

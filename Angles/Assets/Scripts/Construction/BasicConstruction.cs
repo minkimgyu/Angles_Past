@@ -56,7 +56,7 @@ abstract public class BasicConstruction : StateMachineEntity<BasicConstruction.S
     }
 }
 
-public class StateBasicConstructionIdle : IState<BasicConstruction.State>
+public class StateBasicConstructionIdle : BaseState<BasicConstruction.State>
 {
     BasicConstruction loadBasicConstruction;
 
@@ -65,43 +65,29 @@ public class StateBasicConstructionIdle : IState<BasicConstruction.State>
         loadBasicConstruction = basicConstruction;
     }
 
-    public void CheckSwitchStates()
+    public override void OnMessage(Telegram<BasicConstruction.State> telegram)
     {
     }
 
-    public void OnAwakeMessage(Telegram<BasicConstruction.State> telegram)
+    public override void OperateEnter()
     {
     }
 
-    public void OnProcessingMessage(Telegram<BasicConstruction.State> telegram)
+    public override void OperateExit()
     {
     }
 
-    public void OnSetToGlobalState()
-    {
-    }
-
-    public void OperateEnter()
-    {
-        loadBasicConstruction.ContactAction += GoToAttackState;
-    }
-
-    public void OperateExit()
-    {
-        loadBasicConstruction.ContactAction -= GoToAttackState;
-    }
-
-    void GoToAttackState()
+    public override void ReceiveCollisionEnter(Collision2D collision) 
     {
         loadBasicConstruction.SetState(BasicConstruction.State.Attack);
     }
 
-    public void OperateUpdate()
+    public override void OperateUpdate()
     {
     }
 }
 
-public class StateBasicConstructionAttack : IState<BasicConstruction.State>
+public class StateBasicConstructionAttack : BaseState<BasicConstruction.State>
 {
     BasicConstruction loadBasicConstruction;
 
@@ -109,34 +95,21 @@ public class StateBasicConstructionAttack : IState<BasicConstruction.State>
     {
         loadBasicConstruction = basicConstruction;
     }
-
-    public void CheckSwitchStates()
+    public override void OnMessage(Telegram<BasicConstruction.State> telegram)
     {
     }
 
-    public void OnAwakeMessage(Telegram<BasicConstruction.State> telegram)
-    {
-    }
-
-    public void OnProcessingMessage(Telegram<BasicConstruction.State> telegram)
-    {
-    }
-
-    public void OnSetToGlobalState()
-    {
-    }
-
-    public void OperateEnter()
+    public override void OperateEnter()
     {
         loadBasicConstruction.BattleComponent.UseSkill(SkillUseConditionType.Contact);
         loadBasicConstruction.RevertToPreviousState();
     }
 
-    public void OperateExit()
+    public override void OperateExit()
     {
     }
 
-    public void OperateUpdate()
+    public override void OperateUpdate()
     {
     }
 }

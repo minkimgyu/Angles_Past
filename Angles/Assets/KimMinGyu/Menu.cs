@@ -20,16 +20,16 @@ public class Menu : MonoBehaviour
 
     private void Start()
     {
-        if (!entityDB.Player.Immortality)
-        {
-            cheatTxt.text = "公利 秦力";
-            cheatImg.color = new Color(0.1f, 0.1f, 0.1f, 1f);
-        }
-        else
-        {
-            cheatTxt.text = "公利 利侩";
-            cheatImg.color = new Color(1f, 1f, 1f, 1f);
-        }
+        //if (!entityDB.Player.Immortality)
+        //{
+        //    cheatTxt.text = "公利 秦力";
+        //    cheatImg.color = new Color(0.1f, 0.1f, 0.1f, 1f);
+        //}
+        //else
+        //{
+        //    cheatTxt.text = "公利 利侩";
+        //    cheatImg.color = new Color(1f, 1f, 1f, 1f);
+        //}
     }
 
     public void GoToPlayerScene()
@@ -87,17 +87,17 @@ public class Menu : MonoBehaviour
 
     public void MakePlayerImmo()
     {
-        if(!entityDB.Player.Immortality)
-        {
-            cheatTxt.text = "公利 利侩";
-            cheatImg.color = new Color(1f, 1f, 1f, 1f);
-            entityDB.Player.Immortality = true;
-        }
-        else
-        {
-            cheatTxt.text = "公利 秦力";
-            cheatImg.color = new Color(0.1f, 0.1f, 0.1f, 1f);
-            entityDB.Player.Immortality = false;
-        }
+        //if(!entityDB.Player.Immortality)
+        //{
+        //    cheatTxt.text = "公利 利侩";
+        //    cheatImg.color = new Color(1f, 1f, 1f, 1f);
+        //    entityDB.Player.Immortality = true;
+        //}
+        //else
+        //{
+        //    cheatTxt.text = "公利 秦力";
+        //    cheatImg.color = new Color(0.1f, 0.1f, 0.1f, 1f);
+        //    entityDB.Player.Immortality = false;
+        //}
     }
 }

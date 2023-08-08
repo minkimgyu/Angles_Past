@@ -2,18 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IHealth
+public interface ITag
 {
-    public void UnderAttack(HealthEntityData data, float healthPoint, Vector2 dir, float thrust);
+    public EntityTag ReturnEntityTag();
+}
 
-    public void Heal(HealthEntityData data, float healthPoint);
+public interface IHealth : ITag
+{
+    public void UnderAttack(float healthPoint, Vector2 dir, float thrust);
+
+    public void Heal(float healthPoint);
 
     public void Die();
 
-    public HealthEntityData ReturnHealthEntityData();
+    public HealthEntityData ReturnHealthEntityData(); // 버프 적용 시 작동
 
-    public void WhenUnderAttack();
+    public void WhenUnderAttack(float healthPoint, Vector2 dir, float thrust);
 
     public void WhenHeal();
-    public EntityTag ReturnEntityTag();
 }

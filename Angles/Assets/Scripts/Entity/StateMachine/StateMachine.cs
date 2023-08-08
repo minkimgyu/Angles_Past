@@ -36,8 +36,8 @@ using UnityEngine;
 //    }
 //}
 
-public class StateMachine<T, W> where T : class
-{
+//public class StateMachine<T, W> where T : class
+//{
     //private T ownerEntity;
 
     ////현재 상태를 담는 프로퍼티.
@@ -148,4 +148,4 @@ public class StateMachine<T, W> where T : class
 
     //    return true;
     //}
-}
+//}

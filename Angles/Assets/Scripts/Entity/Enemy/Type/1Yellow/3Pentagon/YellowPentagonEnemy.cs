@@ -14,8 +14,10 @@ public class YellowPentagonEnemy : BaseFollowEnemy
     protected override void Init()
     {
         base.Init();
-        IState<State> attack = new StateYellowPentagonAttack(this); // 공격만 따로 추가해주자
+        BaseState<State> attack = new StateYellowPentagonAttack(this); // 공격만 따로 추가해주자
         m_dicState.Add(State.Attack, attack);
+
+        AddBaseState();
 
         SetUp(State.Follow);
         SetGlobalState(attack);

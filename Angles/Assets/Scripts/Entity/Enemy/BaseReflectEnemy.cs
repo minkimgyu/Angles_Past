@@ -4,14 +4,6 @@ using UnityEngine;
 
 public class BaseReflectEnemy : Enemy<BaseReflectEnemy.State>
 {
-    public System.Action<Collision2D> ContactAction;
-
-    BattleComponent m_battleComponent;
-    public BattleComponent BattleComponent { get { return m_battleComponent; } }
-
-    DashComponent m_dashComponent;
-    public DashComponent DashComponent { get { return m_dashComponent; } }
-
     ContactComponent m_contactComponent;
     public ContactComponent ContactComponent { get { return m_contactComponent; } }
 
@@ -36,8 +28,6 @@ public class BaseReflectEnemy : Enemy<BaseReflectEnemy.State>
     protected override void Awake()
     {
         base.Awake();
-        m_battleComponent = GetComponent<BattleComponent>();
-        m_dashComponent = GetComponent<DashComponent>();
         m_contactComponent = GetComponent<ContactComponent>();
         m_reflectComponent = GetComponent<ReflectComponent>();
 
@@ -63,9 +53,9 @@ public class BaseReflectEnemy : Enemy<BaseReflectEnemy.State>
 
     protected virtual void Init()
     {
-        IState<State> rush = new StateReflectEnemyRush(this);
-        IState<State> reflect = new StateReflectEnemyReflect(this);
-        IState<State> damaged = new StateReflectEnemyDamaged(this);
+        BaseState<State> rush = new StateReflectEnemyRush(this);
+        BaseState<State> reflect = new StateReflectEnemyReflect(this);
+        BaseState<State> damaged = new StateReflectEnemyDamaged(this);
 
         //키입력 등에 따라서 언제나 상태를 꺼내 쓸 수 있게 딕셔너리에 보관
         m_dicState.Add(State.Rush, rush);
@@ -73,18 +63,5 @@ public class BaseReflectEnemy : Enemy<BaseReflectEnemy.State>
         m_dicState.Add(State.Damaged, damaged);
 
         SetUp(State.Rush);
-        Data.GrantedUtilization.LootSkillFromDB(BattleComponent);
-    }
-
-    private void OnCollisionEnter2D(Collision2D col)
-    {
-        ContactComponent.CallWhenCollisionEnter(col);
-
-        if (ContactAction != null) ContactAction(col);
-    }
-
-    private void OnCollisionExit2D(Collision2D col)
-    {
-        ContactComponent.CallWhenCollisionExit(col);
     }
 }

@@ -37,6 +37,7 @@ public class ParticleEffectPlayer : BasicEffectPlayer
             m_particles[i].Play();
         }
 
+        if (m_duration == -1) return;
         Invoke("DisableObject", m_duration);
     }
 

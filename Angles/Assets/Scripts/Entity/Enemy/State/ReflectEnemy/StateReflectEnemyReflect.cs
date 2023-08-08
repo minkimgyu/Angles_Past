@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateReflectEnemyReflect : IState<BaseReflectEnemy.State>
+public class StateReflectEnemyReflect : BaseState<BaseReflectEnemy.State>
 {
     BaseReflectEnemy enemy;
     Vector2 savedReflectVec;
@@ -12,12 +12,7 @@ public class StateReflectEnemyReflect : IState<BaseReflectEnemy.State>
         enemy = baseReflectEnemy;
     }
 
-    public void CheckSwitchStates()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnAwakeMessage(Telegram<BaseReflectEnemy.State> telegram)
+    public override void OnMessage(Telegram<BaseReflectEnemy.State> telegram)
     {
         if (telegram.SenderStateName != BaseReflectEnemy.State.Rush) return;
 
@@ -43,20 +38,16 @@ public class StateReflectEnemyReflect : IState<BaseReflectEnemy.State>
     {
     }
 
-    public void OnSetToGlobalState()
-    {
-    }
-
-    public void OperateEnter()
+    public override void OperateEnter()
     {
         enemy.RevertToPreviousState();
     }
 
-    public void OperateExit()
+    public override void OperateExit()
     {
     }
 
-    public void OperateUpdate()
+    public override void OperateUpdate()
     {
     }
 }
