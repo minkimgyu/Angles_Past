@@ -40,9 +40,9 @@ public class ShockWaveSkill //: BasicSkill
     //    tasks["ColorChangeTask"].NowRunning = false;
     //}
 
-    //void DamageToCloseEntity(Vector3 pos)
+    //void DamageToCloseEntity(Vector3 position)
     //{
-    //    transform.position = pos;
+    //    transform.position = position;
     //    effect.PlayEffect();
 
     //    RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, SkillData.RadiusRange, Vector2.up, 0);
@@ -64,11 +64,11 @@ public class ShockWaveSkill //: BasicSkill
     //    BasicTask.NowRunning = false;
     //}
 
-    //public override void PlaySkill(Transform tr, BasicBattleComponent basicBattle)
+    //public override void PlaySkill(Transform transform, BasicBattleComponent basicBattle)
     //{
-    //    base.PlaySkill(tr, battleComponent);
+    //    base.PlaySkill(transform, battleComponent);
 
-    //    Enemy enemy = tr.GetComponent<Enemy>();
+    //    Enemy enemy = transform.GetComponent<Enemy>();
     //    enemy.dieAction += CancleSkill;
 
     //    sr = enemy.innerSprite;

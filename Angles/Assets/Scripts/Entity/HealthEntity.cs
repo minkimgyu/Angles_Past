@@ -93,4 +93,9 @@ abstract public class HealthEntity<T> : StateMachineEntity<T>, IHealth//, IEntit
         CancelInvoke();
         ObjectPooler.ReturnToPool(gameObject);
     }
+
+    public BuffComponent ReturnBuffComponent()
+    {
+        return m_buffComponent;
+    }
 }

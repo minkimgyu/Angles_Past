@@ -9,11 +9,11 @@ public class ShootBulletSkill : MonoBehaviour
 {
     //Transform entityTr;
 
-    //public override void PlaySkill(Transform tr, BasicBattleComponent battleComponent)
+    //public override void PlaySkill(Transform transform, BasicBattleComponent battleComponent)
     //{
-    //    base.PlaySkill(tr, battleComponent);
-    //    transform.position = tr.position;
-    //    entityTr = tr;
+    //    base.PlaySkill(transform, battleComponent);
+    //    transform.position = transform.position;
+    //    entityTr = transform;
 
     //    SkillTask().Forget();
     //}

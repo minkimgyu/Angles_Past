@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class BarrierComponent : MonoBehaviour
 {
-    [SerializeField]
-    EffectMethod effectMethod;
-
     BasicEffectPlayer effectPlayer;
 
     [SerializeField]
@@ -21,8 +18,8 @@ public class BarrierComponent : MonoBehaviour
         
         SoundManager.Instance.PlaySFX(transform.position, "SpawnBall", 0.05f);
         barrierCount += 1;
-        effectPlayer = effectMethod.ReturnEffectFromPool();
-        effectPlayer.Init(transform, 10000000000000f);
+        effectPlayer = ObjectPooler.SpawnFromPool<BasicEffectPlayer>("Barrier");
+        effectPlayer.Init(transform);
         effectPlayer.PlayEffect();
     }
 

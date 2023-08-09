@@ -20,13 +20,13 @@ using UnityEngine;
 [System.Serializable]
 public struct ContactData
 {
-    public Transform tr;
-    public Vector3 pos;
+    public Transform transform;
+    public Vector3 position;
 
     public ContactData(Transform tr, Vector3 pos)
     {
-        this.tr = tr;
-        this.pos = pos;
+        this.transform = tr;
+        this.position = pos;
     }
 }
 
@@ -46,7 +46,7 @@ public class ContactComponent : MonoBehaviour
 
     public void CallWhenCollisionExit(Collision2D col)
     {
-        ContactData contactData = m_contactDatas.Find(x => x.tr == col.transform);
+        ContactData contactData = m_contactDatas.Find(x => x.transform == col.transform);
         m_contactDatas.Remove(contactData);
     }
 
@@ -66,7 +66,7 @@ public class ContactComponent : MonoBehaviour
 
         for (int i = 0; i < m_contactDatas.Count; i++)
         {
-            m_contactDatas[i].tr.TryGetComponent(out Entity entity);
+            m_contactDatas[i].transform.TryGetComponent(out Entity entity);
             if (entity == null || !CheckCorrectEntity(entity.InheritedTag)) continue;
 
             tmpContactDatas.Add(m_contactDatas[i]);

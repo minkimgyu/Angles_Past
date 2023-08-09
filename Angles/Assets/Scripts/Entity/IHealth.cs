@@ -17,6 +17,8 @@ public interface IHealth : ITag
 
     public HealthEntityData ReturnHealthEntityData(); // 버프 적용 시 작동
 
+    public BuffComponent ReturnBuffComponent(); // 버프 적용 시 작동
+
     public void WhenUnderAttack(float healthPoint, Vector2 dir, float thrust);
 
     public void WhenHeal();
