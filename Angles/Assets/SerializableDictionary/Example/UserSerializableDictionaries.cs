@@ -9,9 +9,6 @@ public class StringFollowEnemyStatDictionary : SerializableDictionary<string, Fo
 [Serializable]
 public class StringReflectEnemyStatDictionary : SerializableDictionary<string, ReflectEnemyStat> { }
 
-
-
-
 [Serializable]
 public class StringStringDictionary : SerializableDictionary<string, string> {}
 

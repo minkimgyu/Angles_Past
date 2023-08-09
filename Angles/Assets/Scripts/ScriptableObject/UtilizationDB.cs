@@ -142,6 +142,10 @@ public class SkillData : BaseData, IData<SkillData>
     [Header("Range")]
 
     [SerializeField]
+    List<float> radiusRangePerTick;
+    public List<float> RadiusRangePerTick { get { return radiusRangePerTick; }}
+
+    [SerializeField]
     float radiusRange;
     public float RadiusRange { get { return radiusRange; } set { radiusRange = value; } }
 

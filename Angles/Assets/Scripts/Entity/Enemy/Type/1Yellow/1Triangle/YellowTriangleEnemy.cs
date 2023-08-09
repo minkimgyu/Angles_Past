@@ -5,9 +5,9 @@ using System;
 
 public class YellowTriangleEnemy : BaseFollowEnemy
 {
-    [SerializeField]
-    EffectMethod effectMethod; // 이팩트 불러오기
-    public EffectMethod EffectMethod { get { return effectMethod; } } // 이팩트 불러오기
+    //[SerializeField]
+    //EffectMethod effectMethod; // 이팩트 불러오기
+    //public EffectMethod EffectMethod { get { return effectMethod; } } // 이팩트 불러오기
 
 
     BasicEffectPlayer effectPlayer; // 슬로우 묻히는 이펙트 플레이어

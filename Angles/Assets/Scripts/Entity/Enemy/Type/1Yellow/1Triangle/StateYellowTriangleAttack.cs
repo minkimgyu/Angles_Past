@@ -26,12 +26,12 @@ public class StateYellowTriangleAttack : StateFollowEnemyAttack
 
         // 버프 넣는 부분 스킬로 수정
 
-        BasicEffectPlayer effectPlayer = enemy.EffectMethod.ReturnEffectFromPool();
-        if (effectPlayer == null) return;
+        //BasicEffectPlayer effectPlayer = enemy.EffectMethod.ReturnEffectFromPool();
+        //if (effectPlayer == null) return;
 
-        enemy.EffectPlayer = effectPlayer;
-        enemy.EffectPlayer.Init(enemy.transform);
-        enemy.EffectPlayer.PlayEffect();
+        //enemy.EffectPlayer = effectPlayer;
+        //enemy.EffectPlayer.Init(enemy.transform);
+        //enemy.EffectPlayer.PlayEffect();
     }
 
     public override void ExecuteInOutsideMethod()
@@ -49,12 +49,12 @@ public class StateYellowTriangleAttack : StateFollowEnemyAttack
 
     void AddEffect()
     {
-        BasicEffectPlayer effectPlayer = enemy.EffectMethod.ReturnEffectFromPool();
-        if (effectPlayer == null) return;
+        //BasicEffectPlayer effectPlayer = enemy.EffectMethod.ReturnEffectFromPool();
+        //if (effectPlayer == null) return;
 
-        enemy.EffectPlayer = effectPlayer;
-        enemy.EffectPlayer.Init(enemy.transform, 1000f);
-        enemy.EffectPlayer.PlayEffect();
+        //enemy.EffectPlayer = effectPlayer;
+        //enemy.EffectPlayer.Init(enemy.transform, 1000f);
+        //enemy.EffectPlayer.PlayEffect();
     }
 
     void RemoveEffect()

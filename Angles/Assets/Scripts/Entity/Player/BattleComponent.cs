@@ -10,10 +10,10 @@ public class BattleComponent : MonoBehaviour
     public List<SkillData> PossessingSkills { get { return m_possessingSkills; } }
 
     [SerializeField]
-    List<BasicSkill> m_activeSkills; // 현재 엑티브 되어있는 스킬 
+    SkillCueEventSO skillAddCueEventSo;
 
     [SerializeField]
-    SkillSynthesisComponent m_synthesisComponent; // 스킬 합성 컴포넌트
+    SkillCueEventSO skillRemoveCueEventSo;
 
     public void UseSkill(SkillUseConditionType useType)
     {
@@ -21,17 +21,7 @@ public class BattleComponent : MonoBehaviour
         {
             if (m_possessingSkills[i].CanUseSkill(useType) == false) continue;
 
-            if (CheckActiveSkillAndExecute(m_possessingSkills[i]) == true) continue;
-
-
-            BasicSkill skill = ObjectPooler.SpawnFromPool<BasicSkill>(m_possessingSkills[i].PrefabName, transform.position);
-            if (skill == null) continue;
-
-
-            m_activeSkills.Add(skill);
-
-            skill.Init(this, m_possessingSkills[i]);
-            skill.Execute(gameObject);
+            skillAddCueEventSo.OnSkillCueRequested(transform, m_possessingSkills[i]);
 
             if (m_possessingSkills[i].CanSubtractUseCount() && m_possessingSkills[i].IsUseCountZero())
             {
@@ -48,26 +38,9 @@ public class BattleComponent : MonoBehaviour
         m_possessingSkills.Remove(skillData);
     }
 
-    public void RemoveFromActiveSkills(BasicSkill skill)
+    public void RemoveFromActiveSkill(Transform caster, SkillData skillData)
     {
-        m_activeSkills.Remove(skill);
-    }
-
-    bool CheckActiveSkillAndExecute(SkillData callData)
-    {
-        if (callData.OverlapType == SkillOverlapType.None) return false;
-
-        BasicSkill loadedSkill = m_activeSkills.Find(x => x.Data.Name == callData.Name);
-
-        if (loadedSkill != null)
-        {
-            loadedSkill.Execute(gameObject);
-            m_possessingSkills.Remove(callData);
-
-            return true;
-        }
-
-        return false;
+        skillRemoveCueEventSo.OnSkillCueRequested(caster, skillData); // 스킬 사용 종료
     }
 
     public void LootingSkill(SkillData skill)
@@ -79,16 +52,6 @@ public class BattleComponent : MonoBehaviour
                 m_possessingSkills[i].UpUseCount();
                 return;
             }
-        }
-
-        SkillData synthesisedData = m_synthesisComponent.SynthesisSkill(PossessingSkills, skill);
-        if(synthesisedData == null)
-        {
-            m_possessingSkills.Add(skill);
-        }
-        else
-        {
-            m_possessingSkills.Add(synthesisedData);
         }
         
         UseSkill(SkillUseConditionType.Get);
