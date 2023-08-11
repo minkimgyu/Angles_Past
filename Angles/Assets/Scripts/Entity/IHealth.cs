@@ -7,17 +7,20 @@ public interface ITag
     public EntityTag ReturnEntityTag();
 }
 
-public interface IHealth : ITag
+public interface IBuffInvoker
+{
+    public void AddBuffToController(BuffData data);
+
+    public void RemoveBuffToController(BuffData data);
+}
+
+public interface IHealth : ITag, IBuffInvoker
 {
     public void UnderAttack(float healthPoint, Vector2 dir, float thrust);
 
     public void Heal(float healthPoint);
 
     public void Die();
-
-    public HealthEntityData ReturnHealthEntityData(); // 버프 적용 시 작동
-
-    public BuffComponent ReturnBuffComponent(); // 버프 적용 시 작동
 
     public void WhenUnderAttack(float healthPoint, Vector2 dir, float thrust);
 

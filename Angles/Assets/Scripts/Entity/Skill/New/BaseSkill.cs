@@ -40,6 +40,7 @@ public struct BuffSupportData
     public string name; // --> 데이터 베이스에서 스킬 이름을 바탕(현 prefabData)으로 해당 데이터를 찾아서 넣어줌
     public Dictionary<EffectName, EffectData> effectDatas;
     public List<string> buffNames;
+    public bool nowApply; // 버프를 적용할 건지 제거할건지 확인
 
     //public List<float> attackCircleRange; // 틱마다 범위가 달라짐
 
@@ -70,9 +71,9 @@ public class EffectSource
     EffectData effectData;
     BasicEffectPlayer effectPlayer;
 
-    public EffectSource() // 사운드 플레이 이밴트 트리거, 이팩트 데이터
+    public EffectSource(EffectData data) // 사운드 플레이 이밴트 트리거, 이팩트 데이터
     {
-
+        effectData = data;
     }
 
     protected bool PlayEffect(Transform target, EffectData data)

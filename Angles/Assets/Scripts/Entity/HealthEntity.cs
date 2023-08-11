@@ -5,8 +5,8 @@ using System;
 
 abstract public class HealthEntity<T> : StateMachineEntity<T>, IHealth//, IEntityData<W>/*, IBuff<W>*/
 {
-    BuffComponent m_buffComponent;
-    public BuffComponent BuffComponent { get { return m_buffComponent; } }
+    BuffController m_buffComponent;
+    public BuffController BuffComponent { get { return m_buffComponent; } }
 
     Rigidbody2D m_rigidbody;
     public Rigidbody2D Rigidbody { get { return m_rigidbody; } }
@@ -27,8 +27,8 @@ abstract public class HealthEntity<T> : StateMachineEntity<T>, IHealth//, IEntit
             m_healthData = value;
             if (m_rigidbody == null) return;
 
-            m_rigidbody.mass = m_healthData.Weight;
-            m_rigidbody.drag = m_healthData.Drag;
+            m_rigidbody.mass = m_healthData.Mass.IntervalValue;
+            m_rigidbody.drag = m_healthData.Drag.IntervalValue;
         }
     }
 
@@ -43,7 +43,7 @@ abstract public class HealthEntity<T> : StateMachineEntity<T>, IHealth//, IEntit
 
     protected virtual void Awake()
     {
-        m_buffComponent = GetComponent<BuffComponent>();
+        m_buffComponent = GetComponent<BuffController>();
         m_rigidbody = GetComponent<Rigidbody2D>();
     }    
 
@@ -53,14 +53,14 @@ abstract public class HealthEntity<T> : StateMachineEntity<T>, IHealth//, IEntit
     {
         if (m_canHit) return;
 
-        if (m_healthData.Hp > 0)
+        if (m_healthData.Hp.IntervalValue > 0)
         {
             WhenUnderAttack(damage, dir, thrust);
-            m_healthData.Hp -= damage;
-            if (m_healthData.Hp <= 0)
+            m_healthData.Hp.IntervalValue -= damage;
+            if (m_healthData.Hp.IntervalValue <= 0)
             {
                 Die();
-                m_healthData.Hp = 0;
+                m_healthData.Hp.IntervalValue = 0;
             }
         }
     }
@@ -94,8 +94,18 @@ abstract public class HealthEntity<T> : StateMachineEntity<T>, IHealth//, IEntit
         ObjectPooler.ReturnToPool(gameObject);
     }
 
-    public BuffComponent ReturnBuffComponent()
+    public void AddBuffToController(BuffData data)
     {
-        return m_buffComponent;
+        m_buffComponent.AddBuff(data);
+    }
+
+    public void RemoveBuffToController(BuffData data)
+    {
+        m_buffComponent.RemoveBuff(data);
+    }
+
+    public void ChangeHealdata(HealthEntityData data)
+    {
+        m_healthData.Hp.IntervalValue += data.Hp.IntervalValue;
     }
 }

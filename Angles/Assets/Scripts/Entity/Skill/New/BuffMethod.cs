@@ -6,23 +6,43 @@ public class BuffMethod<T> : BaseMethod<T>
 {
     protected BuffSupportData buffSupportData;
 
-    protected bool BuffToEntity(SkillSupportData supportData, Transform target)
+    protected void ApplyBuff(SkillSupportData supportData, Transform target)
+    {
+        if (buffSupportData.nowApply) AddBuffToEntity(supportData, target);
+        else RemoveBuffToEntity(supportData, target);
+    }
+
+    protected bool AddBuffToEntity(SkillSupportData supportData, Transform target)
     {
         target.TryGetComponent(out IHealth health);
         if (health == null || supportData.Data.CanHitSkill(health.ReturnEntityTag()) == false) return false;
         // --> 타겟이 맞는지 확인
-
-
-        BuffComponent buffComponent = health.ReturnBuffComponent(); // 버프 컴포넌트 반환
 
         for (int i = 0; i < buffSupportData.buffNames.Count; i++)
         {
             BuffData data = DatabaseManager.Instance.UtilizationDB.ReturnBuffData(buffSupportData.buffNames[i]);
             if (data == null) continue;
 
-            buffComponent.AddBuff(data);
+            health.AddBuffToController(data);
         }
-        
+
+        return true;
+    }
+
+    protected bool RemoveBuffToEntity(SkillSupportData supportData, Transform target)
+    {
+        target.TryGetComponent(out IHealth health);
+        if (health == null || supportData.Data.CanHitSkill(health.ReturnEntityTag()) == false) return false;
+        // --> 타겟이 맞는지 확인
+
+        for (int i = 0; i < buffSupportData.buffNames.Count; i++)
+        {
+            BuffData data = DatabaseManager.Instance.UtilizationDB.ReturnBuffData(buffSupportData.buffNames[i]);
+            if (data == null) continue;
+
+            health.RemoveBuffToController(data);
+        }
+
         return true;
     }
 
@@ -38,7 +58,7 @@ public class BuffToContactors : BuffMethod<List<ContactData>>
     {
         for (int i = 0; i < contactDatas.Count; i++)
         {
-            BuffToEntity(supportData, contactDatas[i].transform);
+            ApplyBuff(supportData, contactDatas[i].transform);
             PlayEffect(contactDatas[i].transform, buffSupportData.effectDatas[EffectName.BuffEffect]);
         }
     }
@@ -50,7 +70,7 @@ public class BuffToRaycastHit : BuffMethod<RaycastHit2D[]>
     {
         for (int i = 0; i < targets.Length; i++)
         {
-            BuffToEntity(supportData, targets[i].transform);
+            ApplyBuff(supportData, targets[i].transform);
             PlayEffect(targets[i].transform, buffSupportData.effectDatas[EffectName.BuffEffect]);
         }
     }
@@ -60,7 +80,7 @@ public class BuffToCaster : BuffMethod<bool>
 {
     public override void Execute(SkillSupportData supportData)
     {
-        BuffToEntity(supportData, supportData.Caster.transform);
+        ApplyBuff(supportData, supportData.Caster.transform);
         PlayEffect(supportData.Caster.transform, buffSupportData.effectDatas[EffectName.BuffEffect]);
     }
 }

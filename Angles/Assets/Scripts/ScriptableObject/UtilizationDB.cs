@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class BuffData : BaseData, IData<BuffData>
+public class BuffData : IData<BuffData>
 {
     [SerializeField]
     protected int maxCount;
@@ -14,24 +14,24 @@ public class BuffData : BaseData, IData<BuffData>
     public float Duration { get { return duration; } set { duration = value; } }
 
     [SerializeField]
-    float tickTime;
-    public float TickTime { get { return tickTime; } set { tickTime = value; } }
+    int tickCount;
+    public int TickTime { get { return tickCount; } set { tickCount = value; } }
 
-    public BuffData(string name, int maxCount, float duration, float tickTime) : base(name)
+    public BuffData(int maxCount, float duration, int tickCount)
     {
         this.maxCount = maxCount;
         this.duration = duration;
-        this.tickTime = tickTime;
+        this.tickCount = tickCount;
     }
 
     public BuffData CopyData()
     {
-        return new BuffData(name, maxCount, duration, tickTime);
+        return new BuffData(maxCount, duration, tickCount);
     }
 }
 
 [System.Serializable]
-public class SkillData : BaseData, IData<SkillData>
+public class SkillData : IData<SkillData>
 {
     [Header("Sound")]
     [SerializeField]
@@ -181,8 +181,6 @@ public class SkillData : BaseData, IData<SkillData>
     float disableTime;
     public float DisableTime { get { return disableTime; } set { disableTime = value; } }
 
-    #region Fn
-
     public int ReturnLayerMask()
     {
         string[] hitTargetString = new string[hitTarget.Length];
@@ -210,10 +208,9 @@ public class SkillData : BaseData, IData<SkillData>
         return false;
     }
 
-    public SkillData(string name, string sfxName, float volume, string prefabName, int maxUseCount, int useCount, SkillOverlapType overlapType, SkillUseConditionType useConditionType, SkillUseCountSubtractType countSubtractType, SkillSynthesisType synthesisType,
+    public SkillData(string sfxName, float volume, string prefabName, int maxUseCount, int useCount, SkillOverlapType overlapType, SkillUseConditionType useConditionType, SkillUseCountSubtractType countSubtractType, SkillSynthesisType synthesisType,
         int tickCount, float preDelay, float duration, float radiusRange, Vector2 boxRange, Vector2 offsetRange, float damage, float knockBackThrust, float disableTime, EntityTag[] hitTarget, int prefabCount, 
         int spawnCount, float rotationSpeed)
-    : base(name)
     {
         this.sfxName = sfxName;
         this.volume = volume;
@@ -246,31 +243,50 @@ public class SkillData : BaseData, IData<SkillData>
 
     public SkillData CopyData()
     {
-        return new SkillData(name, sfxName, volume, prefabName, maxUseCount, useCount, overlapType, useConditionType, countSubtractType, synthesisType, tickCount, preDelay, duration, radiusRange, boxRange, offsetRange, damage, knockBackThrust, 
+        return new SkillData(sfxName, volume, prefabName, maxUseCount, useCount, overlapType, useConditionType, countSubtractType, synthesisType, tickCount, preDelay, duration, radiusRange, boxRange, offsetRange, damage, knockBackThrust, 
             disableTime, hitTarget, prefabCount, spawnCount, rotationSpeed);
     }
-
-    #endregion
 }
 
 [CreateAssetMenu(fileName = "UtilizationDB", menuName = "Scriptable Object/DB/UtilizationDB")]
 public class UtilizationDB : ScriptableObject
 {
+    [Header("SkillData")]
     [SerializeField]
-    List<SkillData> skillDatas;
-    public List<SkillData> SkillDatas { get { return skillDatas; } }
-
-    public SkillData ReturnSkillData(string name)
-    {
-        return skillDatas.Find(x => x.Name == name).CopyData();
-    }
+    Dictionary<string, SkillData> skillDatas;
+    public Dictionary<string, SkillData> SkillDatas { get { return skillDatas; } }
 
     [SerializeField]
-    List<BuffData> buffDatas;
-    public List<BuffData> BuffDatas { get { return buffDatas; } }
+    Dictionary<string, DamageSupportData> damageSupportDatas;
+    public Dictionary<string, DamageSupportData> DamageSupportDatas { get { return damageSupportDatas; } }
 
-    public BuffData ReturnBuffData(string name)
-    {
-        return buffDatas.Find(x => x.Name == name).CopyData();
-    }
+    [SerializeField]
+    Dictionary<string, SpawnSupportData> spawnSupportDatas;
+    public Dictionary<string, SpawnSupportData> SpawnSupportDatas { get { return spawnSupportDatas; } }
+
+    [SerializeField]
+    Dictionary<string, BuffSupportData> buffSupportDatas;
+    public Dictionary<string, BuffSupportData> BuffSupportDatas { get { return buffSupportDatas; } }
+
+
+    [Header("BuffData")]
+    [SerializeField]
+    Dictionary<string, BuffData> buffDatas;
+    public Dictionary<string, BuffData> BuffDatas { get { return buffDatas; } }
+
+    [SerializeField]
+    Dictionary<string, HealthEntityData.BuffVariation> healthEntityDataVariation;
+    public Dictionary<string, HealthEntityData.BuffVariation> HealthEntityDataVariation { get { return healthEntityDataVariation; } }
+
+    [SerializeField]
+    Dictionary<string, PlayerData.BuffVariation> playerDataVariation;
+    public Dictionary<string, PlayerData.BuffVariation> PlayerDataVariation { get { return playerDataVariation; } }
+
+    [SerializeField]
+    Dictionary<string, BaseEnemyData.BuffVariation> baseEnemyDataVariation;
+    public Dictionary<string, BaseEnemyData.BuffVariation> BaseEnemyDataVariation { get { return baseEnemyDataVariation; } }
+
+    [SerializeField]
+    Dictionary<string, FollowEnemyData.BuffVariation> followEnemyDataVariation;
+    public Dictionary<string, FollowEnemyData.BuffVariation> FollowEnemyDataVariation { get { return followEnemyDataVariation; } }
 }

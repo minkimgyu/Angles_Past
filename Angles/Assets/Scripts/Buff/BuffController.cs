@@ -2,10 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuffComponent : MonoBehaviour
+public class BuffFactory
+{
+    Dictionary<string, IBuff> storedBuffs;
+
+    public void Init() // 이런 식으로 스킬 제작
+    {
+        // 이런식으로 다른 곳에서 돌려쓸 수 있도록 제작
+        storedBuffs.Add("CasterCircleRangeAttack", new HealthEntitySpeedBuff());
+    }
+
+    public IBuff OrderBuff(Transform caster, BuffData data)
+    {
+        IBuff buff = storedBuffs[data.Name].CreateCopy(data);
+        skill.Init(caster, data);
+        skill.Execute();
+
+        return storedSkills[data.PrefabName];
+    }
+}
+
+public class BuffController : MonoBehaviour
 {
     [SerializeField]
-    List<BaseBuff> m_buffs;
+    List<IBuff> m_buffs;
 
     BuffEffectComponent effectComponent;
 
@@ -28,9 +48,9 @@ public class BuffComponent : MonoBehaviour
         return foundBuff;
     }  
 
-    public bool RemoveBuff(BaseBuff buff)
+    public bool RemoveBuff(BuffData data)
     {
-        BaseBuff foundBuff = m_buffs.Find(x => x == buff);
+        BaseBuff foundBuff = m_buffs.Find(x => x.Data == data.Name);
         if (foundBuff == null) return false;
 
         m_buffs.Remove(foundBuff);
