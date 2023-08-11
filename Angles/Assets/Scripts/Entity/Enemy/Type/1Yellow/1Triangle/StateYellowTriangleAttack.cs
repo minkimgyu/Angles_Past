@@ -19,7 +19,7 @@ public class StateYellowTriangleAttack : StateFollowEnemyAttack
 
         //for (int i = 0; i < tmpData.Count; i++)
         //{
-        //    BaseBuff tmpBuff = enemy.LoadPlayer.BuffComponent.AddBuff(tmpData[i]);
+        //    BaseBuff tmpBuff = enemy.LoadPlayer.BuffController.AddBuff(tmpData[i]);
         //    if (tmpBuff == null) continue;
         //    else storedBuff.Add(tmpBuff);
         //}

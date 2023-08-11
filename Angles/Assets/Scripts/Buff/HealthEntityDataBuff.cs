@@ -2,9 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthEntitySpeedBuff : PassiveBuff
+public class HealthEntityDataBuff : PassiveBuff<HealthEntityData>
 {
+    public HealthEntityDataBuff(BuffData data) : base(data)
+    {
+    }
+
     HealthEntityData healthEntityData;
+
+    HealthEntityData.HealthEntityDataVariation variationData;
 
     [SerializeField]
     float speed;
@@ -12,11 +18,16 @@ public class HealthEntitySpeedBuff : PassiveBuff
     [SerializeField]
     Color buffEffectColor;
 
+    public override IBuff CreateCopy(BuffData data)
+    {
+        return new HealthEntityDataBuff(data);
+    }
+
     public override void OnEnd(BuffEffectComponent effectComponent)
     {
-        healthEntityData.Speed.OriginValue -= speed;
+        healthEntityData.RemoveBuff(variationData);
+
         effectComponent.ReturnBaseColor();
-        gameObject.SetActive(false);
     }
 
     public override void OnStart(GameObject caster, BuffEffectComponent effectComponent)
@@ -26,7 +37,9 @@ public class HealthEntitySpeedBuff : PassiveBuff
         if (health == null) isFinished = true;
         else healthEntityData = health.ReturnHealthEntityData();
 
-        healthEntityData.Speed.OriginValue += speed;
+        variationData = new();
+        healthEntityData.ApplyBuff(variationData);
+
         effectComponent.ChangeColor(buffEffectColor); // --> 수정점 생각해보기
     }
 }

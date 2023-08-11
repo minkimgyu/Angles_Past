@@ -10,8 +10,8 @@ using UnityEngine;
 //    {
 //        SoundManager.Instance.PlaySFX(supportData.Me.transform.position, "SpawnBall", 0.05f);
 
-//        supportData.Caster.TryGetComponent(out BuffComponent buffComponent);
-//        BuffComponent buff = buffComponent;
+//        supportData.Caster.TryGetComponent(out BuffController buffComponent);
+//        BuffController buff = buffComponent;
 
 //        BuffData data = DatabaseManager.Instance.UtilizationDB.ReturnBuffData("SpeedBuff");
 //        buff.AddBuff(data);

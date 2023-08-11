@@ -21,21 +21,112 @@ public interface IData<T>
     T CopyData();
 }
 
+public interface IBuffApplier<T>
+{
+    void ApplyBuff(T value);
 
+    void RemoveBuff(T value);
+}
+
+/// <summary>
+/// 버프에 사용되는 변수(Int)
+/// </summary>
+[System.Serializable]
+public class BuffInt : IData<BuffFloat>
+{
+    [SerializeField]
+    int maxValue;
+    public int Max { get { return maxValue; } }
+
+    [SerializeField]
+    int minValue;
+    public int Min { get { return minValue; } }
+
+    [SerializeField]
+    int originValue;
+    public int OriginValue { get { return originValue; } set { originValue = value; } }
+    public int IntervalValue
+    {
+        get
+        {
+            if (originValue < minValue)
+            {
+                return minValue;
+            }
+            else if (originValue > maxValue)
+            {
+                return maxValue;
+            }
+            else
+            {
+                return originValue;
+            }
+        }
+        set
+        {
+            originValue = value;
+        }
+    }
+
+    public bool IsOutInterval()
+    {
+        if (originValue < minValue)
+        {
+            return true;
+        }
+        else if (originValue > maxValue)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public BuffInt(int max, int min, int value)
+    {
+        maxValue = max;
+        minValue = min;
+        originValue = value;
+    }
+
+    public BuffFloat CopyData()
+    {
+        return new BuffFloat(maxValue, minValue, originValue);
+    }
+}
+
+/// <summary>
+/// 버프에 사용되는 변수(Float)
+/// </summary>
 [System.Serializable]
 public class BuffFloat : IData<BuffFloat>
 {
+    /// <summary>
+    /// 최대값
+    /// </summary>
     [SerializeField]
     float maxValue;
     public float Max { get { return maxValue; } }
 
+    /// <summary>
+    /// 최소값
+    /// </summary>
     [SerializeField]
     float minValue;
     public float Min { get { return minValue; } }
 
+    /// <summary>
+    /// 실질적 값
+    /// </summary>
     [SerializeField]
     float originValue;
-    public float OriginValue { get { return originValue; } set { originValue = value; } }
+    public float Origin { get { return originValue; } }
+
+    /// <summary>
+    /// 값 변경, 최대 - 최소 사이의 값을 리턴에 쓰이는 변수
+    /// </summary>
     public float IntervalValue
     {
         get
@@ -59,27 +150,11 @@ public class BuffFloat : IData<BuffFloat>
         }
     }
 
-    public bool IsOutInterval()
-    {
-        if (originValue < minValue)
-        {
-            return true;
-        }
-        else if (originValue > maxValue)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
     public BuffFloat(float max, float min, float value)
     {
-        this.maxValue = max;
-        this.minValue = min;
-        this.originValue = value;
+        maxValue = max;
+        minValue = min;
+        originValue = value;
     }
 
     public BuffFloat CopyData()
@@ -94,136 +169,213 @@ public class GrantedUtilization
     [SerializeField]
     List<string> skillNames = new List<string>();
 
-    [SerializeField]
-    List<string> buffNames = new List<string>();
-    public List<string> BuffNames { get { return buffNames; } }
-
     public void LootSkillFromDB(BattleComponent component)
     {
         for (int i = 0; i < skillNames.Count; i++)
         {
-            //Debug.Log(DatabaseManager.Instance.UtilizationDB.ReturnSkillData(skillNames[i]));
-            //Debug.Log(component);
-            component.LootingSkill(DatabaseManager.Instance.UtilizationDB.ReturnSkillData(skillNames[i]));
+            component.LootingSkill(DatabaseManager.Instance.UtilizationDB.SkillDatas[skillNames[i]].CopyData());
         }
-    }
-
-    public List<BuffData> LootBuffFromDB()
-    {
-        List<BuffData> tmpData = new List<BuffData>();
-
-        for (int i = 0; i < buffNames.Count; i++)
-        {
-            tmpData.Add(DatabaseManager.Instance.UtilizationDB.ReturnBuffData(buffNames[i]));
-        }
-
-        return tmpData;
     }
 }
 
 [System.Serializable] // 데이터를 상속으로 처리하지 말고 나눠보자
-public class HealthEntityData : IData<HealthEntityData>
+public class HealthEntityData : IData<HealthEntityData>, IBuffApplier<HealthEntityData.BuffVariation>
 {
+    [System.Serializable]
+    public struct BuffVariation
+    {
+        public float hpVariation;
+        public float speedVariation;
+        public float stunTimeVariation;
+        public float weightVariation;
+        public float massVariation;
+        public float dragVariation;
+    }
+
+    public void ApplyBuff(BuffVariation value)
+    {
+        Hp.IntervalValue += value.hpVariation;
+
+        Speed.IntervalValue += value.speedVariation;
+
+        StunTime.IntervalValue += value.stunTimeVariation;
+
+        Weight.IntervalValue += value.weightVariation;
+        Mass.IntervalValue += value.massVariation;
+        Drag.IntervalValue += value.dragVariation;
+    }
+
+    public void RemoveBuff(BuffVariation value)
+    {
+        Hp.IntervalValue -= value.hpVariation;
+
+        Speed.IntervalValue -= value.speedVariation;
+
+        StunTime.IntervalValue -= value.stunTimeVariation;
+
+        Weight.IntervalValue -= value.weightVariation;
+        Mass.IntervalValue -= value.massVariation;
+        Drag.IntervalValue -= value.dragVariation;
+    }
+
     [SerializeField]
     protected bool immortality;
     public bool Immortality { get { return immortality; } set { immortality = value; } }
 
     [SerializeField]
-    protected float hp;
-    public float Hp { get { return hp; } set { hp = value; } }
+    protected BuffFloat hp;
+    public BuffFloat Hp { get { return hp; } set { hp = value.CopyData(); } }
 
     [SerializeField]
     protected BuffFloat speed;
-    public BuffFloat Speed { get { return speed; } set { speed = value; } }
+    public BuffFloat Speed { get { return speed; } set { speed = value.CopyData(); } }
+
+    [SerializeField]   
+    protected BuffFloat stunTime;
+    public BuffFloat StunTime { get { return stunTime; } set { stunTime = value.CopyData(); } }
 
     [SerializeField]
-    protected float stunTime;
-    public float StunTime { get { return stunTime; } set { stunTime = value; } }
+    protected BuffFloat weight;
+    public BuffFloat Weight { get { return weight; } set { weight = value.CopyData(); } } // 실질적 Entity 무게
 
     [SerializeField]
-    protected float weight;
-    public float Weight { get { return weight; } set { weight = value; } }
+    protected BuffFloat mass;
+    public BuffFloat Mass { get { return mass; } set { mass = value.CopyData(); } } // rigidbody mass
 
     [SerializeField]
-    protected float drag;
-    public float Drag { get { return drag; } set { drag = value; } }
+    protected BuffFloat drag;
+    public BuffFloat Drag { get { return drag; } set { drag = value.CopyData(); } }
 
     [SerializeField]
     protected string dieEffectName;
     public string DieEffectName { get { return dieEffectName; }}
 
-
-
     public HealthEntityData() { }
 
-    public HealthEntityData(bool immortality, float hp, BuffFloat speed, float stunTime, float weight, float drag)
+    public HealthEntityData(bool immortality, BuffFloat hp, BuffFloat speed, BuffFloat stunTime, BuffFloat weight, BuffFloat mass, BuffFloat drag)
     {
-        this.immortality = immortality;
-        this.hp = hp;
+        Immortality = immortality;
+        Hp = hp;
 
-        this.speed = speed.CopyData();
+        Speed = speed;
 
-        this.stunTime = stunTime;
-        this.weight = weight;
-        this.drag = drag;
+        StunTime = stunTime;
+
+        Weight = mass;
+        Mass = weight;
+        Drag = drag;
     }
 
     public HealthEntityData CopyData()
     {
-        return new HealthEntityData(immortality, hp, speed, stunTime, weight, drag);
+        return new HealthEntityData(immortality, hp, speed, stunTime, weight, mass, drag);
     }
 }
 
 [System.Serializable]
-public class PlayerData : IData<PlayerData>
+public class PlayerData : IData<PlayerData>, IBuffApplier<PlayerData.BuffVariation>
 {
-    [SerializeField]
-    float readySpeedDecreaseRatio;
-    public float ReadySpeedDecreaseRatio { get { return readySpeedDecreaseRatio; } set { readySpeedDecreaseRatio = value; } }
+    [System.Serializable]
+    public struct BuffVariation
+    {
+        public float readySpeedDecreaseRatioVariation;
+
+        public float rushThrustVariation;
+        public float rushRecoverRatioVariation;
+        public float rushDurationVariation;
+
+        public int dashCountVariation;
+        public float dashDurationVariation;
+        public float dashThrustVariation;
+        public float dashRecoverRatioVariation;
+    }
+
+    public void ApplyBuff(BuffVariation value)
+    {
+        readySpeedDecreaseRatio.IntervalValue += value.readySpeedDecreaseRatioVariation;
+
+        rushThrust.IntervalValue += value.rushThrustVariation;
+        rushRecoverRatio.IntervalValue += value.rushRecoverRatioVariation;
+        rushDuration.IntervalValue += value.rushDurationVariation;
+
+
+        dashCount.IntervalValue = value.dashCountVariation;
+        dashDuration.IntervalValue = value.dashDurationVariation;
+        dashThrust.IntervalValue = value.dashThrustVariation;
+        dashRecoverRatio.IntervalValue = value.dashRecoverRatioVariation;
+    }
+
+    public void RemoveBuff(BuffVariation value)
+    {
+        readySpeedDecreaseRatio.IntervalValue -= value.readySpeedDecreaseRatioVariation;
+
+        rushThrust.IntervalValue -= value.rushThrustVariation;
+        rushRecoverRatio.IntervalValue -= value.rushRecoverRatioVariation;
+        rushDuration.IntervalValue -= value.rushDurationVariation;
+
+
+        dashCount.IntervalValue -= value.dashCountVariation;
+        dashDuration.IntervalValue -= value.dashDurationVariation;
+        dashThrust.IntervalValue -= value.dashThrustVariation;
+        dashRecoverRatio.IntervalValue -= value.dashRecoverRatioVariation;
+    }
 
     [SerializeField]
-    float rushThrust;
-    public float RushThrust { get { return rushThrust; } set { rushThrust = value; } }
+    BuffFloat readySpeedDecreaseRatio;
+    public BuffFloat ReadySpeedDecreaseRatio { get { return readySpeedDecreaseRatio; } set { readySpeedDecreaseRatio = value; } }
 
     [SerializeField]
-    float rushRatio;
+    BuffFloat rushThrust;
+    public BuffFloat RushThrust { get { return rushThrust; } set { rushThrust = value; } }
+
+    [SerializeField]
+    float rushRatio; // 범위 0 ~ 1까지
     public float RushRatio { get { return rushRatio; } set { rushRatio = value; } }
 
     [SerializeField]
-    float rushRecoverRatio;
-    public float RushRecoverRatio { get { return rushRecoverRatio; } set { rushRecoverRatio = value; } }
+    BuffFloat rushRecoverRatio; // 회복 비율
+    public BuffFloat RushRecoverRatio { get { return rushRecoverRatio; } set { rushRecoverRatio = value; } }
 
     [SerializeField]
-    float rushDuration;
-    public float RushDuration { get { return rushDuration; } set { rushDuration = value; } }
+    BuffFloat rushDuration;
+    public BuffFloat RushDuration { get { return rushDuration; } set { rushDuration = value; } }
 
+    /// <summary>
+    /// 조이스틱 움직임 값에 따라 AttackReady에서 Move 상태로 왔다갔다함
+    /// </summary>
     [SerializeField]
     float attackCancelOffset;
     public float AttackCancelOffset { get { return attackCancelOffset; } set { attackCancelOffset = value; } }
 
 
     [SerializeField]
-    float maxDashCount;
-    public float MaxDashCount { get { return maxDashCount; } set { maxDashCount = value; } }
+    BuffInt dashCount;
+    public BuffInt DashCount { get { return dashCount; } set { dashCount = value; } }
 
 
     [SerializeField]
-    float dashDuration;
-    public float DashDuration { get { return dashDuration; } set { dashDuration = value; } }
+    BuffFloat dashDuration;
+    public BuffFloat DashDuration { get { return dashDuration; } set { dashDuration = value; } }
 
 
     [SerializeField]
-    float dashThrust;
-    public float DashThrust { get { return dashThrust; } set { dashThrust = value; } }
+    BuffFloat dashThrust;
+    public BuffFloat DashThrust { get { return dashThrust; } set { dashThrust = value; } }
 
-
+    /// <summary>
+    /// 대쉬 비율
+    /// </summary>
     [SerializeField]
     float dashRatio;
     public float DashRatio { get { return dashRatio; } set { dashRatio = value; } }
 
+
+    /// <summary>
+    /// 대쉬 회복량
+    /// </summary>
     [SerializeField]
-    float dashRecoverRatio;
-    public float DashRecoverRatio { get { return dashRecoverRatio; } set { dashRecoverRatio = value; } }
+    BuffFloat dashRecoverRatio;
+    public BuffFloat DashRecoverRatio { get { return dashRecoverRatio; } set { dashRecoverRatio = value; } }
 
     [SerializeField]
     protected GrantedUtilization grantedUtilization;
@@ -231,7 +383,7 @@ public class PlayerData : IData<PlayerData>
 
     public bool CanUseDash()
     {
-        if (DashRatio - 1 / MaxDashCount >= 0)
+        if (DashRatio - 1 / DashCount.OriginValue >= 0)
         {
             return true;
         }
@@ -243,12 +395,12 @@ public class PlayerData : IData<PlayerData>
 
     public void SubtractDashRatio()
     {
-        DashRatio -= 1 / MaxDashCount;
+        DashRatio -= 1 / DashCount.OriginValue;
     }
 
-    public bool RestoreDashRatio() { return RestoreRatio(ref dashRatio, dashRecoverRatio); }
+    public bool RestoreDashRatio() { return RestoreRatio(ref dashRatio, dashRecoverRatio.IntervalValue); }
 
-    public bool RestoreRushRatio() { return RestoreRatio(ref rushRatio, rushRecoverRatio); }
+    public bool RestoreRushRatio() { return RestoreRatio(ref rushRatio, rushRecoverRatio.IntervalValue); }
 
     public void ResetRushRatioToZero() => rushRatio = 0;
 
@@ -256,7 +408,7 @@ public class PlayerData : IData<PlayerData>
     {
         if(ratio < 1)
         {
-            ratio += recoverRatio * Time.deltaTime * 100;
+            ratio += recoverRatio * Time.deltaTime;
             if(ratio > 1) ratio = 1;
 
             return true;
@@ -269,16 +421,19 @@ public class PlayerData : IData<PlayerData>
 
     public PlayerData() { }
 
-    public PlayerData(float readySpeedDecreaseRatio, float rushThrust,
-        float rushRatio, float rushRecoverRatio, float rushTime, float attackCancelOffset, float maxDashCount, float dashTime, float dashThrust, float dashRatio, float dashRecoverRatio, GrantedUtilization grantedUtilization)
+    public PlayerData(BuffFloat readySpeedDecreaseRatio, BuffFloat rushThrust, float rushRatio, BuffFloat rushRecoverRatio, BuffFloat rushDuration, float attackCancelOffset, 
+        BuffInt dashCount, BuffFloat dashDuration, BuffFloat dashThrust, float dashRatio, BuffFloat dashRecoverRatio, GrantedUtilization grantedUtilization)
     {
         this.readySpeedDecreaseRatio = readySpeedDecreaseRatio;
         this.rushThrust = rushThrust;
         this.rushRatio = rushRatio;
         this.rushRecoverRatio = rushRecoverRatio;
-        this.rushDuration = rushTime; 
-        this.maxDashCount = maxDashCount;
-        this.dashDuration = dashTime;
+        this.rushDuration = rushDuration;
+
+        this.attackCancelOffset = attackCancelOffset;
+
+        this.dashCount = dashCount;
+        this.dashDuration = dashDuration;
         this.dashThrust = dashThrust;
         this.dashRatio = dashRatio;
         this.dashRecoverRatio = dashRecoverRatio;
@@ -289,80 +444,116 @@ public class PlayerData : IData<PlayerData>
     public PlayerData CopyData()
     {
         return new PlayerData(readySpeedDecreaseRatio, rushThrust,
-        rushRatio, rushRecoverRatio, rushDuration, attackCancelOffset, maxDashCount, dashDuration, dashThrust, dashRatio, dashRecoverRatio, grantedUtilization);
+        rushRatio, rushRecoverRatio, rushDuration, attackCancelOffset, dashCount, dashDuration, dashThrust, dashRatio, dashRecoverRatio, grantedUtilization);
     }
 }
 
 [System.Serializable]
-public class BaseEnemyData : IData<BaseEnemyData> // 적끼리 겹치는 데이터 모음
+public class BaseEnemyData : IData<BaseEnemyData>, IBuffApplier<BaseEnemyData.BuffVariation> // 적끼리 겹치는 데이터 모음
 {
-    [SerializeField]
-    protected int score;
-    public int Score { get { return score; } set { score = value; } }
+    [System.Serializable]
+    public struct BuffVariation
+    {
+        public int scoreVariation;
+    }
+
+    public void ApplyBuff(BuffVariation value)
+    {
+        score.IntervalValue += value.scoreVariation;
+    }
+
+    public void RemoveBuff(BuffVariation value)
+    {
+        score.IntervalValue -= value.scoreVariation;
+    }
 
     [SerializeField]
-    protected float spawnPercentage;
-    public float SpawnPercentage { get { return spawnPercentage; } set { spawnPercentage = value; } }
+    protected BuffInt score;
+    public BuffInt Score { get { return score; } set { score = value; } }
 
     [SerializeField]
     protected GrantedUtilization grantedUtilization;
     public GrantedUtilization GrantedUtilization { get { return grantedUtilization; } }
 
-    public BaseEnemyData(int score, float spawnPercentage, GrantedUtilization grantedUtilization)
+    public BaseEnemyData(BuffInt score, GrantedUtilization grantedUtilization)
     {
         this.score = score;
-        this.spawnPercentage = spawnPercentage;
         this.grantedUtilization = grantedUtilization;
     }
 
     public BaseEnemyData CopyData()
     {
-        return new BaseEnemyData(score, spawnPercentage, grantedUtilization);
+        return new BaseEnemyData(score, grantedUtilization);
     }
 }
 
 [System.Serializable]
-public class FollowEnemyData : IData<FollowEnemyData> // 추적 하는 적 데이터 모음
+public class FollowEnemyData : IData<FollowEnemyData>, IBuffApplier<FollowEnemyData.BuffVariation> // 추적 하는 적 데이터 모음
 {
-    [SerializeField]
-    float skillUseDistance;
-    public float SkillUseDistance { get { return skillUseDistance; } set { skillUseDistance = value; } }
+    [System.Serializable]
+    public struct BuffVariation
+    {
+        public float skillUseDistanceVariation;
+        public float skillUseOffsetDistanceVariation;
+        public float skillCooldownTimeVariation;
+        public float followDistanceVariation;
+        public float followOffsetDistanceVariation;
+    }
+
+    public void ApplyBuff(BuffVariation value)
+    {
+        skillUseDistance.IntervalValue += value.skillUseDistanceVariation;
+        skillUseOffsetDistance.IntervalValue += value.skillUseOffsetDistanceVariation;
+        skillCooldownTime.IntervalValue += value.skillCooldownTimeVariation;
+
+        followDistance.IntervalValue += value.followDistanceVariation;
+        followOffsetDistance.IntervalValue += value.followOffsetDistanceVariation;
+    }
+
+    public void RemoveBuff(BuffVariation value)
+    {
+        skillUseDistance.IntervalValue -= value.skillUseDistanceVariation;
+        skillUseOffsetDistance.IntervalValue -= value.skillUseOffsetDistanceVariation;
+        skillCooldownTime.IntervalValue -= value.skillCooldownTimeVariation;
+
+        followDistance.IntervalValue -= value.followDistanceVariation;
+        followOffsetDistance.IntervalValue -= value.followOffsetDistanceVariation;
+    }
 
     [SerializeField]
-    float skillUseOffsetDistance;
-    public float SkillUseOffsetDistance { get { return skillUseOffsetDistance; } set { skillUseOffsetDistance = value; } }
+    BuffFloat skillUseDistance;
+    public BuffFloat SkillUseDistance { get { return skillUseDistance; } set { skillUseDistance = value; } }
 
     [SerializeField]
-    float skillUseRange;
-    public float SkillUseRange { get { return skillUseRange; } set { skillUseRange = value; } }
+    BuffFloat skillUseOffsetDistance;
+    public BuffFloat SkillUseOffsetDistance { get { return skillUseOffsetDistance; } set { skillUseOffsetDistance = value; } }
 
     [SerializeField]
-    float skillCooldownTime;
-    public float SkillReuseTime { get { return skillCooldownTime; } set { skillCooldownTime = value; } }
+    BuffFloat skillCooldownTime;
+    public BuffFloat SkillReuseTime { get { return skillCooldownTime; } set { skillCooldownTime = value; } }
 
     [SerializeField]
-    float followMinDistance;
-    public float FollowMinDistance { get { return followMinDistance; } set { followMinDistance = value; } }
+    BuffFloat followDistance;
+    public BuffFloat FollowDistance { get { return followDistance; } set { followDistance = value; } }
 
     [SerializeField]
-    float stopMinDistance;
-    public float StopMinDistance { get { return stopMinDistance; } set { stopMinDistance = value; } }
+    BuffFloat followOffsetDistance;
+    public BuffFloat FollowOffsetDistance { get { return followOffsetDistance; } set { followOffsetDistance = value; } }
 
     public FollowEnemyData() { }
 
-    public FollowEnemyData(float skillUseDistance, float skillUseOffsetDistance, float skillUseRange, float skillCooldownTime, float followMinDistance, float stopMinDistance)
+    public FollowEnemyData(BuffFloat skillUseDistance, BuffFloat skillUseOffsetDistance, BuffFloat skillCooldownTime, BuffFloat followDistance, BuffFloat followOffsetDistance)
     {
         this.skillUseDistance = skillUseDistance;
         this.skillUseOffsetDistance = skillUseOffsetDistance;
-        this.skillUseRange = skillUseRange;
         this.skillCooldownTime = skillCooldownTime;
-        this.followMinDistance = followMinDistance;
-        this.stopMinDistance = stopMinDistance;
+        this.followDistance = followDistance;
+        this.followOffsetDistance = followOffsetDistance;
     }
 
     public FollowEnemyData CopyData()
     {
-        return new FollowEnemyData(skillUseDistance, skillUseOffsetDistance, skillUseRange, skillCooldownTime, followMinDistance, stopMinDistance);
+        return new FollowEnemyData(skillUseDistance, skillUseOffsetDistance, skillCooldownTime, followDistance, followOffsetDistance);
     }
 }
 
@@ -375,8 +566,6 @@ public class PlayerStat
     [SerializeField]
     PlayerData playerData;
     public PlayerData PlayerData { get { return playerData; } }
-
-    
 }
 
 public class FollowEnemyStat
