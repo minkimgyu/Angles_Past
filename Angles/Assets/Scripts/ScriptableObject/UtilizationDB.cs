@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class BuffData : IData<BuffData>
+public class BuffData : BaseData, IData<BuffData>
 {
     [SerializeField]
     protected int maxCount;
@@ -17,8 +17,9 @@ public class BuffData : IData<BuffData>
     int tickCount;
     public int TickTime { get { return tickCount; } set { tickCount = value; } }
 
-    public BuffData(int maxCount, float duration, int tickCount)
+    public BuffData(string name, int maxCount, float duration, int tickCount) : base(name)
     {
+        this.name = name;
         this.maxCount = maxCount;
         this.duration = duration;
         this.tickCount = tickCount;
@@ -26,12 +27,12 @@ public class BuffData : IData<BuffData>
 
     public BuffData CopyData()
     {
-        return new BuffData(maxCount, duration, tickCount);
+        return new BuffData(name, maxCount, duration, tickCount);
     }
 }
 
 [System.Serializable]
-public class SkillData : IData<SkillData>
+public class SkillData : BaseData, IData<SkillData>
 {
     [Header("Sound")]
     [SerializeField]
@@ -208,10 +209,11 @@ public class SkillData : IData<SkillData>
         return false;
     }
 
-    public SkillData(string sfxName, float volume, string prefabName, int maxUseCount, int useCount, SkillOverlapType overlapType, SkillUseConditionType useConditionType, SkillUseCountSubtractType countSubtractType, SkillSynthesisType synthesisType,
+    public SkillData(string name, string sfxName, float volume, string prefabName, int maxUseCount, int useCount, SkillOverlapType overlapType, SkillUseConditionType useConditionType, SkillUseCountSubtractType countSubtractType, SkillSynthesisType synthesisType,
         int tickCount, float preDelay, float duration, float radiusRange, Vector2 boxRange, Vector2 offsetRange, float damage, float knockBackThrust, float disableTime, EntityTag[] hitTarget, int prefabCount, 
-        int spawnCount, float rotationSpeed)
+        int spawnCount, float rotationSpeed) : base(name)
     {
+        this.name = name;
         this.sfxName = sfxName;
         this.volume = volume;
 
@@ -243,7 +245,7 @@ public class SkillData : IData<SkillData>
 
     public SkillData CopyData()
     {
-        return new SkillData(sfxName, volume, prefabName, maxUseCount, useCount, overlapType, useConditionType, countSubtractType, synthesisType, tickCount, preDelay, duration, radiusRange, boxRange, offsetRange, damage, knockBackThrust, 
+        return new SkillData(name, sfxName, volume, prefabName, maxUseCount, useCount, overlapType, useConditionType, countSubtractType, synthesisType, tickCount, preDelay, duration, radiusRange, boxRange, offsetRange, damage, knockBackThrust, 
             disableTime, hitTarget, prefabCount, spawnCount, rotationSpeed);
     }
 }

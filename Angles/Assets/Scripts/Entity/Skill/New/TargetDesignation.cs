@@ -4,34 +4,74 @@ using UnityEngine;
 
 abstract public class TargetDesignation<T>
 {
+    protected bool isFindRangeSame;
+
     public abstract T Execute(SkillSupportData supportData);
+
+    protected int ReturnTick(SkillSupportData supportData)
+    {
+        int tick = 0;
+        if (!isFindRangeSame) tick = supportData.TickCount;
+
+        return tick;
+    }
 }
 
 public class FindInCircleRange : TargetDesignation<RaycastHit2D[]>
 {
+    List<float> m_radiusRangePerTick;
+    List<Vector2> m_offsetRangePerTick;
+
+    public FindInCircleRange(List<float> radiusRangePerTick) // 생성자에서 받아서 실행해준다.
+    {
+        m_radiusRangePerTick = radiusRangePerTick;
+    }
+
     public override RaycastHit2D[] Execute(SkillSupportData supportData)
     {
-        RaycastHit2D[] hit = Physics2D.CircleCastAll(supportData.Pos, supportData.Data.RadiusRangePerTick[supportData.TickCount], Vector2.up, 0);
+        RaycastHit2D[] hit = Physics2D.CircleCastAll(supportData.Pos, m_radiusRangePerTick[ReturnTick(supportData)], 
+            m_offsetRangePerTick[ReturnTick(supportData)].normalized, m_offsetRangePerTick[ReturnTick(supportData)].magnitude);
+
         return hit;
     }
 }
 
 public class FindInBoxRange : TargetDesignation<RaycastHit2D[]>
 {
+    List<Vector2> m_boxRangePerTick;
+    List<Vector2> m_offsetRangePerTick;
+
+    public FindInBoxRange(List<Vector2> boxRangePerTick, List<Vector2> offsetRangePerTick) // 생성자에서 받아서 실행해준다.
+    {
+        m_boxRangePerTick = boxRangePerTick;
+        m_offsetRangePerTick = offsetRangePerTick;
+    }
+
     public override RaycastHit2D[] Execute(SkillSupportData supportData)
     {
-        RaycastHit2D[] hit = Physics2D.BoxCastAll(supportData.Pos, supportData.Data.BoxRange,
-            supportData.Caster.transform.rotation.z, Vector2.right, supportData.Data.OffsetRange.magnitude);
+        RaycastHit2D[] hit = Physics2D.BoxCastAll(supportData.Pos, m_boxRangePerTick[ReturnTick(supportData)],
+            supportData.Caster.transform.rotation.z, m_offsetRangePerTick[ReturnTick(supportData)].normalized, m_offsetRangePerTick[ReturnTick(supportData)].magnitude);
+
         return hit;
     }
 }
 
 public class FindAllUsingRaycast : TargetDesignation<RaycastHit2D[]>
 {
+    List<Vector2> m_directionPerTick;
+    List<float> m_rangePerTick;
+
+    public FindAllUsingRaycast(List<Vector2> directionPerTick, List<float> rangePerTick) // 생성자에서 받아서 실행해준다.
+    {
+        m_directionPerTick = directionPerTick;
+        m_rangePerTick = rangePerTick;
+    }
+
     public override RaycastHit2D[] Execute(SkillSupportData supportData)
     {
-        RaycastHit2D[] hits = Physics2D.RaycastAll(supportData.Pos, supportData.Data.Directions[supportData.TickCount - 1], 100);
-        Debug.DrawRay(supportData.Pos, supportData.Data.Directions[supportData.TickCount - 1].normalized, Color.green, 100);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(supportData.Pos, m_directionPerTick[ReturnTick(supportData)], m_rangePerTick[ReturnTick(supportData)]);
+
+        Debug.DrawRay(supportData.Pos, m_directionPerTick[ReturnTick(supportData)].normalized * m_rangePerTick[ReturnTick(supportData)], Color.green, 100);
 
         return hits;
     }

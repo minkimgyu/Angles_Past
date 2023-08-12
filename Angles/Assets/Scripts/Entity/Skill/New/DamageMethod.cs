@@ -2,67 +2,106 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-abstract public class DamageMethod<T> : BaseMethod<T>
+abstract public class TargetMethod<T> : BaseMethod<T>
 {
-    protected DamageSupportData damageSkillData;
+    EntityTag[] m_hitTarget;
 
-    protected bool DamageToEntity(GameObject me, Transform enemy, SkillData data)
+    public TargetMethod(EntityTag[] hitTarget, Dictionary<EffectCondition, EffectData> effectDatas) : base(effectDatas)
+    {
+        m_hitTarget = hitTarget;
+    }
+
+    protected bool CanHitSkill(EntityTag tag)
+    {
+        for (int i = 0; i < m_hitTarget.Length; i++)
+        {
+            if (m_hitTarget[i] == tag)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+abstract public class DamageMethod<T> : TargetMethod<T>
+{
+    float m_knockBackThrust;
+    float m_damage;
+    
+
+    public DamageMethod(EntityTag[] hitTarget, float knockBackThrust, float damage, Dictionary<EffectCondition, EffectData> effectDatas)
+        : base(hitTarget, effectDatas)
+    {
+        m_knockBackThrust = knockBackThrust;
+        m_damage = damage;
+    }
+
+    protected bool DamageToEntity(GameObject me, Transform enemy)
     {
         enemy.TryGetComponent(out IHealth health);
 
-        if (health == null || data.CanHitSkill(health.ReturnEntityTag()) == false) return false;
+        if (health == null || CanHitSkill(health.ReturnEntityTag()) == false) return false;
 
-        health.UnderAttack(data.Damage, -(me.transform.position - enemy.position).normalized, data.KnockBackThrust);
+        health.UnderAttack(m_damage, -(me.transform.position - enemy.position).normalized, m_knockBackThrust);
         return true;
-    }
-
-    public override void Init(SkillData data) // 여기서 불러옴
-    {
-        //damageStat = DatabaseManager.Instance.db
     }
 }
 
 public class DamageToContactors : DamageMethod<List<ContactData>>
 {
+    public DamageToContactors(EntityTag[] hitTarget, float knockBackThrust, float damage, Dictionary<EffectCondition, EffectData> effectDatas) 
+        : base(hitTarget, knockBackThrust, damage, effectDatas) // 이런 식으로 생성자에서 값을 받아서 Execute 진행
+    {
+    }
+
     public override void Execute(SkillSupportData supportData, List<ContactData> contactDatas)
     {
         for (int i = 0; i < contactDatas.Count; i++)
         {
-            DamageToEntity(supportData.Caster, contactDatas[i].transform, supportData.Data); // 이렇게 진행
-            PlayEffect(contactDatas[i].transform, damageSkillData.effectDatas[EffectName.PunchEffect]);
+            DamageToEntity(supportData.Caster, contactDatas[i].transform); // 이렇게 진행
+            PlayEffect(contactDatas[i].transform, m_effectDatas[EffectCondition.HitSurfaceEffect]);
         }
     }
 }
 
 public class DamageToRaycastHit : DamageMethod<RaycastHit2D[]>
 {
+    public DamageToRaycastHit(EntityTag[] hitTarget, float knockBackThrust, float damage, Dictionary<EffectCondition, EffectData> effectDatas)
+        : base(hitTarget, knockBackThrust, damage, effectDatas) // 이런 식으로 생성자에서 값을 받아서 Execute 진행
+    {
+    }
+
     public override void Execute(SkillSupportData supportData, RaycastHit2D[] targets)
     {
         for (int i = 0; i < targets.Length; i++)
         {
-            DamageToEntity(supportData.Caster, targets[i].transform, supportData.Data); // 이렇게 진행
-            PlayEffect(supportData.Caster.transform.position, damageSkillData.effectDatas[EffectName.PunchEffect]);
+            DamageToEntity(supportData.Caster, targets[i].transform); // 이렇게 진행
+            PlayEffect(supportData.Caster.transform.position, m_effectDatas[EffectCondition.HitSurfaceEffect]);
         }
 
-        PlayEffect(supportData.Caster.transform, damageSkillData.effectDatas[EffectName.AttackSkillEffect]);
+        PlayEffect(supportData.Caster.transform, m_effectDatas[EffectCondition.AttackEffect]);
     }
 }
 
 public class DamageToLaserHit : DamageMethod<RaycastHit2D[]>
 {
-    [SerializeField]
-    float hitEffectDisableTime = 1.5f;
+    float m_laserMaxDistance = 20;
+    List<string> m_blockedTag = new List<string>(); //m_blockedTag.Add("Wall");
+    List<Vector2> m_directionPerTick;
 
-    [SerializeField]
-    float maxDistance = 20;
+    public DamageToLaserHit(EntityTag[] hitTarget, float knockBackThrust, float damage, Dictionary<EffectCondition, EffectData> effectDatas, 
+        float laserMaxDistance, List<string> blockedTag, List<Vector2> directionPerTick) : base(hitTarget, knockBackThrust, damage, effectDatas) // 이런 식으로 생성자에서 값을 받아서 Execute 진행
+    {
+        m_laserMaxDistance = laserMaxDistance;
+        m_blockedTag = blockedTag;
+        m_directionPerTick = directionPerTick;
+    }
 
-    [SerializeField]
-    List<string> blockedTag = new List<string>();
 
     public override void Execute(SkillSupportData supportData, RaycastHit2D[] hits)
     {
-        blockedTag.Add("Wall");
-
         List<Vector3> hitPos = new List<Vector3>();
         List<Vector3> hitEffectPos = new List<Vector3>();
 
@@ -72,9 +111,9 @@ public class DamageToLaserHit : DamageMethod<RaycastHit2D[]>
 
             bool isBlocked = false;
 
-            for (int j = 0; j < blockedTag.Count; j++)
+            for (int j = 0; j < m_blockedTag.Count; j++)
             {
-                if (hits[i].transform.tag == blockedTag[j])
+                if (hits[i].transform.tag == m_blockedTag[j])
                 {
                     hitPos.Add(hits[i].point - (Vector2)supportData.Caster.transform.position);
                     hitEffectPos.Add(hits[i].point);
@@ -85,7 +124,7 @@ public class DamageToLaserHit : DamageMethod<RaycastHit2D[]>
 
             if (isBlocked) break;
 
-            if (DamageToEntity(supportData.Caster, hits[i].transform, supportData.Data) == false) continue;
+            if (DamageToEntity(supportData.Caster, hits[i].transform) == false) continue;
 
             hitPos.Add(hits[i].point - (Vector2)supportData.Caster.transform.position);
             hitEffectPos.Add(hits[i].point);
@@ -95,15 +134,15 @@ public class DamageToLaserHit : DamageMethod<RaycastHit2D[]>
 
         if (hitPos.Count == 0)
         {
-            hitPos.Add(supportData.Data.Directions[supportData.TickCount - 1] * maxDistance / 2);
+            hitPos.Add(m_directionPerTick[supportData.TickCount - 1] * m_laserMaxDistance / 2);
         }
 
         for (int i = 0; i < hitEffectPos.Count; i++)
         {
-            PlayEffect(hitEffectPos[i], damageSkillData.effectDatas[EffectName.HitSurfaceEffect]);
+            PlayEffect(hitEffectPos[i], m_effectDatas[EffectCondition.HitSurfaceEffect]);
         }
 
-        PlayEffect(supportData.Caster.transform, damageSkillData.effectDatas[EffectName.AttackSkillEffect]);
-        SoundManager.Instance.PlaySFX(supportData.Caster.transform.position, supportData.Data.SfxName, supportData.Data.Volume);
+        PlayEffect(supportData.Caster.transform, m_effectDatas[EffectCondition.AttackEffect]);
+        //SoundManager.Instance.PlaySFX(supportData.Caster.transform.position, supportData.Data.SfxName, supportData.Data.Volume);
     }
 }

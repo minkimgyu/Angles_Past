@@ -10,13 +10,17 @@ using System;
 
 public interface IBuff
 {
+    public bool IsFinished { get; set; }
+
     public void Init(BuffData data);
 
-    public void OnStart(GameObject caster, BuffEffectComponent effectComponent); // getComponent
+    public void OnStart(GameObject caster); // getComponent
 
-    public void OnEnd(BuffEffectComponent effectComponen);
+    public void OnEnd();
 
     public void Tick(float deltaTime);
+
+    public BuffData ReturnBuffData();
 
     public IBuff CreateCopy(BuffData data);
 }
@@ -26,7 +30,7 @@ abstract public class BaseBuff<T> : IBuff  // --> ´Ù¾çÇÑ µ¥ÀÌÅÍ¿¡ Á¢±Ù °¡´ÉÇÏ°Ô²
     public BaseBuff(BuffData data)
     {
         Init(data);
-        isFinished = false;
+        IsFinished = false;
     }
 
     protected T variationData; // ¹öÇÁ µ¥ÀÌÅÍ º£ÀÌ½º¿¡¼­ °¡Á®¿Í¼­ ÀÌ °ªÀ¸·Î Áõ°¨À» Àû¿ëÇÔ
@@ -35,8 +39,7 @@ abstract public class BaseBuff<T> : IBuff  // --> ´Ù¾çÇÑ µ¥ÀÌÅÍ¿¡ Á¢±Ù °¡´ÉÇÏ°Ô²
     protected BuffData m_data;
     public BuffData Data { get { return m_data; } }
 
-    protected bool isFinished;
-    public bool IsFinished { get { return isFinished; } }
+    public bool IsFinished { get; set; }
 
     //protected BasicEffectPlayer m_effectPlayer;
 
@@ -45,9 +48,9 @@ abstract public class BaseBuff<T> : IBuff  // --> ´Ù¾çÇÑ µ¥ÀÌÅÍ¿¡ Á¢±Ù °¡´ÉÇÏ°Ô²
 
     public void Init(BuffData data) => m_data = data;
 
-    public abstract void OnStart(GameObject caster, BuffEffectComponent effectComponent); // getComponent
+    public abstract void OnStart(GameObject caster); // ¹öÇÁ ÀÌÆÑÆ®´Â ÀÌ¹êÆ®·Î Init --> BuffComponent¿¡¼­ SO ¹Þ¾Æ¼­ Ã³¸®
 
-    public abstract void OnEnd(BuffEffectComponent effectComponen);
+    public abstract void OnEnd();
 
     public virtual void Tick(float deltaTime) { }
 
@@ -57,6 +60,11 @@ abstract public class BaseBuff<T> : IBuff  // --> ´Ù¾çÇÑ µ¥ÀÌÅÍ¿¡ Á¢±Ù °¡´ÉÇÏ°Ô²
     public void DoUpdate(float deltaTime)
     {
         Tick(deltaTime);
+    }
+
+    public BuffData ReturnBuffData()
+    {
+        return m_data;
     }
 
     //private void OnDisable()
@@ -86,7 +94,7 @@ abstract public class TimeBuff<T> : BaseBuff<T>
 
         if (buffTime <= 0)
         {
-            isFinished = true;
+            IsFinished = true;
         }
 
         tickTime -= deltaTime;
