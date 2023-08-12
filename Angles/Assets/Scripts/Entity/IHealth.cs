@@ -25,4 +25,5 @@ public interface IHealth : ITag, IBuffInvoker
     public void WhenUnderAttack(float healthPoint, Vector2 dir, float thrust);
 
     public void WhenHeal();
+    public HealthEntityData ReturnHealthEntityData();
 }

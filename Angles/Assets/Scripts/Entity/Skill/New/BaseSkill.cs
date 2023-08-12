@@ -5,57 +5,74 @@ using UnityEngine;
 
 public struct SkillSupportData // --> 추후에 버프 추가
 {
-    public SkillSupportData(GameObject caster, SkillData data, Vector3 pos, int tickCount)//, int tickCount)
+    public SkillSupportData(GameObject caster, Vector3 pos, int tickCount)//, int tickCount)
     {
         m_caster = caster;
-        m_data = data;
         m_Pos = pos;
         m_tickCount = tickCount;
     }
 
+    /// <summary>
+    /// 스킬 시전자
+    /// </summary>
     GameObject m_caster;
     public GameObject Caster { get { return m_caster; } }
 
-    SkillData m_data;
-    public SkillData Data { get { return m_data; } }
 
+
+    /// <summary>
+    /// 스킬이 시전될 위치
+    /// </summary>
     Vector3 m_Pos;
     public Vector3 Pos { get { return m_Pos; } }
 
+    /// <summary>
+    /// 현재 TickCount
+    /// </summary>
     int m_tickCount;
     public int TickCount { get { return m_tickCount; } }
 }
 
-public struct DamageSupportData
+//public struct DamageSupportData
+//{
+//    public string name; // --> 데이터 베이스에서 스킬 이름을 바탕(현 prefabData)으로 해당 데이터를 찾아서 넣어줌
+//    public Dictionary<EffectCondition, EffectData> effectDatas;
+
+//    //public List<float> attackCircleRange; // 틱마다 범위가 달라짐
+
+//}
+
+//public struct BuffSupportData
+//{
+//    public string name; // --> 데이터 베이스에서 스킬 이름을 바탕(현 prefabData)으로 해당 데이터를 찾아서 넣어줌
+//    public Dictionary<EffectCondition, EffectData> effectDatas;
+//    public List<string> buffNames;
+//    public bool nowApply; // 버프를 적용할 건지 제거할건지 확인
+
+//    //public List<float> attackCircleRange; // 틱마다 범위가 달라짐
+
+//}
+//public struct SpawnSupportData
+//{
+//    public string name; // --> 데이터 베이스에서 스킬 이름을 바탕(현 prefabData)으로 해당 데이터를 찾아서 넣어줌
+
+//    public Dictionary<EffectCondition, EffectData> effectDatas;
+//    public float speed;
+//    public float distanceFromCaster;
+
+//    public string projectileName;
+//    public int projectileCount;
+//}
+
+public enum EffectCondition // 맞을 때, 표면에 생기는 이팩트, 스킬 자체 이팩트 등등 특정 조건에 명명할 단어를 넣어놓는다.
 {
-    public string name; // --> 데이터 베이스에서 스킬 이름을 바탕(현 prefabData)으로 해당 데이터를 찾아서 넣어줌
-    public Dictionary<EffectName, EffectData> effectDatas;
+    HitSurfaceEffect, // 데미지를 입은 표면에 일어나는 효과
 
-    //public List<float> attackCircleRange; // 틱마다 범위가 달라짐
+    AttackEffect, // 공격 스킬을 사용했을 때 나오는 효과
 
-}
+    BuffEffect, // 버프가 걸릴 때 나오는 효과
 
-public struct BuffSupportData
-{
-    public string name; // --> 데이터 베이스에서 스킬 이름을 바탕(현 prefabData)으로 해당 데이터를 찾아서 넣어줌
-    public Dictionary<EffectName, EffectData> effectDatas;
-    public List<string> buffNames;
-    public bool nowApply; // 버프를 적용할 건지 제거할건지 확인
-
-    //public List<float> attackCircleRange; // 틱마다 범위가 달라짐
-
-}
-
-public enum EffectName
-{
-    PunchEffect,
-    AttackSkillEffect,
-
-    HitSurfaceEffect,
-
-    BuffEffect,
-
-    SpawnEffect
+    SpawnEffect // 스폰이 되었을 때 나오는 효과
 }
 
 public struct EffectData // 이팩트 시간, 크기 등등 조작 가능하게끔 재현
@@ -76,7 +93,7 @@ public class EffectSource
         effectData = data;
     }
 
-    protected bool PlayEffect(Transform target, EffectData data)
+    public bool Play(Transform target)
     {
         BasicEffectPlayer player = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(effectData.name); // 이팩트 이름 추가
         if (player == null) return false;
@@ -85,13 +102,13 @@ public class EffectSource
         player.Init(target, effectData.duration);
         player.PlayEffect();
 
-        SoundManager.instance.PlaySFX(target.position, data.soundName, data.volume);
+        SoundManager.instance.PlaySFX(target.position, effectData.soundName, effectData.volume);
 
         effectPlayer = player;
         return true;
     }
 
-    protected bool PlayEffect(Vector3 pos, EffectData data)
+    public bool Play(Vector3 pos)
     {
         BasicEffectPlayer player = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(effectData.name); // 이팩트 이름 추가
         if (player == null) return false;
@@ -100,34 +117,30 @@ public class EffectSource
         player.Init(pos, effectData.duration);
         player.PlayEffect();
 
+        SoundManager.instance.PlaySFX(pos, effectData.soundName, effectData.volume);
+
         effectPlayer = player;
         return true;
     }
 
-    protected void StopEffect()
+    public void Stop()
     {
         effectPlayer.StopEffect();
         effectPlayer = null;
     }
 }
 
-public struct SpawnSupportData
-{
-    public string name; // --> 데이터 베이스에서 스킬 이름을 바탕(현 prefabData)으로 해당 데이터를 찾아서 넣어줌
-
-    public Dictionary<EffectName, EffectData> effectDatas;
-    public float speed;
-    public float distanceFromCaster;
-
-    public string projectileName;
-    public int projectileCount;
-}
-
 abstract public class BaseMethod<T>
 {
-    List<BasicEffectPlayer> effectPlayers;
+    protected Dictionary<EffectCondition, EffectData> m_effectDatas;
+    List<EffectSource> m_effectSources;
 
-    public abstract void Init(SkillData data); // 데이터 베이스에서 Stat을 카피해서 가져옴
+    public BaseMethod(Dictionary<EffectCondition, EffectData> effectDatas)
+    {
+        m_effectDatas = effectDatas;
+    }
+
+    //public abstract void Init(SkillData data); // 데이터 베이스에서 Stat을 카피해서 가져옴
 
     public virtual void Execute(SkillSupportData supportData, T target) { }
 
@@ -135,37 +148,30 @@ abstract public class BaseMethod<T>
 
     protected bool PlayEffect(Transform target, EffectData data)
     {
-        BasicEffectPlayer player = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(data.name); // 이팩트 이름 추가
-        if (player == null) return false;
+        EffectSource effectSource = new EffectSource(data);
+        effectSource.Play(target);
 
-        player.IsFixed = true;
-        player.Init(target, data.duration);
-        player.PlayEffect();
-
-        effectPlayers.Add(player);
+        m_effectSources.Add(effectSource);
         return true;
     }
 
     protected bool PlayEffect(Vector3 pos, EffectData data)
     {
-        BasicEffectPlayer player = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(data.name); // 이팩트 이름 추가
-        if (player == null) return false;
+        EffectSource effectSource = new EffectSource(data);
+        effectSource.Play(pos);
 
-        player.IsFixed = false;
-        player.Init(pos, data.duration);
-        player.PlayEffect();
-
-        effectPlayers.Add(player);
+        m_effectSources.Add(effectSource);
         return true;
     }
 
     protected void StopEffect()
     {
-        for (int i = 0; i < effectPlayers.Count; i++)
+        for (int i = 0; i < m_effectSources.Count; i++)
         {
-            effectPlayers[i].StopEffect();
-            effectPlayers[i] = null;
+            m_effectSources[i].Stop();
         }
+
+        m_effectSources.Clear();
     }
 }
 
@@ -188,12 +194,42 @@ public class BaseSkill<T> : ISkill
 {
     public ISkill CreateCopy()
     {
-        return new BaseSkill<T>(m_specifyLocation, m_targetDesignation, m_baseMethods);
+        return new BaseSkill<T>();
     }
 
-    [SerializeField]
-    protected SkillData m_data; // --> 데미지, 범위 등등 공통된 변수만 넣어주자
-    public SkillData Data { get { return m_data; } }
+    public BaseSkill() // SpecifyLocation specifyLocation, TargetDesignation<T> targetDesignation, List<BaseMethod<T>> methods
+    {
+        //m_specifyLocation = specifyLocation;
+        //m_targetDesignation = targetDesignation;
+        //m_baseMethods = methods;
+    }
+
+    //[SerializeField]
+    //protected SkillData m_data; // --> 데미지, 범위 등등 공통된 변수만 넣어주자
+    //public SkillData Data { get { return m_data; } }
+
+
+    // 변수 선언
+
+
+    //[SerializeField]
+    //EntityTag[] hitTarget;
+    //public EntityTag[] HitTarget { get { return hitTarget; } set { hitTarget = value; } }
+
+    // 이런 변수는 하위 클레스에서 선언
+
+
+
+    int tickCount;
+
+    float duration;
+
+
+
+
+    // 변수 선언
+
+
 
     protected SpecifyLocation m_specifyLocation;
     public SpecifyLocation SpecifyLocation { get { return m_specifyLocation; } }
@@ -213,12 +249,7 @@ public class BaseSkill<T> : ISkill
     bool m_nowFinish = false;
     public bool NowFinish { get { return m_nowFinish; } }
 
-    public BaseSkill(SpecifyLocation specifyLocation, TargetDesignation<T> targetDesignation, List<BaseMethod<T>> methods)
-    {
-        m_specifyLocation = specifyLocation;
-        m_targetDesignation = targetDesignation;
-        m_baseMethods = methods;
-    }
+    
 
     public virtual void Init(Transform caster, SkillData data)
     {
@@ -261,7 +292,7 @@ public class BaseSkill<T> : ISkill
     {
         Vector3 myPos = m_specifyLocation.ReturnPos();
 
-        SkillSupportData supportData = new SkillSupportData(m_specifyLocation.Caster, m_data, myPos, tickCount);
+        SkillSupportData supportData = new SkillSupportData(m_specifyLocation.Caster, myPos, tickCount);
 
         T target = m_targetDesignation.Execute(supportData);
 
@@ -308,8 +339,13 @@ public class BaseSkill<T> : ISkill
 
 public class CasterCircleRangeAttack : BaseSkill<RaycastHit2D[]>
 {
-    public CasterCircleRangeAttack(SpecifyLocation specifyLocation, TargetDesignation<RaycastHit2D[]> targetDesignation, List<BaseMethod<RaycastHit2D[]>> methods) : base(specifyLocation, targetDesignation, methods)
+    // 여기에 변수 선언해주기 X --> 선언없이 하위 컴포넌트를 바로 초기화해버리자
+
+    public CasterCircleRangeAttack(List<float> radiusRangePerTick) // SO를 만들어서 데이터를 불러오기 
     {
+        m_specifyLocation = new LocationToContactor();
+        m_targetDesignation = new FindInCircleRange(radiusRangePerTick);
+        m_baseMethods = new List<BaseMethod<RaycastHit2D[]>> { new DamageToRaycastHit() };
     }
 }
 

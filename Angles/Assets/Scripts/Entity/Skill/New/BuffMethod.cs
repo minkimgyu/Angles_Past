@@ -2,25 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuffMethod<T> : BaseMethod<T>
+public class BuffMethod<T> : TargetMethod<T>
 {
-    protected BuffSupportData buffSupportData;
+    bool m_nowApply;
+    public List<string> m_buffNames;
+
+    public BuffMethod(EntityTag[] hitTarget, bool nowApply, List<string> buffNames, Dictionary<EffectCondition, EffectData> effectDatas)
+        : base(hitTarget, effectDatas)
+    {
+        m_nowApply = nowApply;
+        m_buffNames = buffNames;
+    }
+
 
     protected void ApplyBuff(SkillSupportData supportData, Transform target)
     {
-        if (buffSupportData.nowApply) AddBuffToEntity(supportData, target);
+        if (m_nowApply) AddBuffToEntity(supportData, target);
         else RemoveBuffToEntity(supportData, target);
     }
 
     protected bool AddBuffToEntity(SkillSupportData supportData, Transform target)
     {
         target.TryGetComponent(out IHealth health);
-        if (health == null || supportData.Data.CanHitSkill(health.ReturnEntityTag()) == false) return false;
+        if (health == null || CanHitSkill(health.ReturnEntityTag()) == false) return false;
         // --> 타겟이 맞는지 확인
 
-        for (int i = 0; i < buffSupportData.buffNames.Count; i++)
+        for (int i = 0; i < m_buffNames.Count; i++)
         {
-            BuffData data = DatabaseManager.Instance.UtilizationDB.ReturnBuffData(buffSupportData.buffNames[i]);
+            BuffData data = DatabaseManager.Instance.UtilizationDB.ReturnBuffData(m_buffNames[i]); // 추후 버프 수정
             if (data == null) continue;
 
             health.AddBuffToController(data);
@@ -32,12 +41,12 @@ public class BuffMethod<T> : BaseMethod<T>
     protected bool RemoveBuffToEntity(SkillSupportData supportData, Transform target)
     {
         target.TryGetComponent(out IHealth health);
-        if (health == null || supportData.Data.CanHitSkill(health.ReturnEntityTag()) == false) return false;
+        if (health == null || CanHitSkill(health.ReturnEntityTag()) == false) return false;
         // --> 타겟이 맞는지 확인
 
-        for (int i = 0; i < buffSupportData.buffNames.Count; i++)
+        for (int i = 0; i < m_buffNames.Count; i++)
         {
-            BuffData data = DatabaseManager.Instance.UtilizationDB.ReturnBuffData(buffSupportData.buffNames[i]);
+            BuffData data = DatabaseManager.Instance.UtilizationDB.ReturnBuffData(buffSupportData.buffNames[i]); // 추후 버프 수정
             if (data == null) continue;
 
             health.RemoveBuffToController(data);
@@ -45,42 +54,52 @@ public class BuffMethod<T> : BaseMethod<T>
 
         return true;
     }
-
-    public override void Init(SkillData data)
-    {
-        
-    }
 }
 
 public class BuffToContactors : BuffMethod<List<ContactData>>
 {
+    public BuffToContactors(EntityTag[] hitTarget, bool nowApply, List<string> buffNames, Dictionary<EffectCondition, EffectData> effectDatas)
+        : base(hitTarget, nowApply, buffNames, effectDatas)
+    {
+    }
+
     public override void Execute(SkillSupportData supportData, List<ContactData> contactDatas)
     {
         for (int i = 0; i < contactDatas.Count; i++)
         {
             ApplyBuff(supportData, contactDatas[i].transform);
-            PlayEffect(contactDatas[i].transform, buffSupportData.effectDatas[EffectName.BuffEffect]);
+            PlayEffect(contactDatas[i].transform, m_effectDatas[EffectCondition.BuffEffect]);
         }
     }
 }
 
 public class BuffToRaycastHit : BuffMethod<RaycastHit2D[]>
 {
+    public BuffToRaycastHit(EntityTag[] hitTarget, bool nowApply, List<string> buffNames, Dictionary<EffectCondition, EffectData> effectDatas)
+        : base(hitTarget, nowApply, buffNames, effectDatas)
+    {
+    }
+
     public override void Execute(SkillSupportData supportData, RaycastHit2D[] targets)
     {
         for (int i = 0; i < targets.Length; i++)
         {
             ApplyBuff(supportData, targets[i].transform);
-            PlayEffect(targets[i].transform, buffSupportData.effectDatas[EffectName.BuffEffect]);
+            PlayEffect(targets[i].transform, m_effectDatas[EffectCondition.BuffEffect]);
         }
     }
 }
 
 public class BuffToCaster : BuffMethod<bool>
 {
+    public BuffToCaster(EntityTag[] hitTarget, bool nowApply, List<string> buffNames, Dictionary<EffectCondition, EffectData> effectDatas)
+        : base(hitTarget, nowApply, buffNames, effectDatas)
+    {
+    }
+
     public override void Execute(SkillSupportData supportData)
     {
         ApplyBuff(supportData, supportData.Caster.transform);
-        PlayEffect(supportData.Caster.transform, buffSupportData.effectDatas[EffectName.BuffEffect]);
+        PlayEffect(supportData.Caster.transform, m_effectDatas[EffectCondition.BuffEffect]);
     }
 }

@@ -8,8 +8,6 @@ public class BaseData
     protected string name;
     public string Name { get { return name; } set { name = value; } }
 
-    public BaseData() { }
-
     public BaseData(string name)
     {
         this.name = name;
