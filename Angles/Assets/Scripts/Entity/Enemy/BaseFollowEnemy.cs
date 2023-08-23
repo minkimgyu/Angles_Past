@@ -3,10 +3,59 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+abstract public class DelayFollowEnemy : BaseFollowEnemy
+{
+    /// <summary>
+    /// 다음 스킬 전까지 딜레이
+    /// </summary>
+    BuffFloat attackDelay;
+    public BuffFloat AttackDelay { get { return attackDelay; } }
+
+    public void Initialize(bool immortality, BuffFloat hp, BuffFloat speed, BuffFloat stunTime,
+        BuffFloat weight, BuffFloat mass, BuffFloat drag, string dieEffectName, string[] skillNames,
+        BuffInt score, BuffFloat skillUseDistance, BuffFloat skillUseOffsetDistance, BuffFloat skillCooldownTime,
+        BuffFloat followDistance, BuffFloat followOffsetDistance, BuffFloat attackDelay)
+    {
+        Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames, score, skillUseDistance,
+            skillUseOffsetDistance, skillCooldownTime, followDistance, followOffsetDistance);
+
+        this.attackDelay = attackDelay;
+    }
+}
+
 abstract public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
 {
-    protected FollowEnemyData m_followEnemyData;
-    public FollowEnemyData FollowEnemyData { get { return m_followEnemyData; } }
+    public void Initialize(bool immortality, BuffFloat hp, BuffFloat speed, BuffFloat stunTime,
+        BuffFloat weight, BuffFloat mass, BuffFloat drag, string dieEffectName, string[] skillNames, 
+        BuffInt score, BuffFloat skillUseDistance, BuffFloat skillUseOffsetDistance, BuffFloat skillCooldownTime, 
+        BuffFloat followDistance, BuffFloat followOffsetDistance)
+    {
+        Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames, score);
+
+        this.skillUseDistance = skillUseDistance;
+        this.skillUseOffsetDistance = skillUseOffsetDistance;
+        this.skillCooldownTime = skillCooldownTime;
+        this.followDistance = followDistance;
+        this.followOffsetDistance = followOffsetDistance;
+    }
+
+
+    BuffFloat skillUseDistance;
+    public BuffFloat SkillUseDistance { get { return skillUseDistance; } set { skillUseDistance = value; } }
+
+    BuffFloat skillUseOffsetDistance;
+    public BuffFloat SkillUseOffsetDistance { get { return skillUseOffsetDistance; } set { skillUseOffsetDistance = value; } }
+
+    BuffFloat skillCooldownTime;
+    public BuffFloat SkillReuseTime { get { return skillCooldownTime; } set { skillCooldownTime = value; } }
+
+    BuffFloat followDistance;
+    public BuffFloat FollowDistance { get { return followDistance; } set { followDistance = value; } }
+
+    BuffFloat followOffsetDistance;
+    public BuffFloat FollowOffsetDistance { get { return followOffsetDistance; } set { followOffsetDistance = value; } }
+
+
 
 
     protected Player m_loadPlayer;
@@ -31,13 +80,13 @@ abstract public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
         m_followComponent = GetComponent<FollowComponent>();
     }
 
-    // Start is called before the first frame update
-    protected virtual void Start()
+    protected override void Start()
     {
-        Init();
+        base.Start();
+        FindPlayer();
     }
 
-    protected virtual void Init()
+    protected virtual void FindPlayer()
     {
         GameObject go = GameObject.FindWithTag("Player");
         if (go == null) return;

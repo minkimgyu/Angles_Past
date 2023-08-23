@@ -36,11 +36,10 @@ public class LineRendererEffectPlayer : BasicEffectPlayer
         m_lineRenderer = GetComponent<LineRenderer>();
     }
 
-    public override void Init(Transform tr, float duration, List<Vector3> pos)
+    public override void Init(Vector3 posVec, float duration, List<Vector3> pos)
     {
-        m_posTr = tr;
+        base.Init(posVec);
         m_pos = pos;
-        transform.position = m_posTr.position;
         m_duration = duration;
     }
 

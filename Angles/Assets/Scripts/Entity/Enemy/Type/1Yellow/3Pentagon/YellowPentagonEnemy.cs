@@ -5,15 +5,10 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using System;
 
-public class YellowPentagonEnemy : BaseFollowEnemy
+public class YellowPentagonEnemy : DelayFollowEnemy
 {
-    [SerializeField]
-    float delay;
-    public float Delay { get { return delay; } }
-
-    protected override void Init()
+    protected override void AddState()
     {
-        base.Init();
         BaseState<State> attack = new StateYellowPentagonAttack(this); // 공격만 따로 추가해주자
         m_dicState.Add(State.Attack, attack);
 

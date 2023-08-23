@@ -3,98 +3,68 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-//public interface IEntityData<T>
-//{
-//    public T ReturnEntityData();
-//}
-
-public interface IBuff
+abstract public class BaseBuff  // --> 다양한 데이터에 접근 가능하게끔 제작 ---> PlayerData, EnemyData, HealthData
 {
-    public bool IsFinished { get; set; }
-
-    public void Init(BuffData data);
-
-    public void OnStart(GameObject caster); // getComponent
-
-    public void OnEnd();
-
-    public void Tick(float deltaTime);
-
-    public BuffData ReturnBuffData();
-
-    public IBuff CreateCopy(BuffData data);
-}
-
-abstract public class BaseBuff<T> : IBuff  // --> 다양한 데이터에 접근 가능하게끔 제작 ---> PlayerData, EnemyData, HealthData
-{
-    public BaseBuff(BuffData data)
+    public BaseBuff(string name, int maxCount)
     {
-        Init(data);
-        IsFinished = false;
+        this.name = name;
+        this.maxCount = maxCount;
     }
 
-    protected T variationData; // 버프 데이터 베이스에서 가져와서 이 값으로 증감을 적용함
+    // 변수 모음
+    protected string name;
+    public string Name
+    {
+        get { return name; }
+    }
 
-    [SerializeField]
-    protected BuffData m_data;
-    public BuffData Data { get { return m_data; } }
+    protected int maxCount;
+    public int MaxCount
+    {
+        get { return maxCount; }
+    }
 
-    public bool IsFinished { get; set; }
+    protected bool isFinished;
+    public bool IsFinished
+    {
+        get { return isFinished; }
+    }
+    // 
 
-    //protected BasicEffectPlayer m_effectPlayer;
-
-    //[SerializeField]
-    //protected EffectMethod effectMethod;
-
-    public void Init(BuffData data) => m_data = data;
-
-    public abstract void OnStart(GameObject caster); // 버프 이팩트는 이밴트로 Init --> BuffComponent에서 SO 받아서 처리
+    public abstract void OnStart(GameObject caster); // 버프 이팩트는 이밴트로 AddState --> BuffComponent에서 SO 받아서 처리
 
     public abstract void OnEnd();
 
     public virtual void Tick(float deltaTime) { }
 
-    public abstract IBuff CreateCopy(BuffData data); // 이거는 각각의 하위 클레스에서 제작
-
+    //public abstract IBuff CreateCopy(BuffData data); // 이거는 각각의 하위 클레스에서 제작
 
     public void DoUpdate(float deltaTime)
     {
         Tick(deltaTime);
     }
-
-    public BuffData ReturnBuffData()
-    {
-        return m_data;
-    }
-
-    //private void OnDisable()
-    //{
-    //    data = null;
-    //    ObjectPooler.ReturnToPool(gameObject);
-    //}
 }
 
-//[CreateAssetMenu(fileName = "TimeBuff", menuName = "Buff/TimeBuff", order = int.MaxValue)]
-abstract public class TimeBuff<T> : BaseBuff<T>
+abstract public class TimeBuff : BaseBuff
 {
-    public TimeBuff(BuffData data) : base(data)
+    public TimeBuff(string name, int maxCount, float duration, float maxTickTime) : base(name, maxCount)
     {
+        this.duration = duration;
+        this.maxTickTime = maxTickTime;
     }
 
-    [SerializeField]
-    float maxTickTime;
-
-    [SerializeField]
-    float buffTime;
+    public float duration; // 버프 적용 시간
+    public float maxTickTime; // 틱 사이의 시간
+    
     float tickTime;
 
     public override void Tick(float deltaTime)
     {
-        buffTime -= deltaTime;
+        duration -= deltaTime;
 
-        if (buffTime <= 0)
+        if (duration <= 0)
         {
-            IsFinished = true;
+            isFinished = true;
         }
 
         tickTime -= deltaTime;
@@ -108,10 +78,48 @@ abstract public class TimeBuff<T> : BaseBuff<T>
     public abstract void ApplyTickEffect();
 }
 
-//[CreateAssetMenu(fileName = "PassiveBuff", menuName = "Buff/PassiveBuff", order = int.MaxValue)]
-abstract public class PassiveBuff<T> : BaseBuff<T>
+public class TimeBuff1 : TimeBuff 
 {
-    public PassiveBuff(BuffData data) : base(data)
+    public TimeBuff1(string name, int maxCount, float duration, float maxTickTime) : base(name, maxCount, duration, maxTickTime)
+    {
+    }
+
+    public override void ApplyTickEffect()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void OnEnd()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void OnStart(GameObject caster)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class PassiveBuff1 : PassiveBuff
+{
+    public PassiveBuff1(string name, int maxCount) : base(name, maxCount)
+    {
+    }
+
+    public override void OnEnd()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void OnStart(GameObject caster)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+abstract public class PassiveBuff : BaseBuff
+{
+    public PassiveBuff(string name, int maxCount) : base(name, maxCount)
     {
     }
 }

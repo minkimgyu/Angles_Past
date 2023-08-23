@@ -26,7 +26,9 @@ public class StateFollowEnemyStop : BaseState<BaseFollowEnemy.State>
     {
         if (loadFollowEnemy.LoadPlayer == null) return;
 
-        if (!loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.FollowEnemyData.StopMinDistance))
+        float stopDistance = loadFollowEnemy.FollowDistance.IntervalValue + loadFollowEnemy.FollowOffsetDistance.IntervalValue;
+
+        if (!loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, stopDistance))
         {
             loadFollowEnemy.SetState(BaseFollowEnemy.State.Follow);
         }
@@ -48,7 +50,9 @@ public class StateTriangleEnemyStop : BaseState<BaseFollowEnemy.State>
 
     public override void CheckSwitchStates()
     {
-        if(!loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.FollowEnemyData.StopMinDistance))
+        float stopDistance = loadFollowEnemy.FollowDistance.IntervalValue + loadFollowEnemy.FollowOffsetDistance.IntervalValue;
+
+        if (!loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, stopDistance))
         {
             loadFollowEnemy.SetState(BaseFollowEnemy.State.Follow);
         }

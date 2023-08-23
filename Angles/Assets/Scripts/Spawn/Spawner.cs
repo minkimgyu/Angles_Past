@@ -67,13 +67,23 @@ public class Spawner : MonoBehaviour
 
     SpawnAssistant spawnAssistant;
 
+    EntityFactory entityFactory;
+
     [SerializeField]
     TextMeshProUGUI timeTxt;
+
+    private void Awake()
+    {
+        entityFactory = GetComponent<EntityFactory>();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        spawnAssistant = GameObject.FindWithTag("Player").GetComponentInChildren<SpawnAssistant>();
+        Player player = (Player)entityFactory.OrderEntity("Player");
+        spawnAssistant = player.GetComponentInChildren<SpawnAssistant>();
+
+        PlayManager.Instance.virtualCamera.Follow = player.transform;
     }
 
     // Update is called once per frame
@@ -188,8 +198,7 @@ public class Spawner : MonoBehaviour
 
         for (int i = 0; i < spawnCount; i++)
         {
-            Entity entity = ObjectPooler.SpawnFromPool<Entity>(spawnEntityName);
-            entity.InitData();
+            Entity entity = entityFactory.OrderEntity(spawnEntityName);
             Vector3 resetPos = SpawnNotOverlap(pos, loadSpawnPos);
             entity.transform.position = resetPos;
         }
@@ -200,7 +209,6 @@ public class Spawner : MonoBehaviour
         Entity entity = ObjectPooler.SpawnFromPool<Entity>(spawnEntityName);
 
         octagonSpawnPoints[indexOfPoint].SpawnToPoint(entity.gameObject);
-        entity.InitData();
         entity.transform.position = pos;
     }
 }

@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 7918802028062063650}
   - component: {fileID: 7918802028062063649}
   - component: {fileID: 7918802028062063655}
-  - component: {fileID: 7918802028062063652}
   - component: {fileID: 7918802028062063678}
   - component: {fileID: 7918802028062063677}
   - component: {fileID: 7918802028062063676}
   - component: {fileID: 7918802028062063651}
   - component: {fileID: 1693639870318632581}
+  - component: {fileID: 5885445715293511574}
   m_Layer: 3
   m_Name: OperaHeptagon
   m_TagString: Enemy
@@ -112,22 +112,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &7918802028062063652
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7918802028062063658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1638d4b05d9f4e145b75023474c6c5cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_possessingSkills: []
-  m_activeSkills: []
-  m_synthesisComponent:
-    synthesisWays: []
 --- !u!114 &7918802028062063678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,7 +150,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f09410742d122643b99338d14d95d22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tags: 
 --- !u!114 &7918802028062063651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,33 +163,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inheritedTag: 1
-  dieEffectMethod: {fileID: 11400000, guid: 4b0159a746cb0de428b4e033ef8ab7f0, type: 2}
-  m_data:
-    name: 
-    shape: 
-    color: 
-    immortality: 0
-    hp: 0
-    speed:
-      maxValue: 0
-      minValue: 0
-      originValue: 0
-    stunTime: 0
-    weight: 0
-    drag: 0
-    knockBackThrust: 0
-    grantedUtilization:
-      skillNames: []
-      buffNames: []
-    knockBackDamage: 0
-    skillUseDistance: 0
-    skillUseOffsetDistance: 0
-    skillUseRange: 0
-    skillReuseTime: 0
-    followMinDistance: 0
-    stopMinDistance: 0
-    prefabCount: 0
-  spawnPercentage: 0.1
   rushVec: {x: 0, y: 0}
   minRushVec: 3
 --- !u!58 &1693639870318632581
@@ -225,3 +181,15 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 2.2
+--- !u!114 &5885445715293511574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7918802028062063658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

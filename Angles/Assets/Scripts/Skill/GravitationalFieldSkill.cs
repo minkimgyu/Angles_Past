@@ -23,9 +23,9 @@ public class GravitationalFieldSkill : MonoBehaviour
     //    SkillTask().Forget();
     //}
 
-    //public override void Init()
+    //public override void AddState()
     //{
-    //    base.Init();
+    //    base.AddState();
     //    absorbThrust = -SkillData.KnockBackThrust;
     //    CircleCollider2D circle = GetComponent<CircleCollider2D>();
     //    circle.radius = SkillData.RadiusRange;

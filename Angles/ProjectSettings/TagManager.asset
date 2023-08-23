@@ -16,6 +16,7 @@ TagManager:
   - FillUISlot
   - MoveJoystick
   - AttackJoystick
+  - Factory
   layers:
   - Default
   - TransparentFX

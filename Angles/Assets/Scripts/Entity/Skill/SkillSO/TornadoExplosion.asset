@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ada3f6dc0cc39944299b2ede296e17b8, type: 3}
+  m_Name: TornadoExplosion
+  m_EditorClassIdentifier: 
+  isFix: 0
+  duration: 0
+  tickCount: 0
+  preDelay: 0
+  targetFindRange: 0
+  skillScalePerTicks: []
+  hitTarget: 
+  knockBackThrust: 0
+  damage: 0
+  effectDatas:
+    m_keys: 
+    m_values: []
+  soundDatas:
+    m_keys: 
+    m_values: []

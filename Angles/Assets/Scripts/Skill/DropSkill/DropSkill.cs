@@ -7,10 +7,10 @@ public class DropSkill : MonoBehaviour
     [SerializeField]
     string skillName;
 
-    public SkillData ReturnSkill()
+    public string ReturnSkill()
     {
         gameObject.SetActive(false);
-        return DatabaseManager.Instance.UtilizationDB.ReturnSkillData(skillName);
+        return skillName;
     }
 
     private void OnDisable()

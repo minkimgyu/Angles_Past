@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class Gear : BasicConstruction
 {
-    void Start()
-    {
-        Init();
-    }    
-
     public override void Init()
     {
         BaseState<State> idle = new StateBasicConstructionIdle(this);
@@ -22,7 +17,6 @@ public class Gear : BasicConstruction
 
         SetUp(State.Idle);
         SetGlobalState(global);
-        grantedUtilization.LootSkillFromDB(BattleComponent);
     }
 }
 

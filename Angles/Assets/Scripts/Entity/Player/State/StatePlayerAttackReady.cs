@@ -34,7 +34,7 @@ public class StatePlayerAttackReady : BaseState<Player.State>
         m_loadPlayer.ActionJoystick.AttackReadyAction += GoToMove;
 
         m_loadPlayer.Animator.SetBool("NowReady", true);
-        m_loadPlayer.PlayerData.ResetRushRatioToZero();
+        m_loadPlayer.ResetRushRatioToZero();
     }
 
     void GoToMove()
@@ -51,15 +51,16 @@ public class StatePlayerAttackReady : BaseState<Player.State>
         m_loadPlayer.ActionJoystick.AttackReadyAction -= GoToMove;
 
         m_loadPlayer.Animator.SetBool("NowReady", false);
-        m_loadPlayer.NotifyObservers(Player.ObserverType.HideRushUI, m_loadPlayer.PlayerData);
+
+        m_loadPlayer.rushUIEventSO.RaiseEvent(0); // hide
     }
 
     public override void OperateUpdate()
     {
-        m_loadPlayer.MoveComponent.Move(m_loadPlayer.MoveVec, m_loadPlayer.ActionVec, m_loadPlayer.HealthData.Speed.IntervalValue * m_loadPlayer.PlayerData.ReadySpeedDecreaseRatio, true);
+        m_loadPlayer.MoveComponent.Move(m_loadPlayer.MoveVec, m_loadPlayer.ActionVec, m_loadPlayer.Speed.IntervalValue * m_loadPlayer.ReadySpeedDecreaseRatio.IntervalValue, true);
         m_loadPlayer.MoveComponent.RotationPlayer(m_loadPlayer.ActionVec, true);
 
-        m_loadPlayer.PlayerData.RestoreRushRatio();
-        m_loadPlayer.NotifyObservers(Player.ObserverType.ShowRushUI, m_loadPlayer.PlayerData);
+        m_loadPlayer.RestoreRushRatio();
+        m_loadPlayer.rushUIEventSO.RaiseEvent(m_loadPlayer.RushRatio); // hide
     }
 }

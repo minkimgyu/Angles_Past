@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class StateYellowTriangleAttack : StateFollowEnemyAttack
 {
-    YellowTriangleEnemy enemy;
-
     List<BaseBuff> storedBuff = new List<BaseBuff>();
+
+    BasicEffectPlayer effectPlayer;
+    string skillEffectName;
 
     public StateYellowTriangleAttack(YellowTriangleEnemy yellowTriangle) : base(yellowTriangle)
     {
-        enemy = yellowTriangle;
+        effectPlayer = yellowTriangle.EffectPlayer;
+        skillEffectName = yellowTriangle.skillEffectName;
     }
 
     public override void ExecuteInRangeMethod()
     {
-        //List<BuffData> tmpData = enemy.HealthData.GrantedUtilization.LootBuffFromDB(); // --> 스킬로 변경
+        //List<BuffData> tmpData = enemy.HealthData.GrantedSkill.LootBuffFromDB(); // --> 스킬로 변경
 
         //for (int i = 0; i < tmpData.Count; i++)
         //{
@@ -30,47 +32,34 @@ public class StateYellowTriangleAttack : StateFollowEnemyAttack
         //if (effectPlayer == null) return;
 
         //enemy.EffectPlayer = effectPlayer;
-        //enemy.EffectPlayer.Init(enemy.transform);
+        //enemy.EffectPlayer.AddState(enemy.transform);
         //enemy.EffectPlayer.PlayEffect();
+        loadFollowEnemy.SkillController.UseSkill(BaseSkill.UseConditionType.InRange);
+
+        effectPlayer = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(skillEffectName); // 이팩트 이름 추가
+        if (effectPlayer == null) return;
+
+        effectPlayer.Init(loadFollowEnemy.transform);
+        effectPlayer.PlayEffect();
+
     }
 
     public override void ExecuteInOutsideMethod()
     {
-        for (int i = 0; i < storedBuff.Count; i++)
+        loadFollowEnemy.SkillController.UseSkill(BaseSkill.UseConditionType.OutRange);
+
+        if (effectPlayer == null) return;
+        effectPlayer.StopEffect();
+    }
+
+    public override void ReceiveOnDisable()
+    {
+        //ExecuteInRangeMethod();
+
+        if (effectPlayer != null)
         {
-            enemy.LoadPlayer.BuffComponent.RemoveBuff(storedBuff[i]);
-        }
-
-        storedBuff.Clear();
-
-        if (enemy.EffectPlayer == null) return;
-        enemy.EffectPlayer.StopEffect();
-    }
-
-    void AddEffect()
-    {
-        //BasicEffectPlayer effectPlayer = enemy.EffectMethod.ReturnEffectFromPool();
-        //if (effectPlayer == null) return;
-
-        //enemy.EffectPlayer = effectPlayer;
-        //enemy.EffectPlayer.Init(enemy.transform, 1000f);
-        //enemy.EffectPlayer.PlayEffect();
-    }
-
-    void RemoveEffect()
-    {
-        if (enemy.EffectPlayer == null) return;
-        enemy.EffectPlayer.StopEffect();
-    }
-
-    public virtual void ReceiveOnDisable()
-    {
-        ExecuteInRangeMethod();
-
-        if (enemy.EffectPlayer != null)
-        {
-            enemy.EffectPlayer.StopEffect();
-            enemy.EffectPlayer = null;
+            effectPlayer.StopEffect();
+            effectPlayer = null;
         }
     }
 }

@@ -2,44 +2,78 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-abstract public class BasicEffectPlayer : MonoBehaviour
+abstract public class BasicEffectPlayer : PositionDesignation
 {
-    protected Transform m_posTr;
-    bool m_isFix;
-    public bool IsFixed { set { m_isFix = value; } }
     protected float m_duration;
 
-    public void Init(Transform tr)
+    public override void Init(Transform transform)
     {
-        m_posTr = tr;
-        transform.position = m_posTr.position;
+        base.Init(transform);
         m_duration = -1;
     }
 
-    public void Init(Transform tr, float duration)
+    public void Init(Transform transform, float duration)
     {
-        m_posTr = tr;
-        transform.position = m_posTr.position;
+        base.Init(transform);
         m_duration = duration;
+    }
+
+    // lifeTime 이 경우, 단일 Const 변수만 수정 가능
+    //  --> 보통 사전 이팩트로 사용되기 때문에 preDelay 타임에 연결시키자
+    public void Init(Transform transform, float duration, float scale)
+    {
+        base.Init(transform);
+        m_duration = duration;
+        ResetSize(scale);
+    }
+
+    public void Init(Transform transform, float duration, float[] lifeTime)
+    {
+        base.Init(transform);
+        m_duration = duration;
+        ResetLifeTime(lifeTime);
+    }
+
+    public void Init(Transform transform, float duration, float scale, float[] lifeTime)
+    {
+        base.Init(transform);
+        m_duration = duration;
+        ResetSize(scale);
+        ResetLifeTime(lifeTime);
     }
 
     public void Init(Vector3 pos, float duration)
     {
-        m_posTr = null;
-        m_isFix = false;
-        transform.position = pos;
+        base.Init(pos);
         m_duration = duration;
     }
 
-    public abstract void Init(Transform tr, float duration, List<Vector3> pos);
-
-    protected virtual void Update()
+    public void Init(Vector3 pos, float duration, float scale)
     {
-        if(m_isFix)
-        {
-            transform.position = m_posTr.position;
-        }
+        base.Init(pos);
+        m_duration = duration;
+        ResetSize(scale);
     }
+
+    public void Init(Vector3 pos, float duration, float[] lifeTime)
+    {
+        base.Init(pos);
+        m_duration = duration;
+        ResetLifeTime(lifeTime);
+    }
+
+    public void Init(Vector3 pos, float duration, float scale, float[] lifeTime)
+    {
+        base.Init(pos);
+        m_duration = duration;
+        ResetSize(scale);
+        ResetLifeTime(lifeTime);
+    }
+
+    public virtual void Init(Vector3 posVec, float duration, List<Vector3> pos) { }
+
+    protected virtual void ResetSize(float sizeMultiplier) { }
+    protected virtual void ResetLifeTime(float[] lifeTime) { }
 
     public abstract void RotationEffect(float rotation);
 
@@ -51,12 +85,5 @@ abstract public class BasicEffectPlayer : MonoBehaviour
     {
         CancelInvoke();
         ObjectPooler.ReturnToPool(gameObject);
-    }
-
-    protected virtual void DisableObject()
-    {
-        gameObject.SetActive(false);
-        m_posTr = null;
-        m_isFix = false;
     }
 }

@@ -5,18 +5,24 @@ using System;
 
 public class YellowTriangleEnemy : BaseFollowEnemy
 {
-    //[SerializeField]
-    //EffectMethod effectMethod; // 이팩트 불러오기
-    //public EffectMethod EffectMethod { get { return effectMethod; } } // 이팩트 불러오기
+    public string skillEffectName;
 
+    public void Initialize(bool immortality, BuffFloat hp, BuffFloat speed, BuffFloat stunTime,
+        BuffFloat weight, BuffFloat mass, BuffFloat drag, string dieEffectName, string[] skillNames,
+        BuffInt score, BuffFloat skillUseDistance, BuffFloat skillUseOffsetDistance, BuffFloat skillCooldownTime,
+        BuffFloat followDistance, BuffFloat followOffsetDistance, string skillEffectName)
+    {
+        Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames, score, skillUseDistance,
+            skillUseOffsetDistance, skillCooldownTime, followDistance, followOffsetDistance);
+
+        this.skillEffectName = skillEffectName;
+    }
 
     BasicEffectPlayer effectPlayer; // 슬로우 묻히는 이펙트 플레이어
     public BasicEffectPlayer EffectPlayer { get { return effectPlayer; } set { effectPlayer = value; } } // 슬로우 묻히는 이펙트 플레이어
 
-    protected override void Init()
+    protected override void AddState()
     {
-        base.Init();
-
         BaseState<State> follow = new StateTriangleEnemyFollow(this);
         BaseState<State> stop = new StateTriangleEnemyStop(this);
         BaseState<State> die = new StateFollowEnemyDie(this);

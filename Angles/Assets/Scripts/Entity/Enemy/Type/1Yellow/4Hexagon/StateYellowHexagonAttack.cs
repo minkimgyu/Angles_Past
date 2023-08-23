@@ -33,7 +33,7 @@ public class StateYellowHexaagonAttack : StateFollowEnemyAttack
             if(canAttack == true)
             {
                 // state를 스킬 사용 시 --> 정지 --> 추적으로 바꿔줌
-                loadYellowHexagonEnemy.BattleComponent.UseSkill(SkillUseConditionType.InRange);
+                loadYellowHexagonEnemy.SkillController.UseSkill(BaseSkill.UseConditionType.InRange);
                 loadYellowHexagonEnemy.SetState(BaseFollowEnemy.State.Fix);
                 canAttack = false;
             }
@@ -42,7 +42,7 @@ public class StateYellowHexaagonAttack : StateFollowEnemyAttack
         if(canAttack == false)
         {
             storedTime += Time.deltaTime;
-            if(storedTime > loadYellowHexagonEnemy.Delay)
+            if(storedTime > loadYellowHexagonEnemy.AttackDelay.IntervalValue)
             {
                 storedTime = 0;
                 canAttack = true;
@@ -87,12 +87,11 @@ public class StateYellowHexaagonFix : BaseState<BaseFollowEnemy.State>
     public override void OperateUpdate()
     {
         loadYellowHexagonEnemy.Rigidbody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
-        loadYellowHexagonEnemy.FixState = true;
 
         if (canRevertToPreviousState == false)
         {
             storedTime += Time.deltaTime;
-            if (storedTime > loadYellowHexagonEnemy.FixTime)
+            if (storedTime > loadYellowHexagonEnemy.FixTime.IntervalValue)
             {
                 storedTime = 0;
                 canRevertToPreviousState = true;
@@ -102,7 +101,6 @@ public class StateYellowHexaagonFix : BaseState<BaseFollowEnemy.State>
         if (canRevertToPreviousState)
         {
             loadYellowHexagonEnemy.Rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
-            loadYellowHexagonEnemy.FixState = false;
             loadYellowHexagonEnemy.SetState(BaseFollowEnemy.State.Follow);
         } 
     }

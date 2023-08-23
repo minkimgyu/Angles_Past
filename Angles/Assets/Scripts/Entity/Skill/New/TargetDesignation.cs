@@ -1,17 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 
+[System.Serializable]
 abstract public class TargetDesignation<T>
 {
-    protected bool isFindRangeSame;
+    protected bool isTickPerRangeSame;
+
+    public TargetDesignation(bool isTickPerRangeSame = true) // 생성자에서 받아서 실행해준다.
+    {
+        this.isTickPerRangeSame = isTickPerRangeSame;
+    }
 
     public abstract T Execute(SkillSupportData supportData);
 
     protected int ReturnTick(SkillSupportData supportData)
     {
         int tick = 0;
-        if (!isFindRangeSame) tick = supportData.TickCount;
+        if (!isTickPerRangeSame) tick = supportData.TickCount;
 
         return tick;
     }
@@ -19,17 +26,20 @@ abstract public class TargetDesignation<T>
 
 public class FindInCircleRange : TargetDesignation<RaycastHit2D[]>
 {
-    List<float> m_radiusRangePerTick;
+    float m_targetFindRange;
+    float[] m_skillScalePerTicks;
     List<Vector2> m_offsetRangePerTick;
 
-    public FindInCircleRange(List<float> radiusRangePerTick) // 생성자에서 받아서 실행해준다.
+    public FindInCircleRange(bool isTickPerRangeSame, float targetFindRange, float[] skillScalePerTicks) // 생성자에서 받아서 실행해준다.
+        : base(isTickPerRangeSame)
     {
-        m_radiusRangePerTick = radiusRangePerTick;
+        m_targetFindRange = targetFindRange;
+        m_skillScalePerTicks = skillScalePerTicks;
     }
 
     public override RaycastHit2D[] Execute(SkillSupportData supportData)
     {
-        RaycastHit2D[] hit = Physics2D.CircleCastAll(supportData.Pos, m_radiusRangePerTick[ReturnTick(supportData)], 
+        RaycastHit2D[] hit = Physics2D.CircleCastAll(supportData.Pos, m_targetFindRange * m_skillScalePerTicks[ReturnTick(supportData)], 
             m_offsetRangePerTick[ReturnTick(supportData)].normalized, m_offsetRangePerTick[ReturnTick(supportData)].magnitude);
 
         return hit;
@@ -38,10 +48,11 @@ public class FindInCircleRange : TargetDesignation<RaycastHit2D[]>
 
 public class FindInBoxRange : TargetDesignation<RaycastHit2D[]>
 {
-    List<Vector2> m_boxRangePerTick;
-    List<Vector2> m_offsetRangePerTick;
+    Vector2[] m_boxRangePerTick;
+    Vector2[] m_offsetRangePerTick;
 
-    public FindInBoxRange(List<Vector2> boxRangePerTick, List<Vector2> offsetRangePerTick) // 생성자에서 받아서 실행해준다.
+    public FindInBoxRange(bool isTickPerRangeSame, Vector2[] boxRangePerTick, Vector2[] offsetRangePerTick) // 생성자에서 받아서 실행해준다.
+        : base(isTickPerRangeSame)
     {
         m_boxRangePerTick = boxRangePerTick;
         m_offsetRangePerTick = offsetRangePerTick;
@@ -59,9 +70,11 @@ public class FindInBoxRange : TargetDesignation<RaycastHit2D[]>
 public class FindAllUsingRaycast : TargetDesignation<RaycastHit2D[]>
 {
     List<Vector2> m_directionPerTick;
+
     List<float> m_rangePerTick;
 
-    public FindAllUsingRaycast(List<Vector2> directionPerTick, List<float> rangePerTick) // 생성자에서 받아서 실행해준다.
+    public FindAllUsingRaycast(bool isTickPerRangeSame, List<Vector2> directionPerTick, List<float> rangePerTick) // 생성자에서 받아서 실행해준다.
+        : base(isTickPerRangeSame)
     {
         m_directionPerTick = directionPerTick;
         m_rangePerTick = rangePerTick;

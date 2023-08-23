@@ -43,12 +43,10 @@ public class StatePlayerAttack : BaseState<Player.State>
 
     void WhenContactToEnemy(Collision2D collision)
     {
-        collision.gameObject.TryGetComponent(out IHealth health);
-        if (health == null) return;
+        collision.gameObject.TryGetComponent(out IAvatar avatar);
+        if (avatar == null) return;
 
-        HealthEntityData entityData = health.ReturnHealthEntityData();
-
-        if (entityData.Weight > entityData.Weight)
+        if (avatar.Weight.IntervalValue > avatar.Weight.IntervalValue)
         {
             if (collision != null && collision.contacts.Length != 0)
             {
@@ -69,7 +67,7 @@ public class StatePlayerAttack : BaseState<Player.State>
     public override void OperateEnter()
     {
         m_loadPlayer.Animator.SetBool("NowAttack", true);
-        m_loadPlayer.DashComponent.PlayDash(savedAttackVec, m_loadPlayer.PlayerData.RushThrust * m_loadPlayer.PlayerData.RushRatio, m_loadPlayer.PlayerData.RushDuration);
+        m_loadPlayer.DashComponent.PlayDash(savedAttackVec, m_loadPlayer.RushThrust.IntervalValue * m_loadPlayer.RushRatio, m_loadPlayer.RushDuration.IntervalValue);
 
         savedMoveVec = m_loadPlayer.MoveVec;
 
@@ -97,7 +95,7 @@ public class StatePlayerAttack : BaseState<Player.State>
 
     public override void CheckSwitchStates()
     {
-        if (m_loadPlayer.DashComponent.NowFinish == true || CheckOverMinValue(savedMoveVec, m_loadPlayer.MoveVec, m_loadPlayer.PlayerData.AttackCancelOffset) == false)
+        if (m_loadPlayer.DashComponent.NowFinish == true || CheckOverMinValue(savedMoveVec, m_loadPlayer.MoveVec, m_loadPlayer.AttackCancelOffset) == false)
         {
             m_loadPlayer.DashComponent.QuickEndTask();
             m_loadPlayer.SetState(Player.State.Move);

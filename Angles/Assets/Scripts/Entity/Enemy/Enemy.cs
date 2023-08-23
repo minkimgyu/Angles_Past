@@ -5,54 +5,34 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public abstract class Enemy<T> : HealthEntity<T>
+public abstract class Enemy<T> : Avatar<T>
 {
-    BaseEnemyData baseEnemyData;
+    //BaseEnemyData baseEnemyData;
 
-    string[] dropSkills = { "GhostItem", "BarrierItem", "BladeItem", "KnockbackItem", "ShockwaveItem", "SpawnBallItem", "SpawnGravityBallItem", "StickyBombItem" };
+    //string[] dropSkills = { "GhostItem", "BarrierItem", "BladeItem", "KnockbackItem", "ShockwaveItem", "SpawnBallItem", "SpawnGravityBallItem", "StickyBombItem" };
 
-    MoveComponent m_moveComponent;
-    public MoveComponent MoveComponent { get { return m_moveComponent; } }
+    //void SpawnRandomItem()
+    //{
+    //    float percentage = UnityEngine.Random.Range(0.0f, 1.0f);
+    //    if (percentage > baseEnemyData.SpawnPercentage) return;
 
-    DashComponent m_dashComponent;
-    public DashComponent DashComponent { get { return m_dashComponent; } }
+    //    ObjectPooler.SpawnFromPool<DropSkill>(dropSkills[UnityEngine.Random.Range(0, dropSkills.Length)], transform.position);
+    //}
 
-    BattleComponent m_battleComponent;
-    public BattleComponent BattleComponent { get { return m_battleComponent; } }
+    // 따로 스킬 아이템 스포너를 만들자
 
-    protected override void Awake()
+    protected BuffInt score;
+    public BuffInt Score { get { return score; }}
+
+    protected virtual void Start() => AddState();
+
+    protected abstract void AddState();
+
+    public void Initialize(bool immortality, BuffFloat hp, BuffFloat speed, BuffFloat stunTime,
+    BuffFloat weight, BuffFloat mass, BuffFloat drag, string dieEffectName, string[] skillNames, BuffInt score)
     {
-        base.Awake();
-        m_moveComponent = GetComponent<MoveComponent>();
-        m_dashComponent = GetComponent<DashComponent>();
-        m_battleComponent = GetComponent<BattleComponent>();
+        Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames);
 
-        baseEnemyData.GrantedUtilization.LootSkillFromDB(BattleComponent);
-    }
-
-    void SpawnRandomItem()
-    {
-        float percentage = UnityEngine.Random.Range(0.0f, 1.0f);
-        if (percentage > baseEnemyData.SpawnPercentage) return;
-
-        ObjectPooler.SpawnFromPool<DropSkill>(dropSkills[UnityEngine.Random.Range(0, dropSkills.Length)], transform.position);
-    }
-
-    public void AddEnemyContactKnockback()
-    {
-        SkillData skillData = DatabaseManager.Instance.UtilizationDB.ReturnSkillData("EnemyContactKnockback");
-        m_battleComponent.LootingSkill(skillData);
-    }
-
-    public void RemoveEnemyContactKnockback()
-    {
-        SkillData skillData = DatabaseManager.Instance.UtilizationDB.ReturnSkillData("EnemyContactKnockback");
-        m_battleComponent.RemoveSkillFromPossessingSkills(skillData); // 만약 안 쓰고 존재한다면 삭제해준다.
-    }
-
-    public override void Die()
-    {
-        SpawnRandomItem();
-        base.Die();
+        this.score = score;
     }
 }

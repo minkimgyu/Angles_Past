@@ -59,7 +59,7 @@ using UnityEngine;
 
 //        if (effectPlayer == null) return;
 
-//        effectPlayer.Init(supportData.Me.transform, supportData.Me.Data.DisableTime);
+//        effectPlayer.AddState(supportData.Me.transform, supportData.Me.Data.DisableTime);
 //        effectPlayer.PlayEffect();
 //    }
 //}

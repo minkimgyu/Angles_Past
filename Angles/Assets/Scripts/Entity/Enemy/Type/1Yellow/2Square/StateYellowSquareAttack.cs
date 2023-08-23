@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class StateYellowSquareAttack : StateFollowEnemyAttack
 {
-    YellowSquareEnemy loadYellowSquareEnemy;
-
     public StateYellowSquareAttack(YellowSquareEnemy yellowSquareEnemy) : base(yellowSquareEnemy)
     {
-        loadYellowSquareEnemy = yellowSquareEnemy;
     }
 
     public override void ExecuteInRangeMethod()
     {
-        loadYellowSquareEnemy.BattleComponent.UseSkill(SkillUseConditionType.InRange);
+        loadFollowEnemy.SkillController.UseSkill(BaseSkill.UseConditionType.InRange);
     }
 
     public override void ExecuteInOutsideMethod()

@@ -116,14 +116,14 @@ public class BuffFloat : IData<BuffFloat>
     public float Min { get { return minValue; } }
 
     /// <summary>
-    /// 실질적 값
+    /// 실질적 값, 버프로 값이 변경 됨
     /// </summary>
     [SerializeField]
     float originValue;
     public float Origin { get { return originValue; } }
 
     /// <summary>
-    /// 값 변경, 최대 - 최소 사이의 값을 리턴에 쓰이는 변수
+    ///  실질적 값 또는 최대 - 최소 사이의 값을 리턴에 쓰이는 변수
     /// </summary>
     public float IntervalValue
     {
@@ -162,16 +162,20 @@ public class BuffFloat : IData<BuffFloat>
 }
 
 [System.Serializable]
-public class GrantedUtilization
+public class GrantedSkill
 {
-    [SerializeField]
-    List<string> skillNames = new List<string>();
-
-    public void LootSkillFromDB(BattleComponent component)
+    public GrantedSkill(string[] names)
     {
-        for (int i = 0; i < skillNames.Count; i++)
+        this.names = names;
+    }
+
+    string[] names;
+
+    public void LootSkillFromDB(SkillController component)
+    {
+        for (int i = 0; i < names.Length; i++)
         {
-            component.LootingSkill(DatabaseManager.Instance.UtilizationDB.SkillDatas[skillNames[i]].CopyData());
+            component.AddSkillToList(names[i]);
         }
     }
 }
@@ -376,8 +380,8 @@ public class PlayerData : IData<PlayerData>, IBuffApplier<PlayerData.BuffVariati
     public BuffFloat DashRecoverRatio { get { return dashRecoverRatio; } set { dashRecoverRatio = value; } }
 
     [SerializeField]
-    protected GrantedUtilization grantedUtilization;
-    public GrantedUtilization GrantedUtilization { get { return grantedUtilization; } }
+    protected GrantedSkill grantedUtilization;
+    public GrantedSkill GrantedUtilization { get { return grantedUtilization; } }
 
     public bool CanUseDash()
     {
@@ -420,7 +424,7 @@ public class PlayerData : IData<PlayerData>, IBuffApplier<PlayerData.BuffVariati
     public PlayerData() { }
 
     public PlayerData(BuffFloat readySpeedDecreaseRatio, BuffFloat rushThrust, float rushRatio, BuffFloat rushRecoverRatio, BuffFloat rushDuration, float attackCancelOffset, 
-        BuffInt dashCount, BuffFloat dashDuration, BuffFloat dashThrust, float dashRatio, BuffFloat dashRecoverRatio, GrantedUtilization grantedUtilization)
+        BuffInt dashCount, BuffFloat dashDuration, BuffFloat dashThrust, float dashRatio, BuffFloat dashRecoverRatio, GrantedSkill grantedUtilization)
     {
         this.readySpeedDecreaseRatio = readySpeedDecreaseRatio;
         this.rushThrust = rushThrust;
@@ -470,10 +474,10 @@ public class BaseEnemyData : IData<BaseEnemyData>, IBuffApplier<BaseEnemyData.Bu
     public BuffInt Score { get { return score; } set { score = value; } }
 
     [SerializeField]
-    protected GrantedUtilization grantedUtilization;
-    public GrantedUtilization GrantedUtilization { get { return grantedUtilization; } }
+    protected GrantedSkill grantedUtilization;
+    public GrantedSkill GrantedUtilization { get { return grantedUtilization; } }
 
-    public BaseEnemyData(BuffInt score, GrantedUtilization grantedUtilization)
+    public BaseEnemyData(BuffInt score, GrantedSkill grantedUtilization)
     {
         this.score = score;
         this.grantedUtilization = grantedUtilization;
@@ -592,18 +596,18 @@ public class ReflectEnemyStat
     public BaseEnemyData BaseEnemyData { get { return baseEnemyData; } }
 }
 
-[CreateAssetMenu(fileName = "EntityDB", menuName = "Scriptable Object/DB/EntityDB")]
-public class EntityDB : ScriptableObject
-{
-    [SerializeField]
-    PlayerStat playerStat;
-    public PlayerStat PlayerStat { get { return playerStat; } }
+//[CreateAssetMenu(fileName = "EntityDB", menuName = "Scriptable Object/DB/EntityDB")]
+//public class EntityDB : ScriptableObject
+//{
+//    [SerializeField]
+//    PlayerStat playerStat;
+//    public PlayerStat PlayerStat { get { return playerStat; } }
 
-    [SerializeField]
-    StringFollowEnemyStatDictionary followEnemyStats;
-    public StringFollowEnemyStatDictionary FollowEnemyStats { get { return followEnemyStats; } }
+//    [SerializeField]
+//    StringFollowEnemyStatDictionary followEnemyStats;
+//    public StringFollowEnemyStatDictionary FollowEnemyStats { get { return followEnemyStats; } }
 
-    [SerializeField]
-    StringReflectEnemyStatDictionary reflectEnemyStats;
-    public StringReflectEnemyStatDictionary ReflectEnemyStats { get { return reflectEnemyStats; } }
-}
+//    [SerializeField]
+//    StringReflectEnemyStatDictionary reflectEnemyStats;
+//    public StringReflectEnemyStatDictionary ReflectEnemyStats { get { return reflectEnemyStats; } }
+//}

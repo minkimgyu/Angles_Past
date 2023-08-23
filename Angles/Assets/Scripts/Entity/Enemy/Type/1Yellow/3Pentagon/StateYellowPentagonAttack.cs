@@ -7,15 +7,15 @@ using System;
 
 public class StateYellowPentagonAttack : StateFollowEnemyAttack
 {
-    YellowPentagonEnemy loadYellowPentagonEnemy;
-
     float storedTime;
     bool attackFlag = false;
     bool canAttack = true;
 
+    BuffFloat attackDelay;
+
     public StateYellowPentagonAttack(YellowPentagonEnemy yellowPentagonEnemy) : base(yellowPentagonEnemy)
     {
-        loadYellowPentagonEnemy = yellowPentagonEnemy;
+        attackDelay = yellowPentagonEnemy.AttackDelay;
     }
 
     // 계속 발사해야해서 unitask로 제작      
@@ -32,7 +32,7 @@ public class StateYellowPentagonAttack : StateFollowEnemyAttack
         {
             if(canAttack == true)
             {
-                loadYellowPentagonEnemy.BattleComponent.UseSkill(SkillUseConditionType.InRange);
+                loadFollowEnemy.SkillController.UseSkill(BaseSkill.UseConditionType.InRange);
                 canAttack = false;
             }
         }
@@ -40,7 +40,7 @@ public class StateYellowPentagonAttack : StateFollowEnemyAttack
         if(canAttack == false)
         {
             storedTime += Time.deltaTime;
-            if(storedTime > loadYellowPentagonEnemy.Delay)
+            if(storedTime > attackDelay.IntervalValue)
             {
                 storedTime = 0;
                 canAttack = true;

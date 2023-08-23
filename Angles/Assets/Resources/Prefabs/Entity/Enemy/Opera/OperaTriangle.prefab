@@ -13,11 +13,11 @@ GameObject:
   - component: {fileID: 3995754511109472333}
   - component: {fileID: 2375395198625037872}
   - component: {fileID: 7333589020244298738}
-  - component: {fileID: 2267430401631804958}
   - component: {fileID: 304996192905423267}
   - component: {fileID: 2267430401631804953}
   - component: {fileID: 9179450015755633462}
   - component: {fileID: 7777152497430659602}
+  - component: {fileID: 7714835755342555184}
   m_Layer: 6
   m_Name: OperaTriangle
   m_TagString: Enemy
@@ -159,22 +159,6 @@ MonoBehaviour:
     layer:
       serializedVersion: 2
       m_Bits: 0
---- !u!114 &2267430401631804958
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2375395198625037887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1638d4b05d9f4e145b75023474c6c5cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_possessingSkills: []
-  m_activeSkills: []
-  m_synthesisComponent:
-    synthesisWays: []
 --- !u!114 &304996192905423267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,35 +184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inheritedTag: 1
-  dieEffectMethod: {fileID: 11400000, guid: 093ce6103d3ae4f43b5caaf92d4b35b1, type: 2}
-  m_data:
-    name: 
-    shape: 
-    color: 
-    immortality: 0
-    hp: 0
-    speed:
-      maxValue: 0
-      minValue: 0
-      originValue: 0
-    stunTime: 0
-    weight: 0
-    drag: 0
-    knockBackThrust: 0
-    grantedUtilization:
-      skillNames: []
-      buffNames: []
-    knockBackDamage: 0
-    skillUseDistance: 0
-    skillUseOffsetDistance: 0
-    skillUseRange: 0
-    skillReuseTime: 0
-    followMinDistance: 0
-    stopMinDistance: 0
-    prefabCount: 0
-    score: 0
-  spawnPercentage: 0.2
-  effectMethod: {fileID: 11400000, guid: d778085dbc6cd1445a1a4fae5c197e74, type: 2}
+  skillEffectName: 
 --- !u!114 &9179450015755633462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,3 +211,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_contactDatas: []
   m_entityTags: 01000000
+--- !u!114 &7714835755342555184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2375395198625037887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

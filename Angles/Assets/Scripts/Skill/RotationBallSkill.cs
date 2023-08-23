@@ -48,7 +48,7 @@ public class RotationBallSkill : MonoBehaviour
     //        GameObject go = ObjectPooler.SpawnFromPool("Orb", transform.position, Quaternion.identity, transform);
     //        BallEffect basicEffect = go.GetComponent<BallEffect>();
 
-    //        basicEffect.Init(this);
+    //        basicEffect.AddState(this);
     //        storedBallEffects.Add(basicEffect);
     //    }
 

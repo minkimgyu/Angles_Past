@@ -5,9 +5,10 @@ using System;
 
 public class Entity : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeField] 
     protected EntityTag inheritedTag;
     public EntityTag InheritedTag { get { return inheritedTag; } }
 
-    public virtual void InitData() { }
+    public void Initialize() { }
 }
+   

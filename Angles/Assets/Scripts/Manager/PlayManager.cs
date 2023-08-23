@@ -54,19 +54,11 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
     protected void Awake()
     { 
         instance = this;
-
         Application.targetFrameRate = 60;
-
-        //base.Awake();
-        GameObject go = Resources.Load("Prefabs/Entity/Player") as GameObject;
-        player = Instantiate(go).GetComponent<Player>();
     }
 
     private void Start()
     {
-        player.InitData();
-        virtualCamera.Follow = player.transform;
-
         SoundManager.Instance.PlayBGM("BGM");
     }
 

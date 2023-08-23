@@ -10,7 +10,7 @@ abstract public class SpawnMethod<T> : BaseMethod<T>
     protected string m_projectileName;
     protected int m_projectileCount;
 
-    public SpawnMethod(string projectileName, int projectileCount, Dictionary<EffectCondition, EffectData> effectDatas) : base(effectDatas)
+    public SpawnMethod(string projectileName, int projectileCount, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(effectDatas, soundDatas)
     {
         m_projectileName = projectileName;
         m_projectileCount = projectileCount;
@@ -25,7 +25,7 @@ public class SpawnRotationBall : SpawnMethod<GameObject>
 {
     float m_distanceFromCaster;
 
-    public SpawnRotationBall(string projectileName, int projectileCount, float distanceFromCaster, Dictionary<EffectCondition, EffectData> effectDatas) : base(projectileName, projectileCount, effectDatas)
+    public SpawnRotationBall(string projectileName, int projectileCount, float distanceFromCaster, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(projectileName, projectileCount, effectDatas, soundDatas)
     {
         m_distanceFromCaster = distanceFromCaster;
     }
@@ -62,7 +62,7 @@ public class SpawnRotationBall : SpawnMethod<GameObject>
 
 public class SpawnProjectile : SpawnMethod<GameObject>
 {
-    public SpawnProjectile(string projectileName, int projectileCount, Dictionary<EffectCondition, EffectData> effectDatas) : base(projectileName, projectileCount, effectDatas)
+    public SpawnProjectile(string projectileName, int projectileCount, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(projectileName, projectileCount, effectDatas, soundDatas)
     {
     }
 
@@ -78,7 +78,7 @@ public class SpawnAndShootProjectile : SpawnMethod<GameObject>
 {
     float m_speed;
 
-    public SpawnAndShootProjectile(string projectileName, int projectileCount, float speed, Dictionary<EffectCondition, EffectData> effectDatas) : base(projectileName, projectileCount, effectDatas)
+    public SpawnAndShootProjectile(string projectileName, int projectileCount, float speed, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(projectileName, projectileCount, effectDatas, soundDatas)
     {
         m_speed = speed;
     }
@@ -98,8 +98,8 @@ public class SpawnBulletInCircleRange : SpawnMethod<GameObject>
     bool m_isClockwise;
     float m_distanceFromCaster;
 
-    public SpawnBulletInCircleRange(string projectileName, int projectileCount, float speed, bool isClockwise, float distanceFromCaster, Dictionary<EffectCondition, EffectData> effectDatas) 
-        : base(projectileName, projectileCount, effectDatas)
+    public SpawnBulletInCircleRange(string projectileName, int projectileCount, float speed, bool isClockwise, float distanceFromCaster, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) 
+        : base(projectileName, projectileCount, effectDatas, soundDatas)
     {
         m_speed = speed;
         m_isClockwise = isClockwise;

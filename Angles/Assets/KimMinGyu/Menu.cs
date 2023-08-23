@@ -8,7 +8,7 @@ using TMPro;
 
 public class Menu : MonoBehaviour
 {
-    public EntityDB entityDB;
+    //public EntityDB entityDB;
     public Image cheatImg;
     public TMP_Text cheatTxt;
 
