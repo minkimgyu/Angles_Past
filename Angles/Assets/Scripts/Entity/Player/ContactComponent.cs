@@ -2,21 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//public class ContactSupportData // 이런식으로 스킬에 필요한 데이터 묶어서 보내기
-//{
-//    List<Vector3> contactPos;
-//    public List<Vector3> ContactPos { get { return contactPos; } }
-
-//    List<Entity> contactEntity;
-//    public List<Entity> ContactEntity { get { return contactEntity; } }
-
-//    public ContactSupportData(List<Entity> contactEntity, List<Vector3> contactPos)
-//    {
-//        this.contactEntity = contactEntity;
-//        this.contactPos = contactPos;
-//    }
-//}
-
 [System.Serializable]
 public struct ContactData
 {

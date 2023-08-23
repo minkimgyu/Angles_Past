@@ -72,6 +72,17 @@ public class SoundManager : MonoBehaviour
         player.Play(pos, sfxVolume * sfxMasterVolume, sound);
     }
 
+    public void PlaySFX(Transform transform, string name, float sfxVolume = 1)
+    {
+        SoundPlayer player = ObjectPooler.SpawnFromPool<SoundPlayer>("SfxPlayer");
+        if (player == null) return;
+
+        Sound sound = sounds.Find(x => x.Name == name);
+        if (sound == null) return;
+
+        player.Play(transform, sfxVolume * sfxMasterVolume, sound);
+    }
+
     public void SetBGMVolume(float ratio)
     {
         bgmPlayer.volume = ratio;

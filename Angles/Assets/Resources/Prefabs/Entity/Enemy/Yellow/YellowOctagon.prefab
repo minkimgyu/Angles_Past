@@ -179,13 +179,13 @@ GameObject:
   - component: {fileID: 6379353961815610348}
   - component: {fileID: 6379353961815610351}
   - component: {fileID: 6379353961815610350}
-  - component: {fileID: 6379353961815610345}
   - component: {fileID: 6379353961815610344}
   - component: {fileID: 6379353961815610347}
   - component: {fileID: 6379353961815610346}
   - component: {fileID: 6379353961815610341}
   - component: {fileID: 5254677716262742399}
   - component: {fileID: 4476412798441577942}
+  - component: {fileID: -1361244820650345972}
   m_Layer: 6
   m_Name: YellowOctagon
   m_TagString: Enemy
@@ -283,22 +283,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 7
---- !u!114 &6379353961815610345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6379353961815610340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1638d4b05d9f4e145b75023474c6c5cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_possessingSkills: []
-  m_activeSkills: []
-  m_synthesisComponent:
-    synthesisWays: []
 --- !u!58 &6379353961815610344
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -328,38 +312,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inheritedTag: 1
-  dieEffectMethod: {fileID: 11400000, guid: 4b0159a746cb0de428b4e033ef8ab7f0, type: 2}
-  m_data:
-    name: 
-    shape: 
-    color: 
-    immortality: 0
-    hp: 0
-    speed:
-      maxValue: 0
-      minValue: 0
-      originValue: 0
-    stunTime: 0
-    weight: 0
-    drag: 0
-    knockBackThrust: 0
-    grantedUtilization:
-      skillNames: []
-      buffNames: []
-    knockBackDamage: 0
-    skillUseDistance: 0
-    skillUseOffsetDistance: 0
-    skillUseRange: 0
-    skillReuseTime: 0
-    followMinDistance: 0
-    stopMinDistance: 0
-    prefabCount: 0
-  spawnPercentage: 0.3
-  expectationDirs:
-  - {fileID: 2310340041826515238}
-  - {fileID: 447123335250299736}
-  delay: 5
-  directionCount: 2
+  directionCount:
+    maxValue: 0
+    minValue: 0
+    originValue: 0
 --- !u!114 &6379353961815610346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,3 +384,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_contactDatas: []
   m_entityTags: 01000000
+--- !u!114 &-1361244820650345972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6379353961815610340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

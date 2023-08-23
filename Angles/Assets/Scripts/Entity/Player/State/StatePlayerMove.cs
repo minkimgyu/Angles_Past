@@ -32,10 +32,22 @@ public class StatePlayerMove : BaseState<Player.State>
 
     void UseDash() //  move joy and data
     {
-        if (m_loadPlayer.PlayerData.CanUseDash() == false || m_loadPlayer.MoveJoystick.ReturnMoveVec() == Vector2.zero) return;
+        if (CanUseDash() == false || m_loadPlayer.MoveJoystick.ReturnMoveVec() == Vector2.zero) return;
 
         // 여기서 Dash 전환
         m_loadPlayer.SetState(Player.State.Dash);
+    }
+
+    public bool CanUseDash()
+    {
+        if (m_loadPlayer.DashRatio - 1 / m_loadPlayer.DashCount.IntervalValue >= 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public override void OperateExit()
@@ -46,6 +58,6 @@ public class StatePlayerMove : BaseState<Player.State>
 
     public override void OperateUpdate()
     {
-        m_loadPlayer.MoveComponent.Move(m_loadPlayer.MoveVec, m_loadPlayer.HealthData.Speed.IntervalValue, true);
+        m_loadPlayer.MoveComponent.Move(m_loadPlayer.MoveVec, m_loadPlayer.Speed.IntervalValue, true);
     }
 }

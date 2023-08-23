@@ -7,12 +7,24 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "SkillCueEventSO", menuName = "Events/SkillCueEventSO")]
 public class SkillCueEventSO : ScriptableObject
 {
-    public UnityAction<Transform, SkillData> OnSkillCueRequested;
+    //public UnityAction<Transform, SkillData> OnSkillCueRequested;
 
-    public void RaiseEvent(Transform caster, SkillData data)
-    {
-        if (OnSkillCueRequested == null) return;
+    //public void RaiseEvent(Transform caster, SkillData data)
+    //{
+    //    if (OnSkillCueRequested == null) return;
 
-        OnSkillCueRequested.Invoke(caster, data);
-    }
+    //    OnSkillCueRequested.Invoke(caster, data);
+    //}
+
+    Vector3 dir;
+
+    // 
+
+    // x, y, z
+}
+
+public struct JVector3
+{
+    public float x, y, z;
+
 }

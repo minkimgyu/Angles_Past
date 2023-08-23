@@ -19,8 +19,8 @@ public class StateFollowEnemyDamaged : BaseState<BaseFollowEnemy.State>
     {
         if (loadFollowEnemy.DashComponent.NowFinish == true)
         {
-            ExitStun();
-            loadFollowEnemy.SetState(BaseFollowEnemy.State.Follow);
+            loadFollowEnemy.RemoveEnemyContactKnockback();
+            loadFollowEnemy.RevertToPreviousState();
         }
     }
 
@@ -36,20 +36,12 @@ public class StateFollowEnemyDamaged : BaseState<BaseFollowEnemy.State>
         Knockback(storedDir, storedThrust);
     }
 
-    void ExitStun()
-    {
-        SkillData skillData = DatabaseManager.Instance.UtilizationDB.ReturnSkillData("EnemyContactKnockback");
-        loadFollowEnemy.BattleComponent.RemoveSkillFromPossessingSkills(skillData); // 만약 안 쓰고 존재한다면 삭제해준다.
-        //Debug.Log("ExitStun");
-    }
-
     void Knockback(Vector2 dir, float thrust)
     {
         loadFollowEnemy.DashComponent.CancelDash(false);
-        loadFollowEnemy.DashComponent.PlayDash(dir, thrust / loadFollowEnemy.HealthData.Weight, loadFollowEnemy.HealthData.StunTime, false); // 스턴은 무계 비율에 맞게 조정하기
+        loadFollowEnemy.DashComponent.PlayDash(dir, thrust / loadFollowEnemy.Weight.IntervalValue, loadFollowEnemy.StunTime.IntervalValue, false); // 스턴은 무계 비율에 맞게 조정하기
 
-        SkillData skillData = DatabaseManager.Instance.UtilizationDB.ReturnSkillData("EnemyContactKnockback");
-        loadFollowEnemy.BattleComponent.LootingSkill(skillData);
+        loadFollowEnemy.AddEnemyContactKnockback();
     }
 
     public override void OperateExit()

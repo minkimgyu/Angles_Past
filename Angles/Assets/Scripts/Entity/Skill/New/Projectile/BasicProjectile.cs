@@ -7,14 +7,14 @@ abstract public class BasicProjectile : MonoBehaviour
     protected Transform m_caster;
     public Transform Caster { get { return m_caster; } set { m_caster = value; } }
 
-    protected BattleComponent m_battleComponent;
-    public BattleComponent BattleComponent { get { return m_battleComponent; } }
+    protected SkillController m_skillController;
+    public SkillController SkillController { get { return m_skillController; } }
 
     protected ContactComponent m_contactComponent; // --> 데미지, 범위 등등 공통된 변수만 넣어주자
     public ContactComponent ContactComponent { get { return m_contactComponent; } }
 
     [SerializeField]
-    GrantedUtilization grantedUtilization;
+    GrantedSkill grantedUtilization;
 
     protected bool isFinished;
     public bool IsFinished { get { return isFinished; } }
@@ -23,7 +23,7 @@ abstract public class BasicProjectile : MonoBehaviour
 
     protected virtual void Awake()
     {
-        m_battleComponent = GetComponent<BattleComponent>();
+        m_skillController = GetComponent<SkillController>();
         m_contactComponent = GetComponent<ContactComponent>();
     }
     private void Start()
@@ -33,9 +33,7 @@ abstract public class BasicProjectile : MonoBehaviour
     public virtual void Init(Transform tr)
     {
         m_caster = tr;
-        grantedUtilization.LootSkillFromDB(BattleComponent);
-
-        m_battleComponent.UseSkill(SkillUseConditionType.Init); // --> 이런 식으로 스킬로 작동
+        ResetAndUseSkill();
     }
 
     public virtual void Shoot(Vector2 dir, float thrust) { } // 이걸로 발사 구현
@@ -44,9 +42,13 @@ abstract public class BasicProjectile : MonoBehaviour
     {
         transform.position = pos;
         m_caster = null;
-        grantedUtilization.LootSkillFromDB(BattleComponent);
+        ResetAndUseSkill();
+    }
 
-        m_battleComponent.UseSkill(SkillUseConditionType.Init); // --> 이런 식으로 스킬로 작동
+    void ResetAndUseSkill()
+    {
+        grantedUtilization.LootSkillFromDB(m_skillController);
+        m_skillController.UseSkill(BaseSkill.UseConditionType.Init); // --> 이런 식으로 스킬로 작동
     }
 
     protected void NowFinish()
@@ -64,7 +66,7 @@ abstract public class BasicProjectile : MonoBehaviour
     {
         ContactComponent.CallWhenCollisionEnter(col);
 
-        m_battleComponent.UseSkill(SkillUseConditionType.Contact); // --> 이런 식으로 스킬로 작동
+        m_skillController.UseSkill(BaseSkill.UseConditionType.Contact); // --> 이런 식으로 스킬로 작동
     }
 
     protected virtual void OnCollisionExit2D(Collision2D col)

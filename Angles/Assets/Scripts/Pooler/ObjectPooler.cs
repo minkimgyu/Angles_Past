@@ -43,12 +43,13 @@ public class ObjectPooler : MonoBehaviour
 	{ 
 		inst = this;
 		tr = transform;
+		Init();
 	}
 
 	public static Transform tr;
 
-	Action initAction;
-	public static Action InitAction { get; set; }
+	//Action initAction;
+	//public static Action InitAction { get; set; }
 
     [SerializeField] List<Pool> pools = new List<Pool>();
 	List<GameObject> spawnObjects;
@@ -194,9 +195,9 @@ public class ObjectPooler : MonoBehaviour
 		return objectToSpawn;
 	}
 
-	void Start()
-	{
-		if(InitAction != null) InitAction();
+	void Init()
+    {
+		//if (InitAction != null) InitAction();
 
 		spawnObjects = new List<GameObject>();
 		poolDictionary = new Dictionary<string, Queue<GameObject>>();
@@ -219,6 +220,7 @@ public class ObjectPooler : MonoBehaviour
 		}
 	}
 
+	// 오브젝트 풀러에 생성과 동시에 초기화가 되어야함
 	GameObject CreateNewObject(string tag, GameObject prefab)
 	{
 		var obj = Instantiate(prefab, transform);

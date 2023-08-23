@@ -4,6 +4,23 @@ using System;
 using UnityEngine;
 
 [Serializable]
+public class StringBaseBuffSODictionary : SerializableDictionary<string, BaseBuffSO> { }
+
+[Serializable]
+public class StringBaseSkillSODictionary : SerializableDictionary<string, BaseSkillSO> { }
+
+[Serializable]
+public class StringBaseEntitySODictionary : SerializableDictionary<string, BaseEntitySO> { }
+
+[Serializable]
+public class EffectConditionEffectDataDictionary : SerializableDictionary<EffectCondition, EffectData> { }
+
+[Serializable]
+public class EffectConditionSoundDataDictionary : SerializableDictionary<EffectCondition, SoundData> { }
+
+
+
+[Serializable]
 public class StringFollowEnemyStatDictionary : SerializableDictionary<string, FollowEnemyStat> { }
 
 [Serializable]

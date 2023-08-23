@@ -14,10 +14,10 @@ GameObject:
   - component: {fileID: 1610933736780651277}
   - component: {fileID: 6942885489754439444}
   - component: {fileID: 1610933736780651314}
-  - component: {fileID: 1610933736780651315}
   - component: {fileID: 1610933736780651276}
   - component: {fileID: 2659321582774080349}
   - component: {fileID: 8370493969703906011}
+  - component: {fileID: 7405520187845247102}
   m_Layer: 6
   m_Name: OrangeHexagon
   m_TagString: Enemy
@@ -172,51 +172,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inheritedTag: 1
-  dieEffectMethod: {fileID: 11400000, guid: 5435cefc2724abd408814852e8f5f79f, type: 2}
-  m_data:
-    name: 
-    shape: 
-    color: 
-    immortality: 0
-    hp: 0
-    speed:
-      maxValue: 0
-      minValue: 0
-      originValue: 0
-    stunTime: 0
-    weight: 0
-    drag: 0
-    knockBackThrust: 0
-    grantedUtilization:
-      skillNames: []
-      buffNames: []
-    knockBackDamage: 0
-    skillUseDistance: 0
-    skillUseOffsetDistance: 0
-    skillUseRange: 0
-    skillReuseTime: 0
-    followMinDistance: 0
-    stopMinDistance: 0
-    prefabCount: 0
-  spawnPercentage: 0.3
-  delay: 4
-  fixTime: 2
---- !u!114 &1610933736780651315
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1610933736780651266}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1638d4b05d9f4e145b75023474c6c5cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_possessingSkills: []
-  m_activeSkills: []
-  m_synthesisComponent:
-    synthesisWays: []
+  fixTime:
+    maxValue: 0
+    minValue: 0
+    originValue: 0
 --- !u!114 &1610933736780651276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,3 +214,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_contactDatas: []
   m_entityTags: 01000000
+--- !u!114 &7405520187845247102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610933736780651266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

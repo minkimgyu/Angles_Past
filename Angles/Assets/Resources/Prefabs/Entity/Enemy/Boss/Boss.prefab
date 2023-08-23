@@ -11,13 +11,13 @@ GameObject:
   - component: {fileID: 2587696381156662285}
   - component: {fileID: 2587696381156662286}
   - component: {fileID: 2587696381156662287}
-  - component: {fileID: 2587696381156662280}
   - component: {fileID: 2587696381156662281}
   - component: {fileID: 2587696381156662283}
   - component: {fileID: 2587696381156662276}
   - component: {fileID: 3714626426635839134}
   - component: {fileID: 5007498376505676343}
   - component: {fileID: 8928800865820746756}
+  - component: {fileID: -8389004276541678591}
   m_Layer: 6
   m_Name: Boss
   m_TagString: Enemy
@@ -113,22 +113,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &2587696381156662280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2587696381156662277}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1638d4b05d9f4e145b75023474c6c5cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_possessingSkills: []
-  m_activeSkills: []
-  m_synthesisComponent:
-    synthesisWays: []
 --- !u!58 &2587696381156662281
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -226,31 +210,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inheritedTag: 1
-  dieEffectMethod: {fileID: 11400000, guid: 4b0159a746cb0de428b4e033ef8ab7f0, type: 2}
-  m_data:
-    name: 
-    shape: 
-    color: 
-    immortality: 0
-    hp: 0
-    speed:
-      maxValue: 0
-      minValue: 0
-      originValue: 0
-    stunTime: 0
-    weight: 0
-    drag: 0
-    knockBackThrust: 0
-    grantedUtilization:
-      skillNames: []
-      buffNames: []
-    knockBackDamage: 0
-    skillUseDistance: 0
-    skillUseOffsetDistance: 0
-    skillUseRange: 0
-    skillReuseTime: 0
-    followMinDistance: 0
-    stopMinDistance: 0
-    prefabCount: 0
-  spawnPercentage: 0.1
-  delay: 5
+--- !u!114 &-8389004276541678591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2587696381156662277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

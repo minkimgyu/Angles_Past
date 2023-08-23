@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class RepositionEnemy : MonoBehaviour
 {
-    Player player;
     SpawnAssistant spawnAssistant;
 
     private void Start()
     {
-        player = PlayManager.Instance.Player;
-        spawnAssistant = GameObject.FindWithTag("Player").GetComponentInChildren<SpawnAssistant>();
+        spawnAssistant = GetComponent<SpawnAssistant>();
     }
 
     private void OnTriggerExit2D(Collider2D col)
@@ -56,11 +54,5 @@ public class RepositionEnemy : MonoBehaviour
 
         col.transform.position = FindClosestPoint(closePoints);
         col.GetComponent<MoveComponent>().Stop();
-    }
-
-    private void Update()
-    {
-        if (player == null) return;
-        transform.position = player.transform.position;
     }
 }

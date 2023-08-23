@@ -21,14 +21,14 @@ public class StateReflectEnemyRush : BaseState<BaseReflectEnemy.State>
         {
             enemy.RushVec = enemy.ResetRushVec();
             enemy.DashComponent.QuickEndTask();
-            enemy.DashComponent.PlayDash(enemy.RushVec.normalized, enemy.HealthData.Speed.IntervalValue);
+            enemy.DashComponent.PlayDash(enemy.RushVec.normalized, enemy.Speed.IntervalValue);
         }
     }
 
     public override void OperateEnter()
     {
         enemy.DashComponent.QuickEndTask();
-        enemy.DashComponent.PlayDash(enemy.RushVec.normalized, enemy.HealthData.Speed.IntervalValue);
+        enemy.DashComponent.PlayDash(enemy.RushVec.normalized, enemy.Speed.IntervalValue);
 
     }
 

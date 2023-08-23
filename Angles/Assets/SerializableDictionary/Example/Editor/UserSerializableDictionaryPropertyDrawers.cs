@@ -4,6 +4,15 @@ using UnityEngine;
 using UnityEditor;
 using System;
 
+[CustomPropertyDrawer(typeof(StringBaseEntitySODictionary))]
+
+[CustomPropertyDrawer(typeof(StringBaseBuffSODictionary))]
+[CustomPropertyDrawer(typeof(StringBaseSkillSODictionary))]
+
+[CustomPropertyDrawer(typeof(EffectConditionEffectDataDictionary))]
+[CustomPropertyDrawer(typeof(EffectConditionSoundDataDictionary))]
+
+
 [CustomPropertyDrawer(typeof(StringFollowEnemyStatDictionary))]
 [CustomPropertyDrawer(typeof(StringReflectEnemyStatDictionary))]
 

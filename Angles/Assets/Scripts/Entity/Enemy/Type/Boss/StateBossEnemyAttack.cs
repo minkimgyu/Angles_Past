@@ -29,7 +29,7 @@ public class StateBossEnemyAttack : StateFollowEnemyAttack
         {
             if (canAttack == true)
             {
-                loadBossEnemy.BattleComponent.UseSkill(SkillUseConditionType.InRange);
+                loadFollowEnemy.SkillController.UseSkill(BaseSkill.UseConditionType.InRange);
                 canAttack = false;
             }
         }
@@ -37,7 +37,7 @@ public class StateBossEnemyAttack : StateFollowEnemyAttack
         if (canAttack == false)
         {
             storedTime += Time.deltaTime;
-            if (storedTime > loadBossEnemy.Delay)
+            if (storedTime > loadBossEnemy.AttackDelay.IntervalValue)
             {
                 storedTime = 0;
                 canAttack = true;

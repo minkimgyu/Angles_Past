@@ -6,27 +6,25 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using System;
 
-public class RushUIComponent : FillUIComponent, IObserver<Player.ObserverType, PlayerData>
+public class RushUIComponent : FillUIComponent
 {
-    Player player;
+    //PlayerActionEventSO playerActionEventSO;
 
-    private void Start()
-    {
-        player = GameObject.FindWithTag("Player").GetComponent<Player>();
-        player.AddObserver(this);
-        InitImages();
-    }
+    //private void OnEnable()
+    //{
+    //    playerActionEventSO.OnActionRequested += FillDashIcon;
+    //}
 
-    private void OnDestroy()
-    {
-        player.RemoveObserver(this);
-    }
+    //private void OnDisable()
+    //{
+    //    playerActionEventSO.OnActionRequested -= FillDashIcon;
+    //}
 
-    public void OnNotify(Player.ObserverType state, PlayerData data)
-    {
-        if (state == Player.ObserverType.ShowRushUI)
-            FillDashIcon(data.RushRatio);
-        else if (state == Player.ObserverType.HideRushUI)
-            FillDashIcon(0);
-    }
+    //public void OnNotify(Player.ObserverType state, PlayerData data)
+    //{
+    //    if (state == Player.ObserverType.ShowRushUI)
+    //        FillDashIcon(data.RushRatio);
+    //    else if (state == Player.ObserverType.HideRushUI)
+    //        FillDashIcon(0);
+    //}
 }

@@ -7,8 +7,8 @@ public class BuffMethod<T> : TargetMethod<T>
     bool m_nowApply;
     public List<string> m_buffNames;
 
-    public BuffMethod(EntityTag[] hitTarget, bool nowApply, List<string> buffNames, Dictionary<EffectCondition, EffectData> effectDatas)
-        : base(hitTarget, effectDatas)
+    public BuffMethod(EntityTag[] hitTarget, bool nowApply, List<string> buffNames, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas)
+        : base(hitTarget, effectDatas, soundDatas)
     {
         m_nowApply = nowApply;
         m_buffNames = buffNames;
@@ -29,10 +29,10 @@ public class BuffMethod<T> : TargetMethod<T>
 
         for (int i = 0; i < m_buffNames.Count; i++)
         {
-            BuffData data = DatabaseManager.Instance.UtilizationDB.ReturnBuffData(m_buffNames[i]); // 추후 버프 수정
-            if (data == null) continue;
+            //BuffData data = DatabaseManager.Instance.UtilizationDB.ReturnBuffData(m_buffNames[i]); // 추후 버프 수정
+            //if (data == null) continue;
 
-            health.AddBuffToController(data);
+            //health.AddBuffToController(data);
         }
 
         return true;
@@ -46,10 +46,10 @@ public class BuffMethod<T> : TargetMethod<T>
 
         for (int i = 0; i < m_buffNames.Count; i++)
         {
-            BuffData data = DatabaseManager.Instance.UtilizationDB.ReturnBuffData(buffSupportData.buffNames[i]); // 추후 버프 수정
-            if (data == null) continue;
+            //BuffData data = DatabaseManager.Instance.UtilizationDB.ReturnBuffData(buffSupportData.buffNames[i]); // 추후 버프 수정
+            //if (data == null) continue;
 
-            health.RemoveBuffToController(data);
+            //health.RemoveBuffToController(data);
         }
 
         return true;
@@ -58,8 +58,8 @@ public class BuffMethod<T> : TargetMethod<T>
 
 public class BuffToContactors : BuffMethod<List<ContactData>>
 {
-    public BuffToContactors(EntityTag[] hitTarget, bool nowApply, List<string> buffNames, Dictionary<EffectCondition, EffectData> effectDatas)
-        : base(hitTarget, nowApply, buffNames, effectDatas)
+    public BuffToContactors(EntityTag[] hitTarget, bool nowApply, List<string> buffNames, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas)
+        : base(hitTarget, nowApply, buffNames, effectDatas, soundDatas)
     {
     }
 
@@ -75,8 +75,8 @@ public class BuffToContactors : BuffMethod<List<ContactData>>
 
 public class BuffToRaycastHit : BuffMethod<RaycastHit2D[]>
 {
-    public BuffToRaycastHit(EntityTag[] hitTarget, bool nowApply, List<string> buffNames, Dictionary<EffectCondition, EffectData> effectDatas)
-        : base(hitTarget, nowApply, buffNames, effectDatas)
+    public BuffToRaycastHit(EntityTag[] hitTarget, bool nowApply, List<string> buffNames, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas)
+        : base(hitTarget, nowApply, buffNames, effectDatas, soundDatas)
     {
     }
 
@@ -92,8 +92,8 @@ public class BuffToRaycastHit : BuffMethod<RaycastHit2D[]>
 
 public class BuffToCaster : BuffMethod<bool>
 {
-    public BuffToCaster(EntityTag[] hitTarget, bool nowApply, List<string> buffNames, Dictionary<EffectCondition, EffectData> effectDatas)
-        : base(hitTarget, nowApply, buffNames, effectDatas)
+    public BuffToCaster(EntityTag[] hitTarget, bool nowApply, List<string> buffNames, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas)
+        : base(hitTarget, nowApply, buffNames, effectDatas, soundDatas)
     {
     }
 

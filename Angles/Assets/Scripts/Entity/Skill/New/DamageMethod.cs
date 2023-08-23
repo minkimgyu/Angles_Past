@@ -6,7 +6,7 @@ abstract public class TargetMethod<T> : BaseMethod<T>
 {
     EntityTag[] m_hitTarget;
 
-    public TargetMethod(EntityTag[] hitTarget, Dictionary<EffectCondition, EffectData> effectDatas) : base(effectDatas)
+    public TargetMethod(EntityTag[] hitTarget, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(effectDatas, soundDatas)
     {
         m_hitTarget = hitTarget;
     }
@@ -31,8 +31,8 @@ abstract public class DamageMethod<T> : TargetMethod<T>
     float m_damage;
     
 
-    public DamageMethod(EntityTag[] hitTarget, float knockBackThrust, float damage, Dictionary<EffectCondition, EffectData> effectDatas)
-        : base(hitTarget, effectDatas)
+    public DamageMethod(EntityTag[] hitTarget, float knockBackThrust, float damage, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
+        : base(hitTarget, effectDatas, soundDatas)
     {
         m_knockBackThrust = knockBackThrust;
         m_damage = damage;
@@ -51,8 +51,8 @@ abstract public class DamageMethod<T> : TargetMethod<T>
 
 public class DamageToContactors : DamageMethod<List<ContactData>>
 {
-    public DamageToContactors(EntityTag[] hitTarget, float knockBackThrust, float damage, Dictionary<EffectCondition, EffectData> effectDatas) 
-        : base(hitTarget, knockBackThrust, damage, effectDatas) // 이런 식으로 생성자에서 값을 받아서 Execute 진행
+    public DamageToContactors(EntityTag[] hitTarget, float knockBackThrust, float damage, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas) 
+        : base(hitTarget, knockBackThrust, damage, effectDatas, soundDatas) // 이런 식으로 생성자에서 값을 받아서 Execute 진행
     {
     }
 
@@ -61,15 +61,16 @@ public class DamageToContactors : DamageMethod<List<ContactData>>
         for (int i = 0; i < contactDatas.Count; i++)
         {
             DamageToEntity(supportData.Caster, contactDatas[i].transform); // 이렇게 진행
-            PlayEffect(contactDatas[i].transform, m_effectDatas[EffectCondition.HitSurfaceEffect]);
+            PlayEffect(contactDatas[i].transform.position, m_effectDatas[EffectCondition.HitSurfaceEffect]);
         }
     }
 }
 
 public class DamageToRaycastHit : DamageMethod<RaycastHit2D[]>
 {
-    public DamageToRaycastHit(EntityTag[] hitTarget, float knockBackThrust, float damage, Dictionary<EffectCondition, EffectData> effectDatas)
-        : base(hitTarget, knockBackThrust, damage, effectDatas) // 이런 식으로 생성자에서 값을 받아서 Execute 진행
+    public DamageToRaycastHit(EntityTag[] hitTarget, float knockBackThrust, float damage, float[] skillScalePerTicks,
+        EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
+        : base(hitTarget, knockBackThrust, damage, effectDatas, soundDatas) // 이런 식으로 생성자에서 값을 받아서 Execute 진행
     {
     }
 
@@ -91,8 +92,8 @@ public class DamageToLaserHit : DamageMethod<RaycastHit2D[]>
     List<string> m_blockedTag = new List<string>(); //m_blockedTag.Add("Wall");
     List<Vector2> m_directionPerTick;
 
-    public DamageToLaserHit(EntityTag[] hitTarget, float knockBackThrust, float damage, Dictionary<EffectCondition, EffectData> effectDatas, 
-        float laserMaxDistance, List<string> blockedTag, List<Vector2> directionPerTick) : base(hitTarget, knockBackThrust, damage, effectDatas) // 이런 식으로 생성자에서 값을 받아서 Execute 진행
+    public DamageToLaserHit(EntityTag[] hitTarget, float knockBackThrust, float damage, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas, 
+        float laserMaxDistance, List<string> blockedTag, List<Vector2> directionPerTick) : base(hitTarget, knockBackThrust, damage, effectDatas, soundDatas) // 이런 식으로 생성자에서 값을 받아서 Execute 진행
     {
         m_laserMaxDistance = laserMaxDistance;
         m_blockedTag = blockedTag;

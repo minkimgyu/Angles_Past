@@ -5,7 +5,7 @@ using System;
 
 abstract public class BasicConstruction : StateMachineEntity<BasicConstruction.State>
 {
-    public Action ContactAction;
+    //public Action ContactAction;
 
     public enum State
     {
@@ -17,23 +17,21 @@ abstract public class BasicConstruction : StateMachineEntity<BasicConstruction.S
         Push
     }
 
-    BattleComponent m_battleComponent;
-    public BattleComponent BattleComponent { get { return m_battleComponent; } }
+    SkillController m_skillController;
+    public SkillController SkillController { get { return m_skillController; } }
 
     ContactComponent m_contactComponent;
     public ContactComponent ContactComponent { get { return m_contactComponent; } }
 
     [SerializeField]
-    protected GrantedUtilization grantedUtilization;
+    protected GrantedSkill grantedUtilization;
 
     protected virtual void Awake()
     {
-        m_battleComponent = GetComponent<BattleComponent>();
+        m_skillController = GetComponent<SkillController>();
         m_contactComponent = GetComponent<ContactComponent>();
-    }
-
-    public override void InitData()
-    {
+        grantedUtilization.LootSkillFromDB(m_skillController);
+        Init();
     }
 
     public abstract void Init();
@@ -43,16 +41,16 @@ abstract public class BasicConstruction : StateMachineEntity<BasicConstruction.S
         DoOperateUpdate();
     }
 
-    private void OnCollisionEnter2D(Collision2D col) // 충돌 시 상태 변환
+    protected override void OnCollisionEnter2D(Collision2D col) // 충돌 시 상태 변환
     {
         ContactComponent.CallWhenCollisionEnter(col);
-
-        if (ContactAction != null) ContactAction();
+        base.OnCollisionEnter2D(col);
     }
 
-    private void OnCollisionExit2D(Collision2D col)
+    protected override void OnCollisionExit2D(Collision2D col)
     {
         ContactComponent.CallWhenCollisionExit(col);
+        base.OnCollisionExit2D(col);
     }
 }
 
@@ -101,7 +99,7 @@ public class StateBasicConstructionAttack : BaseState<BasicConstruction.State>
 
     public override void OperateEnter()
     {
-        loadBasicConstruction.BattleComponent.UseSkill(SkillUseConditionType.Contact);
+        loadBasicConstruction.SkillController.UseSkill(BaseSkill.UseConditionType.Contact);
         loadBasicConstruction.RevertToPreviousState();
     }
 

@@ -9,12 +9,24 @@ using System;
 public class FillUIComponent : MonoBehaviour
 {
     [SerializeField]
-    List<Image> images;
+    PlayerActionEventSO playerActionEventSO;
+
+    List<Image> images = new List<Image>();
+
+    private void Awake() => InitImages();
+
+    private void OnEnable()
+    {
+        playerActionEventSO.OnActionRequested += FillDashIcon;
+    }
+
+    private void OnDisable()
+    {
+        playerActionEventSO.OnActionRequested -= FillDashIcon;
+    }
 
     protected void InitImages()
     {
-        images.Clear();
-
         for (int i = 0; i < transform.childCount; i++)
         {
             Transform tr = transform.GetChild(i);

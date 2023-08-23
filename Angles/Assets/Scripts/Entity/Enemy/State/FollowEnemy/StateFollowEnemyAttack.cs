@@ -2,7 +2,7 @@ using UnityEngine;
 
 abstract public class StateFollowEnemyAttack : BaseState<BaseFollowEnemy.State>
 {
-    private BaseFollowEnemy loadFollowEnemy;
+    protected BaseFollowEnemy loadFollowEnemy;
     bool isInAttackRange;
 
     protected StateFollowEnemyAttack(BaseFollowEnemy followEnemy)
@@ -47,7 +47,7 @@ abstract public class StateFollowEnemyAttack : BaseState<BaseFollowEnemy.State>
     {
         if (loadFollowEnemy.LoadPlayer == null) return;
 
-        if (loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.FollowEnemyData.SkillUseDistance))
+        if (loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.SkillUseDistance.IntervalValue))
         {
             isInAttackRange = false;
         }
@@ -63,12 +63,12 @@ abstract public class StateFollowEnemyAttack : BaseState<BaseFollowEnemy.State>
 
         if(loadFollowEnemy.LoadPlayer == null) return;
 
-        if (loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.FollowEnemyData.SkillUseDistance) && isInAttackRange == false)
+        if (loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.SkillUseDistance.IntervalValue) && isInAttackRange == false)
         {
             ExecuteInRangeMethod();
             isInAttackRange = true;
         }
-        else if (!loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.FollowEnemyData.SkillUseDistance + loadFollowEnemy.FollowEnemyData.SkillUseOffsetDistance) 
+        else if (!loadFollowEnemy.FollowComponent.IsDistanceLower(loadFollowEnemy.LoadPlayer.transform.position, loadFollowEnemy.SkillUseDistance.IntervalValue + loadFollowEnemy.SkillUseOffsetDistance.IntervalValue) 
             && isInAttackRange == true)
         {
             ExecuteInOutsideMethod();

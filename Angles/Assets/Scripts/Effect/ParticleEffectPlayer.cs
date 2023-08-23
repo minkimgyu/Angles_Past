@@ -17,6 +17,20 @@ public class ParticleEffectPlayer : BasicEffectPlayer
         }
     }
 
+    protected override void ResetSize(float sizeMultiplier)
+    {
+        transform.localScale = new Vector3(sizeMultiplier, sizeMultiplier, sizeMultiplier);
+    }
+
+    protected override void ResetLifeTime(float[] lifeTime)
+    {
+        for (int i = 0; i < m_particles.Count; i++)
+        {
+            var main = m_particles[i].main;
+            main.startLifetime = lifeTime[i];
+        }
+    }
+
     public override void RotationEffect(float rotation)
     {
         transform.rotation = Quaternion.Euler(0, 0, rotation);
@@ -51,11 +65,5 @@ public class ParticleEffectPlayer : BasicEffectPlayer
         }
 
         DisableObject();
-    }
-
-    public override void Init(Transform tr, float duration, List<Vector3> pos)
-    {
-        m_posTr = tr;
-        m_duration = duration;
     }
 }

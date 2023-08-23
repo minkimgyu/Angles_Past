@@ -15,11 +15,6 @@ public class Press : BasicConstruction
     Rigidbody2D rigid;
     public Rigidbody2D Rigid { get { return rigid; } }
 
-    void Start()
-    {
-        Init();
-    }
-
     public override void Init()
     {
         startPos = transform.position;
@@ -34,7 +29,6 @@ public class Press : BasicConstruction
         m_dicState.Add(State.Pull, pull);
 
         SetUp(State.Push);
-        grantedUtilization.LootSkillFromDB(BattleComponent);
     }
 }
 
@@ -67,7 +61,7 @@ public class StatePressPush : BaseState<BasicConstruction.State>
 
     public override void ReceiveCollisionEnter(Collision2D collision) 
     {
-        loadPress.BattleComponent.UseSkill(SkillUseConditionType.Contact);
+        loadPress.SkillController.UseSkill(BaseSkill.UseConditionType.Contact);
     }
 
     public override void OperateUpdate()

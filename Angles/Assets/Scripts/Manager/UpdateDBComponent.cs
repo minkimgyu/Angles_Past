@@ -172,10 +172,10 @@ public class UpdateDBComponent : UnitaskUtility
         //{
         //    tempValue = (SkillName)Enum.Parse(typeof(SkillName), value);
         //}
-        else if (property.PropertyType == typeof(SkillUseConditionType))
-        {
-            tempValue = (SkillUseConditionType)Enum.Parse(typeof(SkillUseConditionType), value);
-        }
+        //else if (property.PropertyType == typeof(SkillUseConditionType))
+        //{
+        //    tempValue = (SkillUseConditionType)Enum.Parse(typeof(SkillUseConditionType), value);
+        //}
         //else if (property.PropertyType == typeof(SkillUsage))
         //{
         //    tempValue = (SkillUsage)Enum.Parse(typeof(SkillUsage), value);

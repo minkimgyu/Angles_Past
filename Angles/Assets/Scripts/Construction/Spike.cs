@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class Spike : BasicConstruction
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        Init();
-    }
-
     public override void Init()
     {
         BaseState<State> idle = new StateBasicConstructionIdle(this);
@@ -20,6 +14,5 @@ public class Spike : BasicConstruction
         m_dicState.Add(State.Attack, attack);
 
         SetUp(State.Idle);
-        grantedUtilization.LootSkillFromDB(BattleComponent);
     }
 }

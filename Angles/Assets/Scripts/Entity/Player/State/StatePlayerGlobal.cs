@@ -41,7 +41,7 @@ public class StatePlayerGlobal : BaseState<Player.State>
 
     public override void ReceiveTriggerEnter(Collider2D collider) 
     {
-        m_loadPlayer.LootingItemComponent.LootingItem(collider, m_loadPlayer.BattleComponent);
+        m_loadPlayer.LootingItemComponent.LootingItem(collider, m_loadPlayer.SkillController);
     }
 
     public override void ReceiveCollisionEnter(Collision2D collision) 
@@ -64,7 +64,6 @@ public class StatePlayerGlobal : BaseState<Player.State>
 
     public override void OperateUpdate()
     {
-        if(m_loadPlayer.PlayerData.RestoreDashRatio())
-            m_loadPlayer.NotifyObservers(Player.ObserverType.ShowDashUI, m_loadPlayer.PlayerData);
+        if (m_loadPlayer.RestoreDashRatio()) m_loadPlayer.dashUIEventSO.RaiseEvent(m_loadPlayer.DashRatio);
     }
 }

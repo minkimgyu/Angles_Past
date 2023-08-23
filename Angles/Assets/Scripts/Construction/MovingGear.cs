@@ -8,11 +8,6 @@ public class MovingGear : BasicConstruction
     Transform[] movePoints;
     public Transform[] MovePoints { get { return movePoints; } }
 
-    void Start()
-    {
-        Init();
-    }
-
     public override void Init()
     {
         BaseState<State> idle = new StateBasicConstructionIdle(this);
@@ -26,7 +21,6 @@ public class MovingGear : BasicConstruction
 
         SetUp(State.Idle);
         SetGlobalState(global);
-        grantedUtilization.LootSkillFromDB(BattleComponent);
     }
 }
 

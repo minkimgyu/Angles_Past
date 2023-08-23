@@ -15,7 +15,7 @@ public class StateReflectEnemyDamaged : BaseState<BaseReflectEnemy.State>
         loadReflectEnemy = followEnemy;
     }
 
-    public void CheckSwitchStates()
+    public override void CheckSwitchStates()
     {
         if (loadReflectEnemy.DashComponent.NowFinish == true)
         {
@@ -39,7 +39,7 @@ public class StateReflectEnemyDamaged : BaseState<BaseReflectEnemy.State>
     void Knockback(Vector2 dir, float thrust)
     {
         loadReflectEnemy.DashComponent.CancelDash(false);
-        loadReflectEnemy.DashComponent.PlayDash(dir, thrust / loadReflectEnemy.HealthData.Weight, loadReflectEnemy.HealthData.StunTime, false); // 스턴은 무계 비율에 맞게 조정하기
+        loadReflectEnemy.DashComponent.PlayDash(dir, thrust / loadReflectEnemy.Weight.IntervalValue, loadReflectEnemy.StunTime.IntervalValue, false); // 스턴은 무계 비율에 맞게 조정하기
 
         loadReflectEnemy.AddEnemyContactKnockback();
     }

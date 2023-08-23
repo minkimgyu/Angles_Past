@@ -6,25 +6,23 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using System;
 
-public class DashUIComponent : FillUIComponent, IObserver<Player.ObserverType, PlayerData>
+public class DashUIComponent : FillUIComponent
 {
-    Player player;
+    //PlayerActionEventSO playerActionEventSO;
 
-    private void Start()
-    {
-        player =  GameObject.FindWithTag("Player").GetComponent<Player>();
-        player.AddObserver(this);
-        InitImages();
-    }
+    //private void OnEnable()
+    //{
+    //    playerActionEventSO.OnActionRequested += FillDashIcon;
+    //}
 
-    private void OnDestroy()
-    {
-        player.RemoveObserver(this);
-    }
+    //private void OnDisable()
+    //{
+    //    playerActionEventSO.OnActionRequested -= FillDashIcon;
+    //}
 
-    public void OnNotify(Player.ObserverType state, PlayerData data)
-    {
-        if (state == Player.ObserverType.ShowDashUI)
-            FillDashIcon(data.DashRatio);
-    }
+    //public void OnNotify(Player.ObserverType state, PlayerData data)
+    //{
+    //    if (state == Player.ObserverType.ShowDashUI)
+    //        FillDashIcon(data.DashRatio);
+    //}
 }

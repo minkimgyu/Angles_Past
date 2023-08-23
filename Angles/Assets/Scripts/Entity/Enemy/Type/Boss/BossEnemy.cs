@@ -2,15 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossEnemy : BaseFollowEnemy
+public class BossEnemy : DelayFollowEnemy
 {
-    [SerializeField]
-    float delay;
-    public float Delay { get { return delay; } }
-
-    protected override void Init()
+    protected override void AddState()
     {
-        base.Init();
+        base.AddState();
         BaseState<State> attack = new StateBossEnemyAttack(this); // 공격만 따로 추가해주자
         m_dicState.Add(State.Attack, attack);
 
@@ -20,9 +16,9 @@ public class BossEnemy : BaseFollowEnemy
         SetGlobalState(attack);
     }
 
-    public override void Die()
-    {
-        base.Die();
-        PlayManager.instance.GameClear();
-    }
+    //public override void Die()
+    //{
+    //    base.Die();
+    //    PlayManager.instance.GameClear();
+    //}
 }
