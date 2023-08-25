@@ -7,6 +7,9 @@ using UnityEngine;
 public class ContactedAttackSO : BaseSkillSO
 {
     [SerializeField]
+    BaseSkill.UseConditionType useConditionType;
+
+    [SerializeField]
     EntityTag[] hitTarget;
 
     [SerializeField]
@@ -23,6 +26,6 @@ public class ContactedAttackSO : BaseSkillSO
 
     public override BaseSkill Create()
     {
-        return new ContactedAttack(name, hitTarget, knockBackThrust, damage, effectDatas, soundDatas);
+        return new ContactedAttack(name, useConditionType, hitTarget, knockBackThrust, damage, effectDatas, soundDatas);
     }
 }

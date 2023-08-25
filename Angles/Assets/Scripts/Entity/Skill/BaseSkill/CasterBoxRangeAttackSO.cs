@@ -7,6 +7,9 @@ using UnityEngine;
 public class CasterBoxRangeAttackSO : BaseSkillSO
 {
     [SerializeField]
+    BaseSkill.UseConditionType useConditionType;
+
+    [SerializeField]
     bool isFix;
 
     [SerializeField]
@@ -44,6 +47,6 @@ public class CasterBoxRangeAttackSO : BaseSkillSO
 
     public override BaseSkill Create()
     {
-        return new CasterBoxRangeAttack(name, isFix, duration, tickCount, preDelay, boxRangePerTick, offsetRangePerTick, skillScalePerTicks, hitTarget, knockBackThrust, damage, effectDatas, soundDatas);
+        return new CasterBoxRangeAttack(name, useConditionType, isFix, duration, tickCount, preDelay, boxRangePerTick, offsetRangePerTick, skillScalePerTicks, hitTarget, knockBackThrust, damage, effectDatas, soundDatas);
     }
 }

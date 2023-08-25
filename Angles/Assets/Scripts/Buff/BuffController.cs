@@ -17,7 +17,7 @@ public class BuffController : MonoBehaviour
 
     public bool AddBuff(string name) //--> 같은 효과를 n개 이상 넣으면 무시 --> buffData를 넘겨주자   
     {
-        BaseBuff orderedBuff = buffFactory.OrderBuff(name);
+        BaseBuff orderedBuff = buffFactory.Order(name);
 
         if (CheckBuffList(name) >= orderedBuff.MaxCount) return false; // maxCount보다 더 많은 버프를 가지고 있다면 Return
         orderedBuff.OnStart(gameObject);

@@ -6,7 +6,6 @@ public class BossEnemy : DelayFollowEnemy
 {
     protected override void AddState()
     {
-        base.AddState();
         BaseState<State> attack = new StateBossEnemyAttack(this); // 공격만 따로 추가해주자
         m_dicState.Add(State.Attack, attack);
 
@@ -15,6 +14,8 @@ public class BossEnemy : DelayFollowEnemy
         SetUp(State.Follow);
         SetGlobalState(attack);
     }
+
+    //SO로 호출
 
     //public override void Die()
     //{

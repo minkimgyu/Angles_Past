@@ -44,7 +44,7 @@ public class StateTriangleEnemyFollow : BaseState<BaseFollowEnemy.State>
     YellowTriangleEnemy loadFollowEnemy;
 
     public StateTriangleEnemyFollow(YellowTriangleEnemy followEnemy)
-    {
+    {   
         loadFollowEnemy = followEnemy;
     }
 

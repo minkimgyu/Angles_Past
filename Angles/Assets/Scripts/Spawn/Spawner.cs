@@ -67,23 +67,27 @@ public class Spawner : MonoBehaviour
 
     SpawnAssistant spawnAssistant;
 
-    EntityFactory entityFactory;
+    [SerializeField]
+    SpawnCueEventSO spawnSO;
 
     [SerializeField]
     TextMeshProUGUI timeTxt;
 
+    EntityFactory entityFactory;
+
     private void Awake()
     {
-        entityFactory = GetComponent<EntityFactory>();
+        spawnSO.OnActionRequested += Spawn; // 스폰 연결
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        Player player = (Player)entityFactory.OrderEntity("Player");
+        entityFactory = FindObjectOfType<EntityFactory>();
+        Player player = (Player)entityFactory.Order("Player");
         spawnAssistant = player.GetComponentInChildren<SpawnAssistant>();
 
-        PlayManager.Instance.virtualCamera.Follow = player.transform;
+        PlayManager.Instance.Player = player;
     }
 
     // Update is called once per frame
@@ -92,7 +96,7 @@ public class Spawner : MonoBehaviour
         if (spawnAssistant == null) return;
 
         time += Time.deltaTime;
-        timeTxt.text = string.Format("{0:F0}", time);
+        timeTxt.text = string.Format("{0:F0}", time); // --> SO로 변경
 
         if (data.SpawnDataCollection.Count - 1 < level) return;
 
@@ -198,7 +202,7 @@ public class Spawner : MonoBehaviour
 
         for (int i = 0; i < spawnCount; i++)
         {
-            Entity entity = entityFactory.OrderEntity(spawnEntityName);
+            Entity entity = entityFactory.Order(spawnEntityName);
             Vector3 resetPos = SpawnNotOverlap(pos, loadSpawnPos);
             entity.transform.position = resetPos;
         }

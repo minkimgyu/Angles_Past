@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2939730106462021325}
   - component: {fileID: 4345931739753705305}
-  - component: {fileID: 8520291296393752846}
   - component: {fileID: 7648410826865791141}
+  - component: {fileID: 6301438216916638841}
   - component: {fileID: 4076092919996500087}
   - component: {fileID: 7593884746635838208}
   - component: {fileID: 6150783517868269609}
@@ -89,22 +89,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8520291296393752846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2898598744227993925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1638d4b05d9f4e145b75023474c6c5cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_possessingSkills: []
-  m_activeSkills: []
-  m_synthesisComponent:
-    synthesisWays: []
 --- !u!114 &7648410826865791141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,6 +103,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_contactDatas: []
   m_entityTags: 0100000000000000
+--- !u!114 &6301438216916638841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2898598744227993925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4076092919996500087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,10 +128,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inheritedTag: 5
-  grantedUtilization:
-    skillNames:
-    - SpikeAttack
-    buffNames: []
 --- !u!50 &7593884746635838208
 Rigidbody2D:
   serializedVersion: 4

@@ -30,7 +30,7 @@ public interface IBuffApplier<T>
 /// 버프에 사용되는 변수(Int)
 /// </summary>
 [System.Serializable]
-public class BuffInt : IData<BuffFloat>
+public class BuffInt : IData<BuffInt>
 {
     [SerializeField]
     int maxValue;
@@ -89,9 +89,9 @@ public class BuffInt : IData<BuffFloat>
         originValue = value;
     }
 
-    public BuffFloat CopyData()
+    public BuffInt CopyData()
     {
-        return new BuffFloat(maxValue, minValue, originValue);
+        return new BuffInt(maxValue, minValue, originValue);
     }
 }
 
@@ -169,6 +169,7 @@ public class GrantedSkill
         this.names = names;
     }
 
+    [SerializeField]
     string[] names;
 
     public void LootSkillFromDB(SkillController component)

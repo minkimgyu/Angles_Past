@@ -339,8 +339,8 @@ GameObject:
   - component: {fileID: 1901054787435087379}
   - component: {fileID: 1901054787435087373}
   - component: {fileID: 1901054787435087372}
-  - component: {fileID: 1901054787435087375}
   - component: {fileID: 1901054787435087374}
+  - component: {fileID: 3950370269041581369}
   - component: {fileID: 1901054787435087369}
   - component: {fileID: 1901054787435087368}
   - component: {fileID: 4245082539129305218}
@@ -431,29 +431,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inheritedTag: 5
-  grantedUtilization:
-    skillNames:
-    - GearAttack
-    buffNames: []
   movePoints:
   - {fileID: 1901054787329284089}
   - {fileID: 1901054787011004124}
---- !u!114 &1901054787435087375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1901054787435087378}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1638d4b05d9f4e145b75023474c6c5cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_possessingSkills: []
-  m_activeSkills: []
-  m_synthesisComponent:
-    synthesisWays: []
 --- !u!114 &1901054787435087374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,6 +448,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_contactDatas: []
   m_entityTags: 0100000000000000
+--- !u!114 &3950370269041581369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1901054787435087378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!58 &1901054787435087369
 CircleCollider2D:
   m_ObjectHideFlags: 0

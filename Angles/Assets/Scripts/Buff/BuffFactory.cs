@@ -11,15 +11,14 @@ abstract public class BaseSO<T> : ScriptableObject
 abstract public class BaseBuffSO : BaseSO<BaseBuff> { }
 
 
-public class BuffFactory : MonoBehaviour // 하나만 만들자 --> 스킬 팩토리도 마찬가지
+public class BuffFactory : BaseFactory<BaseBuff> // 하나만 만들자 --> 스킬 팩토리도 마찬가지
 {
     [SerializeField]
     StringBaseBuffSODictionary storedBuffSO;
 
-    Dictionary<string, BaseBuff> storedBuffs; // SO 만들어서 데이터 저장소에서 불러옴
-
-    public BaseBuff OrderBuff(string name)
+    public override BaseBuff Order(string name)
     {
-        return storedBuffs[name]; // 이런 식으로 반환
+        BaseBuff entity = storedBuffSO[name].Create();
+        return entity;
     }
 }

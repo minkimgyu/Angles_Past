@@ -101,6 +101,14 @@ public class FindInContacted : TargetDesignation<List<ContactData>>
     }
 }
 
+public class FindPlayer : TargetDesignation<Transform>
+{
+    public override Transform Execute(SkillSupportData supportData)
+    {
+        return supportData.Caster.GetComponent<BaseFollowEnemy>().LoadPlayer.transform;
+    }
+}
+
 public class NoFound : TargetDesignation<GameObject>
 {
     public override GameObject Execute(SkillSupportData supportData)
