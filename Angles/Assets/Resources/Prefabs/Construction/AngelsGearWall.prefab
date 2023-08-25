@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 1671096347527197911}
   - component: {fileID: 1671096347527197909}
   - component: {fileID: 1671096347527197908}
-  - component: {fileID: 1671096347527197913}
+  - component: {fileID: 2253392791329888629}
   - component: {fileID: 1671096347527197912}
   - component: {fileID: 1671096347527197915}
   - component: {fileID: 1671096347527197914}
@@ -252,10 +252,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inheritedTag: 5
   grantedUtilization:
-    skillNames:
-    - GearAttack
-    buffNames: []
---- !u!114 &1671096347527197913
+    names:
+    - Punch
+--- !u!114 &2253392791329888629
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -264,13 +263,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1671096347527197910}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1638d4b05d9f4e145b75023474c6c5cc, type: 3}
+  m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_possessingSkills: []
-  m_activeSkills: []
-  m_synthesisComponent:
-    synthesisWays: []
 --- !u!114 &1671096347527197912
 MonoBehaviour:
   m_ObjectHideFlags: 0

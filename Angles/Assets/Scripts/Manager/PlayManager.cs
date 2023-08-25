@@ -12,7 +12,11 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
     public Player Player
     {
         get { return player; }
-        set { player = value; }
+        set 
+        { 
+            player = value;
+            virtualCamera.Follow = value.transform;
+        }
     }
 
     public CinemachineVirtualCamera virtualCamera;

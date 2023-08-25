@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2a3b51a3fd758a479b38f966ca2332c, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  prefabName: Player
   immortality: 0
   hp:
     maxValue: 5
@@ -44,30 +43,32 @@ MonoBehaviour:
     minValue: 0
     originValue: 0.3
   rushThrust:
-    maxValue: 10
+    maxValue: 100
     minValue: 1
-    originValue: 5
+    originValue: 30
   rushRecoverRatio:
     maxValue: 1
     minValue: 0
-    originValue: 0.2
+    originValue: 0.6
   rushDuration:
     maxValue: 5
     minValue: 1
     originValue: 2
   attackCancelOffset: 0.2
+  dashCount:
+    maxValue: 3
+    minValue: 0
+    originValue: 3
   dashDuration:
     maxValue: 5
-    minValue: 1
-    originValue: 2
+    minValue: 0
+    originValue: 0.5
   dashThrust:
-    maxValue: 5
+    maxValue: 100
     minValue: 1
-    originValue: 3
+    originValue: 20
   dashRecoverRatio:
     maxValue: 1
     minValue: 0
     originValue: 0.2
-  grantedSkill:
-    names:
-    - Punch
+  grantedSkillNames: []

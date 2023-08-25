@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class BaseReflectEnemy : Enemy<BaseReflectEnemy.State>
 {
-    public BaseReflectEnemy(bool immortality, BuffFloat hp, BuffFloat speed, BuffFloat stunTime,
-        BuffFloat weight, BuffFloat mass, BuffFloat drag, string dieEffectName, GrantedSkill grantedSkill, BuffInt score)
-        : base(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, grantedSkill, score)
-    {
-    }
-
-
     ContactComponent m_contactComponent;
     public ContactComponent ContactComponent { get { return m_contactComponent; } }
 

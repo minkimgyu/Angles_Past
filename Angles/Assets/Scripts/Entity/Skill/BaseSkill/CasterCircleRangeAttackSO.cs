@@ -7,6 +7,9 @@ using UnityEngine;
 public class CasterCircleRangeAttackSO : BaseSkillSO
 {
     [SerializeField]
+    BaseSkill.UseConditionType useConditionType;
+
+    [SerializeField]
     bool isFix;
 
     [SerializeField]
@@ -41,6 +44,6 @@ public class CasterCircleRangeAttackSO : BaseSkillSO
 
     public override BaseSkill Create()
     {
-        return new CasterCircleRangeAttack(name, isFix, duration, tickCount, preDelay, targetFindRange, skillScalePerTicks, hitTarget, knockBackThrust, damage, effectDatas, soundDatas);
+        return new CasterCircleRangeAttack(name, useConditionType, isFix, duration, tickCount, preDelay, targetFindRange, skillScalePerTicks, hitTarget, knockBackThrust, damage, effectDatas, soundDatas);
     }
 }

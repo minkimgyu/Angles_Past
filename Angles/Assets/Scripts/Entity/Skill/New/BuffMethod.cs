@@ -5,9 +5,9 @@ using UnityEngine;
 public class BuffMethod<T> : TargetMethod<T>
 {
     bool m_nowApply;
-    public List<string> m_buffNames;
+    public string[] m_buffNames;
 
-    public BuffMethod(EntityTag[] hitTarget, bool nowApply, List<string> buffNames, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas)
+    public BuffMethod(EntityTag[] hitTarget, bool nowApply, string[] buffNames, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas)
         : base(hitTarget, effectDatas, soundDatas)
     {
         m_nowApply = nowApply;
@@ -27,7 +27,7 @@ public class BuffMethod<T> : TargetMethod<T>
         if (health == null || CanHitSkill(health.ReturnEntityTag()) == false) return false;
         // --> 타겟이 맞는지 확인
 
-        for (int i = 0; i < m_buffNames.Count; i++)
+        for (int i = 0; i < m_buffNames.Length; i++)
         {
             //BuffData data = DatabaseManager.Instance.UtilizationDB.ReturnBuffData(m_buffNames[i]); // 추후 버프 수정
             //if (data == null) continue;
@@ -44,7 +44,7 @@ public class BuffMethod<T> : TargetMethod<T>
         if (health == null || CanHitSkill(health.ReturnEntityTag()) == false) return false;
         // --> 타겟이 맞는지 확인
 
-        for (int i = 0; i < m_buffNames.Count; i++)
+        for (int i = 0; i < m_buffNames.Length; i++)
         {
             //BuffData data = DatabaseManager.Instance.UtilizationDB.ReturnBuffData(buffSupportData.buffNames[i]); // 추후 버프 수정
             //if (data == null) continue;
@@ -58,7 +58,7 @@ public class BuffMethod<T> : TargetMethod<T>
 
 public class BuffToContactors : BuffMethod<List<ContactData>>
 {
-    public BuffToContactors(EntityTag[] hitTarget, bool nowApply, List<string> buffNames, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas)
+    public BuffToContactors(EntityTag[] hitTarget, bool nowApply, string[] buffNames, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas)
         : base(hitTarget, nowApply, buffNames, effectDatas, soundDatas)
     {
     }
@@ -75,7 +75,7 @@ public class BuffToContactors : BuffMethod<List<ContactData>>
 
 public class BuffToRaycastHit : BuffMethod<RaycastHit2D[]>
 {
-    public BuffToRaycastHit(EntityTag[] hitTarget, bool nowApply, List<string> buffNames, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas)
+    public BuffToRaycastHit(EntityTag[] hitTarget, bool nowApply, string[] buffNames, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas)
         : base(hitTarget, nowApply, buffNames, effectDatas, soundDatas)
     {
     }
@@ -90,9 +90,9 @@ public class BuffToRaycastHit : BuffMethod<RaycastHit2D[]>
     }
 }
 
-public class BuffToCaster : BuffMethod<bool>
+public class BuffToCaster : BuffMethod<GameObject>
 {
-    public BuffToCaster(EntityTag[] hitTarget, bool nowApply, List<string> buffNames, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas)
+    public BuffToCaster(EntityTag[] hitTarget, bool nowApply, string[] buffNames, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas)
         : base(hitTarget, nowApply, buffNames, effectDatas, soundDatas)
     {
     }
@@ -100,6 +100,20 @@ public class BuffToCaster : BuffMethod<bool>
     public override void Execute(SkillSupportData supportData)
     {
         ApplyBuff(supportData, supportData.Caster.transform);
+        PlayEffect(supportData.Caster.transform, m_effectDatas[EffectCondition.BuffEffect]);
+    }
+}
+
+public class BuffToTarget : BuffMethod<Transform>
+{
+    public BuffToTarget(EntityTag[] hitTarget, bool nowApply, string[] buffNames, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas)
+        : base(hitTarget, nowApply, buffNames, effectDatas, soundDatas)
+    {
+    }
+
+    public override void Execute(SkillSupportData supportData, Transform target)
+    {
+        ApplyBuff(supportData, target);
         PlayEffect(supportData.Caster.transform, m_effectDatas[EffectCondition.BuffEffect]);
     }
 }

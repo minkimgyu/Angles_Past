@@ -9,11 +9,11 @@ public class YellowTriangleEnemy : BaseFollowEnemy
 
     public void Initialize(bool immortality, BuffFloat hp, BuffFloat speed, BuffFloat stunTime,
         BuffFloat weight, BuffFloat mass, BuffFloat drag, string dieEffectName, string[] skillNames,
-        BuffInt score, BuffFloat skillUseDistance, BuffFloat skillUseOffsetDistance, BuffFloat skillCooldownTime,
+        BuffInt score, BuffFloat skillUseDistance, BuffFloat skillUseOffsetDistance,
         BuffFloat followDistance, BuffFloat followOffsetDistance, string skillEffectName)
     {
         Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames, score, skillUseDistance,
-            skillUseOffsetDistance, skillCooldownTime, followDistance, followOffsetDistance);
+            skillUseOffsetDistance, followDistance, followOffsetDistance);
 
         this.skillEffectName = skillEffectName;
     }

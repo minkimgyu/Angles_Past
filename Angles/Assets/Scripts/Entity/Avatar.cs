@@ -39,15 +39,16 @@ public class Avatar<T> : StateMachineEntity<T>, IAvatar//, IEntityData<W>/*, IBu
         BuffFloat weight, BuffFloat mass, BuffFloat drag, string dieEffectName, string[] skillNames)
     {
         Immortality = immortality;
-        Hp = hp;
-        Speed = speed;
-        StunTime = stunTime;
-        Weight = weight;
-        Mass = mass;
-        Drag = drag;
+        Hp = hp.CopyData();
+        Speed = speed.CopyData();
+        StunTime = stunTime.CopyData();
+        Weight = weight.CopyData();
+        Mass = mass.CopyData();
+        Drag = drag.CopyData();
         DieEffectName = dieEffectName;
 
         grantedSkill = new GrantedSkill(skillNames);
+        grantedSkill.LootSkillFromDB(m_skillController);
     }
 
     protected BuffController m_buffComponent;
@@ -75,8 +76,6 @@ public class Avatar<T> : StateMachineEntity<T>, IAvatar//, IEntityData<W>/*, IBu
         m_moveComponent = GetComponent<MoveComponent>();
         m_dashComponent = GetComponent<DashComponent>();
         m_skillController = GetComponent<SkillController>();
-
-        grantedSkill.LootSkillFromDB(m_skillController);
     }    
 
     public virtual void Heal(float healthPoint) { }

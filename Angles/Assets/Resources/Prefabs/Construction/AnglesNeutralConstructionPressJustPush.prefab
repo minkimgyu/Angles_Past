@@ -44,8 +44,8 @@ GameObject:
   - component: {fileID: 1272841663233837067}
   - component: {fileID: 1272841663233837065}
   - component: {fileID: 1272841663233837064}
-  - component: {fileID: 1272841663233837071}
   - component: {fileID: 1272841663233837070}
+  - component: {fileID: 7567232489938092704}
   m_Layer: 0
   m_Name: AnglesNeutralConstructionPresser
   m_TagString: Untagged
@@ -134,10 +134,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inheritedTag: 5
-  grantedUtilization:
-    skillNames:
-    - PressJustPush
-    buffNames: []
   endTr: {fileID: 1272841662781010041}
 --- !u!61 &1272841663233837065
 BoxCollider2D:
@@ -186,22 +182,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1272841663233837071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1272841663233837060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1638d4b05d9f4e145b75023474c6c5cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_possessingSkills: []
-  m_activeSkills: []
-  m_synthesisComponent:
-    synthesisWays: []
 --- !u!114 &1272841663233837070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,6 +196,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_contactDatas: []
   m_entityTags: 0100000000000000
+--- !u!114 &7567232489938092704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272841663233837060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1272841664212383068
 GameObject:
   m_ObjectHideFlags: 0

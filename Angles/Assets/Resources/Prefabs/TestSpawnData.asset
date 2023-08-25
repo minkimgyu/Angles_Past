@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: TestSpawnData
   m_EditorClassIdentifier: 
   spawnDatas:
-  - levelUpTime: 3
-    spawnEntityName: YellowHexagon
-    spawnCount: 1
+  - levelUpTime: 1
+    spawnEntityName: YellowTriangle
+    spawnCount: 3

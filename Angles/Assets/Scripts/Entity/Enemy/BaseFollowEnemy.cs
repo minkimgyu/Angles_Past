@@ -13,13 +13,13 @@ abstract public class DelayFollowEnemy : BaseFollowEnemy
 
     public void Initialize(bool immortality, BuffFloat hp, BuffFloat speed, BuffFloat stunTime,
         BuffFloat weight, BuffFloat mass, BuffFloat drag, string dieEffectName, string[] skillNames,
-        BuffInt score, BuffFloat skillUseDistance, BuffFloat skillUseOffsetDistance, BuffFloat skillCooldownTime,
-        BuffFloat followDistance, BuffFloat followOffsetDistance, BuffFloat attackDelay)
+        BuffInt score, BuffFloat skillUseDistance, BuffFloat skillUseOffsetDistance,BuffFloat followDistance, 
+        BuffFloat followOffsetDistance, BuffFloat attackDelay)
     {
         Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames, score, skillUseDistance,
-            skillUseOffsetDistance, skillCooldownTime, followDistance, followOffsetDistance);
+            skillUseOffsetDistance, followDistance, followOffsetDistance);
 
-        this.attackDelay = attackDelay;
+        this.attackDelay = attackDelay.CopyData();
     }
 }
 
@@ -27,16 +27,17 @@ abstract public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
 {
     public void Initialize(bool immortality, BuffFloat hp, BuffFloat speed, BuffFloat stunTime,
         BuffFloat weight, BuffFloat mass, BuffFloat drag, string dieEffectName, string[] skillNames, 
-        BuffInt score, BuffFloat skillUseDistance, BuffFloat skillUseOffsetDistance, BuffFloat skillCooldownTime, 
-        BuffFloat followDistance, BuffFloat followOffsetDistance)
+        BuffInt score, BuffFloat skillUseDistance, BuffFloat skillUseOffsetDistance, BuffFloat followDistance,   
+        BuffFloat followOffsetDistance)
     {
         Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames, score);
 
-        this.skillUseDistance = skillUseDistance;
-        this.skillUseOffsetDistance = skillUseOffsetDistance;
-        this.skillCooldownTime = skillCooldownTime;
-        this.followDistance = followDistance;
-        this.followOffsetDistance = followOffsetDistance;
+        this.skillUseDistance = skillUseDistance.CopyData();
+        this.skillUseOffsetDistance = skillUseOffsetDistance.CopyData();
+        this.followDistance = followDistance.CopyData();
+        this.followOffsetDistance = followOffsetDistance.CopyData();
+
+        m_loadPlayer = PlayManager.instance.Player; // 오브젝트 풀링에서 꺼낼 때, 초기화 시켜주기
     }
 
 
@@ -56,7 +57,8 @@ abstract public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
     public BuffFloat FollowOffsetDistance { get { return followOffsetDistance; } set { followOffsetDistance = value; } }
 
 
-
+    //protected StorageSO storageSO;
+    //public StorageSO StorageSO { get { return storageSO; } }
 
     protected Player m_loadPlayer;
     public Player LoadPlayer { get { return m_loadPlayer; } }
@@ -80,19 +82,19 @@ abstract public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
         m_followComponent = GetComponent<FollowComponent>();
     }
 
-    protected override void Start()
-    {
-        base.Start();
-        FindPlayer();
-    }
+    //protected override void Start()
+    //{
+    //    base.Start();
+    //    FindPlayer();
+    //}
 
-    protected virtual void FindPlayer()
-    {
-        GameObject go = GameObject.FindWithTag("Player");
-        if (go == null) return;
+    //protected virtual void FindPlayer()
+    //{
+    //    GameObject go = GameObject.FindWithTag("Player");
+    //    if (go == null) return;
 
-        m_loadPlayer = go.GetComponent<Player>();
-    }
+    //    m_loadPlayer = go.GetComponent<Player>();
+    //}
 
     protected virtual void AddBaseState()
     {

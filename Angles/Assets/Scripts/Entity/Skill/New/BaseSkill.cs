@@ -255,9 +255,10 @@ abstract public class BaseSkill
         return m_useCount == 0;
     }
 
-    public BaseSkill(string name, float duration, int tickCount, float preDelay, string preDelayEffectName)
+    public BaseSkill(string name, UseConditionType useConditionType, float duration, int tickCount, float preDelay, string preDelayEffectName)
     {
         m_name = name;
+        m_useConditionType = useConditionType;
         m_duration = duration;
         m_tickCount = tickCount;
         m_preDelay = preDelay;
@@ -273,7 +274,8 @@ abstract public class BaseSkill
 
 public class Skill<T> : BaseSkill // 실제 구현 포함
 {
-    public Skill(string name, float duration = 0, int tickCount = 1, float preDelay = 0, string preDelayEffectName = null) : base(name, duration, tickCount, preDelay, preDelayEffectName)
+    public Skill(string name, UseConditionType useConditionType, float duration = 0, int tickCount = 1, float preDelay = 0, string preDelayEffectName = null) 
+        : base(name, useConditionType, duration, tickCount, preDelay, preDelayEffectName)
     {
     }
 
@@ -398,9 +400,9 @@ public class CasterCircleRangeAttack : Skill<RaycastHit2D[]>
 
     // json으로 불러오는 방식이므로 변수를 따로 클레스 내에 작성해줘야함, 이후 생성자 내에서 초기화해주는 코드를 추가로 넣자
 
-    public CasterCircleRangeAttack(string name, bool isFix, float duration, int tickCount, float preDelay, float targetFindRange, float[] skillScalePerTicks,
+    public CasterCircleRangeAttack(string name, UseConditionType useConditionType, bool isFix, float duration, int tickCount, float preDelay, float targetFindRange, float[] skillScalePerTicks,
         EntityTag[] hitTarget, float knockBackThrust, float damage, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas, string preDelayEffectName = null) 
-        : base(name, duration, tickCount, preDelay, preDelayEffectName)
+        : base(name, useConditionType, duration, tickCount, preDelay, preDelayEffectName)
     {
         bool isTickPerRangeSame;
 
@@ -416,9 +418,9 @@ public class CasterCircleRangeAttack : Skill<RaycastHit2D[]>
 [System.Serializable]
 public class ContactedAttack : Skill<List<ContactData>>
 {
-    public ContactedAttack(string name, EntityTag[] hitTarget, float knockBackThrust, float damage, 
+    public ContactedAttack(string name, UseConditionType useConditionType, EntityTag[] hitTarget, float knockBackThrust, float damage, 
         EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
-        : base(name)
+        : base(name, useConditionType)
     {
         m_specifyLocation = new LocationToContactor(false);
         m_targetDesignation = new FindInContacted();
@@ -430,9 +432,9 @@ public class ContactedAttack : Skill<List<ContactData>>
 public class CasterBoxRangeAttack : Skill<RaycastHit2D[]>
 {
 
-    public CasterBoxRangeAttack(string name, bool isFix, float duration, int tickCount, float preDelay, Vector2[] boxRangePerTick, Vector2[] offsetRangePerTick, float[] skillScalePerTicks,
+    public CasterBoxRangeAttack(string name, UseConditionType useConditionType, bool isFix, float duration, int tickCount, float preDelay, Vector2[] boxRangePerTick, Vector2[] offsetRangePerTick, float[] skillScalePerTicks,
         EntityTag[] hitTarget, float knockBackThrust, float damage, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas, string preDelayEffectName = null)
-        : base(name, duration, tickCount, preDelay, preDelayEffectName)
+        : base(name, useConditionType, duration, tickCount, preDelay, preDelayEffectName)
     {
         bool isTickPerRangeSame;
 
@@ -442,5 +444,19 @@ public class CasterBoxRangeAttack : Skill<RaycastHit2D[]>
         m_specifyLocation = new LocationToContactor(isFix);
         m_targetDesignation = new FindInBoxRange(isTickPerRangeSame, boxRangePerTick, offsetRangePerTick);
         m_baseMethods = new List<BaseMethod<RaycastHit2D[]>> { new DamageToRaycastHit(hitTarget, knockBackThrust, damage, skillScalePerTicks, effectDatas, soundDatas) };
+    }
+}
+
+
+[System.Serializable]
+public class CastBuffToPlayer : Skill<Transform>
+{
+    public CastBuffToPlayer(string name, UseConditionType useConditionType, EntityTag[] hitTarget, bool nowApply, string[] buffNames,
+        EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
+        : base(name, useConditionType)
+    {
+        m_specifyLocation = new LocationToContactor(false);
+        m_targetDesignation = new FindPlayer();
+        m_baseMethods = new List<BaseMethod<Transform>> { new BuffToTarget(hitTarget, nowApply, buffNames, effectDatas, soundDatas) };
     }
 }

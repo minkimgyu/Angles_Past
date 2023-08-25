@@ -76,26 +76,31 @@ abstract public class StateMachineEntity<T> : Entity // T´Â Entity, W´Â State
 
     protected virtual void OnTriggerEnter2D(Collider2D collider)
     {
+        if(m_dicState.ContainsKey(CurrentStateName) == false) return;
         m_dicState[CurrentStateName].ReceiveTriggerEnter(collider);
     }
 
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
+        if (m_dicState.ContainsKey(CurrentStateName) == false) return;
         m_dicState[CurrentStateName].ReceiveCollisionEnter(collision);
     }
 
     protected virtual void OnCollisionExit2D(Collision2D collision)
     {
+        if (m_dicState.ContainsKey(CurrentStateName) == false) return;
         m_dicState[CurrentStateName].ReceiveCollisionExit(collision);
     }
 
     protected virtual void OnEnable()
     {
+        if (m_dicState.ContainsKey(CurrentStateName) == false) return;
         m_dicState[CurrentStateName].ReceiveOnEnable();
     }
 
     protected virtual void OnDisable()
     {
+        if (m_dicState.ContainsKey(CurrentStateName) == false) return;
         m_dicState[CurrentStateName].ReceiveOnDisable();
     }
 

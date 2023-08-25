@@ -5,7 +5,7 @@ using System;
 
 public class SkillController : MonoBehaviour
 {
-    List<BaseSkill> m_skills; // --> 키 값이 중복이 안 되서 리스트로 사용해야할 듯
+    List<BaseSkill> m_skills = new List<BaseSkill>(); // --> 키 값이 중복이 안 되서 리스트로 사용해야할 듯
 
     SkillFactory skillFactory;
 
@@ -13,7 +13,7 @@ public class SkillController : MonoBehaviour
 
     private void Awake()
     {
-        skillFactory = GameObject.FindWithTag("Factory").GetComponent<SkillFactory>();
+        skillFactory = FindObjectOfType<SkillFactory>();
 
         OverlapTypeConditions = new Dictionary<BaseSkill.OverlapType, Action<BaseSkill>>()
         {
@@ -55,7 +55,7 @@ public class SkillController : MonoBehaviour
 
     public void AddSkillToList(string name)
     {
-        BaseSkill skill = skillFactory.OrderSkill(gameObject, name);
+        BaseSkill skill = skillFactory.Order(gameObject, name);
         OverlapTypeConditions[skill.OverlapCondition](skill); 
 
         UseSkill(BaseSkill.UseConditionType.Get);
