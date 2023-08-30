@@ -52,17 +52,75 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
 
     [SerializeField]
     bool m_gameClear = false;
-    public bool GameClearCheck { get { return m_gameClear; }}
+    public bool GameClearCheck { get { return m_gameClear; } }
+
+    bool nowPortrait = true;
+
+    //public string[] dropSkills = { "GhostItem", "BarrierItem", "BladeItem", "KnockbackItem", "ShockwaveItem", "SpawnBallItem", "SpawnGravityBallItem", "StickyBombItem" };
+
+    public string[] dropSkills;
+
+    public RectTransform move;
+    public RectTransform rush;
+    public CanvasScaler canvasScaler;
 
     // Start is called before the first frame update
     protected void Awake()
     { 
         instance = this;
         Application.targetFrameRate = 60;
+<<<<<<< Updated upstream
+=======
+        
+
+        //base.Awake();
+        GameObject go = Resources.Load("Prefabs/Entity/Player") as GameObject;
+        player = Instantiate(go).GetComponent<Player>();
+>>>>>>> Stashed changes
+    }
+
+    private void Update()
+    {
+        if (Screen.orientation == ScreenOrientation.Portrait && !nowPortrait)
+        {
+            nowPortrait = true;
+            ChangePortrait(nowPortrait);
+        }
+        else if((Screen.orientation == ScreenOrientation.LandscapeLeft || Screen.orientation == ScreenOrientation.LandscapeRight) && nowPortrait)
+        {
+            nowPortrait = false;
+            ChangePortrait(nowPortrait);
+        }
+    }
+
+    void ChangePortrait(bool nowPortrait)
+    {
+        if(nowPortrait)
+        {
+            move.sizeDelta = new Vector2(540, 1920);
+            rush.sizeDelta = new Vector2(540, 1920);
+            virtualCamera.m_Lens.OrthographicSize = 12;
+            canvasScaler.referenceResolution = new Vector2(1080, 1920);
+        }
+        else
+        {
+            move.sizeDelta = new Vector2(960, 1080);
+            rush.sizeDelta = new Vector2(960, 1080);
+            virtualCamera.m_Lens.OrthographicSize = 8;
+            canvasScaler.referenceResolution = new Vector2(1920, 1080);
+        }
     }
 
     private void Start()
     {
+<<<<<<< Updated upstream
+=======
+        dropSkills = SaveManager.instance.ReturnDropSkills();
+
+        player.InitData();
+        virtualCamera.Follow = player.transform;
+
+>>>>>>> Stashed changes
         SoundManager.Instance.PlayBGM("BGM");
     }
 
@@ -81,12 +139,14 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
     {
         m_gameClear = true;
         finalScoreTxt.text = totalScore.ToString();
+
+        SaveManager.instance.SaveTotalScore(totalScore);
         gameClearPanel.SetActive(true);
     }
 
     public void RestartGame()
     {
-        SceneManager.LoadScene("PlayScene");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void ReturnToMenu()

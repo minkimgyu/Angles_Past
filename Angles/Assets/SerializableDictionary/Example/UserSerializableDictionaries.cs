@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
+<<<<<<< Updated upstream
 [Serializable]
 public class StringBaseBuffSODictionary : SerializableDictionary<string, BaseBuffSO> { }
 
@@ -17,14 +18,32 @@ public class EffectConditionEffectDataDictionary : SerializableDictionary<Effect
 
 [Serializable]
 public class EffectConditionSoundDataDictionary : SerializableDictionary<EffectCondition, SoundData> { }
+=======
+>>>>>>> Stashed changes
 
 
 
 [Serializable]
+<<<<<<< Updated upstream
 public class StringFollowEnemyStatDictionary : SerializableDictionary<string, FollowEnemyStat> { }
 
 [Serializable]
 public class StringReflectEnemyStatDictionary : SerializableDictionary<string, ReflectEnemyStat> { }
+=======
+public class StringStatSlotDictionary : SerializableDictionary<string, StatSlot> { }
+
+[Serializable]
+public class StringSkillSlotDictionary : SerializableDictionary<string, SkillSlot> { }
+
+[Serializable]
+public class StringStatSlotDataDictionary : SerializableDictionary<string, StatSlotData> { }
+
+[Serializable]
+public class StringSkillSlotDataDictionary : SerializableDictionary<string, SkillSlotData> { }
+
+
+
+>>>>>>> Stashed changes
 
 [Serializable]
 public class StringStringDictionary : SerializableDictionary<string, string> {}

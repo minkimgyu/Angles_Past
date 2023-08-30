@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3286443389367354579}
   - component: {fileID: 4023259086720834874}
   - component: {fileID: 5504882030948801225}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SpawnBallProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}

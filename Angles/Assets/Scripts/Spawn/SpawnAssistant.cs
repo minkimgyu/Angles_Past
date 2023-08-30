@@ -36,11 +36,10 @@ public class SpawnAssistant : MonoBehaviour
 {
     public DrawGizmo playerViewArea;
     public DrawGizmo canSpawnArea;
-    public List<Transform> activeSpawnPoints;
 
     public List<Transform> FindSpawnPoint()
     {
-        activeSpawnPoints.Clear();
+        List<Transform> activeSpawnPoints = new List<Transform>();
 
         RaycastHit2D[] spawnAreaObjects =  canSpawnArea.CheckBoxArea(transform);
         RaycastHit2D[] aroundPlayerObjects = playerViewArea.CheckBoxArea(transform);
@@ -53,6 +52,20 @@ public class SpawnAssistant : MonoBehaviour
         for (int i = 0; i < aroundPlayerObjects.Length; i++)
         {
             activeSpawnPoints.Remove(aroundPlayerObjects[i].transform);
+        }
+
+        return activeSpawnPoints;
+    }
+
+    public List<Transform> FindItemSpawnPoint()
+    {
+        List<Transform> activeSpawnPoints = new List<Transform>();
+
+        RaycastHit2D[] aroundPlayerObjects = playerViewArea.CheckBoxArea(transform);
+
+        for (int i = 0; i < aroundPlayerObjects.Length; i++)
+        {
+            activeSpawnPoints.Add(aroundPlayerObjects[i].transform);
         }
 
         return activeSpawnPoints;

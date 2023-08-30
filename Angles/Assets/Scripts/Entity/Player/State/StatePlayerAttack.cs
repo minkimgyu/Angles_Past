@@ -50,8 +50,40 @@ public class StatePlayerAttack : BaseState<Player.State>
         {
             if (collision != null && collision.contacts.Length != 0)
             {
+<<<<<<< Updated upstream
                 GoToReflectState(collision);
             }
+=======
+                if(followEnemy.Data.Weight >= m_loadPlayer.Data.Weight)
+                {
+                    if (col != null && col.contacts.Length != 0)
+                    {
+                        Message<Player.State> message = new Message<Player.State>();
+                        message.dir = m_loadPlayer.ReflectComponent.ResetReflectVec(col.contacts[0].normal);
+                        Telegram<Player.State> telegram = new Telegram<Player.State>(Player.State.Attack, Player.State.Reflect, message);
+
+                        m_loadPlayer.SetState(Player.State.Reflect, telegram);
+                    }
+                }
+            }
+            else if(reflectEnemy != null)
+            {
+                if (reflectEnemy.Data.Weight >= m_loadPlayer.Data.Weight)
+                {
+                    if (col != null && col.contacts.Length != 0)
+                    {
+                        Message<Player.State> message = new Message<Player.State>();
+                        message.dir = m_loadPlayer.ReflectComponent.ResetReflectVec(col.contacts[0].normal);
+                        Telegram<Player.State> telegram = new Telegram<Player.State>(Player.State.Attack, Player.State.Reflect, message);
+
+                        m_loadPlayer.SetState(Player.State.Reflect, telegram);
+                    }
+                }
+            }
+            
+
+            // 스킬 사용
+>>>>>>> Stashed changes
         }
     }
 
@@ -66,6 +98,15 @@ public class StatePlayerAttack : BaseState<Player.State>
 
     public override void OperateEnter()
     {
+<<<<<<< Updated upstream
+=======
+        m_loadPlayer.spriteRenderer.color = m_loadPlayer.immortalityColor;
+
+        //m_loadPlayer.BattleComponent.UseSkill(SkillUseConditionType.Rush);
+
+        //SoundManager.Instance.PlaySFX(m_loadPlayer.transform.position, "Rush", 0.3f);
+
+>>>>>>> Stashed changes
         m_loadPlayer.Animator.SetBool("NowAttack", true);
         m_loadPlayer.DashComponent.PlayDash(savedAttackVec, m_loadPlayer.RushThrust.IntervalValue * m_loadPlayer.RushRatio, m_loadPlayer.RushDuration.IntervalValue);
 
@@ -76,6 +117,8 @@ public class StatePlayerAttack : BaseState<Player.State>
 
     public override void OperateExit()
     {
+        m_loadPlayer.spriteRenderer.color = m_loadPlayer.originColor;
+
         m_loadPlayer.DashComponent.QuickEndTask(); // 조건에서 탈출할 때, 한번 리셋해줌
         m_loadPlayer.Animator.SetBool("NowAttack", false);
     }

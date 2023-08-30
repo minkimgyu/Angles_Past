@@ -8,6 +8,7 @@ abstract public class BasicEffectPlayer : PositionDesignation
 
     public override void Init(Transform transform)
     {
+<<<<<<< Updated upstream
         base.Init(transform);
         m_duration = -1;
     }
@@ -15,6 +16,11 @@ abstract public class BasicEffectPlayer : PositionDesignation
     public void Init(Transform transform, float duration)
     {
         base.Init(transform);
+=======
+        m_posTr = tr;
+        m_isFix = true;
+        transform.position = m_posTr.position;
+>>>>>>> Stashed changes
         m_duration = duration;
     }
 

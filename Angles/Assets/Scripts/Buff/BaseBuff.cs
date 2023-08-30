@@ -31,7 +31,11 @@ abstract public class BaseBuff  // --> 다양한 데이터에 접근 가능하게끔 제작 --->
     }
     // 
 
+<<<<<<< Updated upstream
     public abstract void OnStart(GameObject caster); // 버프 이팩트는 이밴트로 AddState --> BuffComponent에서 SO 받아서 처리
+=======
+    public abstract void OnStart(GameObject caster); // getComponent
+>>>>>>> Stashed changes
 
     public abstract void OnEnd();
 

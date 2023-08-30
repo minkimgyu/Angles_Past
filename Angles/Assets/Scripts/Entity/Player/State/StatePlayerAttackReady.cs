@@ -34,7 +34,13 @@ public class StatePlayerAttackReady : BaseState<Player.State>
         m_loadPlayer.ActionJoystick.AttackReadyAction += GoToMove;
 
         m_loadPlayer.Animator.SetBool("NowReady", true);
+<<<<<<< Updated upstream
         m_loadPlayer.ResetRushRatioToZero();
+=======
+        m_loadPlayer.Data.ResetRushRatioToZero();
+
+        m_loadPlayer.directionPointer.gameObject.SetActive(true);
+>>>>>>> Stashed changes
     }
 
     void GoToMove()
@@ -50,6 +56,8 @@ public class StatePlayerAttackReady : BaseState<Player.State>
         m_loadPlayer.ActionJoystick.AttackAction -= Attack;
         m_loadPlayer.ActionJoystick.AttackReadyAction -= GoToMove;
 
+        m_loadPlayer.directionPointer.gameObject.SetActive(false);
+
         m_loadPlayer.Animator.SetBool("NowReady", false);
 
         m_loadPlayer.rushUIEventSO.RaiseEvent(0); // hide
@@ -57,7 +65,15 @@ public class StatePlayerAttackReady : BaseState<Player.State>
 
     public override void OperateUpdate()
     {
+<<<<<<< Updated upstream
         m_loadPlayer.MoveComponent.Move(m_loadPlayer.MoveVec, m_loadPlayer.ActionVec, m_loadPlayer.Speed.IntervalValue * m_loadPlayer.ReadySpeedDecreaseRatio.IntervalValue, true);
+=======
+        m_loadPlayer.directionPointer.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(m_loadPlayer.ActionVec.y, m_loadPlayer.ActionVec.x) * Mathf.Rad2Deg);
+
+
+        m_loadPlayer.MoveComponent.Move(m_loadPlayer.MoveVec, m_loadPlayer.ActionVec, m_loadPlayer.Data.ReadySpeed.IntervalValue * m_loadPlayer.Data.SpeedRatio, true);
+
+>>>>>>> Stashed changes
         m_loadPlayer.MoveComponent.RotationPlayer(m_loadPlayer.ActionVec, true);
 
         m_loadPlayer.RestoreRushRatio();

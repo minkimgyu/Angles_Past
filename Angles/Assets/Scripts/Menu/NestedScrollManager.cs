@@ -86,8 +86,9 @@ public class NestedScrollManager : MonoBehaviour, IBeginDragHandler, IDragHandle
         {
             scrollbar.value = Mathf.Lerp(scrollbar.value, targetPos, 0.1f);
 
-            // 목표 버튼은 크기가 커짐
-            for (int i = 0; i < SIZE; i++) BtnRect[i].sizeDelta = new Vector2(i == targetIndex ? 360 : 180, BtnRect[i].sizeDelta.y);
+            // 목표 버튼은 크기가 커짐 --> 이전에는 360, 180 이였음
+            for (int i = 0; i < SIZE; i++)
+                BtnRect[i].sizeDelta = new Vector2(i == targetIndex ? 330 : 250, i == targetIndex ? 330 : 250);//BtnRect[i].sizeDelta.y);
         }
 
 
@@ -103,7 +104,7 @@ public class NestedScrollManager : MonoBehaviour, IBeginDragHandler, IDragHandle
             // 선택한 버튼 아이콘은 약간 위로 올리고, 크기도 키우고, 텍스트도 활성화
             if (i == targetIndex)
             {
-                BtnTargetPos.y = -23f;
+                BtnTargetPos.y = +23f;
                 BtnTargetScale = new Vector3(1.2f, 1.2f, 1);
                 textActive = true;
             }

@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 1483472553
   m_SortingLayer: 3
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 6159bb969b811a543b72a4c23d433162, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 31c7ddd110bfb8f4f9761d94760e817c, type: 3}
   m_Color: {r: 1, g: 0.6, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -172,6 +172,55 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inheritedTag: 1
+<<<<<<< Updated upstream
+=======
+  crackSprite: {fileID: 21300000, guid: dc4acc9842ef9b34a928d4ec251e81a4, type: 3}
+  dieEffectMethod: {fileID: 11400000, guid: 930cc66971ff6964988aa94aeda66375, type: 2}
+  m_data:
+    name: 
+    shape: 
+    color: 
+    immortality: 0
+    hp: 0
+    speed:
+      maxValue: 0
+      minValue: 0
+      originValue: 0
+    stunTime: 0
+    weight: 0
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames: []
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 0
+    skillUseOffsetDistance: 0
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 0
+    stopMinDistance: 0
+    prefabCount: 0
+    score: 0
+    spawnPercentage: 0
+  delay: 5
+--- !u!114 &3870266755109579504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4878745538717634273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1638d4b05d9f4e145b75023474c6c5cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_possessingSkills: []
+  m_activeSkills: []
+  m_synthesisComponent:
+    synthesisWays: []
+>>>>>>> Stashed changes
 --- !u!114 &3870266755109579505
 MonoBehaviour:
   m_ObjectHideFlags: 0

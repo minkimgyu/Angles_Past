@@ -19,7 +19,7 @@ MonoBehaviour:
     immortality: 0
     hp: 1
     speed:
-      maxValue: 10
+      maxValue: 15
       minValue: 2
       originValue: 5
     stunTime: 0.5
@@ -31,7 +31,7 @@ MonoBehaviour:
       - Punch
       buffNames: []
     readySpeed:
-      maxValue: 5
+      maxValue: 10
       minValue: 1
       originValue: 3
     speedRatio: 1
@@ -76,6 +76,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 2
     spawnPercentage: 0.2
+    goldCount: 1
   - name: YellowRectangle
     shape: 
     color: 
@@ -103,6 +104,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 4
     spawnPercentage: 0
+    goldCount: 2
   - name: YellowPentagon
     shape: 
     color: 
@@ -130,6 +132,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 8
     spawnPercentage: 0.3
+    goldCount: 3
   - name: YellowHexagon
     shape: 
     color: 
@@ -157,6 +160,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 12
     spawnPercentage: 0.3
+    goldCount: 3
   - name: YellowHeptagon
     shape: 
     color: 
@@ -184,6 +188,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 0
     spawnPercentage: 1
+    goldCount: 0
   - name: YellowOctagon
     shape: 
     color: 
@@ -211,6 +216,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 20
     spawnPercentage: 0.5
+    goldCount: 5
   - name: OrangeTriangle
     shape: 
     color: 
@@ -238,6 +244,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 4
     spawnPercentage: 0.2
+    goldCount: 1
   - name: OrangeRectangle
     shape: 
     color: 
@@ -265,6 +272,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 6
     spawnPercentage: 0.2
+    goldCount: 2
   - name: OrangePentagon
     shape: 
     color: 
@@ -292,6 +300,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 10
     spawnPercentage: 0.3
+    goldCount: 3
   - name: OrangeHexagon
     shape: 
     color: 
@@ -319,6 +328,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 14
     spawnPercentage: 0.3
+    goldCount: 3
   - name: OrangeHeptagon
     shape: 
     color: 
@@ -346,6 +356,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 0
     spawnPercentage: 1
+    goldCount: 0
   - name: OrangeOctagon
     shape: 
     color: 
@@ -373,6 +384,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 22
     spawnPercentage: 0.5
+    goldCount: 5
   - name: RedTriangle
     shape: 
     color: 
@@ -400,6 +412,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 4
     spawnPercentage: 0.2
+    goldCount: 1
   - name: RedRectangle
     shape: 
     color: 
@@ -427,6 +440,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 8
     spawnPercentage: 0.2
+    goldCount: 2
   - name: RedPentagon
     shape: 
     color: 
@@ -454,6 +468,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 16
     spawnPercentage: 0.3
+    goldCount: 3
   - name: RedHexagon
     shape: 
     color: 
@@ -481,6 +496,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 24
     spawnPercentage: 0.3
+    goldCount: 3
   - name: RedHeptagon
     shape: 
     color: 
@@ -508,6 +524,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 0
     spawnPercentage: 1
+    goldCount: 0
   - name: RedOctagon
     shape: 
     color: 
@@ -535,6 +552,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 40
     spawnPercentage: 0.5
+    goldCount: 5
   - name: OperaTriangle
     shape: 
     color: 
@@ -562,6 +580,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 6
     spawnPercentage: 0.2
+    goldCount: 1
   - name: OperaRectangle
     shape: 
     color: 
@@ -589,6 +608,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 12
     spawnPercentage: 0.2
+    goldCount: 2
   - name: OperaPentagon
     shape: 
     color: 
@@ -616,6 +636,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 24
     spawnPercentage: 0.3
+    goldCount: 3
   - name: OperaHexagon
     shape: 
     color: 
@@ -643,6 +664,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 36
     spawnPercentage: 0.3
+    goldCount: 3
   - name: OperaHeptagon
     shape: 
     color: 
@@ -670,6 +692,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 0
     spawnPercentage: 1
+    goldCount: 0
   - name: OperaOctagon
     shape: 
     color: 
@@ -697,6 +720,7 @@ MonoBehaviour:
     prefabCount: 0
     score: 60
     spawnPercentage: 0.5
+    goldCount: 5
   - name: Boss
     shape: 
     color: 
@@ -724,3 +748,4 @@ MonoBehaviour:
     prefabCount: 0
     score: 100
     spawnPercentage: 0
+    goldCount: 0

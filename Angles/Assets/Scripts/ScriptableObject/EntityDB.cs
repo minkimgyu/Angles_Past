@@ -454,14 +454,78 @@ public class PlayerData : IData<PlayerData>, IBuffApplier<PlayerData.BuffVariati
 [System.Serializable]
 public class BaseEnemyData : IData<BaseEnemyData>, IBuffApplier<BaseEnemyData.BuffVariation> // 적끼리 겹치는 데이터 모음
 {
+<<<<<<< Updated upstream
     [System.Serializable]
     public struct BuffVariation
     {
         public int scoreVariation;
+=======
+    [SerializeField]
+    protected float knockBackDamage;
+    public float KnockBackDamage { get { return knockBackDamage; } set { knockBackDamage = value; } }
+
+    [SerializeField]
+    float skillUseDistance;
+    public float SkillUseDistance { get { return skillUseDistance; } set { skillUseDistance = value; } }
+
+    [SerializeField]
+    float skillUseOffsetDistance;
+    public float SkillUseOffsetDistance { get { return skillUseOffsetDistance; } set { skillUseOffsetDistance = value; } }
+
+    [SerializeField]
+    float skillUseRange;
+    public float SkillUseRange { get { return skillUseRange; } set { skillUseRange = value; } }
+
+    [SerializeField]
+    float skillReuseTime;
+    public float SkillReuseTime { get { return skillReuseTime; } set { skillReuseTime = value; } }
+
+    [SerializeField]
+    float followMinDistance;
+    public float FollowMinDistance { get { return followMinDistance; } set { followMinDistance = value; } }
+
+    [SerializeField]
+    float stopMinDistance;
+    public float StopMinDistance { get { return stopMinDistance; } set { stopMinDistance = value; } }
+
+    [SerializeField]
+    int prefabCount;
+    public int PrefabCount { get { return prefabCount; } set { prefabCount = value; } }
+
+    [SerializeField]
+    protected int score;
+    public int Score { get { return score; } set { score = value; } }
+
+    [SerializeField]
+    protected float spawnPercentage;
+    public float SpawnPercentage { get { return spawnPercentage; } set { spawnPercentage = value; } }
+
+    [SerializeField]
+    protected int goldCount;
+    public int GoldCount { get { return goldCount; } set { goldCount = value; } }
+
+    public EnemyData() { }
+
+    public EnemyData(string name, string shape, string color, bool immortality, float hp, BuffFloat speed, float stunTime, float weight, float drag, float knockBackThrust, GrantedUtilization grantedUtilization, float knockBackDamage, 
+        float skillUseDistance, float skillUseOffsetDistance, float skillUseRange, float skillReuseTime, float followMinDistance, float stopMinDistance, int prefabCount, int score, float spawnPercentage, int goldCount) : base(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust, grantedUtilization)
+    {
+        this.knockBackDamage = knockBackDamage;
+        this.skillUseDistance = skillUseDistance;
+        this.skillUseOffsetDistance = skillUseOffsetDistance;
+        this.skillUseRange = skillUseRange;
+        this.skillReuseTime = skillReuseTime;
+        this.followMinDistance = followMinDistance;
+        this.stopMinDistance = stopMinDistance;
+        this.prefabCount = prefabCount;
+        this.score = score;
+        this.spawnPercentage = spawnPercentage;
+        this.goldCount = goldCount;
+>>>>>>> Stashed changes
     }
 
     public void ApplyBuff(BuffVariation value)
     {
+<<<<<<< Updated upstream
         score.IntervalValue += value.scoreVariation;
     }
 
@@ -487,6 +551,9 @@ public class BaseEnemyData : IData<BaseEnemyData>, IBuffApplier<BaseEnemyData.Bu
     public BaseEnemyData CopyData()
     {
         return new BaseEnemyData(score, grantedUtilization);
+=======
+        return new EnemyData(name, shape, color, immortality, hp, speed, stunTime, weight, drag, knockBackThrust, grantedUtilization, knockBackDamage, skillUseDistance, skillUseOffsetDistance, skillUseRange, skillReuseTime, followMinDistance, stopMinDistance, prefabCount, score, spawnPercentage, goldCount);
+>>>>>>> Stashed changes
     }
 }
 

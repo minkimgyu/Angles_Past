@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 1483472553
   m_SortingLayer: 3
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 07ec8014eae825d479fd027a2be425de, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6f0082d82f71872428ecb6172e965752, type: 3}
   m_Color: {r: 1, g: 0.2, b: 0.8, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -172,10 +172,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inheritedTag: 1
+<<<<<<< Updated upstream
   fixTime:
     maxValue: 0
     minValue: 0
     originValue: 0
+=======
+  crackSprite: {fileID: 21300000, guid: e73dabbc911fe3940a750fc241720db0, type: 3}
+  dieEffectMethod: {fileID: 11400000, guid: 5435cefc2724abd408814852e8f5f79f, type: 2}
+  m_data:
+    name: 
+    shape: 
+    color: 
+    immortality: 0
+    hp: 0
+    speed:
+      maxValue: 0
+      minValue: 0
+      originValue: 0
+    stunTime: 0
+    weight: 0
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames: []
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 0
+    skillUseOffsetDistance: 0
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 0
+    stopMinDistance: 0
+    prefabCount: 0
+    score: 0
+    spawnPercentage: 0
+  delay: 4
+  fixTime: 2
+--- !u!114 &1610933736780651315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610933736780651266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1638d4b05d9f4e145b75023474c6c5cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_possessingSkills: []
+  m_activeSkills: []
+  m_synthesisComponent:
+    synthesisWays: []
+>>>>>>> Stashed changes
 --- !u!114 &1610933736780651276
 MonoBehaviour:
   m_ObjectHideFlags: 0

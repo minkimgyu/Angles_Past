@@ -210,6 +210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inheritedTag: 1
+<<<<<<< Updated upstream
 --- !u!114 &-8389004276541678591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,3 +223,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+=======
+  crackSprite: {fileID: 21300000, guid: 33e725bd2f2fd3140b0e64cd7d4633be, type: 3}
+  dieEffectMethod: {fileID: 11400000, guid: 4b0159a746cb0de428b4e033ef8ab7f0, type: 2}
+  m_data:
+    name: 
+    shape: 
+    color: 
+    immortality: 0
+    hp: 0
+    speed:
+      maxValue: 0
+      minValue: 0
+      originValue: 0
+    stunTime: 0
+    weight: 0
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames: []
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 0
+    skillUseOffsetDistance: 0
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 0
+    stopMinDistance: 0
+    prefabCount: 0
+    score: 0
+    spawnPercentage: 0
+  delay: 5
+>>>>>>> Stashed changes

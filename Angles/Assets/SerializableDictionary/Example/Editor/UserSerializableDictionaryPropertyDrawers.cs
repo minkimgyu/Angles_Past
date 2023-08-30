@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+<<<<<<< Updated upstream
 using System;
 
 [CustomPropertyDrawer(typeof(StringBaseEntitySODictionary))]
@@ -15,6 +16,13 @@ using System;
 
 [CustomPropertyDrawer(typeof(StringFollowEnemyStatDictionary))]
 [CustomPropertyDrawer(typeof(StringReflectEnemyStatDictionary))]
+=======
+
+[CustomPropertyDrawer(typeof(StringStatSlotDictionary))]
+[CustomPropertyDrawer(typeof(StringSkillSlotDictionary))]
+[CustomPropertyDrawer(typeof(StringStatSlotDataDictionary))]
+[CustomPropertyDrawer(typeof(StringSkillSlotDataDictionary))]
+>>>>>>> Stashed changes
 
 [CustomPropertyDrawer(typeof(StringStringDictionary))]
 [CustomPropertyDrawer(typeof(ObjectColorDictionary))]

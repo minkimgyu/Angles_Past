@@ -63,6 +63,9 @@ public class Spawner : MonoBehaviour
     public int level = 0;
     public float time;
 
+    float nextItemSpawnTime;
+    float spawnTimeRange = 10; // 10초마다 생성
+
     public SpawnDatas data;
 
     SpawnAssistant spawnAssistant;
@@ -83,11 +86,30 @@ public class Spawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+<<<<<<< Updated upstream
         entityFactory = FindObjectOfType<EntityFactory>();
         Player player = (Player)entityFactory.Order("Player");
         spawnAssistant = player.GetComponentInChildren<SpawnAssistant>();
 
         PlayManager.Instance.Player = player;
+=======
+        nextItemSpawnTime = spawnTimeRange;
+        spawnAssistant = GameObject.FindWithTag("Player").GetComponentInChildren<SpawnAssistant>();
+>>>>>>> Stashed changes
+    }
+
+    void SpawnItem()
+    {
+        if (PlayManager.instance.GameClearCheck == true) return;
+        if (time <= nextItemSpawnTime) return;
+
+        // 플레이어 주변 탐색 후 생성
+        Vector3 aroundPos = new Vector3(spawnAssistant.transform.position.x + Random.Range(-2.0f, 2.0f),
+            spawnAssistant.transform.position.x + Random.Range(-2.0f, 2.0f), 0);
+
+        string name = PlayManager.instance.dropSkills[UnityEngine.Random.Range(0, PlayManager.instance.dropSkills.Length)];
+        Spawn(aroundPos, name);
+        nextItemSpawnTime += spawnTimeRange;
     }
 
     // Update is called once per frame
@@ -97,6 +119,9 @@ public class Spawner : MonoBehaviour
 
         time += Time.deltaTime;
         timeTxt.text = string.Format("{0:F0}", time); // --> SO로 변경
+
+        SpawnItem();
+
 
         if (data.SpawnDataCollection.Count - 1 < level) return;
 
@@ -194,6 +219,12 @@ public class Spawner : MonoBehaviour
 
         loadPos.Add(changePos);
         return changePos;
+    }
+
+    public void Spawn(Vector3 pos, string skillName)
+    {
+        DropSkill skill = ObjectPooler.SpawnFromPool<DropSkill>(skillName);
+        skill.transform.position = pos;
     }
 
     public void Spawn(Vector3 pos, int spawnCount, string spawnEntityName)

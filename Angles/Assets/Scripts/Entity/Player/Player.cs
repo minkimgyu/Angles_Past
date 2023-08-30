@@ -98,6 +98,16 @@ public class Player : Avatar<Player.State>
     MoveJoystick moveJoystick;
     public MoveJoystick MoveJoystick { get { return moveJoystick; } }
 
+<<<<<<< Updated upstream
+=======
+    Rigidbody2D m_rigid;
+
+    [HideInInspector]
+    public SpriteRenderer spriteRenderer;
+    public Color originColor;
+    public Color immortalityColor;
+
+>>>>>>> Stashed changes
     // 조이스틱 프로퍼티
     public Vector2 ActionVec { get { return actionJoycstick.MainVec; } }
 
@@ -106,8 +116,33 @@ public class Player : Avatar<Player.State>
     [SerializeField]
     public PlayerActionEventSO rushUIEventSO;
 
+    public Transform directionPointer;
+
     [SerializeField]
+<<<<<<< Updated upstream
     public PlayerActionEventSO dashUIEventSO;
+=======
+    PlayerData _data;
+    public PlayerData Data { get { return _data; } }
+
+    [SerializeField]
+    AdditionalPlayerData _additionalData;
+    public AdditionalPlayerData AdditionalData { get { return _additionalData; } set { _additionalData = value; } }
+
+    public override void InitData()
+    {
+        _data = DatabaseManager.Instance.EntityDB.Player.CopyData();
+        SaveManager.instance.ResetPlayerData(_data);
+
+        scaleUp = (maxScale - transform.localScale.x) / canEatCount;
+        massUp = (maxMass - m_rigid.mass) / canEatCount;
+        weightUp = (maxWeight - _data.Weight) / canEatCount;
+
+        Debug.Log(weightUp);
+        rushThrustUp = (maxRushThrust - _data.RushThrust) / canEatCount;
+        dashThrustUp = (maxDashThrust - _data.DashThrust) / canEatCount;
+    }
+>>>>>>> Stashed changes
 
     public enum State
     {      
@@ -137,8 +172,14 @@ public class Player : Avatar<Player.State>
 
     protected override void Awake()
     {
+<<<<<<< Updated upstream
         base.Awake();
 
+=======
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        m_dashComponent = GetComponent<DashComponent>();
+>>>>>>> Stashed changes
         m_attackComponent = GetComponent<AttackComponent>();
         m_reflectComponent = GetComponent<ReflectComponent>();
         m_animator = GetComponent<Animator>();
@@ -150,6 +191,52 @@ public class Player : Avatar<Player.State>
 
         moveJoystick = GameObject.FindWithTag("MoveJoystick").GetComponent<MoveJoystick>();
         actionJoycstick = GameObject.FindWithTag("AttackJoystick").GetComponent<ActionJoystick>();
+<<<<<<< Updated upstream
+=======
+        
+        m_reflectComponent.AbleTags.Add(EntityTag.Wall);
+
+        //m_battleComponent.AbleTags.Add(EntityTag.Enemy);
+
+
+        //actionJoycstick.DashAction += Dash;
+        //actionJoycstick.AttackReadyAction += AttackReady;
+        //actionJoycstick.AttackAction += Attack;
+
+        // action, move 입력 받는 부분 찾아서 넣기
+        // 델리게이트 연결시켜주기
+        // 데이터 값 넘겨서 UI 초기화 해주기
+        // 데이터 여기서 저장하기
+
+        
+    }
+
+    int tmpCount = 0;
+    int canEatCount = 100;
+
+    float maxScale = 0.3f;
+    float maxMass = 5.0f;
+    float maxWeight = 1.2f;
+    float maxRushThrust = 150.0f;
+    float maxDashThrust = 100.0f;
+
+    float scaleUp = 0;
+    float massUp = 0;
+    float weightUp = 0;
+    float rushThrustUp = 0;
+    float dashThrustUp = 0;
+
+    public void UpMassAndScale()
+    {
+        tmpCount++;
+        if (canEatCount < tmpCount) return;
+
+        transform.localScale += new Vector3(scaleUp, scaleUp, 0);
+        m_rigid.mass += massUp;
+        _data.Weight += weightUp;
+        _data.RushThrust += rushThrustUp;
+        _data.DashThrust += dashThrustUp;
+>>>>>>> Stashed changes
     }
 
     private void Start()

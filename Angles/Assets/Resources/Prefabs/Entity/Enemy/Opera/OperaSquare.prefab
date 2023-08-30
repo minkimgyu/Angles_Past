@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 1483472553
   m_SortingLayer: 3
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 00e6ff8238d042b48b9e76f0be7ceff7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 84420a43a92071d42a21b850ce24493d, type: 3}
   m_Color: {r: 1, g: 0.2, b: 0.8, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -194,6 +194,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inheritedTag: 1
+<<<<<<< Updated upstream:Angles/Assets/Resources/Prefabs/Entity/Enemy/Opera/OperaSquare.prefab
+=======
+  crackSprite: {fileID: 21300000, guid: 42d2971b9b1b73844921f4e346ff76c0, type: 3}
+  dieEffectMethod: {fileID: 11400000, guid: eebf180f30e73ba40b727fa2751db0dc, type: 2}
+  m_data:
+    name: 
+    shape: 
+    color: 
+    immortality: 0
+    hp: 0
+    speed:
+      maxValue: 0
+      minValue: 0
+      originValue: 0
+    stunTime: 0
+    weight: 0
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames: []
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 0
+    skillUseOffsetDistance: 0
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 0
+    stopMinDistance: 0
+    prefabCount: 0
+    score: 0
+    spawnPercentage: 0
+>>>>>>> Stashed changes:Angles/Assets/Resources/Prefabs/Entity/Enemy/Opera/OperaRectangle.prefab
 --- !u!114 &6611840952222148790
 MonoBehaviour:
   m_ObjectHideFlags: 0

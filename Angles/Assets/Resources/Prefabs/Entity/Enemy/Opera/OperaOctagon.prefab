@@ -252,7 +252,7 @@ SpriteRenderer:
   m_SortingLayerID: 1483472553
   m_SortingLayer: 3
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: df6d8b980f5d0514e82f07c2b2202e55, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b051fb4e020ff19469c9e6f4f3ab18ae, type: 3}
   m_Color: {r: 1, g: 0.2, b: 0.8, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -313,10 +313,48 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inheritedTag: 1
+<<<<<<< Updated upstream
   directionCount:
     maxValue: 0
     minValue: 0
     originValue: 0
+=======
+  crackSprite: {fileID: 21300000, guid: b0197d46daec9ee4fa64c44c6fe7f5f7, type: 3}
+  dieEffectMethod: {fileID: 11400000, guid: 4b0159a746cb0de428b4e033ef8ab7f0, type: 2}
+  m_data:
+    name: 
+    shape: 
+    color: 
+    immortality: 0
+    hp: 0
+    speed:
+      maxValue: 0
+      minValue: 0
+      originValue: 0
+    stunTime: 0
+    weight: 0
+    drag: 0
+    knockBackThrust: 0
+    grantedUtilization:
+      skillNames: []
+      buffNames: []
+    knockBackDamage: 0
+    skillUseDistance: 0
+    skillUseOffsetDistance: 0
+    skillUseRange: 0
+    skillReuseTime: 0
+    followMinDistance: 0
+    stopMinDistance: 0
+    prefabCount: 0
+    score: 0
+    spawnPercentage: 0
+  expectationDirs:
+  - {fileID: 8027655685178983441}
+  - {fileID: 2143813141662102094}
+  - {fileID: 5852493065496572472}
+  delay: 3
+  directionCount: 3
+>>>>>>> Stashed changes
 --- !u!114 &6379353961815610346
 MonoBehaviour:
   m_ObjectHideFlags: 0
