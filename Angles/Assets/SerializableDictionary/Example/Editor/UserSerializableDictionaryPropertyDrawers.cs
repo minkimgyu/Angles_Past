@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 
+[CustomPropertyDrawer(typeof(StringBasicProjectileSODictionary))]
 [CustomPropertyDrawer(typeof(StringBaseEntitySODictionary))]
 
 [CustomPropertyDrawer(typeof(StringBaseBuffSODictionary))]

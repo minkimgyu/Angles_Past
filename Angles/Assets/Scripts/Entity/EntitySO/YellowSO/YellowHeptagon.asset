@@ -38,7 +38,8 @@ MonoBehaviour:
     minValue: 0
     originValue: 0
   dieEffectName: HeptaOctaDestroied
-  skillNames: []
+  skillNames:
+  - HeptagonAttack
   score:
     maxValue: 0
     minValue: 0

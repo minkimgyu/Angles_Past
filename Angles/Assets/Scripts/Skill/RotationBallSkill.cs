@@ -17,7 +17,7 @@ public class RotationBallSkill : MonoBehaviour
     //public override void PlaySkill(SkillSupportData data, BasicBattleComponent battleComponent)
     //{
     //    base.PlaySkill(data, battleComponent);
-    //    playerTr = data.player.transform;
+    //    playerTr = data.playerTransform.transform;
     //    InitBall();
     //}
 

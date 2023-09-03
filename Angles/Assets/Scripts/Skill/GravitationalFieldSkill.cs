@@ -19,7 +19,7 @@ public class GravitationalFieldSkill : MonoBehaviour
     //public override void PlaySkill(SkillSupportData data, BasicBattleComponent battleComponent)
     //{
     //    base.PlaySkill(data, battleComponent);
-    //    transform.position = data.player.transform.position;
+    //    transform.position = data.playerTransform.transform.position;
     //    SkillTask().Forget();
     //}
 

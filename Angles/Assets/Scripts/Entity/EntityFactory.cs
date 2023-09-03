@@ -2,22 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-abstract public class BaseEntitySO : BaseSO<Entity> { }
-
-abstract public class BaseFactory<T> : MonoBehaviour
+abstract public class BaseSO<T> : ScriptableObject
 {
-    public virtual T Order(string name) { return default; }
-    public virtual T Order(GameObject caster, string name) { return default; }
+    public abstract T Create();
 }
 
-public class EntityFactory : BaseFactory<Entity>
+abstract public class BaseEntitySO : BaseSO<Entity> { }
+
+public class EntityFactory : MonoBehaviour
 {
     [SerializeField]
     StringBaseEntitySODictionary storedEntities;
 
-    public override Entity Order(string name)
+    static EntityFactory inst;
+    private void Awake() => inst = this;
+
+    public static Entity Order(string name)
     {
-        Entity entity = storedEntities[name].Create();
+        Entity entity = inst.storedEntities[name].Create();
         return entity;
     }
 }

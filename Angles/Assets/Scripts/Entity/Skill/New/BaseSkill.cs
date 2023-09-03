@@ -35,6 +35,8 @@ public struct SkillSupportData // --> 추후에 버프 추가
 
 public enum EffectCondition // 맞을 때, 표면에 생기는 이팩트, 스킬 자체 이팩트 등등 특정 조건에 명명할 단어를 넣어놓는다.
 {
+    PredelayEffect, // 스킬 시전 사전 이펙트
+
     HitSurfaceEffect, // 데미지를 입은 표면에 일어나는 효과
 
     AttackEffect, // 공격 스킬을 사용했을 때 나오는 효과
@@ -79,34 +81,34 @@ public enum EffectCondition // 맞을 때, 표면에 생기는 이팩트, 스킬 자체 이팩트 �
 
 //    public bool Play(Transform target)
 //    {
-//        BasicEffectPlayer player = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(effectData.name); // 이팩트 이름 추가
-//        if (player == null) return false;
+//        BasicEffectPlayer playerTransform = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(effectData.name); // 이팩트 이름 추가
+//        if (playerTransform == null) return false;
 
-//        player.IsFixed = true;
-//        player.AddState(target, effectData.disableTime);
-//        player.PlayEffect();
+//        playerTransform.IsFixed = true;
+//        playerTransform.AddState(target, effectData.disableTime);
+//        playerTransform.PlayEffect();
 
 
 //        if(effectData.soundName != null)
 //            SoundManager.instance.PlaySFX(target.position, effectData.soundName, effectData.volume);
 
-//        effectPlayer = player;
+//        effectPlayer = playerTransform;
 //        return true;
 //    }
 
 //    public bool Play(Vector3 pos)
 //    {
-//        BasicEffectPlayer player = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(effectData.name); // 이팩트 이름 추가
-//        if (player == null) return false;
+//        BasicEffectPlayer playerTransform = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(effectData.name); // 이팩트 이름 추가
+//        if (playerTransform == null) return false;
 
-//        player.IsFixed = false;
-//        player.AddState(pos, effectData.disableTime);
-//        player.PlayEffect();
+//        playerTransform.IsFixed = false;
+//        playerTransform.AddState(pos, effectData.disableTime);
+//        playerTransform.PlayEffect();
 
 //        if (effectData.soundName != null)
 //            SoundManager.instance.PlaySFX(pos, effectData.soundName, effectData.volume);
 
-//        effectPlayer = player;
+//        effectPlayer = playerTransform;
 //        return true;
 //    }
 
@@ -117,58 +119,77 @@ public enum EffectCondition // 맞을 때, 표면에 생기는 이팩트, 스킬 자체 이팩트 �
 //    }
 //}
 
-abstract public class BaseMethod<T>
+public class EffectSpawnComponent // --> 이거를 BaseMethod에 상속시켜서 스폰 ㄱㄱ + 추가로 스킬 클래스에도 predelay effect 스폰을 위해 넣어준다.
 {
     protected Dictionary<EffectCondition, EffectData> m_effectDatas;
     protected Dictionary<EffectCondition, SoundData> m_soundDatas;
 
-    List<BasicEffectPlayer> m_effectplayers;
-    List<SoundPlayer> m_soundPlayers;
+    List<BasicEffectPlayer> m_effectplayers = new List<BasicEffectPlayer>();
+    List<SoundPlayer> m_soundPlayers = new List<SoundPlayer>();
 
-    // --> 스킬 사용 끝나면 만약 남아있는 Player를 중지시켜준다.
-
-    public BaseMethod(Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas)
+    public EffectSpawnComponent(Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas)
     {
         m_effectDatas = effectDatas;
         m_soundDatas = soundDatas;
     }
 
-    //public abstract void AddState(SkillData data); // 데이터 베이스에서 Stat을 카피해서 가져옴
-
-    public virtual void Execute(SkillSupportData supportData, T target) { }
-
-    public virtual void Execute(SkillSupportData supportData) { }
-
-    protected void PlaySound(Transform target, SoundData data)
+    public void PlaySound(Transform target, SoundData data)
     {
         SoundManager.instance.PlaySFX(target.position, data.name, data.volume);
     }
 
-    protected bool PlayEffect(Transform target, EffectData data)
+    /// <summary>
+    /// 직접 따라다님
+    /// </summary>
+    public bool PlayEffect(Transform target, EffectCondition condition, float scale = 1)
     {
-        BasicEffectPlayer player = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(data.name); // 이팩트 이름 추가
+        if (m_effectDatas.Count == 0 || m_effectDatas.ContainsKey(condition) == false) return false;
+
+        BasicEffectPlayer player = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(m_effectDatas[condition].name); // 이팩트 이름 추가
         if (player == null) return false;
 
-        player.Init(target, data.disableTime);
+        // bool 값으로 판단하기
+        if(m_effectDatas[condition].isFix) player.Init(target, m_effectDatas[condition].disableTime, scale);
+        else player.Init(target.position, m_effectDatas[condition].disableTime, scale);
+
         player.PlayEffect();
 
         m_effectplayers.Add(player);
         return true;
     }
 
-    protected bool PlayEffect(Vector3 targetPos, EffectData data)
+    /// <summary>
+    /// 위치만 지정
+    /// </summary>
+    public bool PlayEffect(Vector3 targetPos, EffectCondition condition, float scale = 1)
     {
-        BasicEffectPlayer player = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(data.name); // 이팩트 이름 추가
+        if (m_effectDatas.Count == 0 || m_effectDatas.ContainsKey(condition) == false) return false;
+
+        BasicEffectPlayer player = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(m_effectDatas[condition].name); // 이팩트 이름 추가
         if (player == null) return false;
 
-        player.Init(targetPos, data.disableTime);
+        player.Init(targetPos, m_effectDatas[condition].disableTime, scale);
         player.PlayEffect();
 
         m_effectplayers.Add(player);
         return true;
     }
 
-    protected void StopEffect()
+    public bool PlayEffect(Vector3 posVec, List<Vector3> pos, EffectCondition condition)
+    {
+        if (m_effectDatas.Count == 0 || m_effectDatas.ContainsKey(condition) == false) return false;
+
+        BasicEffectPlayer player = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(m_effectDatas[condition].name); // 이팩트 이름 추가
+        if (player == null) return false;
+
+        player.Init(posVec, m_effectDatas[condition].disableTime, pos);
+        player.PlayEffect();
+
+        m_effectplayers.Add(player);
+        return true;
+    }
+
+    public void StopEffect()
     {
         for (int i = 0; i < m_effectplayers.Count; i++)
         {
@@ -177,6 +198,29 @@ abstract public class BaseMethod<T>
 
         m_effectplayers.Clear();
     }
+
+    public void StopSound()
+    {
+        for (int i = 0; i < m_soundPlayers.Count; i++)
+        {
+            m_soundPlayers[i].gameObject.SetActive(false);
+        }
+
+        m_soundPlayers.Clear();
+    }
+}
+
+abstract public class BaseMethod<T> : EffectSpawnComponent
+{
+    public BaseMethod(Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(effectDatas, soundDatas)
+    {
+    }
+
+    //public abstract void AddState(SkillData data); // 데이터 베이스에서 Stat을 카피해서 가져옴
+
+    public virtual void Execute(SkillSupportData supportData, T target) { }
+
+    public virtual void Execute(SkillSupportData supportData) { }
 }
 
 [System.Serializable]
@@ -214,7 +258,7 @@ abstract public class BaseSkill
     protected string m_name;
     public string Name { get { return m_name; } }
 
-    protected bool m_isRunning;
+    protected bool m_isRunning = false;
     public bool IsRunning { get { return m_isRunning; } }
 
     protected int m_useCount;
@@ -223,11 +267,12 @@ abstract public class BaseSkill
     protected int m_tickCount;
     protected float m_preDelay;
 
-    protected string m_preDelayEffectName; // null이면 이팩트 재생 X
+    protected int m_useCountDownPoint = 1; // 0 또는 1로 만들어서 적용
 
-    protected int m_useCountDownPoint; // 0 또는 1로 만들어서 적용
+    protected int m_useCountUpPoint = 1; // 0 또는 1로 만들어서 적용
 
-    protected int m_useCountUpPoint; // 0 또는 1로 만들어서 적용
+
+    protected bool m_canFinish = false;
 
     protected bool m_nowFinish = false;
     public bool NowFinish { get { return m_nowFinish; } }
@@ -238,14 +283,20 @@ abstract public class BaseSkill
     OverlapType m_overlapType;
     public OverlapType OverlapCondition { get { return m_overlapType; } }
 
-    public void CountUp() => m_useCount += m_useCountUpPoint;
-    public void CountDown() => m_useCount -= m_useCountDownPoint;
+    public void CountUp()
+    {
+        if(m_canFinish) m_useCount += m_useCountUpPoint;
+    }
+    public void CountDown()
+    {
+        if (m_canFinish) m_useCount -= m_useCountDownPoint;
+    }
 
-    protected bool IsZeroCount
+    protected bool CanFinish
     {
         get
         {
-            if (m_useCount == 0) return true;
+            if (m_useCount == 0 && m_canFinish) return true; // 사용횟수가 0이거나 canFinish가 true의 경우
             else return false;
         }
     }
@@ -255,14 +306,17 @@ abstract public class BaseSkill
         return m_useCount == 0;
     }
 
-    public BaseSkill(string name, UseConditionType useConditionType, float duration, int tickCount, float preDelay, string preDelayEffectName)
+    public BaseSkill(string name, UseConditionType useConditionType, OverlapType overlapType, bool canFinish, float duration, int tickCount, float preDelay, int useCount)
     {
         m_name = name;
         m_useConditionType = useConditionType;
+        m_overlapType = overlapType;
         m_duration = duration;
         m_tickCount = tickCount;
         m_preDelay = preDelay;
-        m_preDelayEffectName = preDelayEffectName;
+        m_useCount = useCount;
+
+        m_canFinish = canFinish;
     }
 
     public abstract void Init(GameObject caster);
@@ -274,23 +328,24 @@ abstract public class BaseSkill
 
 public class Skill<T> : BaseSkill // 실제 구현 포함
 {
-    public Skill(string name, UseConditionType useConditionType, float duration = 0, int tickCount = 1, float preDelay = 0, string preDelayEffectName = null) 
-        : base(name, useConditionType, duration, tickCount, preDelay, preDelayEffectName)
+    public Skill(string name, UseConditionType useConditionType, OverlapType overlapType, bool canFinish, float duration, int tickCount, float preDelay, int useCount) 
+        : base(name, useConditionType, overlapType, canFinish, duration, tickCount, preDelay, useCount) // tickCount는 1을 빼고 적용시키기
     {
     }
 
-    [JsonProperty]
+    protected EffectSpawnComponent m_predelayEffectSpawner;
+
     protected SpecifyLocation m_specifyLocation;
 
-    [JsonProperty]
     protected TargetDesignation<T> m_targetDesignation;
 
-    [JsonProperty]
     protected List<BaseMethod<T>> m_baseMethods;
 
     float m_storedPreDelay = 0;
     int m_storedTickCount = 0;
     float m_storedDuration = 0;
+
+    bool canExecuteSkillRoutine = true;
 
     public virtual void SkillRoutine(int tickCount)
     {
@@ -320,44 +375,64 @@ public class Skill<T> : BaseSkill // 실제 구현 포함
     {
         m_caster = caster;
         m_specifyLocation.Init(caster); // IsFix는 data 변수로 지정
+
+        m_predelayEffectSpawner.PlayEffect(caster.transform, EffectCondition.PredelayEffect, caster.transform.localScale.x);
+        // --> scale의 x, y, z 중 하나만 사용해서 이팩트 스케일 조정
     }
 
     public override void Execute()
     {
         m_isRunning = true;
 
-        float tickDuration = m_duration / m_tickCount;
-        if (m_storedPreDelay >= m_preDelay)
+        if (m_storedPreDelay < m_preDelay)
         {
-            // Predelay Effect 제작해보자
+            // Predelay Effect 제작해보자 --> 여기서 PreDelay Effect 출력
+            // ""이면 출력 안 하는 걸로
             m_storedPreDelay += Time.deltaTime;
             return;
         }
 
-        if (m_tickCount > m_storedTickCount)
+        if(m_duration == 0 && m_tickCount == 0) // burst 스킬 --> 틱 카운트랑 사용 기간 모두 0
         {
             SkillRoutine(m_storedTickCount);
-
-            m_storedDuration += Time.deltaTime;
-            if (m_storedDuration > tickDuration)
+            AfterUse();
+        }
+        else // tick 스킬
+        {
+            if (m_tickCount > m_storedTickCount)
             {
-                m_storedDuration = 0;
-                m_storedTickCount += 1;
+                if(canExecuteSkillRoutine) SkillRoutine(m_storedTickCount);
+
+                canExecuteSkillRoutine = false;
+
+                m_storedDuration += Time.deltaTime;
+                float tickDuration = m_duration / m_tickCount;
+                if (m_storedDuration > tickDuration)
+                {
+                    canExecuteSkillRoutine = true;
+                    m_storedDuration = 0;
+                    m_storedTickCount += 1;
+                }
             }
             else
             {
-                m_isRunning = false;
-                CountDown();
-
-                if(IsZeroCount == true)
-                {
-                    m_nowFinish = true;
-                }
-                else
-                {
-                    Reset();
-                }
+                AfterUse();
             }
+        }
+    }
+
+    void AfterUse()
+    {
+        m_isRunning = false;
+        CountDown();
+
+        if (CanFinish == true)
+        {
+            m_nowFinish = true;
+        }
+        else
+        {
+            Reset();
         }
     }
 
@@ -365,6 +440,8 @@ public class Skill<T> : BaseSkill // 실제 구현 포함
     {
         // 종료 시퀀스
         Reset();
+        //if (!m_canFinish) return; // 제거되지 않는 스킬의 경우 재사용
+
         m_nowFinish = false;
     }
 
@@ -400,17 +477,13 @@ public class CasterCircleRangeAttack : Skill<RaycastHit2D[]>
 
     // json으로 불러오는 방식이므로 변수를 따로 클레스 내에 작성해줘야함, 이후 생성자 내에서 초기화해주는 코드를 추가로 넣자
 
-    public CasterCircleRangeAttack(string name, UseConditionType useConditionType, bool isFix, float duration, int tickCount, float preDelay, float targetFindRange, float[] skillScalePerTicks,
-        EntityTag[] hitTarget, float knockBackThrust, float damage, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas, string preDelayEffectName = null) 
-        : base(name, useConditionType, duration, tickCount, preDelay, preDelayEffectName)
+    public CasterCircleRangeAttack(string name, UseConditionType useConditionType, OverlapType overlapType, bool canFinish, int useCount, bool isFix, float duration, int tickCount, float preDelay, float targetFindRange, float[] skillScalePerTicks,
+        Vector2[] offsetRangePerTick, EntityTag[] hitTarget, float knockBackThrust, float damage, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas) 
+        : base(name, useConditionType, overlapType, canFinish, duration, tickCount, preDelay, useCount)
     {
-        bool isTickPerRangeSame;
-
-        if (skillScalePerTicks.Length == 0) isTickPerRangeSame = true;
-        else isTickPerRangeSame = false;
-
-        m_specifyLocation = new LocationToContactor(isFix);
-        m_targetDesignation = new FindInCircleRange(isTickPerRangeSame, targetFindRange, skillScalePerTicks);
+        m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
+        m_specifyLocation = new LocationToCaster(isFix);
+        m_targetDesignation = new FindInCircleRange(targetFindRange, skillScalePerTicks, offsetRangePerTick);
         m_baseMethods = new List<BaseMethod<RaycastHit2D[]>> { new DamageToRaycastHit(hitTarget, knockBackThrust, damage, skillScalePerTicks, effectDatas, soundDatas) };
     }
 }
@@ -418,10 +491,11 @@ public class CasterCircleRangeAttack : Skill<RaycastHit2D[]>
 [System.Serializable]
 public class ContactedAttack : Skill<List<ContactData>>
 {
-    public ContactedAttack(string name, UseConditionType useConditionType, EntityTag[] hitTarget, float knockBackThrust, float damage, 
+    public ContactedAttack(string name, UseConditionType useConditionType, EntityTag[] hitTarget, float knockBackThrust, float damage,
         EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
-        : base(name, useConditionType)
+        : base(name, useConditionType, OverlapType.None, false, 0, 1, 0, 1)
     {
+        m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
         m_specifyLocation = new LocationToContactor(false);
         m_targetDesignation = new FindInContacted();
         m_baseMethods = new List<BaseMethod<List<ContactData>>> { new DamageToContactors(hitTarget, knockBackThrust, damage, effectDatas, soundDatas) };
@@ -432,17 +506,13 @@ public class ContactedAttack : Skill<List<ContactData>>
 public class CasterBoxRangeAttack : Skill<RaycastHit2D[]>
 {
 
-    public CasterBoxRangeAttack(string name, UseConditionType useConditionType, bool isFix, float duration, int tickCount, float preDelay, Vector2[] boxRangePerTick, Vector2[] offsetRangePerTick, float[] skillScalePerTicks,
-        EntityTag[] hitTarget, float knockBackThrust, float damage, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas, string preDelayEffectName = null)
-        : base(name, useConditionType, duration, tickCount, preDelay, preDelayEffectName)
+    public CasterBoxRangeAttack(string name, UseConditionType useConditionType, OverlapType overlapType, bool canFinish, int useCount, bool isFix, float duration, int tickCount, float preDelay, Vector2[] boxRangePerTick, Vector2[] offsetRangePerTick, float[] skillScalePerTicks,
+        EntityTag[] hitTarget, float knockBackThrust, float damage, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
+        : base(name, useConditionType, overlapType, canFinish, duration, tickCount, preDelay, useCount)
     {
-        bool isTickPerRangeSame;
-
-        if (skillScalePerTicks.Length == 0) isTickPerRangeSame = true;
-        else isTickPerRangeSame = false;
-
+        m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
         m_specifyLocation = new LocationToContactor(isFix);
-        m_targetDesignation = new FindInBoxRange(isTickPerRangeSame, boxRangePerTick, offsetRangePerTick);
+        m_targetDesignation = new FindInBoxRange(boxRangePerTick, offsetRangePerTick);
         m_baseMethods = new List<BaseMethod<RaycastHit2D[]>> { new DamageToRaycastHit(hitTarget, knockBackThrust, damage, skillScalePerTicks, effectDatas, soundDatas) };
     }
 }
@@ -453,10 +523,39 @@ public class CastBuffToPlayer : Skill<Transform>
 {
     public CastBuffToPlayer(string name, UseConditionType useConditionType, EntityTag[] hitTarget, bool nowApply, string[] buffNames,
         EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
-        : base(name, useConditionType)
+        : base(name, useConditionType, OverlapType.None, false, 0, 1, 0, 1)
     {
-        m_specifyLocation = new LocationToContactor(false);
+        m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
+        m_specifyLocation = new LocationToCaster(false);
         m_targetDesignation = new FindPlayer();
         m_baseMethods = new List<BaseMethod<Transform>> { new BuffToTarget(hitTarget, nowApply, buffNames, effectDatas, soundDatas) };
+    }
+}
+
+[System.Serializable]
+public class ShootBulletInCircleRange : Skill<GameObject>
+{
+    public ShootBulletInCircleRange(string name, UseConditionType useConditionType, string projectileName, float duration, int tickCount, int projectileCount, float preDelay,
+        float speed, bool isClockwise, float distanceFromCaster, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
+        : base(name, useConditionType, OverlapType.None, false, duration, tickCount, preDelay, 1)
+    {
+        m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
+        m_specifyLocation = new LocationToCaster(true);
+        m_targetDesignation = new NoFound();
+        m_baseMethods = new List<BaseMethod<GameObject>> { new SpawnBulletInCircleRange(projectileName, projectileCount, speed, isClockwise, distanceFromCaster, effectDatas, soundDatas) };
+    }
+}
+
+[System.Serializable]
+public class ShootLaserToRandomDirection : Skill<RaycastHit2D[]>
+{
+    public ShootLaserToRandomDirection(string name, UseConditionType useConditionType, OverlapType overlapType, bool canFinish, int useCount, float duration, int tickCount, float preDelay, float[] rangePerTicks,
+        EntityTag[] hitTarget, float knockBackThrust, float damage, float laserMaxDistance, EntityTag[] blockedTag, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
+        : base(name, useConditionType, overlapType, canFinish, duration, tickCount, preDelay, useCount)
+    {
+        m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
+        m_specifyLocation = new LocationToCaster(true);
+        m_targetDesignation = new FindAllUsingRaycast(rangePerTicks);
+        m_baseMethods = new List<BaseMethod<RaycastHit2D[]>> { new DamageToLaserHit(hitTarget, knockBackThrust, damage, effectDatas, soundDatas, laserMaxDistance, blockedTag) };
     }
 }

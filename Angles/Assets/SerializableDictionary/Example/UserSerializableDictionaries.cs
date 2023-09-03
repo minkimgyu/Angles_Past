@@ -13,6 +13,9 @@ public class StringBaseSkillSODictionary : SerializableDictionary<string, BaseSk
 public class StringBaseEntitySODictionary : SerializableDictionary<string, BaseEntitySO> { }
 
 [Serializable]
+public class StringBasicProjectileSODictionary : SerializableDictionary<string, BasicProjectileSO> { }
+
+[Serializable]
 public class EffectConditionEffectDataDictionary : SerializableDictionary<EffectCondition, EffectData> { }
 
 [Serializable]

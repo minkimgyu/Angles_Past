@@ -55,6 +55,11 @@ public class StateYellowTriangleAttack : StateFollowEnemyAttack
     public override void ReceiveOnDisable()
     {
         //ExecuteInRangeMethod();
+        loadFollowEnemy.SkillController.UseSkill(BaseSkill.UseConditionType.OutRange); // 제거될 경우, 걸어둔 버프도 같이 제거
+
+        // 여기에 SkillController에 존재하는 모든 스킬들을 없애주는 코드를 추가로 넣자
+
+
 
         if (effectPlayer != null)
         {

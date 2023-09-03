@@ -38,7 +38,8 @@ MonoBehaviour:
     minValue: 0
     originValue: 0
   dieEffectName: PentagonDestroied
-  skillNames: []
+  skillNames:
+  - ShootBulletInClockwise
   score:
     maxValue: 20
     minValue: 0

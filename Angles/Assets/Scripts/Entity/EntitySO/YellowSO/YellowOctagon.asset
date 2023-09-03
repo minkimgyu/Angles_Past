@@ -38,7 +38,8 @@ MonoBehaviour:
     minValue: 0
     originValue: 0
   dieEffectName: HeptaOctaDestroied
-  skillNames: []
+  skillNames:
+  - ShootLaserToRandomDirection
   score:
     maxValue: 40
     minValue: 0

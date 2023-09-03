@@ -10,6 +10,15 @@ public class CasterCircleRangeAttackSO : BaseSkillSO
     BaseSkill.UseConditionType useConditionType;
 
     [SerializeField]
+    BaseSkill.OverlapType overlapType;
+
+    [SerializeField]
+    bool canFinish = true;
+
+    [SerializeField]
+    int useCount;
+
+    [SerializeField]
     bool isFix;
 
     [SerializeField]
@@ -25,7 +34,10 @@ public class CasterCircleRangeAttackSO : BaseSkillSO
     float targetFindRange;
 
     [SerializeField]
-    float[] skillScalePerTicks;
+    float[] skillScalePerTicks = new float[1] { 1 };
+
+    [SerializeField]
+    Vector2[] offsetRangePerTick = new Vector2[1] { Vector2.zero };
 
     [SerializeField]
     EntityTag[] hitTarget;
@@ -44,6 +56,7 @@ public class CasterCircleRangeAttackSO : BaseSkillSO
 
     public override BaseSkill Create()
     {
-        return new CasterCircleRangeAttack(name, useConditionType, isFix, duration, tickCount, preDelay, targetFindRange, skillScalePerTicks, hitTarget, knockBackThrust, damage, effectDatas, soundDatas);
+        return new CasterCircleRangeAttack(name, useConditionType, overlapType, canFinish, useCount, isFix, duration, tickCount, preDelay, targetFindRange, 
+            skillScalePerTicks, offsetRangePerTick, hitTarget, knockBackThrust, damage, effectDatas, soundDatas);
     }
 }

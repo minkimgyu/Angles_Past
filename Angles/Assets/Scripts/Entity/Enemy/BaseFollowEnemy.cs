@@ -37,7 +37,7 @@ abstract public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
         this.followDistance = followDistance.CopyData();
         this.followOffsetDistance = followOffsetDistance.CopyData();
 
-        m_loadPlayer = PlayManager.instance.Player; // 오브젝트 풀링에서 꺼낼 때, 초기화 시켜주기
+        m_loadPlayer = PlayManager.Instance.PlayerTransform; // 오브젝트 풀링에서 꺼낼 때, 초기화 시켜주기
     }
 
 
@@ -60,8 +60,8 @@ abstract public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
     //protected StorageSO storageSO;
     //public StorageSO StorageSO { get { return storageSO; } }
 
-    protected Player m_loadPlayer;
-    public Player LoadPlayer { get { return m_loadPlayer; } }
+    protected Transform m_loadPlayer;
+    public Transform LoadPlayer { get { return m_loadPlayer; } }
 
     private FollowComponent m_followComponent;
     public FollowComponent FollowComponent { get { return m_followComponent; } }
@@ -90,10 +90,10 @@ abstract public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
 
     //protected virtual void FindPlayer()
     //{
-    //    GameObject go = GameObject.FindWithTag("Player");
+    //    GameObject go = GameObject.FindWithTag("PlayerTransform");
     //    if (go == null) return;
 
-    //    m_loadPlayer = go.GetComponent<Player>();
+    //    m_loadPlayer = go.GetComponent<PlayerTransform>();
     //}
 
     protected virtual void AddBaseState()

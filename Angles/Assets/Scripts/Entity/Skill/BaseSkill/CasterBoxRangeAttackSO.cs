@@ -10,6 +10,15 @@ public class CasterBoxRangeAttackSO : BaseSkillSO
     BaseSkill.UseConditionType useConditionType;
 
     [SerializeField]
+    BaseSkill.OverlapType overlapType;
+
+    [SerializeField]
+    bool canFinish = true;
+
+    [SerializeField]
+    int useCount;
+
+    [SerializeField]
     bool isFix;
 
     [SerializeField]
@@ -47,6 +56,6 @@ public class CasterBoxRangeAttackSO : BaseSkillSO
 
     public override BaseSkill Create()
     {
-        return new CasterBoxRangeAttack(name, useConditionType, isFix, duration, tickCount, preDelay, boxRangePerTick, offsetRangePerTick, skillScalePerTicks, hitTarget, knockBackThrust, damage, effectDatas, soundDatas);
+        return new CasterBoxRangeAttack(name, useConditionType, overlapType, canFinish, useCount, isFix, duration, tickCount, preDelay, boxRangePerTick, offsetRangePerTick, skillScalePerTicks, hitTarget, knockBackThrust, damage, effectDatas, soundDatas);
     }
 }

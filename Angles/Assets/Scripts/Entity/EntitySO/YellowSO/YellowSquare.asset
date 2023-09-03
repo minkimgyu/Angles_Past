@@ -38,7 +38,8 @@ MonoBehaviour:
     minValue: 0
     originValue: 0
   dieEffectName: SquareDestroied
-  skillNames: []
+  skillNames:
+  - SelfDestruction
   score:
     maxValue: 10
     minValue: 0

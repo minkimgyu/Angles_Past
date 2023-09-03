@@ -38,7 +38,8 @@ MonoBehaviour:
     minValue: 0
     originValue: 0
   dieEffectName: HexagonDestroied
-  skillNames: []
+  skillNames:
+  - HexagonAttack
   score:
     maxValue: 20
     minValue: 0

@@ -20,9 +20,9 @@ public class DashUIComponent : FillUIComponent
     //    playerActionEventSO.OnActionRequested -= FillDashIcon;
     //}
 
-    //public void OnNotify(Player.ObserverType state, PlayerData data)
+    //public void OnNotify(PlayerTransform.ObserverType state, PlayerData data)
     //{
-    //    if (state == Player.ObserverType.ShowDashUI)
+    //    if (state == PlayerTransform.ObserverType.ShowDashUI)
     //        FillDashIcon(data.DashRatio);
     //}
 }

@@ -118,7 +118,8 @@ public class Player : Avatar<Player.State>
         Die,
         Reflect,
         Battle,
-        Damaged
+        Damaged,
+        Global
     }
 
     public enum ObserverType
@@ -132,8 +133,8 @@ public class Player : Avatar<Player.State>
     //float minJoyVal = 0.25f;
 
     //스테이트들을 보관
-    //private Dictionary<State, IState<Player, Telegram<State>>> m_dicState = new Dictionary<State, IState<Player, Telegram<State>>>();
-    private List<IObserver<ObserverType, PlayerData>> m_observers = new List<IObserver<ObserverType, PlayerData>>();
+    //private Dictionary<State, IState<PlayerTransform, Telegram<State>>> m_dicState = new Dictionary<State, IState<PlayerTransform, Telegram<State>>>();
+    //private List<IObserver<ObserverType, PlayerData>> m_observers = new List<IObserver<ObserverType, PlayerData>>();
 
     protected override void Awake()
     {
@@ -173,9 +174,10 @@ public class Player : Avatar<Player.State>
         m_dicState.Add(State.Die, dead);
         m_dicState.Add(State.Reflect, reflect);
         m_dicState.Add(State.Damaged, damaged);
+        m_dicState.Add(State.Global, global);
 
         SetUp(State.Move);
-        SetGlobalState(global);
+        SetGlobalState(State.Global, global);
     }
 
     

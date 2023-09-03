@@ -71,7 +71,7 @@ public class BladeSkill //: BasicSkill
     //public override void PlaySkill(SkillSupportData data, BasicBattleComponent battleComponent)
     //{
     //    base.PlaySkill(data, battleComponent);
-    //    playerTr = data.player.transform; // 위치 초기화
+    //    playerTr = data.playerTransform.transform; // 위치 초기화
     //    SkillTask().Forget();
     //}
 

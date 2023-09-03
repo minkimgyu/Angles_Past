@@ -58,6 +58,7 @@ public class StatePlayerMove : BaseState<Player.State>
 
     public override void OperateUpdate()
     {
-        m_loadPlayer.MoveComponent.Move(m_loadPlayer.MoveVec, m_loadPlayer.Speed.IntervalValue, true);
+        m_loadPlayer.MoveComponent.Move(m_loadPlayer.MoveVec, m_loadPlayer.Speed.IntervalValue);
+        m_loadPlayer.MoveComponent.RotationPlayer(m_loadPlayer.MoveVec.normalized, true);
     }
 }

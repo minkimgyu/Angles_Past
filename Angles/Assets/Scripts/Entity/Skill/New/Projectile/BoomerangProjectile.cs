@@ -5,33 +5,35 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using System;
 
-public class BoomerangProjectile : BasicProjectile
+public class BoomerangProjectile : BasicSpawnedObject, IProjectile
 {
-    [SerializeField]
-    float endTime = 10;
+    Transform m_caster;
 
-    [SerializeField]
-    float speed = 10;
-
-    float smoothness = 0.001f;
+    // 아래 두 변수는 생성시 초기화
+    float speed;
 
     CancellationTokenSource _source = new();
     Vector3 returnPoint;
+    float smoothness = 0.001f;
 
-
-    protected override void OnCollisionEnter2D(Collision2D col) // 충돌 시 상태 변환
+    public void Inintialize(float disableTime, string[] skillNames, string[] hitTargetTag, float speed)
     {
-        //base.OnCollisionEnter2D(col);
-        if(col.gameObject.tag == "Wall")
-        {
-            ReturnToPlayer();
-        }
+        Inintialize(disableTime, skillNames);
+        this.hitTargetTag = hitTargetTag;
+        this.speed = speed;
     }
 
-    public override void Init(Vector3 pos)
+    protected void OnCollisionEnter2D(Collision2D col) // 충돌 시 상태 변환 --> Trigger로 변환시키자
     {
-        base.Init(pos);
-        Invoke("NowFinish", endTime);
+        if (IsTarget(col.gameObject) == false) return;
+
+        ReturnToPlayer();
+    }
+
+    public override void ResetObject(Transform caster)
+    {
+        base.ResetObject(caster);
+        m_caster = caster;
     }
 
     Vector2 ReturnTruningPoint(Vector2 pos, Vector2 casterDir, float thrust)
@@ -39,7 +41,7 @@ public class BoomerangProjectile : BasicProjectile
         return pos + casterDir * thrust;
     }
 
-    public override void Shoot(Vector2 dir, float thrust)
+    public void Shoot(Vector2 dir, float thrust)
     {
         Vector2 pos = m_caster.transform.position;
         returnPoint = ReturnTruningPoint(pos, dir, thrust);
@@ -99,10 +101,6 @@ public class BoomerangProjectile : BasicProjectile
         ReturnTask().Forget();
     }
 
-    public override void DoUpdate()
-    {
-    }
-
     private void OnDestroy()
     {
         _source.Cancel();
@@ -119,7 +117,6 @@ public class BoomerangProjectile : BasicProjectile
 
     protected override void OnDisable()
     {
-        CancelInvoke();
         _source.Cancel();
         m_caster = null;
         returnPoint = Vector3.zero;

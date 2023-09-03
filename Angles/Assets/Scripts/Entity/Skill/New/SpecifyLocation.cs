@@ -52,6 +52,7 @@ public class LocationToContactor : SpecifyLocation
         if (contact == null) return;
 
         List<ContactData> supportData = contact.ReturnContactSupportData();
+        if (supportData.Count == 0) return;
 
         if (m_isFix) m_posTr = supportData[0].transform;
         else m_pos = supportData[0].transform.position;

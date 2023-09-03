@@ -8,25 +8,22 @@ using UnityEngine;
 abstract public class SpawnMethod<T> : BaseMethod<T>
 {
     protected string m_projectileName;
-    protected int m_projectileCount;
 
-    public SpawnMethod(string projectileName, int projectileCount, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(effectDatas, soundDatas)
+    public SpawnMethod(string projectileName, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(effectDatas, soundDatas)
     {
         m_projectileName = projectileName;
-        m_projectileCount = projectileCount;
     }
-
-    [SerializeField]
-    protected List<BasicProjectile> spawnedObjects = new List<BasicProjectile>();
-    public List<BasicProjectile> SpawnedObjects { get { return spawnedObjects; } }
 }
 
 public class SpawnRotationBall : SpawnMethod<GameObject>
 {
+    int m_projectileCount;
     float m_distanceFromCaster;
+    protected List<BasicSpawnedObject> spawnedObjects = new List<BasicSpawnedObject>();
 
-    public SpawnRotationBall(string projectileName, int projectileCount, float distanceFromCaster, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(projectileName, projectileCount, effectDatas, soundDatas)
+    public SpawnRotationBall(string projectileName, int projectileCount, float distanceFromCaster, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(projectileName, effectDatas, soundDatas)
     {
+        m_projectileCount = projectileCount;
         m_distanceFromCaster = distanceFromCaster;
     }
 
@@ -36,14 +33,14 @@ public class SpawnRotationBall : SpawnMethod<GameObject>
 
         for (int i = 0; i < m_projectileCount; i++)
         {
-            BasicProjectile projectile = ObjectPooler.SpawnFromPool<BasicProjectile>(m_projectileName);
-            spawnedObjects.Add(projectile);
+            BasicSpawnedObject projectile = ObjectPooler.SpawnFromPool<BasicSpawnedObject>(m_projectileName);
+            //spawnedObjects.Add(projectile);
 
             projectile.transform.SetParent(supportData.Caster.transform);
 
         }
 
-        PlayEffect(supportData.Caster.transform, m_effectDatas[EffectCondition.SpawnEffect]);
+        PlayEffect(supportData.Caster.transform, EffectCondition.SpawnEffect);
 
         for (int j = 0; j < spawnedObjects.Count; j++)
         {
@@ -55,40 +52,42 @@ public class SpawnRotationBall : SpawnMethod<GameObject>
             Quaternion rotation = Quaternion.Euler(0, 0, angle);
             Vector3 rotatedOffset = rotation * offset;
 
-            spawnedObjects[j].Init(rotatedOffset);
+            spawnedObjects[j].ResetObject(supportData.Caster.transform, rotatedOffset); // trasform으로 수정해주자 --> 이걸 이용해서 돌리기
         }
     }
 }
 
-public class SpawnProjectile : SpawnMethod<GameObject>
+public class SpawnProjectile : SpawnMethod<GameObject> // 이건 중력장 소환시킬 때 넣기
 {
-    public SpawnProjectile(string projectileName, int projectileCount, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(projectileName, projectileCount, effectDatas, soundDatas)
+    public SpawnProjectile(string projectileName, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(projectileName, effectDatas, soundDatas)
     {
     }
 
     public override void Execute(SkillSupportData supportData)
     {
-        BasicProjectile projectile = ObjectPooler.SpawnFromPool<BasicProjectile>(m_projectileName);
-        projectile.Init(supportData.Caster.transform);
-        spawnedObjects.Add(projectile);
+        BasicSpawnedObject projectile = ObjectPooler.SpawnFromPool<BasicSpawnedObject>(m_projectileName);
+        projectile.ResetObject(supportData.Caster.transform.position);
     }
 }
 
-public class SpawnAndShootProjectile : SpawnMethod<GameObject>
+public class SpawnAndShootProjectile : SpawnMethod<GameObject> // bool 값 넣어서 caster를 넣을지 아니면 position만 넣을지 선택하자
 {
     float m_speed;
 
-    public SpawnAndShootProjectile(string projectileName, int projectileCount, float speed, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(projectileName, projectileCount, effectDatas, soundDatas)
+    public SpawnAndShootProjectile(string projectileName, float speed, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(projectileName, effectDatas, soundDatas)
     {
         m_speed = speed;
     }
 
     public override void Execute(SkillSupportData supportData)
     {
-        BasicProjectile projectile = ObjectPooler.SpawnFromPool<BasicProjectile>(m_projectileName);
-        projectile.Init(supportData.Caster.transform);
-        projectile.Shoot(supportData.Caster.GetComponent<Rigidbody2D>().velocity.normalized, m_speed); // 방향을 보내줌
-        spawnedObjects.Add(projectile);
+        BasicSpawnedObject projectile = ObjectPooler.SpawnFromPool<BasicSpawnedObject>(m_projectileName);
+        projectile.ResetObject(supportData.Caster.transform.position);
+
+        projectile.TryGetComponent(out IProjectile iprojectile); // 추가로 IProjectile의 구현을 실행해준다.
+        if (iprojectile == null) return;
+
+        iprojectile.Shoot(supportData.Caster.GetComponent<Rigidbody2D>().velocity.normalized, m_speed); // 방향을 보내줌
     }
 }
 
@@ -98,9 +97,13 @@ public class SpawnBulletInCircleRange : SpawnMethod<GameObject>
     bool m_isClockwise;
     float m_distanceFromCaster;
 
+    int m_projectileCount;
+
     public SpawnBulletInCircleRange(string projectileName, int projectileCount, float speed, bool isClockwise, float distanceFromCaster, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) 
-        : base(projectileName, projectileCount, effectDatas, soundDatas)
+        : base(projectileName, effectDatas, soundDatas)
     {
+        m_projectileCount = projectileCount;
+
         m_speed = speed;
         m_isClockwise = isClockwise;
         m_distanceFromCaster = distanceFromCaster;
@@ -122,11 +125,12 @@ public class SpawnBulletInCircleRange : SpawnMethod<GameObject>
         Vector3 direction = new Vector3(Mathf.Cos(rotation * Mathf.Deg2Rad), Mathf.Sin(rotation * Mathf.Deg2Rad), 0);
         Vector3 tempPos = supportData.Caster.transform.position + direction * m_distanceFromCaster;
 
-        //SoundManager.Instance.PlaySFX(supportData.Caster.transform.position, supportData.Me.Data.SfxName, supportData.Me.Data.Volume);
+        BasicSpawnedObject spawnedObject = ProjectileFactory.Order(m_projectileName);
+        spawnedObject.ResetObject(tempPos, rotation);
 
-        BasicBullet projectile = ObjectPooler.SpawnFromPool<BasicBullet>(m_projectileName, tempPos, Quaternion.Euler(0, 0, rotation));
-        projectile.Init(tempPos);
-        projectile.Fire(direction, m_speed);
-        spawnedObjects.Add(projectile);
+        spawnedObject.TryGetComponent(out IProjectile iprojectile); // 추가로 IProjectile의 구현을 실행해준다.
+        if (iprojectile == null) return;
+
+        iprojectile.Shoot(direction, m_speed);
     }
 }

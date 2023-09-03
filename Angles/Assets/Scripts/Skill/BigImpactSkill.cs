@@ -14,7 +14,7 @@ public class BigImpactSkill : MonoBehaviour
     //    base.PlaySkill(data, battleComponent);
     //    effect.PlayEffect();
 
-    //    transform.position = data.player.transform.position; // 위치 초기화
+    //    transform.position = data.playerTransform.transform.position; // 위치 초기화
 
     //    RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, SkillData.RadiusRange, Vector2.up, 0, layerMask);
     //    for (int i = 0; i < hit.Length; i++)

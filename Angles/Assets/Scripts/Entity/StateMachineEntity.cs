@@ -64,7 +64,9 @@ public class Telegram<T>
 abstract public class StateMachineEntity<T> : Entity // T는 Entity, W는 State
 {
     public T CurrentStateName { get; private set; }
+
     public T GlobalStateName { get; private set; }
+
     public T PreviousStateName { get; private set; }
 
     protected Dictionary<T, BaseState<T>> m_dicState = new Dictionary<T, BaseState<T>>();
@@ -82,26 +84,38 @@ abstract public class StateMachineEntity<T> : Entity // T는 Entity, W는 State
 
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        if (m_dicState.ContainsKey(CurrentStateName) == false) return;
-        m_dicState[CurrentStateName].ReceiveCollisionEnter(collision);
+        if (GlobalState != null)
+            GlobalState.ReceiveCollisionEnter(collision); // global state도 넣어주기
+
+        if (m_dicState.ContainsKey(CurrentStateName))
+            m_dicState[CurrentStateName].ReceiveCollisionEnter(collision);
     }
 
     protected virtual void OnCollisionExit2D(Collision2D collision)
     {
-        if (m_dicState.ContainsKey(CurrentStateName) == false) return;
-        m_dicState[CurrentStateName].ReceiveCollisionExit(collision);
+        if (GlobalState != null)
+            GlobalState.ReceiveCollisionExit(collision);
+
+        if (m_dicState.ContainsKey(CurrentStateName))
+            m_dicState[CurrentStateName].ReceiveCollisionExit(collision);
     }
 
     protected virtual void OnEnable()
     {
-        if (m_dicState.ContainsKey(CurrentStateName) == false) return;
-        m_dicState[CurrentStateName].ReceiveOnEnable();
+        if (GlobalState != null)
+            GlobalState.ReceiveOnEnable();
+
+        if (m_dicState.ContainsKey(CurrentStateName))
+            m_dicState[CurrentStateName].ReceiveOnEnable();
     }
 
     protected virtual void OnDisable()
     {
-        if (m_dicState.ContainsKey(CurrentStateName) == false) return;
-        m_dicState[CurrentStateName].ReceiveOnDisable();
+        if (GlobalState != null)
+            GlobalState.ReceiveOnDisable();
+
+        if (m_dicState.ContainsKey(CurrentStateName))
+            m_dicState[CurrentStateName].ReceiveOnDisable();
     }
 
     //기본 상태를 생성시에 설정하게 생성자 만들기.
@@ -133,8 +147,9 @@ abstract public class StateMachineEntity<T> : Entity // T는 Entity, W는 State
         CurrentState.OnMessage(telegram);
         return true;
     }
-    public void SetGlobalState(BaseState<T> state) // 추상 함수 처리
+    public void SetGlobalState(T stateName, BaseState<T> state) // 추상 함수 처리
     {
+        GlobalStateName = stateName; // 글로벌 스테이트 이름 넣기
         GlobalState = state;
         GlobalState.OperateEnter(); // 이런 식으로 동작
     }

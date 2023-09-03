@@ -131,9 +131,9 @@ public class UpdateDBComponent : UnitaskUtility
 
     void ResetDB(string dataName, object data)
     {
-        if (dataName == "Player")
+        if (dataName == "PlayerTransform")
         {
-            //DatabaseManager.Instance.EntityDB.Player = data as PlayerData;
+            //DatabaseManager.Instance.EntityDB.PlayerTransform = data as PlayerData;
         }
         else if (dataName == "Enemy")
         {

@@ -5,6 +5,7 @@ using System;
 
 public class YellowTriangleEnemy : BaseFollowEnemy
 {
+    [HideInInspector]
     public string skillEffectName;
 
     public void Initialize(bool immortality, BuffFloat hp, BuffFloat speed, BuffFloat stunTime,
@@ -34,10 +35,10 @@ public class YellowTriangleEnemy : BaseFollowEnemy
         m_dicState.Add(State.Die, die);
         m_dicState.Add(State.Damaged, damaged);
 
-        BaseState<State> attack = new StateYellowTriangleAttack(this); // 공격만 따로 추가해주자
+        BaseState<State> attack = new StateYellowTriangleAttack(this); // 공격만 따로 추가해주자 --> GlobalState는 딕셔너리에 넣지 말고 관리하자
         m_dicState.Add(State.Attack, attack); 
 
         SetUp(State.Follow);
-        SetGlobalState(attack);
+        SetGlobalState(State.Attack, attack);
     }
 }

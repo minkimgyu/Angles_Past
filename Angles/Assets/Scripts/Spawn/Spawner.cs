@@ -73,8 +73,6 @@ public class Spawner : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI timeTxt;
 
-    EntityFactory entityFactory;
-
     private void Awake()
     {
         spawnSO.OnActionRequested += Spawn; // 스폰 연결
@@ -83,11 +81,18 @@ public class Spawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        entityFactory = FindObjectOfType<EntityFactory>();
-        Player player = (Player)entityFactory.Order("Player");
+        SpawnPlayer();
+    }
+
+    void SpawnPlayer()
+    {
+        Entity player = EntityFactory.Order("Player");
         spawnAssistant = player.GetComponentInChildren<SpawnAssistant>();
 
-        PlayManager.Instance.Player = player;
+        RepositionEnemy repositionEnemy = FindObjectOfType<RepositionEnemy>();
+        repositionEnemy.Init(player.gameObject);
+
+        PlayManager.Instance.PlayerTransform = player.transform;
     }
 
     // Update is called once per frame
@@ -202,7 +207,7 @@ public class Spawner : MonoBehaviour
 
         for (int i = 0; i < spawnCount; i++)
         {
-            Entity entity = entityFactory.Order(spawnEntityName);
+            Entity entity = EntityFactory.Order(spawnEntityName);
             Vector3 resetPos = SpawnNotOverlap(pos, loadSpawnPos);
             entity.transform.position = resetPos;
         }
@@ -210,7 +215,7 @@ public class Spawner : MonoBehaviour
 
     public void Spawn(Vector3 pos, string spawnEntityName, int indexOfPoint)
     {
-        Entity entity = ObjectPooler.SpawnFromPool<Entity>(spawnEntityName);
+        Entity entity = EntityFactory.Order(spawnEntityName);
 
         octagonSpawnPoints[indexOfPoint].SpawnToPoint(entity.gameObject);
         entity.transform.position = pos;

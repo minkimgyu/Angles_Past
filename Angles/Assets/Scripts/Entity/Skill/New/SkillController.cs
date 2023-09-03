@@ -5,16 +5,13 @@ using System;
 
 public class SkillController : MonoBehaviour
 {
+    [SerializeField]
     List<BaseSkill> m_skills = new List<BaseSkill>(); // --> 키 값이 중복이 안 되서 리스트로 사용해야할 듯
-
-    SkillFactory skillFactory;
 
     Dictionary<BaseSkill.OverlapType, Action<BaseSkill>> OverlapTypeConditions;
 
     private void Awake()
     {
-        skillFactory = FindObjectOfType<SkillFactory>();
-
         OverlapTypeConditions = new Dictionary<BaseSkill.OverlapType, Action<BaseSkill>>()
         {
             { BaseSkill.OverlapType.CountUp, (BaseSkill skill) => { skill.CountUp(); } },
@@ -38,7 +35,8 @@ public class SkillController : MonoBehaviour
             m_skills[i].Execute(); // 현재 돌아가지 않는 스킬을 사용함
 
 
-            if (m_skills[i].IsUseCountZero()) m_skills.Remove(m_skills[i]);
+            //if (m_skills[i].IsUseCountZero()) m_skills[i].End(); --> 없어도 제거 되야함
+            //m_skills.Remove(m_skills[i]);
         }
     }
 
@@ -55,7 +53,7 @@ public class SkillController : MonoBehaviour
 
     public void AddSkillToList(string name)
     {
-        BaseSkill skill = skillFactory.Order(gameObject, name);
+        BaseSkill skill = SkillFactory.Order(name);
         OverlapTypeConditions[skill.OverlapCondition](skill); 
 
         UseSkill(BaseSkill.UseConditionType.Get);
@@ -69,6 +67,16 @@ public class SkillController : MonoBehaviour
         m_skills.Remove(skill); // --> 스킬 사용 중지
     }
 
+    public void RemoveAllSkillInList()
+    {
+        for (int i = 0; i < m_skills.Count; i++)
+        {
+            m_skills[i].End();
+            m_skills.Remove(m_skills[i]);
+            i--;
+        }
+    }
+
     void DoUpdate()
     {
         for (int i = 0; i < m_skills.Count; i++)
@@ -80,7 +88,8 @@ public class SkillController : MonoBehaviour
                 continue;
             }
 
-            m_skills[i].Execute();
+            if(m_skills[i].IsRunning)
+                m_skills[i].Execute();
         }
     }
 

@@ -37,7 +37,7 @@ MonoBehaviour:
     maxValue: 1
     minValue: 0
     originValue: 0.2
-  dieEffectName: PlayerDie
+  dieEffectName: PlayerDestroied
   readySpeedDecreaseRatio:
     maxValue: 1
     minValue: 0
@@ -71,4 +71,5 @@ MonoBehaviour:
     maxValue: 1
     minValue: 0
     originValue: 0.2
-  grantedSkillNames: []
+  grantedSkillNames:
+  - Punch

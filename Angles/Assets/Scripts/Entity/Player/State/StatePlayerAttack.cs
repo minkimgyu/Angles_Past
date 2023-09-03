@@ -46,6 +46,8 @@ public class StatePlayerAttack : BaseState<Player.State>
         collision.gameObject.TryGetComponent(out IAvatar avatar);
         if (avatar == null) return;
 
+        m_loadPlayer.SkillController.UseSkill(BaseSkill.UseConditionType.Contact);
+
         if (avatar.Weight.IntervalValue > avatar.Weight.IntervalValue)
         {
             if (collision != null && collision.contacts.Length != 0)
@@ -129,11 +131,11 @@ public class StatePlayerAttack : BaseState<Player.State>
 //            {
 //                if (col != null && col.contacts.Length != 0)
 //                {
-//                    Message<Player.State> message = new Message<Player.State>();
+//                    Message<PlayerTransform.State> message = new Message<PlayerTransform.State>();
 //                    message.dir = m_loadPlayer.ReflectComponent.ResetReflectVec(col.contacts[0].normal);
-//                    Telegram<Player.State> telegram = new Telegram<Player.State>(Player.State.Attack, Player.State.Reflect, message);
+//                    Telegram<PlayerTransform.State> telegram = new Telegram<PlayerTransform.State>(PlayerTransform.State.Attack, PlayerTransform.State.Reflect, message);
 
-//                    m_loadPlayer.SetState(Player.State.Reflect, telegram);
+//                    m_loadPlayer.SetState(PlayerTransform.State.Reflect, telegram);
 //                }
 //            }
 //        }
@@ -143,11 +145,11 @@ public class StatePlayerAttack : BaseState<Player.State>
 //            {
 //                if (col != null && col.contacts.Length != 0)
 //                {
-//                    Message<Player.State> message = new Message<Player.State>();
+//                    Message<PlayerTransform.State> message = new Message<PlayerTransform.State>();
 //                    message.dir = m_loadPlayer.ReflectComponent.ResetReflectVec(col.contacts[0].normal);
-//                    Telegram<Player.State> telegram = new Telegram<Player.State>(Player.State.Attack, Player.State.Reflect, message);
+//                    Telegram<PlayerTransform.State> telegram = new Telegram<PlayerTransform.State>(PlayerTransform.State.Attack, PlayerTransform.State.Reflect, message);
 
-//                    m_loadPlayer.SetState(Player.State.Reflect, telegram);
+//                    m_loadPlayer.SetState(PlayerTransform.State.Reflect, telegram);
 //                }
 //            }
 //        }
@@ -158,10 +160,10 @@ public class StatePlayerAttack : BaseState<Player.State>
 
 //    if (entity.InheritedTag == EntityTag.Wall)
 //    {
-//        Message<Player.State> message = new Message<Player.State>();
+//        Message<PlayerTransform.State> message = new Message<PlayerTransform.State>();
 //        message.dir = m_loadPlayer.ReflectComponent.ResetReflectVec(col.contacts[0].normal);
-//        Telegram<Player.State> telegram = new Telegram<Player.State>(Player.State.Attack, Player.State.Reflect, message);
+//        Telegram<PlayerTransform.State> telegram = new Telegram<PlayerTransform.State>(PlayerTransform.State.Attack, PlayerTransform.State.Reflect, message);
 
-//        m_loadPlayer.SetState(Player.State.Reflect, telegram);
+//        m_loadPlayer.SetState(PlayerTransform.State.Reflect, telegram);
 //    }
 //}

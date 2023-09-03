@@ -31,7 +31,7 @@ public class SlowEnemyComponent : UnitaskUtility
 
     //private void OnTriggerEnter2D(Collider2D col)
     //{
-    //    if (col.CompareTag(EntityTag.Player.ToString()) == true)
+    //    if (col.CompareTag(EntityTag.PlayerTransform.ToString()) == true)
     //    {
     //        DatabaseManager.Instance.PlayerData.SpeedRatio -= 0.25f;
     //        FillEffect(0.6f);
@@ -40,7 +40,7 @@ public class SlowEnemyComponent : UnitaskUtility
 
     //private void OnTriggerExit2D(Collider2D col)
     //{
-    //    if (col.CompareTag(EntityTag.Player.ToString()) == true)
+    //    if (col.CompareTag(EntityTag.PlayerTransform.ToString()) == true)
     //    {
     //        DatabaseManager.Instance.PlayerData.SpeedRatio += 0.25f;
     //        FillEffect(0);

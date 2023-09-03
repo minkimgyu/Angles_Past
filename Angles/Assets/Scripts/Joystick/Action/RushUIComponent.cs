@@ -20,11 +20,11 @@ public class RushUIComponent : FillUIComponent
     //    playerActionEventSO.OnActionRequested -= FillDashIcon;
     //}
 
-    //public void OnNotify(Player.ObserverType state, PlayerData data)
+    //public void OnNotify(PlayerTransform.ObserverType state, PlayerData data)
     //{
-    //    if (state == Player.ObserverType.ShowRushUI)
+    //    if (state == PlayerTransform.ObserverType.ShowRushUI)
     //        FillDashIcon(data.RushRatio);
-    //    else if (state == Player.ObserverType.HideRushUI)
+    //    else if (state == PlayerTransform.ObserverType.HideRushUI)
     //        FillDashIcon(0);
     //}
 }

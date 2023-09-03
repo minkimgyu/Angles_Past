@@ -77,7 +77,7 @@ public class ObjectPooler : MonoBehaviour
 	//public static GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation, Transform transform) =>
 	//	inst._SpawnFromPool(tag, position, rotation, transform);
 
-	public static T SpawnFromPool<T>(string tag) where T : Component
+	public static T SpawnFromPool<T>(string tag)// where T : Component
 	{
 		GameObject obj = inst._SpawnFromPool(tag, Vector3.zero, Quaternion.identity, inst.transform);
 		if (obj.TryGetComponent(out T component))
@@ -89,7 +89,7 @@ public class ObjectPooler : MonoBehaviour
 		}
 	}
 
-	public static T SpawnFromPool<T>(string tag, Vector3 position) where T : Component
+	public static T SpawnFromPool<T>(string tag, Vector3 position)// where T : Component
 	{
 		GameObject obj = inst._SpawnFromPool(tag, position, Quaternion.identity, inst.transform);
 		if (obj.TryGetComponent(out T component))
@@ -101,7 +101,7 @@ public class ObjectPooler : MonoBehaviour
 		}
 	}
 
-	public static T SpawnFromPool<T>(string tag, Vector3 position, Quaternion rotation) where T : Component
+	public static T SpawnFromPool<T>(string tag, Vector3 position, Quaternion rotation)// where T : Component
 	{
 		GameObject obj = inst._SpawnFromPool(tag, position, rotation, inst.transform);
 		if (obj.TryGetComponent(out T component))
@@ -113,7 +113,7 @@ public class ObjectPooler : MonoBehaviour
 		}
 	}
 
-	public static T SpawnFromPool<T>(string tag, Vector3 position, Quaternion rotation, Transform transform) where T : Component
+	public static T SpawnFromPool<T>(string tag, Vector3 position, Quaternion rotation, Transform transform)// where T : Component
 	{
 		GameObject obj = inst._SpawnFromPool(tag, position, rotation, transform);
 		if (obj.TryGetComponent(out T component))

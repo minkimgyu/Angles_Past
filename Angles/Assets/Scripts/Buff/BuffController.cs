@@ -5,10 +5,9 @@ using UnityEngine;
 public class BuffController : MonoBehaviour
 {
     [SerializeField]
-    List<BaseBuff> m_buffs;
+    List<BaseBuff> m_buffs = new List<BaseBuff>();
 
     BuffEffectComponent effectComponent;
-    BuffFactory buffFactory;
 
     private void Start()
     {
@@ -17,10 +16,11 @@ public class BuffController : MonoBehaviour
 
     public bool AddBuff(string name) //--> 같은 효과를 n개 이상 넣으면 무시 --> buffData를 넘겨주자   
     {
-        BaseBuff orderedBuff = buffFactory.Order(name);
+        BaseBuff orderedBuff = BuffFactory.Order(name);
 
         if (CheckBuffList(name) >= orderedBuff.MaxCount) return false; // maxCount보다 더 많은 버프를 가지고 있다면 Return
         orderedBuff.OnStart(gameObject);
+        m_buffs.Add(orderedBuff);
 
         return true;
     }  

@@ -12,6 +12,6 @@ public class YellowSquareEnemy : BaseFollowEnemy
         AddBaseState();
 
         SetUp(State.Follow);
-        SetGlobalState(attack);
+        SetGlobalState(State.Attack, attack);
     }
 }

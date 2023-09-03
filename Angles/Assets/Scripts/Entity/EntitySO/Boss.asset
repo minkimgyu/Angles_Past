@@ -37,8 +37,9 @@ MonoBehaviour:
     maxValue: 10
     minValue: 0
     originValue: 0
-  dieEffectName: 
-  skillNames: []
+  dieEffectName: HeptaOctaDestroied
+  skillNames:
+  - BossAttack
   score:
     maxValue: 200
     minValue: 0

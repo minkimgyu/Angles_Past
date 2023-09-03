@@ -2,30 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicBullet : BasicProjectile
+public class BasicBullet : ContactableObject, IProjectile
 {
-    DashComponent m_dashComponent;
+    public DashComponent DashComponent { get; set; }
 
     protected override void Awake()
     {
         base.Awake();
-        m_dashComponent = GetComponent<DashComponent>();
+        DashComponent = GetComponent<DashComponent>();
     }
 
-    protected override void OnCollisionEnter2D(Collision2D col) // 충돌 시 상태 변환
+    public override void ResetObject(Vector3 pos, float rotation)
     {
-        base.OnCollisionEnter2D(col);
+        base.ResetObject(pos, rotation);
 
-        if (col.gameObject.tag == "Player" || col.gameObject.tag == "Wall")
-            NowFinish(); //  조건도 추가
+        transform.position = pos;
+        transform.rotation = Quaternion.Euler(0, 0, rotation);
+
     }
 
-    public void Fire(Vector2 dir, float thrust)
+    public void Shoot(Vector2 dir, float thrust)
     {
-        m_dashComponent.PlayDash(dir, thrust);
+        DashComponent.PlayDash(dir, thrust);
     }
 
-    public override void DoUpdate()
+    public void Inintialize(float disableTime, string[] skillNames, string[] hitTargetTag)
     {
+        Inintialize(disableTime, skillNames);
+        this.hitTargetTag = hitTargetTag;
     }
 }

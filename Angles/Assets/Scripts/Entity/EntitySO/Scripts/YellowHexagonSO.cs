@@ -53,7 +53,7 @@ public class YellowHexagonSO : BaseEntitySO
 
     public override Entity Create()
     {
-        YellowPentagonEnemy enemy = ObjectPooler.SpawnFromPool<YellowPentagonEnemy>(name);
+        YellowHexagonEnemy enemy = ObjectPooler.SpawnFromPool<YellowHexagonEnemy>(name);
 
         enemy.Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames, score,
             skillUseDistance, skillUseOffsetDistance, followDistance, followOffsetDistance, attackDelay);

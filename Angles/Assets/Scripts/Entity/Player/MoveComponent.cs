@@ -70,7 +70,7 @@ public class MoveComponent : MonoBehaviour
         //RotationPlayer(rotationDir, useRigid);
     }
 
-    public void Move(Vector2 moveDir, float speed, bool useRigid = true)
+    public void Move(Vector2 moveDir, float speed)
     {
         rigid.velocity = moveDir.normalized * speed;
 

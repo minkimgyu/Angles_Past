@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 6747387225803132925}
   - component: {fileID: 7440886810463908197}
   - component: {fileID: 7440886810463908194}
-  - component: {fileID: -1123396596001858045}
   - component: {fileID: -1377571826600342743}
   - component: {fileID: 1347001379593272769}
+  - component: {fileID: 7274871275585486724}
   m_Layer: 12
   m_Name: Bullet
   m_TagString: Untagged
@@ -150,25 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grantedUtilization:
-    skillNames:
-    - BulletAttack
-    buffNames: []
---- !u!114 &-1123396596001858045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5294362089191587272}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1638d4b05d9f4e145b75023474c6c5cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_possessingSkills: []
-  m_activeSkills: []
-  m_synthesisComponent:
-    synthesisWays: []
+    names: []
 --- !u!114 &-1377571826600342743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,7 +164,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_contactDatas: []
-  m_entityTags: 00000000
 --- !u!114 &1347001379593272769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,5 +174,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d98d8198417bfbf4db51e43cb2a68549, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7274871275585486724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5294362089191587272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

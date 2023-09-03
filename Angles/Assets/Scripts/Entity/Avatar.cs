@@ -20,7 +20,7 @@ public class Avatar<T> : StateMachineEntity<T>, IAvatar//, IEntityData<W>/*, IBu
     // 이런 식으로 Entity를 만들어서 리턴해주는 SO 제작
     //public Entity CreateEntity()
     //{
-    //    return new Player();
+    //    return new PlayerTransform();
     //}
 
     MoveComponent m_moveComponent;
@@ -116,6 +116,9 @@ public class Avatar<T> : StateMachineEntity<T>, IAvatar//, IEntityData<W>/*, IBu
 
     protected override void OnDisable()
     {
+        base.OnDisable();
+        SkillController.RemoveAllSkillInList(); // 리스트에 있는 모든 스킬 제거
+
         CancelInvoke();
         ObjectPooler.ReturnToPool(gameObject);
     }

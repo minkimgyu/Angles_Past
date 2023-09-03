@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [System.Serializable]
 public struct ContactData
@@ -20,8 +21,8 @@ public class ContactComponent : MonoBehaviour
     [SerializeField]
     List<ContactData> m_contactDatas = new List<ContactData>();
 
-    [SerializeField]
-    List<EntityTag> m_entityTags;
+    //[SerializeField]
+    //List<EntityTag> m_entityTags;
 
     public void CallWhenCollisionEnter(Collision2D col)
     {
@@ -35,28 +36,28 @@ public class ContactComponent : MonoBehaviour
         m_contactDatas.Remove(contactData);
     }
 
-    bool CheckCorrectEntity(EntityTag tag)
-    {
-        for (int i = 0; i < m_entityTags.Count; i++)
-        {
-            if (m_entityTags[i] == tag) return true;
-        }
+    //bool CheckCorrectEntity(EntityTag tag)
+    //{
+    //    for (int i = 0; i < m_entityTags.Count; i++)
+    //    {
+    //        if (m_entityTags[i] == tag) return true;
+    //    }
 
-        return false;
-    }
+    //    return false;
+    //}
 
     public List<ContactData> ReturnContactSupportData()
     {
-        List<ContactData> tmpContactDatas = new List<ContactData>();
+        //List<ContactData> tmpContactDatas = new List<ContactData>();
 
-        for (int i = 0; i < m_contactDatas.Count; i++)
-        {
-            m_contactDatas[i].transform.TryGetComponent(out Entity entity);
-            if (entity == null || !CheckCorrectEntity(entity.InheritedTag)) continue;
+        //for (int i = 0; i < m_contactDatas.Count; i++)
+        //{
+        //    m_contactDatas[i].transform.TryGetComponent(out Entity entity);
+        //    if (entity == null || !CheckCorrectEntity(entity.InheritedTag)) continue;
 
-            tmpContactDatas.Add(m_contactDatas[i]);
-        }
+        //    tmpContactDatas.Add(m_contactDatas[i]);
+        //}
 
-        return tmpContactDatas;
+        return m_contactDatas.ToList();
     }
 }

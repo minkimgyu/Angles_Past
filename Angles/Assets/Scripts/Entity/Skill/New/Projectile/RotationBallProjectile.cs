@@ -1,27 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class RotationBallProjectile : BasicProjectile
+
+public class RotationBallProjectile : ContactableObject
 {
-    public override void DoUpdate()
+    Transform m_caster;
+
+    // update로 주변 도는 기능 구현 --> 이것도 GameObject - Caster 필요함
+    protected override void DoUpdate()
     {
+        // m_caster
     }
 
-    protected override void OnCollisionEnter2D(Collision2D col) // 충돌 시 상태 변환
+    public override void ResetObject(Transform caster, Vector3 pos)
     {
-        base.OnCollisionEnter2D(col);
-
-        if(col.gameObject.tag == "Enemy")
-        {
-            NowFinish(); //  조건도 추가
-            SoundManager.Instance.PlaySFX(transform.position, "SpawnBallDestroy", 0.25f);
-        }
-            
+        base.ResetObject(caster, pos);
+        m_caster = caster;
+        transform.position = pos;
     }
 
-    public override void OnEnd()
+    public void Inintialize(float disableTime, string[] skillNames, string[] hitTargetTag)
     {
-        ObjectPooler.ReturnToTransform(transform);
-        base.OnEnd();
+        Inintialize(disableTime, skillNames);
+        this.hitTargetTag = hitTargetTag;
     }
 }

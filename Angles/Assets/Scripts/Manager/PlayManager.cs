@@ -8,14 +8,14 @@ using TMPro;
 
 public class PlayManager : MonoBehaviour //Singleton<PlayManager>
 {
-    Player player;
-    public Player Player
+    Transform playerTransform;
+    public Transform PlayerTransform
     {
-        get { return player; }
+        get { return playerTransform; }
         set 
         { 
-            player = value;
-            virtualCamera.Follow = value.transform;
+            playerTransform = value;
+            virtualCamera.Follow = value;
         }
     }
 
@@ -32,7 +32,7 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
     [SerializeField]
     TMP_Text scoreTxt;
 
-    public static PlayManager instance;
+    static PlayManager instance;
     public static PlayManager Instance { get { return instance; } }
 
     [SerializeField]
@@ -57,7 +57,7 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
     // Start is called before the first frame update
     protected void Awake()
     { 
-        instance = this;
+        instance = this; // 이부분은 ObjectPooler와 유사한 싱글톤으로 만들어주기
         Application.targetFrameRate = 60;
     }
 

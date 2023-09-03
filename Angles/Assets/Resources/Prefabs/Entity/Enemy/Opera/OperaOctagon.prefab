@@ -313,10 +313,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inheritedTag: 1
+  expectationDirs: []
   directionCount:
     maxValue: 0
     minValue: 0
     originValue: 0
+  distanceFromCenter: 3.5
 --- !u!114 &6379353961815610346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -384,7 +386,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_contactDatas: []
-  m_entityTags: 01000000
 --- !u!114 &341337890212563695
 MonoBehaviour:
   m_ObjectHideFlags: 0

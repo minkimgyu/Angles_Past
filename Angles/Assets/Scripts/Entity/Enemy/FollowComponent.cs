@@ -8,7 +8,7 @@ using System;
 public class FollowComponent : MonoBehaviour
 {
     //Enemy enemy;
-    //Player player;
+    //PlayerTransform playerTransform;
     //public int count = 0;
 
     //bool nowHit = false;
@@ -56,7 +56,7 @@ public class FollowComponent : MonoBehaviour
     //private void Start()
     //{
     //    enemy = GetComponent<Enemy>();
-    //    player = PlayManager.Instance.player;
+    //    playerTransform = PlayManager.Instance.playerTransform;
     //}
 
     //public void WaitFollow()
@@ -142,13 +142,13 @@ public class FollowComponent : MonoBehaviour
     //{
     //    if (nowHit == true || pauseFollow == true) return; // 루틴 돌아가는 동안, 사용 금지
 
-    //    Vector2 dirVec = player.transform.position - enemy.transform.position;
+    //    Vector2 dirVec = playerTransform.transform.position - enemy.transform.position;
     //    RotateUsingVelocity(dirVec.normalized);
 
-    //    bool nowFollow = CanFollowDistance(player.transform.position);
-    //    bool nowStop = CanStopDistance(player.transform.position);
+    //    bool nowFollow = CanFollowDistance(playerTransform.transform.position);
+    //    bool nowStop = CanStopDistance(playerTransform.transform.position);
 
-    //    CanUseSkillDistance(player.transform.position);
+    //    CanUseSkillDistance(playerTransform.transform.position);
 
     //    if (nowStop == true)
     //    {
@@ -157,7 +157,7 @@ public class FollowComponent : MonoBehaviour
     //    }
     //    else if(nowFollow == true && nowStop == false)
     //    {
-    //        enemy.rigid.velocity = (player.rigid.position - enemy.rigid.position).normalized * enemy.enemyData.Speed;
+    //        enemy.rigid.velocity = (playerTransform.rigid.position - enemy.rigid.position).normalized * enemy.enemyData.Speed;
     //    }
     //}
 

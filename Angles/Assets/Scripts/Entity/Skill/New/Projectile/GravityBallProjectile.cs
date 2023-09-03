@@ -2,39 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GravityBallProjectile : BasicProjectile
+public class GravityBallProjectile : BasicSpawnedObject, IProjectile
 {
     public List<Rigidbody2D> rigidbodies;
 
     [SerializeField]
-    float endTime = 10;
+    float absorbThrust;
 
-    [SerializeField]
-    float absorbThrust = 50;
-
-    [SerializeField]
-    float shootThrust = 0;
-
-    DashComponent dashComponent;
+    public DashComponent DashComponent { get; set; }
 
     protected override void Awake()
     {
         base.Awake();
-        dashComponent = GetComponent<DashComponent>();
+        DashComponent = GetComponent<DashComponent>();
     }
 
-    public override void Init(Vector3 pos)
+    public override void ResetObject(Vector3 pos)
     {
-        base.Init(pos);
-        Invoke("NowFinish", endTime);
+        base.ResetObject(pos);
+        transform.position = pos;
     }
 
-    public override void Shoot(Vector2 dir, float thrust)
+    public void Inintialize(float disableTime, string[] skillNames, string[] hitTargetTag, float absorbThrust)
     {
-        dashComponent.PlayDash(dir, thrust);
+        Inintialize(disableTime, skillNames);
+        this.hitTargetTag = hitTargetTag;
+        this.absorbThrust = absorbThrust;
     }
 
-    public override void DoUpdate()
+    public void Shoot(Vector2 dir, float thrust)
+    {
+        DashComponent.PlayDash(dir, thrust); // 슈팅 소환이면 날려보내기 아니면 그냥 소환만 진행
+    }
+
+    protected override void DoUpdate()
     {
         for (int i = 0; i < rigidbodies.Count; i++)
         {
@@ -43,30 +44,13 @@ public class GravityBallProjectile : BasicProjectile
         }
     }
 
-    private void Update()
-    {
-        DoUpdate();
-    }
-
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if(col.gameObject.tag == "Enemy")
-        {
-            rigidbodies.Add(col.GetComponent<Rigidbody2D>());
-        }
+        if(IsTarget(col.gameObject)) rigidbodies.Add(col.GetComponent<Rigidbody2D>());
     }
 
     private void OnTriggerExit2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Enemy")
-        {
-            rigidbodies.Remove(col.GetComponent<Rigidbody2D>());
-        }
-    }
-
-    protected override void OnDisable()
-    {
-        CancelInvoke();
-        base.OnDisable();
+        if (IsTarget(col.gameObject)) rigidbodies.Remove(col.GetComponent<Rigidbody2D>());
     }
 }

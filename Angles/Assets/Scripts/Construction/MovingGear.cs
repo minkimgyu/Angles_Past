@@ -20,7 +20,7 @@ public class MovingGear : BasicConstruction
         m_dicState.Add(State.Global, global);
 
         SetUp(State.Idle);
-        SetGlobalState(global);
+        SetGlobalState(State.Global, global);
     }
 }
 

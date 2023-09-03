@@ -7,6 +7,8 @@ public class ParticleEffectPlayer : BasicEffectPlayer
     [SerializeField]
     List<ParticleSystem> m_particles = new List<ParticleSystem>();
 
+    float originalScale;
+
     private void Awake()
     {
         ParticleSystem[] childSystems = GetComponentsInChildren<ParticleSystem>();
@@ -15,11 +17,21 @@ public class ParticleEffectPlayer : BasicEffectPlayer
         {
             m_particles.Add(childSystems[i]);
         }
+
+        originalScale = transform.localScale.x;
     }
 
-    protected override void ResetSize(float sizeMultiplier)
+    protected override void OnDisable()
     {
-        transform.localScale = new Vector3(sizeMultiplier, sizeMultiplier, sizeMultiplier);
+        transform.localScale = new Vector3(originalScale, originalScale, 1); // 오리지널 스케일로 마지막에 리셋해주기
+        base.OnDisable();
+        // --> 모든 이팩트의 기본 scale는 1에 맞추자
+        // 여기에 추가 Scale를 넣어서 크기를 키우는 방식으로 구성
+    }
+
+    protected override void ResetSize(float sizeMultifly)
+    {
+        transform.localScale = new Vector3(transform.localScale.x * sizeMultifly, transform.localScale.y * sizeMultifly, 1);
     }
 
     protected override void ResetLifeTime(float[] lifeTime)

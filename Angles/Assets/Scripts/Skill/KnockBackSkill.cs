@@ -13,8 +13,8 @@ public class KnockBackSkill : MonoBehaviour
     //public override void PlaySkill(SkillSupportData data, BasicBattleComponent battleComponent)
     //{
     //    base.PlaySkill(data, battleComponent);
-    //    transform.position = data.player.transform.position;
-    //    transform.rotation = data.player.transform.rotation;
+    //    transform.position = data.playerTransform.transform.position;
+    //    transform.rotation = data.playerTransform.transform.rotation;
 
     //    float tempRotation = transform.eulerAngles.z;
     //    print(tempRotation);

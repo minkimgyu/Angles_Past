@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78bc0cf1784602c4a9ed8f0f720454e7, type: 3}
+  m_Name: ShootBulletInClockwise
+  m_EditorClassIdentifier: 
+  useConditionType: 2
+  projectileName: PentagonBullet
+  duration: 2.5
+  tickCount: 5
+  projectileCount: 5
+  preDelay: 1
+  speed: 20
+  isClockwise: 1
+  distanceFromCaster: 3
+  effectDatas:
+    m_keys: 00000000
+    m_values:
+    - name: PentagonReadyEffect
+      isFix: 1
+      disableTime: 1
+  soundDatas:
+    m_keys: 
+    m_values: []

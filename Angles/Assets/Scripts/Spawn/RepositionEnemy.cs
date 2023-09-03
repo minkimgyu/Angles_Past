@@ -5,10 +5,17 @@ using UnityEngine;
 public class RepositionEnemy : MonoBehaviour
 {
     SpawnAssistant spawnAssistant;
+    Transform posTr;
 
-    private void Start()
+    public void Init(GameObject go)
     {
-        spawnAssistant = GetComponent<SpawnAssistant>();
+        spawnAssistant = go.GetComponentInChildren<SpawnAssistant>();
+        posTr = go.transform;
+    }
+
+    private void Update()
+    {
+        if (posTr != null) transform.position = posTr.position;
     }
 
     private void OnTriggerExit2D(Collider2D col)

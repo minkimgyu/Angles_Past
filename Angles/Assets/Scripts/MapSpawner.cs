@@ -21,7 +21,7 @@ public class MapSpawner : MonoBehaviour
 
     private void Start()
     {
-        player = PlayManager.Instance.Player;
+        //playerTransform = PlayManager.Instance.PlayerTransform;
 
         for (int i = 0; i < mapPos.Count; i++)
         {

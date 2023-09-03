@@ -20,7 +20,7 @@ public class Menu : MonoBehaviour
 
     private void Start()
     {
-        //if (!entityDB.Player.Immortality)
+        //if (!entityDB.PlayerTransform.Immortality)
         //{
         //    cheatTxt.text = "公利 秦力";
         //    cheatImg.color = new Color(0.1f, 0.1f, 0.1f, 1f);
@@ -87,17 +87,17 @@ public class Menu : MonoBehaviour
 
     public void MakePlayerImmo()
     {
-        //if(!entityDB.Player.Immortality)
+        //if(!entityDB.PlayerTransform.Immortality)
         //{
         //    cheatTxt.text = "公利 利侩";
         //    cheatImg.color = new Color(1f, 1f, 1f, 1f);
-        //    entityDB.Player.Immortality = true;
+        //    entityDB.PlayerTransform.Immortality = true;
         //}
         //else
         //{
         //    cheatTxt.text = "公利 秦力";
         //    cheatImg.color = new Color(0.1f, 0.1f, 0.1f, 1f);
-        //    entityDB.Player.Immortality = false;
+        //    entityDB.PlayerTransform.Immortality = false;
         //}
     }
 }
