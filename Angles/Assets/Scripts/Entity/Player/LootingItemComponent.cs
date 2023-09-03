@@ -10,6 +10,8 @@ public class LootingItemComponent : MonoBehaviour
         {
             DropSkill dropSkill = col.GetComponent<DropSkill>();
             SoundManager.Instance.PlaySFX(transform.position, "GetItem", 0.1f);
+
+            Debug.Log(dropSkill.ReturnSkill());
             skillController.AddSkillToList(dropSkill.ReturnSkill());
         }
     }

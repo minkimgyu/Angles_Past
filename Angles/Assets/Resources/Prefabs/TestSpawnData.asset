@@ -12,7 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 489cf819f57dddd43a9a6f6962a822e7, type: 3}
   m_Name: TestSpawnData
   m_EditorClassIdentifier: 
-  spawnDatas:
-  - levelUpTime: 3
-    spawnEntityName: Boss
-    spawnCount: 1
+  spawnDatas: []

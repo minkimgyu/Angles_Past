@@ -111,7 +111,8 @@ public class Avatar<T> : StateMachineEntity<T>, IAvatar//, IEntityData<W>/*, IBu
 
     public EntityTag ReturnEntityTag()
     {
-        return inheritedTag;
+        // 게임 오브젝트 Tag를 EntityTag 이걸로 변환해서 리턴
+        return InheritedTag;
     }
 
     protected override void OnDisable()

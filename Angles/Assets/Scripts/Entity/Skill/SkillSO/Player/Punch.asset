@@ -17,14 +17,11 @@ MonoBehaviour:
   knockBackThrust: 5
   damage: 3
   effectDatas:
-    m_keys: 00000000
+    m_keys: 01000000
     m_values:
     - name: PunchEffect
       isFix: 0
       disableTime: 1
   soundDatas:
-    m_keys: 00000000
-    m_values:
-    - name: PunchEffect
-      isLoop: 0
-      volume: 1
+    m_keys: 
+    m_values: []

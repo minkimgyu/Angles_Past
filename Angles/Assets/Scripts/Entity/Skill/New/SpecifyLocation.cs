@@ -18,7 +18,7 @@ abstract public class SpecifyLocation
         m_isFix = isFix;
     }
 
-    public abstract void Init(GameObject caster);
+    public virtual void Init(GameObject caster, out Transform target, out float scale) { target = null; scale = 1; }
 
     public virtual Vector3 ReturnPos()
     {
@@ -33,8 +33,11 @@ public class LocationToCaster : SpecifyLocation
     {
     }
 
-    public override void Init(GameObject caster)
+    public override void Init(GameObject caster, out Transform target, out float scale)
     {
+        target = caster.transform;
+        scale = caster.transform.localScale.x;
+
         if (m_isFix) m_posTr = caster.transform;
         else m_pos = caster.transform.position;
     }
@@ -42,19 +45,55 @@ public class LocationToCaster : SpecifyLocation
 
 public class LocationToContactor : SpecifyLocation
 {
-    public LocationToContactor(bool isFix) : base(isFix)
+    EntityTag[] entityTags;
+
+    public LocationToContactor(bool isFix, EntityTag[] entityTags) : base(isFix)
     {
+        this.entityTags = entityTags;
     }
 
-    public override void Init(GameObject caster)
+    public override void Init(GameObject caster, out Transform target, out float scale)
     {
         caster.TryGetComponent(out ContactComponent contact);
-        if (contact == null) return;
+        if (contact == null)
+        {
+            target = null;
+            scale = 1;
+            return;
+        }
 
         List<ContactData> supportData = contact.ReturnContactSupportData();
-        if (supportData.Count == 0) return;
+        if (supportData.Count == 0)
+        {
+            target = null;
+            scale = 1;
+            return;
+        }
 
-        if (m_isFix) m_posTr = supportData[0].transform;
-        else m_pos = supportData[0].transform.position;
+
+        for (int i = 0; i < supportData.Count; i++)
+        {
+            supportData[i].transform.TryGetComponent(out IAvatar avatar);
+            if (avatar == null) continue;
+
+            EntityTag targetTag = avatar.ReturnEntityTag();
+
+            for (int j = 0; j < entityTags.Length; j++)
+            {
+                if (targetTag == entityTags[i])
+                {
+                    if (m_isFix) m_posTr = supportData[i].transform;
+                    else m_pos = supportData[i].transform.position;
+                    // 이렇게 해당 태그를 찾아서 변수에 넣어주기
+
+                    target = m_posTr;
+                    scale = m_posTr.localScale.x;
+                    return;
+                }
+            }
+        }
+
+        target = null;
+        scale = 1;
     }
 }

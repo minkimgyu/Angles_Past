@@ -69,31 +69,29 @@ public class DamageToContactors : DamageMethod<List<ContactData>>
         {
             if (IsTarget(contactDatas[i].transform, out IAvatar health) == false) continue;
 
-            PlayEffect(contactDatas[i].transform, EffectCondition.HitSurfaceEffect);
+            PlayEffect(contactDatas[i].position, EffectCondition.HitSurfaceEffect);
             DamageToEntity(health, supportData.Caster, contactDatas[i].transform); // 이렇게 진행
         }
     }
 }
 
-public class DamageToRaycastHit : DamageMethod<RaycastHit2D[]>
+public class DamageUsingRaycast : DamageMethod<RaycastHit2D[]> // 스킬 위치에 이팩트 생성
 {
     float[] skillScalePerTicks;
+    bool IsAttackEffectOnCasterPosition;
 
-    public DamageToRaycastHit(EntityTag[] hitTarget, float knockBackThrust, float damage, float[] skillScalePerTicks,
+    public DamageUsingRaycast(EntityTag[] hitTarget, float knockBackThrust, float damage, float[] skillScalePerTicks, bool IsAttackEffectOnCasterPosition,
         EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
         : base(hitTarget, knockBackThrust, damage, effectDatas, soundDatas) // 이런 식으로 생성자에서 값을 받아서 Execute 진행
     {
         this.skillScalePerTicks = skillScalePerTicks;
-
-        for (int i = 0; i < skillScalePerTicks.Length; i++)
-        {
-            Debug.Log(skillScalePerTicks[i]);
-        }
+        this.IsAttackEffectOnCasterPosition = IsAttackEffectOnCasterPosition;
     }
 
     public override void Execute(SkillSupportData supportData, RaycastHit2D[] targets)
     {
-        PlayEffect(supportData.Caster.transform, EffectCondition.AttackEffect, skillScalePerTicks[supportData.TickCount]);
+        if(IsAttackEffectOnCasterPosition) PlayEffect(supportData.Caster.transform, EffectCondition.AttackEffect, skillScalePerTicks[supportData.TickCount]);
+        else PlayEffect(supportData.Pos, EffectCondition.AttackEffect, skillScalePerTicks[supportData.TickCount]);
 
         for (int i = 0; i < targets.Length; i++)
         {
@@ -105,13 +103,13 @@ public class DamageToRaycastHit : DamageMethod<RaycastHit2D[]>
     }
 }
 
-public class DamageToLaserHit : DamageMethod<RaycastHit2D[]>
+public class DamageUsingLaserHit : DamageMethod<RaycastHit2D[]>
 {
     float m_laserMaxDistance = 20;
     EntityTag[] m_blockedTag; //m_blockedTag.Add("Wall");
     Vector3[] m_directionPerTick;
 
-    public DamageToLaserHit(EntityTag[] hitTarget, float knockBackThrust, float damage, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas, 
+    public DamageUsingLaserHit(EntityTag[] hitTarget, float knockBackThrust, float damage, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas, 
         float laserMaxDistance, EntityTag[] blockedTag) : base(hitTarget, knockBackThrust, damage, effectDatas, soundDatas) // 이런 식으로 생성자에서 값을 받아서 Execute 진행
     {
         m_laserMaxDistance = laserMaxDistance;
@@ -173,7 +171,7 @@ public class DamageToLaserHit : DamageMethod<RaycastHit2D[]>
 
 
         if (m_effectDatas.Count == 0) return;
-        PlayEffect(supportData.Caster.transform.position, hitPos, EffectCondition.AttackEffect);
+        PlayEffect(supportData.Pos, hitPos, EffectCondition.AttackEffect);
         //SoundManager.Instance.PlaySFX(supportData.Caster.transform.position, supportData.Data.SfxName, supportData.Data.Volume);
     }
 }

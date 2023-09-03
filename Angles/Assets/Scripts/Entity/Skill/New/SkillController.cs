@@ -14,10 +14,18 @@ public class SkillController : MonoBehaviour
     {
         OverlapTypeConditions = new Dictionary<BaseSkill.OverlapType, Action<BaseSkill>>()
         {
-            { BaseSkill.OverlapType.CountUp, (BaseSkill skill) => { skill.CountUp(); } },
+            { BaseSkill.OverlapType.CountUp, (BaseSkill skill) =>
+                {
+                    ActionInSkillList(skill.Name, skill, (BaseSkill tmpSkill) => tmpSkill.CountUp());
+                }
+            },
             // 같은 스킬을 찾아서 사용 카운트를 1 올려주기
 
-            { BaseSkill.OverlapType.Restart, (BaseSkill skill) => { ResetSkill(skill.Name); } },
+            { BaseSkill.OverlapType.Restart, (BaseSkill skill) => 
+                {
+                    ActionInSkillList(skill.Name, skill, (BaseSkill tmpSkill) => tmpSkill.Reset());
+                } 
+            },
             // 같은 스킬을 찾아서 있다면 Reset해주기
 
             {BaseSkill.OverlapType.None, (BaseSkill skill) => { m_skills.Add(skill); } }
@@ -40,15 +48,18 @@ public class SkillController : MonoBehaviour
         }
     }
 
-    void ResetSkill(string name)
+    void ActionInSkillList(string name, BaseSkill skill, Action<BaseSkill> action)
     {
         for (int i = 0; i < m_skills.Count; i++)
         {
             if (m_skills[i].Name == name && m_skills[i].IsRunning == true)
             {
-                m_skills[i].Reset();
+                action(m_skills[i]);
+                return;
             }
         }
+
+        m_skills.Add(skill);
     }
 
     public void AddSkillToList(string name)

@@ -143,7 +143,7 @@ public class EffectSpawnComponent // --> 이거를 BaseMethod에 상속시켜서 스폰 ㄱ�
     /// </summary>
     public bool PlayEffect(Transform target, EffectCondition condition, float scale = 1)
     {
-        if (m_effectDatas.Count == 0 || m_effectDatas.ContainsKey(condition) == false) return false;
+        if (target == null || m_effectDatas.Count == 0 || m_effectDatas.ContainsKey(condition) == false) return false;
 
         BasicEffectPlayer player = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(m_effectDatas[condition].name); // 이팩트 이름 추가
         if (player == null) return false;
@@ -374,9 +374,9 @@ public class Skill<T> : BaseSkill // 실제 구현 포함
     public override void Init(GameObject caster) // fix 변수 넣어주기
     {
         m_caster = caster;
-        m_specifyLocation.Init(caster); // IsFix는 data 변수로 지정
+        m_specifyLocation.Init(caster, out Transform target, out float scale); // IsFix는 data 변수로 지정, target을 지정해서 념겨준다. 이걸 바탕으로 사전 이팩트 지정하기 
 
-        m_predelayEffectSpawner.PlayEffect(caster.transform, EffectCondition.PredelayEffect, caster.transform.localScale.x);
+        m_predelayEffectSpawner.PlayEffect(target, EffectCondition.PredelayEffect, scale);
         // --> scale의 x, y, z 중 하나만 사용해서 이팩트 스케일 조정
     }
 
@@ -426,6 +426,8 @@ public class Skill<T> : BaseSkill // 실제 구현 포함
         m_isRunning = false;
         CountDown();
 
+        StopMethodEffects();
+
         if (CanFinish == true)
         {
             m_nowFinish = true;
@@ -436,11 +438,21 @@ public class Skill<T> : BaseSkill // 실제 구현 포함
         }
     }
 
+    void StopMethodEffects()
+    {
+        for (int i = 0; i < m_baseMethods.Count; i++)
+        {
+            m_baseMethods[i].StopEffect();
+        }
+    }
+
     public override void End()
     {
         // 종료 시퀀스
         Reset();
         //if (!m_canFinish) return; // 제거되지 않는 스킬의 경우 재사용
+
+
 
         m_nowFinish = false;
     }
@@ -484,7 +496,21 @@ public class CasterCircleRangeAttack : Skill<RaycastHit2D[]>
         m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
         m_specifyLocation = new LocationToCaster(isFix);
         m_targetDesignation = new FindInCircleRange(targetFindRange, skillScalePerTicks, offsetRangePerTick);
-        m_baseMethods = new List<BaseMethod<RaycastHit2D[]>> { new DamageToRaycastHit(hitTarget, knockBackThrust, damage, skillScalePerTicks, effectDatas, soundDatas) };
+        m_baseMethods = new List<BaseMethod<RaycastHit2D[]>> { new DamageUsingRaycast(hitTarget, knockBackThrust, damage, skillScalePerTicks, true, effectDatas, soundDatas) };
+    }
+}
+
+[System.Serializable]
+public class ContactorCircleRangeAttack : Skill<RaycastHit2D[]>
+{
+    public ContactorCircleRangeAttack(string name, UseConditionType useConditionType, OverlapType overlapType, bool canFinish, int useCount, bool isFix, float duration, int tickCount, float preDelay, float targetFindRange, float[] skillScalePerTicks,
+        Vector2[] offsetRangePerTick, EntityTag[] hitTarget, float knockBackThrust, float damage, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
+        : base(name, useConditionType, overlapType, canFinish, duration, tickCount, preDelay, useCount)
+    {
+        m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
+        m_specifyLocation = new LocationToContactor(isFix, hitTarget);
+        m_targetDesignation = new FindInCircleRange(targetFindRange, skillScalePerTicks, offsetRangePerTick);
+        m_baseMethods = new List<BaseMethod<RaycastHit2D[]>> { new DamageUsingRaycast(hitTarget, knockBackThrust, damage, skillScalePerTicks, false, effectDatas, soundDatas) };
     }
 }
 
@@ -496,7 +522,7 @@ public class ContactedAttack : Skill<List<ContactData>>
         : base(name, useConditionType, OverlapType.None, false, 0, 1, 0, 1)
     {
         m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
-        m_specifyLocation = new LocationToContactor(false);
+        m_specifyLocation = new LocationToCaster(false);
         m_targetDesignation = new FindInContacted();
         m_baseMethods = new List<BaseMethod<List<ContactData>>> { new DamageToContactors(hitTarget, knockBackThrust, damage, effectDatas, soundDatas) };
     }
@@ -511,9 +537,9 @@ public class CasterBoxRangeAttack : Skill<RaycastHit2D[]>
         : base(name, useConditionType, overlapType, canFinish, duration, tickCount, preDelay, useCount)
     {
         m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
-        m_specifyLocation = new LocationToContactor(isFix);
+        m_specifyLocation = new LocationToCaster(isFix);
         m_targetDesignation = new FindInBoxRange(boxRangePerTick, offsetRangePerTick);
-        m_baseMethods = new List<BaseMethod<RaycastHit2D[]>> { new DamageToRaycastHit(hitTarget, knockBackThrust, damage, skillScalePerTicks, effectDatas, soundDatas) };
+        m_baseMethods = new List<BaseMethod<RaycastHit2D[]>> { new DamageUsingRaycast(hitTarget, knockBackThrust, damage, skillScalePerTicks, true, effectDatas, soundDatas) };
     }
 }
 
@@ -556,6 +582,34 @@ public class ShootLaserToRandomDirection : Skill<RaycastHit2D[]>
         m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
         m_specifyLocation = new LocationToCaster(true);
         m_targetDesignation = new FindAllUsingRaycast(rangePerTicks);
-        m_baseMethods = new List<BaseMethod<RaycastHit2D[]>> { new DamageToLaserHit(hitTarget, knockBackThrust, damage, effectDatas, soundDatas, laserMaxDistance, blockedTag) };
+        m_baseMethods = new List<BaseMethod<RaycastHit2D[]>> { new DamageUsingLaserHit(hitTarget, knockBackThrust, damage, effectDatas, soundDatas, laserMaxDistance, blockedTag) };
+    }
+}
+
+[System.Serializable]
+public class ShootSpawnedObject : Skill<GameObject>
+{
+    public ShootSpawnedObject(string name, UseConditionType useConditionType, string projectileName, float duration, int tickCount, float preDelay,
+        float speed, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
+        : base(name, useConditionType, OverlapType.None, false, duration, tickCount, preDelay, 1)
+    {
+        m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
+        m_specifyLocation = new LocationToCaster(false);
+        m_targetDesignation = new NoFound();
+        m_baseMethods = new List<BaseMethod<GameObject>> { new SpawnAndShootProjectile(projectileName, speed, effectDatas, soundDatas) };
+    }
+}
+
+[System.Serializable]
+public class SpawnObject : Skill<GameObject>
+{
+    public SpawnObject(string name, UseConditionType useConditionType, string projectileName, float duration, int tickCount, float preDelay,
+        EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
+        : base(name, useConditionType, OverlapType.None, false, duration, tickCount, preDelay, 1)
+    {
+        m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
+        m_specifyLocation = new LocationToCaster(false);
+        m_targetDesignation = new NoFound();
+        m_baseMethods = new List<BaseMethod<GameObject>> { new SpawnProjectile(projectileName, effectDatas, soundDatas) };
     }
 }

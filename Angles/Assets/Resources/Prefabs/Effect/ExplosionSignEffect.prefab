@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7054525465167792443}
   - component: {fileID: 7054525465167792442}
   - component: {fileID: 7054525465167792441}
+  - component: {fileID: 7784822468868265631}
   m_Layer: 0
   m_Name: ExplosionSignEffect
   m_TagString: Untagged
@@ -4821,3 +4822,16 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &7784822468868265631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7054525465167792440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 434303f29b843e941be0e06f68780d39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_particles: []
