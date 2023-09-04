@@ -31,58 +31,67 @@ public class SpawnRotationBall : SpawnMethod<GameObject>
     {
         SoundManager.Instance.PlaySFX(supportData.Caster.transform.position, "SpawnBall", 0.05f);
 
-        for (int i = 0; i < m_projectileCount; i++)
-        {
-            BasicSpawnedObject projectile = ObjectPooler.SpawnFromPool<BasicSpawnedObject>(m_projectileName);
-            //spawnedObjects.Add(projectile);
-
-            projectile.transform.SetParent(supportData.Caster.transform);
-
-        }
-
         PlayEffect(supportData.Caster.transform, EffectCondition.SpawnEffect);
 
-        for (int j = 0; j < spawnedObjects.Count; j++)
+        for (int i = 0; i < m_projectileCount; i++)
         {
-            spawnedObjects[j].transform.position = Vector3.zero;
+            BasicSpawnedObject projectile = ProjectileFactory.Order(m_projectileName);
+            spawnedObjects.Add(projectile);
+        }
 
-            float angle = (360.0f * j) / spawnedObjects.Count;
+        for (int i = 0; i < spawnedObjects.Count; i++)
+        {
+            float angle = (360.0f * i) / spawnedObjects.Count;
+            spawnedObjects[i].ResetObject(supportData.Caster.transform, angle, m_distanceFromCaster); // trasform으로 수정해주자 --> 이걸 이용해서 돌리기
+        }
+    }
 
-            Vector3 offset = Vector3.up * m_distanceFromCaster;
-            Quaternion rotation = Quaternion.Euler(0, 0, angle);
-            Vector3 rotatedOffset = rotation * offset;
-
-            spawnedObjects[j].ResetObject(supportData.Caster.transform, rotatedOffset); // trasform으로 수정해주자 --> 이걸 이용해서 돌리기
+    public void RemoveSpawnObject(BasicSpawnedObject projectile)
+    {
+        spawnedObjects.Remove(projectile);
+        if (spawnedObjects.Count == 0)
+        {
+            // 스킬 종료
         }
     }
 }
 
 public class SpawnProjectile : SpawnMethod<GameObject> // 이건 중력장 소환시킬 때 넣기
 {
-    public SpawnProjectile(string projectileName, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(projectileName, effectDatas, soundDatas)
+    bool isNeedCaster;
+
+    public SpawnProjectile(string projectileName, bool isNeedCaster, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(projectileName, effectDatas, soundDatas)
     {
+        this.isNeedCaster = isNeedCaster;
     }
 
     public override void Execute(SkillSupportData supportData)
     {
-        BasicSpawnedObject projectile = ObjectPooler.SpawnFromPool<BasicSpawnedObject>(m_projectileName);
-        projectile.ResetObject(supportData.Caster.transform.position);
+        BasicSpawnedObject projectile = ProjectileFactory.Order(m_projectileName);
+
+        if (isNeedCaster) projectile.ResetObject(supportData.Caster.transform);
+        else projectile.ResetObject(supportData.Caster.transform.position);
     }
 }
 
 public class SpawnAndShootProjectile : SpawnMethod<GameObject> // bool 값 넣어서 caster를 넣을지 아니면 position만 넣을지 선택하자
 {
     float m_speed;
+    bool isNeedCaster;
 
-    public SpawnAndShootProjectile(string projectileName, float speed, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(projectileName, effectDatas, soundDatas)
+    public SpawnAndShootProjectile(string projectileName, float speed, bool isNeedCaster, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(projectileName, effectDatas, soundDatas)
     {
         m_speed = speed;
+        this.isNeedCaster = isNeedCaster;
     }
 
     public override void Execute(SkillSupportData supportData)
     {
-        BasicSpawnedObject projectile = ObjectPooler.SpawnFromPool<BasicSpawnedObject>(m_projectileName);
-        projectile.ResetObject(supportData.Caster.transform.position);
+        BasicSpawnedObject projectile = ProjectileFactory.Order(m_projectileName);
+
+        if(isNeedCaster) projectile.ResetObject(supportData.Caster.transform);
+        else projectile.ResetObject(supportData.Caster.transform.position);
+
 
         projectile.TryGetComponent(out IProjectile iprojectile); // 추가로 IProjectile의 구현을 실행해준다.
         if (iprojectile == null) return;

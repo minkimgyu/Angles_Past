@@ -10,7 +10,7 @@ public class BasicBulletSO : BasicProjectileSO
     string projectileName;
 
     [SerializeField]
-    string[] hitTargetTag;
+    EntityTag[] hitTargetTag;
 
     [SerializeField]
     string[] skillNames;

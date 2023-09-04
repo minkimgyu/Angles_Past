@@ -78,45 +78,6 @@ abstract public class TimeBuff : BaseBuff
     public abstract void ApplyTickEffect();
 }
 
-public class TimeBuff1 : TimeBuff 
-{
-    public TimeBuff1(string name, int maxCount, float duration, float maxTickTime) : base(name, maxCount, duration, maxTickTime)
-    {
-    }
-
-    public override void ApplyTickEffect()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override void OnEnd()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override void OnStart(GameObject caster)
-    {
-        throw new NotImplementedException();
-    }
-}
-
-public class PassiveBuff1 : PassiveBuff
-{
-    public PassiveBuff1(string name, int maxCount) : base(name, maxCount)
-    {
-    }
-
-    public override void OnEnd()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override void OnStart(GameObject caster)
-    {
-        throw new NotImplementedException();
-    }
-}
-
 abstract public class PassiveBuff : BaseBuff
 {
     public PassiveBuff(string name, int maxCount) : base(name, maxCount)

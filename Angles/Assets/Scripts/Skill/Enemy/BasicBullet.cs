@@ -26,7 +26,7 @@ public class BasicBullet : ContactableObject, IProjectile
         DashComponent.PlayDash(dir, thrust);
     }
 
-    public void Inintialize(float disableTime, string[] skillNames, string[] hitTargetTag)
+    public void Inintialize(float disableTime, string[] skillNames, EntityTag[] hitTargetTag)
     {
         Inintialize(disableTime, skillNames);
         this.hitTargetTag = hitTargetTag;

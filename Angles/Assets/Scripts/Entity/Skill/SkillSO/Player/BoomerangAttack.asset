@@ -10,33 +10,51 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ada3f6dc0cc39944299b2ede296e17b8, type: 3}
-  m_Name: TornadoExplosion
+  m_Name: BoomerangAttack
   m_EditorClassIdentifier: 
-  useConditionType: 5
+  useConditionType: 4
   overlapType: 0
   canFinish: 1
   useCount: 1
-  isFix: 0
-  duration: 0
-  tickCount: 0
+  isFix: 1
+  duration: 5
+  tickCount: 10
   preDelay: 0
-  targetFindRange: 5
+  targetFindRange: 3
   skillScalePerTicks:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
   - 1
   offsetRangePerTick:
   - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
   hitTarget: 01000000
   knockBackThrust: 3
-  damage: 5
+  damage: 2
   effectDatas:
     m_keys: 0100000002000000
     m_values:
     - name: PunchEffect
       isFix: 0
+      disableTime: 0
+    - name: BoomerangEffect
+      isFix: 1
       disableTime: 3
-    - name: TornadoExplosionEffect
-      isFix: 0
-      disableTime: 5
   soundDatas:
     m_keys: 
     m_values: []

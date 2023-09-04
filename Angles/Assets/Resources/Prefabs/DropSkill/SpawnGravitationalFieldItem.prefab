@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4196777186692155438}
   - component: {fileID: 2127235888130469346}
   m_Layer: 0
-  m_Name: SpawnGravityBallItem
+  m_Name: SpawnGravitationalFieldItem
   m_TagString: DropItem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6928a387eebaa4a488e24b81a2ea35b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: SpawnGravityBall
+  skillName: SpawnGravitationalField
 --- !u!1 &4579296078853535662
 GameObject:
   m_ObjectHideFlags: 0

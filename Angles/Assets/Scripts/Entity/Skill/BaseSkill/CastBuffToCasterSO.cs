@@ -3,26 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-[CreateAssetMenu(fileName = "SpawnObjectSO", menuName = "Scriptable Object/SkillSO/SpawnObjectSO")]
-public class SpawnObjectSO : BaseSkillSO
+[CreateAssetMenu(fileName = "CastBuffToCasterSO", menuName = "Scriptable Object/SkillSO/CastBuffToCasterSO")]
+public class CastBuffToCasterSO : BaseSkillSO
 {
     [SerializeField]
     BaseSkill.UseConditionType useConditionType;
 
     [SerializeField]
-    string projectileName;
+    EntityTag[] hitTarget;
 
     [SerializeField]
-    float duration;
+    bool nowApply;
 
     [SerializeField]
-    int tickCount;
-
-    [SerializeField]
-    float preDelay;
-
-    [SerializeField]
-    bool isNeedCaster;
+    string[] buffNames;
 
     [SerializeField]
     EffectConditionEffectDataDictionary effectDatas;
@@ -32,6 +26,6 @@ public class SpawnObjectSO : BaseSkillSO
 
     public override BaseSkill Create()
     {
-        return new SpawnObject(name, useConditionType, projectileName, duration, tickCount, preDelay, isNeedCaster, effectDatas, soundDatas);
+        return new CastBuffToCaster(name, useConditionType, hitTarget, nowApply, buffNames, effectDatas, soundDatas);
     }
 }

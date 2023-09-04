@@ -14,13 +14,13 @@ abstract public class BasicSpawnedObject : MonoBehaviour
 
     protected GrantedSkill grantedSkill;
 
-    protected string[] hitTargetTag;
+    protected EntityTag[] hitTargetTag;
 
-    protected bool IsTarget(GameObject target)
+    protected bool IsTarget(GameObject target, EntityTag[] tags)
     {
-        for (int i = 0; i < hitTargetTag.Length; i++)
+        for (int i = 0; i < tags.Length; i++)
         {
-            if (target.CompareTag(hitTargetTag[i]) == true)
+            if (target.CompareTag(tags[i].ToString()) == true)
             {
                 return true;
             }
@@ -48,6 +48,9 @@ abstract public class BasicSpawnedObject : MonoBehaviour
 
     // 자식 객체에서 추가 구현
     public virtual void ResetObject(Transform caster, Vector3 pos) 
+    {
+    }
+    public virtual void ResetObject(Transform caster, float rotation, float distanceFromCaster)
     {
     }
 
@@ -101,13 +104,10 @@ public class ContactableObject : BasicSpawnedObject
 
     void CheckFinish(Collision2D col)
     {
-        for (int i = 0; i < hitTargetTag.Length; i++)
-        {
-            if (col.gameObject.CompareTag(hitTargetTag[i]) == true)
-            {
-                DisableObject();
-            }
-        }
+        bool canFinish = IsTarget(col.gameObject, hitTargetTag);
+        if (canFinish == false) return;
+
+        DisableObject();
     }
 
     protected void OnCollisionEnter2D(Collision2D col) // 충돌 시 상태 변환

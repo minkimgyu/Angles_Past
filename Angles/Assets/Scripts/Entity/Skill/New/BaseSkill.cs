@@ -250,7 +250,7 @@ abstract public class BaseSkill
     /// <summary>
     /// 스킬 사용 조건, InRange, OutRange는 적이 추적 중 플레이어가 공격 범위에 들어왔는지 아닌지 체크함
     /// </summary>
-    public enum UseConditionType { Contact, Get, InRange, OutRange, Init }
+    public enum UseConditionType { Contact, Get, InRange, OutRange, Init, End }
 
     protected GameObject m_caster;
     public GameObject Caster { get { return m_caster; } }
@@ -426,7 +426,7 @@ public class Skill<T> : BaseSkill // 실제 구현 포함
         m_isRunning = false;
         CountDown();
 
-        StopMethodEffects();
+        //StopMethodEffects();
 
         if (CanFinish == true)
         {
@@ -559,6 +559,34 @@ public class CastBuffToPlayer : Skill<Transform>
 }
 
 [System.Serializable]
+public class CastBuffToCaster : Skill<GameObject>
+{
+    public CastBuffToCaster(string name, UseConditionType useConditionType, EntityTag[] hitTarget, bool nowApply, string[] buffNames,
+        EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
+        : base(name, useConditionType, OverlapType.None, true, 0, 1, 0, 1)
+    {
+        m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
+        m_specifyLocation = new LocationToCaster(false);
+        m_targetDesignation = new NoFound();
+        m_baseMethods = new List<BaseMethod<GameObject>> { new BuffToCaster(hitTarget, nowApply, buffNames, effectDatas, soundDatas) };
+    }
+}
+
+[System.Serializable]
+public class SpawnRotationBallAround : Skill<GameObject>
+{
+    public SpawnRotationBallAround(string name, UseConditionType useConditionType, string projectileName, float duration, int tickCount, int projectileCount, float preDelay,
+        float distanceFromCaster, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
+        : base(name, useConditionType, OverlapType.Restart, false, duration, tickCount, preDelay, 1) // 종료가 안 되게하고 나중에 모든 오브젝트 파괴될 때 따로 종료시키는 걸로
+    {
+        m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
+        m_specifyLocation = new LocationToCaster(true);
+        m_targetDesignation = new NoFound();
+        m_baseMethods = new List<BaseMethod<GameObject>> { new SpawnRotationBall(projectileName, projectileCount, distanceFromCaster, effectDatas, soundDatas) };
+    }
+}
+
+[System.Serializable]
 public class ShootBulletInCircleRange : Skill<GameObject>
 {
     public ShootBulletInCircleRange(string name, UseConditionType useConditionType, string projectileName, float duration, int tickCount, int projectileCount, float preDelay,
@@ -590,13 +618,13 @@ public class ShootLaserToRandomDirection : Skill<RaycastHit2D[]>
 public class ShootSpawnedObject : Skill<GameObject>
 {
     public ShootSpawnedObject(string name, UseConditionType useConditionType, string projectileName, float duration, int tickCount, float preDelay,
-        float speed, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
-        : base(name, useConditionType, OverlapType.None, false, duration, tickCount, preDelay, 1)
+        float speed, bool isNeedCaster, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
+        : base(name, useConditionType, OverlapType.None, true, duration, tickCount, preDelay, 1) 
     {
         m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
         m_specifyLocation = new LocationToCaster(false);
         m_targetDesignation = new NoFound();
-        m_baseMethods = new List<BaseMethod<GameObject>> { new SpawnAndShootProjectile(projectileName, speed, effectDatas, soundDatas) };
+        m_baseMethods = new List<BaseMethod<GameObject>> { new SpawnAndShootProjectile(projectileName, speed, isNeedCaster, effectDatas, soundDatas) };
     }
 }
 
@@ -604,12 +632,12 @@ public class ShootSpawnedObject : Skill<GameObject>
 public class SpawnObject : Skill<GameObject>
 {
     public SpawnObject(string name, UseConditionType useConditionType, string projectileName, float duration, int tickCount, float preDelay,
-        EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
-        : base(name, useConditionType, OverlapType.None, false, duration, tickCount, preDelay, 1)
+        bool isNeedCaster, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
+        : base(name, useConditionType, OverlapType.None, true, duration, tickCount, preDelay, 1)
     {
         m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
         m_specifyLocation = new LocationToCaster(false);
         m_targetDesignation = new NoFound();
-        m_baseMethods = new List<BaseMethod<GameObject>> { new SpawnProjectile(projectileName, effectDatas, soundDatas) };
+        m_baseMethods = new List<BaseMethod<GameObject>> { new SpawnProjectile(projectileName, isNeedCaster, effectDatas, soundDatas) };
     }
 }

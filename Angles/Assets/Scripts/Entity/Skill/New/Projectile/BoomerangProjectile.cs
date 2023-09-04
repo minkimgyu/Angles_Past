@@ -16,24 +16,24 @@ public class BoomerangProjectile : BasicSpawnedObject, IProjectile
     Vector3 returnPoint;
     float smoothness = 0.001f;
 
-    public void Inintialize(float disableTime, string[] skillNames, string[] hitTargetTag, float speed)
+    public void Inintialize(float disableTime, string[] skillNames, EntityTag[] hitTargetTag, float speed)
     {
         Inintialize(disableTime, skillNames);
         this.hitTargetTag = hitTargetTag;
         this.speed = speed;
     }
 
-    protected void OnCollisionEnter2D(Collision2D col) // 충돌 시 상태 변환 --> Trigger로 변환시키자
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        if (IsTarget(col.gameObject) == false) return;
+        if (IsTarget(col.gameObject, hitTargetTag) == false) return;
 
         ReturnToPlayer();
     }
 
     public override void ResetObject(Transform caster)
     {
-        base.ResetObject(caster);
         m_caster = caster;
+        transform.position = m_caster.position;
     }
 
     Vector2 ReturnTruningPoint(Vector2 pos, Vector2 casterDir, float thrust)

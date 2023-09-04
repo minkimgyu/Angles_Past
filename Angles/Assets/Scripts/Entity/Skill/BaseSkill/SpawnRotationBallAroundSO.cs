@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-[CreateAssetMenu(fileName = "ShootSpawnedObjectSO", menuName = "Scriptable Object/SkillSO/ShootSpawnedObjectSO")]
-public class ShootSpawnedObjectSO : BaseSkillSO
+[CreateAssetMenu(fileName = "SpawnRotationBallAroundSO", menuName = "Scriptable Object/SkillSO/SpawnRotationBallAroundSO")]
+public class SpawnRotationBallAroundSO : BaseSkillSO
 {
     [SerializeField]
     BaseSkill.UseConditionType useConditionType;
@@ -19,13 +19,13 @@ public class ShootSpawnedObjectSO : BaseSkillSO
     int tickCount;
 
     [SerializeField]
+    int projectileCount;
+
+    [SerializeField]
     float preDelay;
 
     [SerializeField]
-    float speed;
-
-    [SerializeField]
-    bool isNeedCaster;
+    float distanceFromCaster;
 
     [SerializeField]
     EffectConditionEffectDataDictionary effectDatas;
@@ -35,6 +35,6 @@ public class ShootSpawnedObjectSO : BaseSkillSO
 
     public override BaseSkill Create()
     {
-        return new ShootSpawnedObject(name, useConditionType, projectileName, duration, tickCount, preDelay, speed, isNeedCaster, effectDatas, soundDatas);
+        return new SpawnRotationBallAround(name, useConditionType, projectileName, duration, tickCount, projectileCount, preDelay, distanceFromCaster, effectDatas, soundDatas);
     }
 }

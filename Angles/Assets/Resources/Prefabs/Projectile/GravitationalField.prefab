@@ -4720,10 +4720,12 @@ GameObject:
   - component: {fileID: 7631318004566388284}
   - component: {fileID: 6470764691316903545}
   - component: {fileID: 6470764691316903544}
-  - component: {fileID: 4700921922852446071}
+  - component: {fileID: 5471686300657546162}
   - component: {fileID: -8449184255749857883}
+  - component: {fileID: 4165421021239853887}
+  - component: {fileID: 2809170877992682935}
   m_Layer: 0
-  m_Name: GravityBall
+  m_Name: GravitationalField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9447,13 +9449,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf5b43224fcb379418f83a433da8937d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grantedUtilization:
-    skillNames: []
-    buffNames: []
   rigidbodies: []
-  endTime: 5
   absorbThrust: 30
---- !u!114 &4700921922852446071
+--- !u!114 &5471686300657546162
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9462,13 +9460,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8096986474827546966}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1638d4b05d9f4e145b75023474c6c5cc, type: 3}
+  m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_possessingSkills: []
-  m_activeSkills: []
-  m_synthesisComponent:
-    synthesisWays: []
 --- !u!114 &-8449184255749857883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9482,4 +9476,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_contactDatas: []
-  m_entityTags: 
+--- !u!114 &4165421021239853887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8096986474827546966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d98d8198417bfbf4db51e43cb2a68549, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!50 &2809170877992682935
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8096986474827546966}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
