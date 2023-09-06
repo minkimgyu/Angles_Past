@@ -9,6 +9,7 @@ public class SkillController : MonoBehaviour
     List<BaseSkill> m_skills = new List<BaseSkill>(); // --> 키 값이 중복이 안 되서 리스트로 사용해야할 듯
 
     Dictionary<BaseSkill.OverlapType, Action<BaseSkill>> OverlapTypeConditions;
+    bool canOverlap = false;
 
     private void Awake()
     {
@@ -16,17 +17,38 @@ public class SkillController : MonoBehaviour
         {
             { BaseSkill.OverlapType.CountUp, (BaseSkill skill) =>
                 {
-                    ActionInSkillList(skill.Name, skill, (BaseSkill tmpSkill) => tmpSkill.CountUp());
+                    ActionInSkillList(skill.Name, skill, (BaseSkill tmpSkill) =>
+                    {
+                        tmpSkill.CountUp();
+                        canOverlap = true;
+                    });
                 }
             },
             // 같은 스킬을 찾아서 사용 카운트를 1 올려주기
 
             { BaseSkill.OverlapType.Restart, (BaseSkill skill) => 
                 {
-                    ActionInSkillList(skill.Name, skill, (BaseSkill tmpSkill) => tmpSkill.Reset());
+                    ActionInSkillList(skill.Name, skill, (BaseSkill tmpSkill) =>
+                    {
+                        if(tmpSkill.IsRunning == true)
+                        {
+                            tmpSkill.Reset();
+                            canOverlap = true;
+                        }
+                    });
                 } 
             },
             // 같은 스킬을 찾아서 있다면 Reset해주기
+
+            { BaseSkill.OverlapType.Respawn, (BaseSkill skill) =>
+                {
+                    ActionInSkillList(skill.Name, skill, (BaseSkill tmpSkill) =>
+                    {
+                        tmpSkill.Execute(); // 스킬 재 실행
+                        canOverlap = true;
+                    });
+                }
+            },
 
             {BaseSkill.OverlapType.None, (BaseSkill skill) => { m_skills.Add(skill); } }
             // 같은 스킬을 하나 더 넣어준다.
@@ -37,14 +59,11 @@ public class SkillController : MonoBehaviour
     {
         for (int i = 0; i < m_skills.Count; i++)
         {
-            if (m_skills[i].UseCondition != useCondition || m_skills[i].IsRunning == true) continue;
+            if (m_skills[i].UseCondition != useCondition || m_skills[i].IsRunning == true || m_skills[i].CantUseAgain == true) continue;
+            // None이 아닌 경우는 스킬을 useCondition에 맞게 실행하는 것이 아닌 다른 방법으로 재실행하는 방법으로 처리해줘야함
 
             m_skills[i].Init(gameObject);
             m_skills[i].Execute(); // 현재 돌아가지 않는 스킬을 사용함
-
-
-            //if (m_skills[i].IsUseCountZero()) m_skills[i].End(); --> 없어도 제거 되야함
-            //m_skills.Remove(m_skills[i]);
         }
     }
 
@@ -52,7 +71,7 @@ public class SkillController : MonoBehaviour
     {
         for (int i = 0; i < m_skills.Count; i++)
         {
-            if (m_skills[i].Name == name && m_skills[i].IsRunning == true)
+            if (m_skills[i].Name == name)
             {
                 action(m_skills[i]);
                 return;
@@ -65,9 +84,10 @@ public class SkillController : MonoBehaviour
     public void AddSkillToList(string name)
     {
         BaseSkill skill = SkillFactory.Order(name);
-        OverlapTypeConditions[skill.OverlapCondition](skill); 
+        OverlapTypeConditions[skill.OverlapCondition](skill);
 
-        UseSkill(BaseSkill.UseConditionType.Get);
+        if(canOverlap == false) UseSkill(BaseSkill.UseConditionType.Get);
+        else canOverlap = false;
     }
 
     public void RemoveSkillInList(string name)

@@ -245,7 +245,7 @@ abstract public class BaseSkill
     /// <summary>
     /// 스킬을 재사용할 지 여부
     /// </summary>
-    public enum OverlapType { None, Restart, CountUp } // 또 다른 스킬을 리스트에 넣어서 사용, 기존에 존재하던 스킬을 다시 리셋해서 사용
+    public enum OverlapType { None, Restart, CountUp, Respawn } // 또 다른 스킬을 리스트에 넣어서 사용, 기존에 존재하던 스킬을 다시 리셋해서 사용
 
     /// <summary>
     /// 스킬 사용 조건, InRange, OutRange는 적이 추적 중 플레이어가 공격 범위에 들어왔는지 아닌지 체크함
@@ -271,8 +271,10 @@ abstract public class BaseSkill
 
     protected int m_useCountUpPoint = 1; // 0 또는 1로 만들어서 적용
 
+    protected bool m_canFinish = false; // 사용 후에도 종료되지 않는 스킬
 
-    protected bool m_canFinish = false;
+    protected bool m_cantUseAgain = false; // 1번 사용 후에 다시 사용되지 않을 스킬 ex) 스폰 전용 스킬 --> 재사용 위주로 돌아감
+    public bool CantUseAgain { get { return m_cantUseAgain; } }
 
     protected bool m_nowFinish = false;
     public bool NowFinish { get { return m_nowFinish; } }
@@ -323,6 +325,7 @@ abstract public class BaseSkill
     public abstract void Execute(); // 스킬 실행
     public abstract void End(); // 종료 시 변수 리셋
     public abstract void Reset(); // 스킬 재 사용시 사용
+    public abstract void Disable(); // 스킬 제거
 }
 
 
@@ -421,10 +424,12 @@ public class Skill<T> : BaseSkill // 실제 구현 포함
         }
     }
 
-    void AfterUse()
+    public virtual void AfterUse()
     {
         m_isRunning = false;
         CountDown();
+
+        
 
         //StopMethodEffects();
 
@@ -454,7 +459,7 @@ public class Skill<T> : BaseSkill // 실제 구현 포함
 
 
 
-        m_nowFinish = false;
+        //m_nowFinish = false;
     }
 
     public override void Reset()
@@ -463,6 +468,11 @@ public class Skill<T> : BaseSkill // 실제 구현 포함
         m_storedPreDelay = 0;
         m_storedTickCount = 0;
         m_storedDuration = 0;
+    }
+
+    public override void Disable()
+    {
+        m_nowFinish = true;
     }
 }
 
@@ -577,12 +587,18 @@ public class SpawnRotationBallAround : Skill<GameObject>
 {
     public SpawnRotationBallAround(string name, UseConditionType useConditionType, string projectileName, float duration, int tickCount, int projectileCount, float preDelay,
         float distanceFromCaster, EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
-        : base(name, useConditionType, OverlapType.Restart, false, duration, tickCount, preDelay, 1) // 종료가 안 되게하고 나중에 모든 오브젝트 파괴될 때 따로 종료시키는 걸로
+        : base(name, useConditionType, OverlapType.Respawn, false, duration, tickCount, preDelay, 1) // 종료가 안 되게하고 나중에 모든 오브젝트 파괴될 때 따로 종료시키는 걸로
     {
         m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
         m_specifyLocation = new LocationToCaster(true);
         m_targetDesignation = new NoFound();
-        m_baseMethods = new List<BaseMethod<GameObject>> { new SpawnRotationBall(projectileName, projectileCount, distanceFromCaster, effectDatas, soundDatas) };
+        m_baseMethods = new List<BaseMethod<GameObject>> { new SpawnRotationBall(projectileName, projectileCount, distanceFromCaster, effectDatas, soundDatas, this) };
+    }
+
+    public override void AfterUse()
+    {
+        m_cantUseAgain = true;
+        base.AfterUse();
     }
 }
 

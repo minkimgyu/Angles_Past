@@ -19,12 +19,14 @@ public class SpawnRotationBall : SpawnMethod<GameObject>
 {
     int m_projectileCount;
     float m_distanceFromCaster;
-    protected List<BasicSpawnedObject> spawnedObjects = new List<BasicSpawnedObject>();
+    List<BasicSpawnedObject> spawnedObjects = new List<BasicSpawnedObject>();
+    BaseSkill parentSkill; // skill
 
-    public SpawnRotationBall(string projectileName, int projectileCount, float distanceFromCaster, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(projectileName, effectDatas, soundDatas)
+    public SpawnRotationBall(string projectileName, int projectileCount, float distanceFromCaster, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas, BaseSkill parentSkill) : base(projectileName, effectDatas, soundDatas)
     {
         m_projectileCount = projectileCount;
         m_distanceFromCaster = distanceFromCaster;
+        this.parentSkill = parentSkill;
     }
 
     public override void Execute(SkillSupportData supportData)
@@ -42,17 +44,14 @@ public class SpawnRotationBall : SpawnMethod<GameObject>
         for (int i = 0; i < spawnedObjects.Count; i++)
         {
             float angle = (360.0f * i) / spawnedObjects.Count;
-            spawnedObjects[i].ResetObject(supportData.Caster.transform, angle, m_distanceFromCaster); // trasform으로 수정해주자 --> 이걸 이용해서 돌리기
+            spawnedObjects[i].ResetObject(supportData.Caster.transform, angle, m_distanceFromCaster, this); // trasform으로 수정해주자 --> 이걸 이용해서 돌리기
         }
     }
 
     public void RemoveSpawnObject(BasicSpawnedObject projectile)
     {
         spawnedObjects.Remove(projectile);
-        if (spawnedObjects.Count == 0)
-        {
-            // 스킬 종료
-        }
+        if (spawnedObjects.Count == 0) parentSkill.Disable(); // 스킬 종료
     }
 }
 

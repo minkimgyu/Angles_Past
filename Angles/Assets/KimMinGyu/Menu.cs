@@ -18,8 +18,33 @@ public class Menu : MonoBehaviour
     public GameObject[] tutorials;
     int tutorialIndex = 0;
 
+    public GameObject modeSelectPanel;
+    public TMP_Text modeTxt;
+
+    string[] modes = { "Basic", "Normal", "Hard" };
+
+    [SerializeField]
+    string modeName;
+    string ModeName
+    {
+        get { return modeName; }
+        set 
+        { 
+            modeName = value;
+            modeTxt.text = modeName;
+        }
+    }
+
+    public void SelectMode(int index)
+    {
+        ModeName = modes[index];
+        modeSelectPanel.SetActive(false);
+    }
+
     private void Start()
     {
+        ModeName = modes[0];
+
         //if (!entityDB.PlayerTransform.Immortality)
         //{
         //    cheatTxt.text = "무적 해제";
@@ -34,7 +59,12 @@ public class Menu : MonoBehaviour
 
     public void GoToPlayerScene()
     {
-        SceneManager.LoadScene("PlayScene");
+        SceneManager.LoadScene(ModeName);
+    }
+
+    public void OnOffModeSelect(bool nowOn)
+    {
+        modeSelectPanel.SetActive(nowOn);
     }
 
     public void OnOffSetting(bool nowOn)

@@ -50,7 +50,8 @@ abstract public class BasicSpawnedObject : MonoBehaviour
     public virtual void ResetObject(Transform caster, Vector3 pos) 
     {
     }
-    public virtual void ResetObject(Transform caster, float rotation, float distanceFromCaster)
+
+    public virtual void ResetObject(Transform caster, float rotation, float distanceFromCaster, SpawnRotationBall spawnRotationBall)
     {
     }
 

@@ -16,7 +16,7 @@ public class NestedScrollManager : MonoBehaviour, IBeginDragHandler, IDragHandle
     float[] pos = new float[SIZE];
     float distance, curPos, targetPos;
     bool isDrag;
-    int targetIndex;
+    int targetIndex = 0;
 
 
     void Start()
@@ -87,9 +87,10 @@ public class NestedScrollManager : MonoBehaviour, IBeginDragHandler, IDragHandle
             scrollbar.value = Mathf.Lerp(scrollbar.value, targetPos, 0.1f);
 
             // 목표 버튼은 크기가 커짐
-            for (int i = 0; i < SIZE; i++) BtnRect[i].sizeDelta = new Vector2(i == targetIndex ? 360 : 180, BtnRect[i].sizeDelta.y);
+            for (int i = 0; i < SIZE; i++) BtnRect[i].sizeDelta = new Vector2(i == targetIndex ? 330 : 250, i == targetIndex ? 270 : 230);
         }
 
+        //BtnRect[i].sizeDelta.y
 
         if (Time.time < 0.1f) return;
 
@@ -103,9 +104,13 @@ public class NestedScrollManager : MonoBehaviour, IBeginDragHandler, IDragHandle
             // 선택한 버튼 아이콘은 약간 위로 올리고, 크기도 키우고, 텍스트도 활성화
             if (i == targetIndex)
             {
-                BtnTargetPos.y = -23f;
+                BtnTargetPos.y = 20f;
                 BtnTargetScale = new Vector3(1.2f, 1.2f, 1);
                 textActive = true;
+            }
+            else
+            {
+                BtnTargetPos.y = -100f;
             }
 
             BtnImageRect[i].anchoredPosition3D = Vector3.Lerp(BtnImageRect[i].anchoredPosition3D, BtnTargetPos, 0.25f);
