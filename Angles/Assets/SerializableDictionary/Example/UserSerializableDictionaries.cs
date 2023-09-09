@@ -4,6 +4,25 @@ using System;
 using UnityEngine;
 
 [Serializable]
+public class StringSkillSlotDictionary : SerializableDictionary<string, SkillSlot> { }
+
+[Serializable]
+public class StringSkillSlotDataDictionary : SerializableDictionary<string, SkillSlotData> { }
+
+
+[Serializable]
+public class StringAbilitySlotDictionary : SerializableDictionary<string, AbilitySlot> { }
+
+[Serializable]
+public class StringAbilitySlotDataDictionary : SerializableDictionary<string, AbilitySlotData> { }
+
+
+
+
+
+
+
+[Serializable]
 public class StringBaseBuffSODictionary : SerializableDictionary<string, BaseBuffSO> { }
 
 [Serializable]

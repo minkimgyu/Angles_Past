@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 7777152497430659602}
   - component: {fileID: -3539196157002233910}
   - component: {fileID: 7278079711573997999}
+  - component: {fileID: 5071039088482532292}
   m_Layer: 6
   m_Name: OrangeTriangle
   m_TagString: Enemy
@@ -196,7 +197,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_contactDatas: []
-  m_entityTags: 01000000
 --- !u!114 &-3539196157002233910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,7 +209,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6567b936a67d66428a234348143a9fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inheritedTag: 1
   skillEffectName: 
 --- !u!114 &7278079711573997999
 MonoBehaviour:
@@ -221,5 +220,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5071039088482532292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2375395198625037887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87f45982b71a82f43b056b53c3199846, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

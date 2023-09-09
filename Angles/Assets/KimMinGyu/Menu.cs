@@ -5,13 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-
 public class Menu : MonoBehaviour
 {
-    //public EntityDB entityDB;
-    public Image cheatImg;
-    public TMP_Text cheatTxt;
-
     public GameObject settingPanel;
     public GameObject TutorialPanel;
 
@@ -35,26 +30,116 @@ public class Menu : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    StringSkillSlotDictionary skillSlots;
+
+    [SerializeField]
+    StringAbilitySlotDictionary abilitySlots;
+
+    [Header("Upgrade")]
+    [SerializeField]
+    GameObject upgradePanel;
+
+    [SerializeField]
+    TMP_Text upgradeCommentTxt;
+
+    [SerializeField]
+    GameObject[] upgradeBtn;
+
+    [SerializeField]
+    TMP_Text[] upgradeTxt;
+
+    [SerializeField]
+    BaseSlot selectedSlot;
+
+    [Header("Gold")]
+    [SerializeField]
+    TMP_Text goldTxt;
+
+    [SerializeField]
+    int totalGold;
+
+    int TotalGold
+    {
+        get { return totalGold; }
+        set
+        {
+            totalGold = value;
+            goldTxt.text = totalGold.ToString();
+        }
+    }
+
     public void SelectMode(int index)
     {
         ModeName = modes[index];
         modeSelectPanel.SetActive(false);
     }
 
+    public void OnOffUpgradePanel(bool nowOn)
+    {
+        upgradePanel.SetActive(nowOn);
+    }
+
+    public void OnOffUpgradePanel(bool nowOn, bool canUpgrade, string upgradeText)
+    {
+        upgradePanel.SetActive(nowOn);
+
+        upgradeCommentTxt.text = upgradeText;
+
+        if (canUpgrade)
+        {
+            upgradeBtn[0].SetActive(true);
+            upgradeTxt[0].text = "취소";
+
+            upgradeBtn[1].SetActive(true);
+            upgradeTxt[1].text = "확인";
+        }
+        else
+        {
+            upgradeBtn[0].SetActive(true);
+            upgradeTxt[0].text = "확인";
+
+            upgradeBtn[1].SetActive(false);
+            upgradeTxt[1].text = "";
+        }
+    }
+
+    public void ActiveUpgradePanel(BaseSlot baseSlot)
+    {
+        bool canUpgrade = baseSlot.CanUpgrade(totalGold, out string upgradeText);
+        selectedSlot = baseSlot;
+
+        OnOffUpgradePanel(true, canUpgrade, upgradeText);
+    }
+
+    public void Upgrade()
+    {
+        if (selectedSlot == null) return;
+
+        OnOffUpgradePanel(false);
+
+        TotalGold -= selectedSlot.ReturnUpgradePrice();
+
+        selectedSlot.UpgradeTask(); // --> 업그레이드
+        SaveManager.Instance.ResetData(totalGold);
+        SaveManager.Instance.Save(); // 데이터 다시 저장
+    }
+
     private void Start()
     {
+        SaveManager.Instance.ResetSlot(ref totalGold, skillSlots, abilitySlots);
+        TotalGold = totalGold; // 초기화
         ModeName = modes[0];
 
-        //if (!entityDB.PlayerTransform.Immortality)
-        //{
-        //    cheatTxt.text = "무적 해제";
-        //    cheatImg.color = new Color(0.1f, 0.1f, 0.1f, 1f);
-        //}
-        //else
-        //{
-        //    cheatTxt.text = "무적 적용";
-        //    cheatImg.color = new Color(1f, 1f, 1f, 1f);
-        //}
+        // Upgrade에 Action 연결
+        foreach (KeyValuePair<string, SkillSlot> skillSlot in skillSlots)
+        {
+            skillSlot.Value.upgradeAction += ActiveUpgradePanel;
+        }
+        foreach (KeyValuePair<string, AbilitySlot> abilitySlot in abilitySlots)
+        {
+            abilitySlot.Value.upgradeAction += ActiveUpgradePanel;
+        }
     }
 
     public void GoToPlayerScene()
@@ -113,21 +198,5 @@ public class Menu : MonoBehaviour
             else
                 tutorials[i].gameObject.SetActive(false);
         }
-    }
-
-    public void MakePlayerImmo()
-    {
-        //if(!entityDB.PlayerTransform.Immortality)
-        //{
-        //    cheatTxt.text = "무적 적용";
-        //    cheatImg.color = new Color(1f, 1f, 1f, 1f);
-        //    entityDB.PlayerTransform.Immortality = true;
-        //}
-        //else
-        //{
-        //    cheatTxt.text = "무적 해제";
-        //    cheatImg.color = new Color(0.1f, 0.1f, 0.1f, 1f);
-        //    entityDB.PlayerTransform.Immortality = false;
-        //}
     }
 }

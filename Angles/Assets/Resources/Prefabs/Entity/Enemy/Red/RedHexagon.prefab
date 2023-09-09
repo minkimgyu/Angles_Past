@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 2659321582774080349}
   - component: {fileID: 8370493969703906011}
   - component: {fileID: 821487166128168341}
+  - component: {fileID: 2811215293948393104}
   m_Layer: 6
   m_Name: RedHexagon
   m_TagString: Enemy
@@ -171,7 +172,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7a8d919d38edd4bbd0caaa54f4eda7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inheritedTag: 1
   fixTime:
     maxValue: 0
     minValue: 0
@@ -213,7 +213,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_contactDatas: []
-  m_entityTags: 01000000
 --- !u!114 &821487166128168341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,5 +223,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2811215293948393104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610933736780651266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87f45982b71a82f43b056b53c3199846, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

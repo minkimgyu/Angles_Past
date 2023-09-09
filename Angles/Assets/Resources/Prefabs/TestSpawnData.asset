@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnDatas:
   - levelUpTime: 1
-    spawnEntityName: YellowTriangle
-    spawnCount: 5
+    spawnEntityName: BossRush
+    spawnCount: 1

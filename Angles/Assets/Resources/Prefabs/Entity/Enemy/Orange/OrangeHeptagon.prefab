@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 7918802028062063651}
   - component: {fileID: 1693639870318632581}
   - component: {fileID: 7049086427546640372}
+  - component: {fileID: 7794496032591914290}
   m_Layer: 3
   m_Name: OrangeHeptagon
   m_TagString: Enemy
@@ -137,7 +138,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_contactDatas: []
-  m_entityTags: 0000000001000000
 --- !u!114 &7918802028062063676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,7 +162,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34f30fc80493b464786ebc2e9f18949e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inheritedTag: 1
   rushVec: {x: 0, y: 0}
   minRushVec: 3
 --- !u!58 &1693639870318632581
@@ -191,5 +190,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7794496032591914290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7918802028062063658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87f45982b71a82f43b056b53c3199846, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

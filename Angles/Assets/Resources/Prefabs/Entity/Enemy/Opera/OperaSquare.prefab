@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 6611840952222148790}
   - component: {fileID: 3297674529368546363}
   - component: {fileID: 1904797719232765878}
+  - component: {fileID: 1821146716444618798}
   m_Layer: 6
   m_Name: OperaSquare
   m_TagString: Enemy
@@ -193,7 +194,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2445c5acf7081454a8cfd753bd934d26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inheritedTag: 1
 --- !u!114 &6611840952222148790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,7 +219,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_contactDatas: []
-  m_entityTags: 01000000
 --- !u!114 &1904797719232765878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,5 +229,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1821146716444618798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4160956994482129137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87f45982b71a82f43b056b53c3199846, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -186,6 +186,7 @@ GameObject:
   - component: {fileID: 5254677716262742399}
   - component: {fileID: 4476412798441577942}
   - component: {fileID: 341337890212563695}
+  - component: {fileID: 7512843606526485749}
   m_Layer: 6
   m_Name: OperaOctagon
   m_TagString: Enemy
@@ -312,7 +313,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff5c57136605c204cb2bbe0bc3484023, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inheritedTag: 1
   expectationDirs: []
   directionCount:
     maxValue: 0
@@ -396,6 +396,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7512843606526485749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6379353961815610340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87f45982b71a82f43b056b53c3199846, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8027655685178983441

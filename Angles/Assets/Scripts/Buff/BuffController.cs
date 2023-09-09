@@ -4,15 +4,8 @@ using UnityEngine;
 
 public class BuffController : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeReference]
     List<BaseBuff> m_buffs = new List<BaseBuff>();
-
-    BuffEffectComponent effectComponent;
-
-    private void Start()
-    {
-        effectComponent = GetComponentInChildren<BuffEffectComponent>();
-    }
 
     public bool AddBuff(string name) //--> 같은 효과를 n개 이상 넣으면 무시 --> buffData를 넘겨주자   
     {

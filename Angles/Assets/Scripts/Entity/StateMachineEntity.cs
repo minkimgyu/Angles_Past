@@ -85,6 +85,15 @@ abstract public class StateMachineEntity<T> : Entity // T는 Entity, W는 State
         m_dicState[CurrentStateName].ReceiveTriggerEnter(collider);
     }
 
+    protected virtual void OnTriggerExit2D(Collider2D collider)
+    {
+        if (GlobalState != null)
+            GlobalState.ReceiveTriggerExit(collider); // global state도 넣어주기
+
+        if (m_dicState.ContainsKey(CurrentStateName) == false) return;
+        m_dicState[CurrentStateName].ReceiveTriggerExit(collider);
+    }
+
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if (GlobalState != null)

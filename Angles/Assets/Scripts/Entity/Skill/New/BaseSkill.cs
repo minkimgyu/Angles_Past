@@ -18,8 +18,6 @@ public struct SkillSupportData // --> 추후에 버프 추가
     GameObject m_caster;
     public GameObject Caster { get { return m_caster; } }
 
-
-
     /// <summary>
     /// 스킬이 시전될 위치
     /// </summary>
@@ -45,79 +43,6 @@ public enum EffectCondition // 맞을 때, 표면에 생기는 이팩트, 스킬 자체 이팩트 �
 
     SpawnEffect // 스폰이 되었을 때 나오는 효과
 }
-
-
-
-
-//public struct AudioVisualData
-//{
-//    public string effectName;
-//    public float disableTime;
-
-//    public string soundName;
-//    public float volume;
-
-//    public AudioVisualData(string effectName, float disableTime = -1, string soundName = null, float volume = 0)
-//    {
-//        this.effectName = effectName;
-//        this.disableTime = disableTime;
-//        this.soundName = soundName;
-//        this.volume = volume;
-//    }
-//}
-
-//// EffectSource
-//// 목표: Effect와 Sound를 같이 재생해준다.
-//public class AudioVisualPlayer
-//{
-//    BasicEffectPlayer effectPlayer;
-//    SoundPlayer soundPlayer;
-//    AudioVisualData data;
-
-//    public EffectSource(AudioVisualData effectData) // 사운드 플레이 이밴트 트리거, 이팩트 데이터
-//    {
-//        this.effectData = effectData;
-//    }
-
-//    public bool Play(Transform target)
-//    {
-//        BasicEffectPlayer playerTransform = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(effectData.name); // 이팩트 이름 추가
-//        if (playerTransform == null) return false;
-
-//        playerTransform.IsFixed = true;
-//        playerTransform.AddState(target, effectData.disableTime);
-//        playerTransform.PlayEffect();
-
-
-//        if(effectData.soundName != null)
-//            SoundManager.instance.PlaySFX(target.position, effectData.soundName, effectData.volume);
-
-//        effectPlayer = playerTransform;
-//        return true;
-//    }
-
-//    public bool Play(Vector3 pos)
-//    {
-//        BasicEffectPlayer playerTransform = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(effectData.name); // 이팩트 이름 추가
-//        if (playerTransform == null) return false;
-
-//        playerTransform.IsFixed = false;
-//        playerTransform.AddState(pos, effectData.disableTime);
-//        playerTransform.PlayEffect();
-
-//        if (effectData.soundName != null)
-//            SoundManager.instance.PlaySFX(pos, effectData.soundName, effectData.volume);
-
-//        effectPlayer = playerTransform;
-//        return true;
-//    }
-
-//    public void Stop()
-//    {
-//        effectPlayer.StopEffect();
-//        effectPlayer = null;
-//    }
-//}
 
 public class EffectSpawnComponent // --> 이거를 BaseMethod에 상속시켜서 스폰 ㄱㄱ + 추가로 스킬 클래스에도 predelay effect 스폰을 위해 넣어준다.
 {
@@ -579,6 +504,20 @@ public class CastBuffToCaster : Skill<GameObject>
         m_specifyLocation = new LocationToCaster(false);
         m_targetDesignation = new NoFound();
         m_baseMethods = new List<BaseMethod<GameObject>> { new BuffToCaster(hitTarget, nowApply, buffNames, effectDatas, soundDatas) };
+    }
+}
+
+[System.Serializable]
+public class CastBuffToTriggeredObject : Skill<List<GameObject>>
+{
+    public CastBuffToTriggeredObject(string name, UseConditionType useConditionType, EntityTag[] hitTarget, bool nowApply, string[] buffNames,
+        EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
+        : base(name, useConditionType, OverlapType.None, false, 0, 1, 0, 1)
+    {
+        m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
+        m_specifyLocation = new LocationToCaster(false);
+        m_targetDesignation = new FindInTriggered(nowApply);
+        m_baseMethods = new List<BaseMethod<List<GameObject>>> { new BuffToObject(hitTarget, nowApply, buffNames, effectDatas, soundDatas) };
     }
 }
 

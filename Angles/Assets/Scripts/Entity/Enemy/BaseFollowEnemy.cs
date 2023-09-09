@@ -38,6 +38,8 @@ abstract public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
         this.followOffsetDistance = followOffsetDistance.CopyData();
 
         m_loadPlayer = PlayManager.Instance.PlayerTransform; // 오브젝트 풀링에서 꺼낼 때, 초기화 시켜주기
+        m_followComponent.Initialize(followDistance.IntervalValue,
+            followDistance.IntervalValue + followOffsetDistance.IntervalValue);
     }
 
 
@@ -81,20 +83,6 @@ abstract public class BaseFollowEnemy : Enemy<BaseFollowEnemy.State>
         base.Awake();
         m_followComponent = GetComponent<FollowComponent>();
     }
-
-    //protected override void Start()
-    //{
-    //    base.Start();
-    //    FindPlayer();
-    //}
-
-    //protected virtual void FindPlayer()
-    //{
-    //    GameObject go = GameObject.FindWithTag("PlayerTransform");
-    //    if (go == null) return;
-
-    //    m_loadPlayer = go.GetComponent<PlayerTransform>();
-    //}
 
     protected virtual void AddBaseState()
     {

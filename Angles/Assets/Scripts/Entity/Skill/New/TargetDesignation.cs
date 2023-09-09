@@ -128,6 +128,24 @@ public class FindInContacted : TargetDesignation<List<ContactData>>
     }
 }
 
+public class FindInTriggered : TargetDesignation<List<GameObject>>
+{
+    bool nowApply;
+
+    public FindInTriggered(bool nowApply) // 생성자에서 받아서 실행해준다.
+    {
+        this.nowApply = nowApply;
+    }
+
+    public override List<GameObject> Execute(SkillSupportData supportData)
+    {
+        TriggerComponent triggerComponent = supportData.Caster.GetComponentInChildren<TriggerComponent>();
+        if (triggerComponent == null) return null;
+
+        return triggerComponent.ReturnTriggeredObjects(nowApply);
+    }
+}
+
 public class FindPlayer : TargetDesignation<Transform>
 {
     public override Transform Execute(SkillSupportData supportData)

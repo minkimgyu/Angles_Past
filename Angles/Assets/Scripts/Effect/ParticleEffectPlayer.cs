@@ -60,6 +60,7 @@ public class ParticleEffectPlayer : BasicEffectPlayer
 
         for (int i = 0; i < m_particles.Count; i++)
         {
+            m_particles[i].Clear();
             m_particles[i].Play();
         }
 
@@ -73,6 +74,7 @@ public class ParticleEffectPlayer : BasicEffectPlayer
 
         for (int i = 0; i < m_particles.Count; i++)
         {
+            m_particles[i].Clear();
             m_particles[i].Stop();
         }
 

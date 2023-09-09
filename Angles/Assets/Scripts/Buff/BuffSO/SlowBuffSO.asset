@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SlowBuffSO
   m_EditorClassIdentifier: 
   buffName: Slow
+  effectName: SlowBuffEffect
   maxCount: 3
   speedVariation: -1

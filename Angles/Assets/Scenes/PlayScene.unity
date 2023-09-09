@@ -545,6 +545,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BladeItem
       objectReference: {fileID: 0}
+    - target: {fileID: 1241719444031607847, guid: 1486ccc554d4e4342b6a449f37922376, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1486ccc554d4e4342b6a449f37922376, type: 3}
 --- !u!1001 &149109351
@@ -1134,6 +1138,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BladeItem
       objectReference: {fileID: 0}
+    - target: {fileID: 1241719444031607847, guid: 1486ccc554d4e4342b6a449f37922376, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1486ccc554d4e4342b6a449f37922376, type: 3}
 --- !u!1 &267635422
@@ -1412,6 +1420,10 @@ PrefabInstance:
     - target: {fileID: 4196777186692155432, guid: 857866e4744025849848e0cc946e9254, type: 3}
       propertyPath: m_Name
       value: SpawnGravitationalFieldItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 4196777186692155432, guid: 857866e4744025849848e0cc946e9254, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4196777186692155436, guid: 857866e4744025849848e0cc946e9254, type: 3}
       propertyPath: m_RootOrder
@@ -4219,6 +4231,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnTornadoItem
       objectReference: {fileID: 0}
+    - target: {fileID: 2167699157250746566, guid: 48fd23c4d994777488bd5608353fd48f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 48fd23c4d994777488bd5608353fd48f, type: 3}
 --- !u!4 &722111506 stripped
@@ -4441,6 +4457,10 @@ PrefabInstance:
     - target: {fileID: 8918778978482873991, guid: 2e58c36aef9484e4e8fd03b788dc3085, type: 3}
       propertyPath: m_Name
       value: StickyBombItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 8918778978482873991, guid: 2e58c36aef9484e4e8fd03b788dc3085, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e58c36aef9484e4e8fd03b788dc3085, type: 3}
@@ -4884,6 +4904,10 @@ PrefabInstance:
     - target: {fileID: 6847907494561987540, guid: fd156b1a91b11664795129a14519b735, type: 3}
       propertyPath: m_Name
       value: SpawnBallItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 6847907494561987540, guid: fd156b1a91b11664795129a14519b735, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd156b1a91b11664795129a14519b735, type: 3}
@@ -18388,6 +18412,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnBallItem
       objectReference: {fileID: 0}
+    - target: {fileID: 6847907494561987540, guid: fd156b1a91b11664795129a14519b735, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd156b1a91b11664795129a14519b735, type: 3}
 --- !u!1 &1460533243
@@ -19041,9 +19069,11 @@ MonoBehaviour:
     m_keys:
     - Slow
     - Fast
+    - BossSpeedBuff
     m_values:
     - {fileID: 11400000, guid: 05e7c67852291ab46815fa8ece5006dc, type: 2}
     - {fileID: 11400000, guid: 9ce7e6d6cf6d6a74cbaa43d76bc175f2, type: 2}
+    - {fileID: 11400000, guid: 036d4d3558cadc74db955d3434e7c681, type: 2}
 --- !u!4 &1583094828
 Transform:
   m_ObjectHideFlags: 0
@@ -19096,6 +19126,9 @@ MonoBehaviour:
     - ApplySpeedBuffToPlayer
     - SpawnRotationBallAround
     - SpawnBallPunch
+    - ApplyBuffToNearEnemy
+    - RemoveBuffToNearEnemy
+    - BossPunch
     m_values:
     - {fileID: 11400000, guid: 34e34d492e04f594caf186fd6a0d7990, type: 2}
     - {fileID: 11400000, guid: 8c9b41cc729855d44854588433fb2e98, type: 2}
@@ -19120,6 +19153,9 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 394f045c5c2c4b14294a66e80c9c1ec3, type: 2}
     - {fileID: 11400000, guid: df6e42db915d02142a3c3797fb99d297, type: 2}
     - {fileID: 11400000, guid: a2039800dca9c4d4bb66bb5244b57004, type: 2}
+    - {fileID: 11400000, guid: db0ab27b0a31db8458f6b7b44012ebfe, type: 2}
+    - {fileID: 11400000, guid: 6134fe4ccae13114ab34d064eab46399, type: 2}
+    - {fileID: 11400000, guid: 08414548f4f533948ac8b997abd7acf1, type: 2}
 --- !u!114 &1583094830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19160,6 +19196,8 @@ MonoBehaviour:
     - OperaHeptagon
     - OperaOctagon
     - Boss
+    - BossTriangle
+    - BossRush
     m_values:
     - {fileID: 11400000, guid: b2bd954d943059744a19120a4d16bc8c, type: 2}
     - {fileID: 11400000, guid: cc8c017ddfab3c54abb5eaeb9dac4e85, type: 2}
@@ -19187,6 +19225,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d5ffd9360661c79448ec4bbb5de2571f, type: 2}
     - {fileID: 11400000, guid: d9421b8ae69c94b44b4d2903a3be5095, type: 2}
     - {fileID: 11400000, guid: be5b73dbb9ea5e7448cb7d6ad5132b98, type: 2}
+    - {fileID: 11400000, guid: bfec20112d82ffd4a8e581afb8f743db, type: 2}
+    - {fileID: 11400000, guid: 115876f94e55db64ebb8eaab95905c53, type: 2}
 --- !u!114 &1583094831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19883,6 +19923,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BladeItem
       objectReference: {fileID: 0}
+    - target: {fileID: 1241719444031607847, guid: 1486ccc554d4e4342b6a449f37922376, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1486ccc554d4e4342b6a449f37922376, type: 3}
 --- !u!1001 &1725547782
@@ -20295,6 +20339,10 @@ PrefabInstance:
     - target: {fileID: 3089455214423656929, guid: 0e75d182593c7b14d96b155372d1f8e1, type: 3}
       propertyPath: m_Name
       value: ShockwaveItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 3089455214423656929, guid: 0e75d182593c7b14d96b155372d1f8e1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3089455214423656933, guid: 0e75d182593c7b14d96b155372d1f8e1, type: 3}
       propertyPath: m_RootOrder
@@ -21934,6 +21982,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GhostItem
       objectReference: {fileID: 0}
+    - target: {fileID: 4863381337595433669, guid: 13ca122ae080a2147acd2cacde29ae7a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 13ca122ae080a2147acd2cacde29ae7a, type: 3}
 --- !u!1 &249857917149573256
@@ -22146,6 +22198,12 @@ MonoBehaviour:
   - tag: Boss
     prefab: {fileID: 2587696381156662277, guid: 843d1deccd4ef514d9aaaeb5f01aab16, type: 3}
     size: 1
+  - tag: BossTriangle
+    prefab: {fileID: 21406982190103239, guid: 6c095fe15c8b69b4d9caad5412bb0bd8, type: 3}
+    size: 1
+  - tag: BossRush
+    prefab: {fileID: 5295137893953654060, guid: d3e45824371b83040bb8390fb7972eca, type: 3}
+    size: 1
   - tag: BarrierEffect
     prefab: {fileID: 6662364447478648887, guid: 317cc8f221d6cbc438c49c1b208f4593, type: 3}
     size: 1
@@ -22193,6 +22251,12 @@ MonoBehaviour:
     size: 3
   - tag: ExplosionSignEffect
     prefab: {fileID: 7054525465167792440, guid: ca82beb7eb6f1674596cbf4edeb2ff7c, type: 3}
+    size: 3
+  - tag: FastBuffEffect
+    prefab: {fileID: 6860059276151857375, guid: e05d5917c2a940c4993828caf3bd02ef, type: 3}
+    size: 3
+  - tag: SlowBuffEffect
+    prefab: {fileID: 439421161656294593, guid: 4ac68cbd11b32e34e97ab5be5f4523ee, type: 3}
     size: 3
 --- !u!4 &249857917149573270
 Transform:
@@ -22320,6 +22384,10 @@ PrefabInstance:
     - target: {fileID: 6847907494561987540, guid: fd156b1a91b11664795129a14519b735, type: 3}
       propertyPath: m_Name
       value: SpawnBallItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 6847907494561987540, guid: fd156b1a91b11664795129a14519b735, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd156b1a91b11664795129a14519b735, type: 3}
@@ -22972,6 +23040,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnBoomerangItem
       objectReference: {fileID: 0}
+    - target: {fileID: 1062728591193547668, guid: 8fdd177c5b82ad949847f78e9cf19d0c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1062728591193547672, guid: 8fdd177c5b82ad949847f78e9cf19d0c, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -23034,7 +23106,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &9090485991226005962
 MonoBehaviour:
   m_ObjectHideFlags: 0

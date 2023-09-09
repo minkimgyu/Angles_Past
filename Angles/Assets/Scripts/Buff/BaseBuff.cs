@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+[Serializable]
 abstract public class BaseBuff  // --> 다양한 데이터에 접근 가능하게끔 제작 ---> PlayerData, EnemyData, HealthData
 {
-    public BaseBuff(string name, int maxCount)
+    public BaseBuff(string name, int maxCount, string effectName)
     {
         this.name = name;
         this.maxCount = maxCount;
+        this.effectName = effectName;
     }
+
+    protected string effectName;
 
     // 변수 모음
     protected string name;
@@ -29,11 +33,24 @@ abstract public class BaseBuff  // --> 다양한 데이터에 접근 가능하게끔 제작 --->
     {
         get { return isFinished; }
     }
-    // 
 
-    public abstract void OnStart(GameObject caster); // 버프 이팩트는 이밴트로 AddState --> BuffComponent에서 SO 받아서 처리
+    BasicEffectPlayer basicEffectPlayer;
 
-    public abstract void OnEnd();
+    public virtual void OnStart(GameObject caster) // 버프 이팩트는 이밴트로 AddState --> BuffComponent에서 SO 받아서 처리
+    {
+        basicEffectPlayer = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(effectName);
+
+        basicEffectPlayer.transform.position = caster.transform.position;
+        basicEffectPlayer.Init(caster.transform);
+
+        basicEffectPlayer.PlayEffect();
+    }
+
+    public virtual void OnEnd()
+    {
+        basicEffectPlayer.StopEffect();
+        basicEffectPlayer = null;
+    }
 
     public virtual void Tick(float deltaTime) { }
 
@@ -47,7 +64,7 @@ abstract public class BaseBuff  // --> 다양한 데이터에 접근 가능하게끔 제작 --->
 
 abstract public class TimeBuff : BaseBuff
 {
-    public TimeBuff(string name, int maxCount, float duration, float maxTickTime) : base(name, maxCount)
+    public TimeBuff(string name, int maxCount, string effectName, float duration, float maxTickTime) : base(name, maxCount, effectName)
     {
         this.duration = duration;
         this.maxTickTime = maxTickTime;
@@ -80,7 +97,7 @@ abstract public class TimeBuff : BaseBuff
 
 abstract public class PassiveBuff : BaseBuff
 {
-    public PassiveBuff(string name, int maxCount) : base(name, maxCount)
+    public PassiveBuff(string name, int maxCount, string effectName) : base(name, maxCount, effectName)
     {
     }
 }

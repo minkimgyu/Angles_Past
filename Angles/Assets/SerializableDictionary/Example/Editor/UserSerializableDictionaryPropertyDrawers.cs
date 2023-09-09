@@ -4,6 +4,12 @@ using UnityEngine;
 using UnityEditor;
 using System;
 
+[CustomPropertyDrawer(typeof(StringAbilitySlotDictionary))]
+[CustomPropertyDrawer(typeof(StringAbilitySlotDataDictionary))]
+
+[CustomPropertyDrawer(typeof(StringSkillSlotDictionary))]
+[CustomPropertyDrawer(typeof(StringSkillSlotDataDictionary))]
+
 [CustomPropertyDrawer(typeof(StringBasicProjectileSODictionary))]
 [CustomPropertyDrawer(typeof(StringBaseEntitySODictionary))]
 

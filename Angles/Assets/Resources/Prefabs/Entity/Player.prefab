@@ -284,7 +284,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b42996780ef6c6049aabcd8ac5e5e798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inheritedTag: 0
   rushUIEventSO: {fileID: 11400000, guid: ea5f883aff722f6429996493debf0f60, type: 2}
   dashUIEventSO: {fileID: 11400000, guid: d29ed707886b93243b50ea236195ace9, type: 2}
 --- !u!114 &4491371347988923603
@@ -323,6 +322,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_skills: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &4491371347988923607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,8 +379,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerViewArea:
     color: {r: 0.19339621, g: 0.66435754, b: 1, a: 1}
-    width: 13.95
-    height: 22
+    width: 18.135
+    height: 28.6
     radius: 0
     offset: {x: 0, y: 0, z: 0}
     layer:
@@ -405,6 +408,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f45982b71a82f43b056b53c3199846, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_buffs: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &874521697754157257
 MonoBehaviour:
   m_ObjectHideFlags: 0

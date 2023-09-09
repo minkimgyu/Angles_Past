@@ -19,6 +19,7 @@ abstract public class BaseState<T>
 
     // 필요한 곳에서만 더 구현하게끔 제작
     public virtual void ReceiveTriggerEnter(Collider2D collider) { }
+    public virtual void ReceiveTriggerExit(Collider2D collider) { }
     public virtual void ReceiveCollisionEnter(Collision2D collision) { }
     public virtual void ReceiveCollisionExit(Collision2D collision) { }
 

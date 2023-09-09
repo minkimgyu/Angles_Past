@@ -34,6 +34,12 @@ public class FollowComponent : MonoBehaviour
         attackGizmo.DrawCircleGizmo(transform);
     }
 
+    public void Initialize(float stopDistance, float attackDistance)
+    {
+        stopGizmo.radius = stopDistance;
+        attackGizmo.radius = attackDistance;
+    }
+
     public bool IsDistanceLower(Vector3 enemyPos, float minDistance)
     {
         float distanceBetween = Vector2.Distance(transform.position, enemyPos);

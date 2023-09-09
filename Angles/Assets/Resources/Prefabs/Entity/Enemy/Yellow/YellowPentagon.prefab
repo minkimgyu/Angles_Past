@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 3057143791575044854}
   - component: {fileID: 3850899922995528838}
   - component: {fileID: 3451254735226011316}
+  - component: {fileID: 4353146398654223413}
   m_Layer: 6
   m_Name: YellowPentagon
   m_TagString: Enemy
@@ -171,7 +172,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4b1878f8bf5f1d4fb3eb769962bbe98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inheritedTag: 1
 --- !u!114 &3870266755109579505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,7 +209,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_contactDatas: []
-  m_entityTags: 01000000
 --- !u!114 &3451254735226011316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -220,5 +219,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4353146398654223413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4878745538717634273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87f45982b71a82f43b056b53c3199846, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

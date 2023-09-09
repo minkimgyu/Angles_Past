@@ -5,7 +5,7 @@ using System;
 
 public class SkillController : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeReference]
     List<BaseSkill> m_skills = new List<BaseSkill>(); // --> 키 값이 중복이 안 되서 리스트로 사용해야할 듯
 
     Dictionary<BaseSkill.OverlapType, Action<BaseSkill>> OverlapTypeConditions;

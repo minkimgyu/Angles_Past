@@ -98,6 +98,23 @@ public class BuffToRaycastHit : BuffMethod<RaycastHit2D[]>
     }
 }
 
+public class BuffToObject : BuffMethod<List<GameObject>>
+{
+    public BuffToObject(EntityTag[] hitTarget, bool nowApply, string[] buffNames, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas)
+        : base(hitTarget, nowApply, buffNames, effectDatas, soundDatas)
+    {
+    }
+
+    public override void Execute(SkillSupportData supportData, List<GameObject> targets)
+    {
+        for (int i = 0; i < targets.Count; i++)
+        {
+            ApplyBuff(targets[i].transform);
+            PlayEffect(targets[i].transform, EffectCondition.BuffEffect);
+        }
+    }
+}
+
 public class BuffToCaster : BuffMethod<GameObject>
 {
     public BuffToCaster(EntityTag[] hitTarget, bool nowApply, string[] buffNames, Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas)

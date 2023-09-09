@@ -10,6 +10,9 @@ public class SpeedTimerBuffSO : BaseBuffSO
     string buffName;
 
     [SerializeField]
+    string effectName;
+
+    [SerializeField]
     int maxCount;
 
     [SerializeField]
@@ -23,6 +26,6 @@ public class SpeedTimerBuffSO : BaseBuffSO
 
     public override BaseBuff Create()
     {
-        return new SpeedTimerBuff(buffName, maxCount, duration, maxTickCount, speedVariation);
+        return new SpeedTimerBuff(buffName, maxCount, effectName, duration, maxTickCount, speedVariation);
     }
 }
