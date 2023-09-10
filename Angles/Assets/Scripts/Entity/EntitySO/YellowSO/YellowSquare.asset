@@ -41,9 +41,17 @@ MonoBehaviour:
   skillNames:
   - SelfDestruction
   score:
-    maxValue: 10
+    maxValue: 30
     minValue: 0
-    originValue: 4
+    originValue: 2
+  goldCount:
+    maxValue: 30
+    minValue: 0
+    originValue: 2
+  spawnPercentage:
+    maxValue: 1
+    minValue: 0
+    originValue: 0.3
   skillUseDistance:
     maxValue: 10
     minValue: 0

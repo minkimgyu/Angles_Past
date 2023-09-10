@@ -44,3 +44,11 @@ MonoBehaviour:
     maxValue: 0
     minValue: 0
     originValue: 0
+  goldCount:
+    maxValue: 0
+    minValue: 0
+    originValue: 0
+  spawnPercentage:
+    maxValue: 1
+    minValue: 0
+    originValue: 0

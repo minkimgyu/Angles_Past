@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 1483472553
   m_SortingLayer: 3
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 01efbdc5195a41346a7a10c113a238bc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 228eb340919e7414d94b1d04d518cf40, type: 3}
   m_Color: {r: 1, g: 0.8, b: 0.2, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -162,6 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34f30fc80493b464786ebc2e9f18949e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: 61cbed4cefffeb743a1ffa8bfa5ad558, type: 3}
   rushVec: {x: 0, y: 0}
   minRushVec: 3
 --- !u!58 &1693639870318632581
@@ -192,6 +193,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_skills: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &636200724797744514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,3 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f45982b71a82f43b056b53c3199846, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_buffs: []
+  references:
+    version: 2
+    RefIds: []

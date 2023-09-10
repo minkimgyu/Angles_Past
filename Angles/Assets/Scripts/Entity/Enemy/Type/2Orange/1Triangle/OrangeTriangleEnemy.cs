@@ -10,11 +10,11 @@ public class OrangeTriangleEnemy : YellowTriangleEnemy, ISpawnEntity
 
     public void Initialize(bool immortality, BuffFloat hp, BuffFloat speed, BuffFloat stunTime,
         BuffFloat weight, BuffFloat mass, BuffFloat drag, string dieEffectName, string[] skillNames,
-        BuffInt score, BuffFloat skillUseDistance, BuffFloat skillUseOffsetDistance,
+        BuffInt score, BuffInt goldCount, BuffFloat spawnPercentage, BuffFloat skillUseDistance, BuffFloat skillUseOffsetDistance,
         BuffFloat followDistance, BuffFloat followOffsetDistance, string skillEffectName, string spawnEntityName,
         int spawnCount, SpawnCueEventSO spawnSO)
     {
-        Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames, score, skillUseDistance,
+        Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames, score, goldCount, spawnPercentage, skillUseDistance,
             skillUseOffsetDistance, followDistance, followOffsetDistance, skillEffectName);
 
         SpawnEntityName = spawnEntityName;

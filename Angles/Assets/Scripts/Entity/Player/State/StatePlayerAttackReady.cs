@@ -35,6 +35,8 @@ public class StatePlayerAttackReady : BaseState<Player.State>
 
         m_loadPlayer.Animator.SetBool("NowReady", true);
         m_loadPlayer.ResetRushRatioToZero();
+
+        m_loadPlayer.shootDirection.gameObject.SetActive(true);
     }
 
     void GoToMove()
@@ -53,12 +55,17 @@ public class StatePlayerAttackReady : BaseState<Player.State>
         m_loadPlayer.Animator.SetBool("NowReady", false);
 
         m_loadPlayer.rushUIEventSO.RaiseEvent(0); // hide
+        m_loadPlayer.shootDirection.gameObject.SetActive(false);
     }
 
     public override void OperateUpdate()
     {
         m_loadPlayer.MoveComponent.Move(m_loadPlayer.MoveVec, m_loadPlayer.ActionVec, m_loadPlayer.Speed.IntervalValue * m_loadPlayer.ReadySpeedDecreaseRatio.IntervalValue, true);
         m_loadPlayer.MoveComponent.RotationPlayer(m_loadPlayer.ActionVec, true);
+
+        float angle = Mathf.Atan2(-m_loadPlayer.ActionVec.y, -m_loadPlayer.ActionVec.x) * Mathf.Rad2Deg;
+
+        m_loadPlayer.shootDirection.rotation = Quaternion.Euler(0, 0, angle);
 
         m_loadPlayer.RestoreRushRatio();
         m_loadPlayer.rushUIEventSO.RaiseEvent(m_loadPlayer.RushRatio); // hide

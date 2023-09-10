@@ -37,6 +37,12 @@ public class YellowPentagonSO : BaseEntitySO
     BuffInt score;
 
     [SerializeField]
+    BuffInt goldCount;
+
+    [SerializeField]
+    BuffFloat spawnPercentage;
+
+    [SerializeField]
     BuffFloat skillUseDistance;
 
     [SerializeField]
@@ -55,7 +61,7 @@ public class YellowPentagonSO : BaseEntitySO
     {
         YellowPentagonEnemy enemy = ObjectPooler.SpawnFromPool<YellowPentagonEnemy>(name);
 
-        enemy.Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames, score,
+        enemy.Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames, score, goldCount, spawnPercentage,
             skillUseDistance, skillUseOffsetDistance, followDistance, followOffsetDistance, attackDelay);
 
         // 다음과 같이 초기화

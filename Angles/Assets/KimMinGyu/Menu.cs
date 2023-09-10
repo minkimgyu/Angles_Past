@@ -127,6 +127,7 @@ public class Menu : MonoBehaviour
 
     private void Start()
     {
+        Screen.orientation = ScreenOrientation.Portrait;
         SaveManager.Instance.ResetSlot(ref totalGold, skillSlots, abilitySlots);
         TotalGold = totalGold; // 초기화
         ModeName = modes[0];
@@ -139,6 +140,14 @@ public class Menu : MonoBehaviour
         foreach (KeyValuePair<string, AbilitySlot> abilitySlot in abilitySlots)
         {
             abilitySlot.Value.upgradeAction += ActiveUpgradePanel;
+        }
+    }
+
+    private void Update() // 화면 해상도 대응
+    {
+        if (Screen.orientation == ScreenOrientation.LandscapeLeft || Screen.orientation == ScreenOrientation.LandscapeRight)
+        {
+            Screen.orientation = ScreenOrientation.Portrait;
         }
     }
 

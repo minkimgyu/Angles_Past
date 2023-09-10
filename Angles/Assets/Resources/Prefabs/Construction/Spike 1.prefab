@@ -102,7 +102,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_contactDatas: []
-  m_entityTags: 0100000000000000
 --- !u!114 &6301438216916638841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,6 +114,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_skills: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &4076092919996500087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,7 +130,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c63981f0c44bbd4f96b0a809f9f217a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inheritedTag: 5
+  grantedUtilization:
+    names:
+    - SpikePunch
 --- !u!50 &7593884746635838208
 Rigidbody2D:
   serializedVersion: 4

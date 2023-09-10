@@ -40,14 +40,23 @@ MonoBehaviour:
   dieEffectName: HeptaOctaDestroied
   skillNames:
   - BossPunch
+  - RushToPlayer
   score:
     maxValue: 200
     minValue: 0
     originValue: 100
+  goldCount:
+    maxValue: 30
+    minValue: 0
+    originValue: 12
+  spawnPercentage:
+    maxValue: 1
+    minValue: 0
+    originValue: 1
   skillUseDistance:
     maxValue: 20
     minValue: 0
-    originValue: 10
+    originValue: 7
   skillUseOffsetDistance:
     maxValue: 10
     minValue: 0
@@ -55,7 +64,7 @@ MonoBehaviour:
   followDistance:
     maxValue: 10
     minValue: 0
-    originValue: 7
+    originValue: 6.5
   followOffsetDistance:
     maxValue: 10
     minValue: 0
@@ -63,8 +72,12 @@ MonoBehaviour:
   attackDelay:
     maxValue: 10
     minValue: 0
-    originValue: 2
+    originValue: 5
   attackThrust:
     maxValue: 50
     minValue: 0
     originValue: 30
+  attackDuration:
+    maxValue: 10
+    minValue: 0
+    originValue: 1.5

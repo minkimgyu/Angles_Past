@@ -9,6 +9,9 @@ using System;
 public class Avatar<T> : StateMachineEntity<T>, IAvatar//, IEntityData<W>/*, IBuff<W>*/
 {
     public bool Immortality { get; set; }
+
+    protected float maxHp;
+
     public BuffFloat Hp { get; set; }
     public BuffFloat Speed { get; set; }
     public BuffFloat StunTime { get; set; }
@@ -16,12 +19,6 @@ public class Avatar<T> : StateMachineEntity<T>, IAvatar//, IEntityData<W>/*, IBu
     public BuffFloat Mass { get; set; }
     public BuffFloat Drag { get; set; }
     public string DieEffectName { get; set; }
-
-    // 이런 식으로 Entity를 만들어서 리턴해주는 SO 제작
-    //public Entity CreateEntity()
-    //{
-    //    return new PlayerTransform();
-    //}
 
     MoveComponent m_moveComponent;
     public MoveComponent MoveComponent { get { return m_moveComponent; } }
@@ -35,11 +32,16 @@ public class Avatar<T> : StateMachineEntity<T>, IAvatar//, IEntityData<W>/*, IBu
     protected GrantedSkill grantedSkill;
     public GrantedSkill GrantedSkill { get { return grantedSkill; } }
 
+    SpriteRenderer spriteRenderer;
+    public SpriteRenderer SpriteRenderer { get { return spriteRenderer; } }
+
     public void Initialize(bool immortality, BuffFloat hp, BuffFloat speed, BuffFloat stunTime, 
         BuffFloat weight, BuffFloat mass, BuffFloat drag, string dieEffectName, string[] skillNames)
     {
         Immortality = immortality;
         Hp = hp.CopyData();
+        maxHp = hp.IntervalValue;
+
         Speed = speed.CopyData();
         StunTime = stunTime.CopyData();
         Weight = weight.CopyData();
@@ -57,9 +59,6 @@ public class Avatar<T> : StateMachineEntity<T>, IAvatar//, IEntityData<W>/*, IBu
     protected Rigidbody2D m_rigidbody;
     public Rigidbody2D Rigidbody { get { return m_rigidbody; } }
 
-    protected bool m_canHit;
-    public bool CanHit { get { return m_canHit; } }
-
     protected virtual void ShowDieEffect()
     {
         BasicEffectPlayer effectPlayer = ObjectPooler.SpawnFromPool<BasicEffectPlayer>(DieEffectName);
@@ -76,18 +75,19 @@ public class Avatar<T> : StateMachineEntity<T>, IAvatar//, IEntityData<W>/*, IBu
         m_moveComponent = GetComponent<MoveComponent>();
         m_dashComponent = GetComponent<DashComponent>();
         m_skillController = GetComponent<SkillController>();
+        TryGetComponent(out spriteRenderer);
     }    
 
     public virtual void Heal(float healthPoint) { }
 
     public virtual void UnderAttack(float damage, Vector2 dir, float thrust)
     {
-        if (m_canHit) return;
+        if (Immortality) return;
 
         if (Hp.IntervalValue > 0)
         {
-            WhenUnderAttack(damage, dir, thrust);
             Hp.IntervalValue -= damage;
+            WhenUnderAttack(damage, dir, thrust);
             if (Hp.IntervalValue <= 0)
             {
                 Die();
@@ -98,6 +98,7 @@ public class Avatar<T> : StateMachineEntity<T>, IAvatar//, IEntityData<W>/*, IBu
 
     public virtual void WhenUnderAttack(float damage, Vector2 dir, float thrust)
     {
+        if (GlobalState != null) GlobalState.ReceiveUnderAttack(damage, dir, thrust);
         m_dicState[CurrentStateName].ReceiveUnderAttack(damage, dir, thrust);
     }
 

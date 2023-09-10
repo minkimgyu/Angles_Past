@@ -180,7 +180,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21244f1969d8cdf47b8d9b39a7ff9889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inheritedTag: 4
 --- !u!1 &1901054787329284088
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,7 +326,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21244f1969d8cdf47b8d9b39a7ff9889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inheritedTag: 4
 --- !u!1 &1901054787435087378
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,7 +428,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f916657981e892944a7b55afaf862212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inheritedTag: 5
+  grantedUtilization:
+    names:
+    - GearPunch
   movePoints:
   - {fileID: 1901054787329284089}
   - {fileID: 1901054787011004124}
@@ -447,7 +447,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_contactDatas: []
-  m_entityTags: 0100000000000000
 --- !u!114 &3950370269041581369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -460,6 +459,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_skills: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!58 &1901054787435087369
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -27,6 +27,27 @@ public class SaveManager : Singleton<SaveManager>
 
     string filePath;
 
+    public List<string> ReturnSkills()
+    {
+        List<string> skillNames = new List<string>();
+
+        foreach (KeyValuePair<string, SkillSlotData> skillSlotData in gameStorageData.skillSlotDatas)
+        {
+            if(skillSlotData.Value.nowUse == true)
+            {
+                skillNames.Add(skillSlotData.Key + "Item");
+            }
+        }
+
+        return skillNames;
+    }
+
+    public void ResetGold(int additionalGold)
+    {
+        gameStorageData.totalGold += additionalGold;
+        Save();
+    }
+
     public bool CanSelectSkill()
     {
         if (SelectedSkillCount() < gameStorageData.maxSelectCount) return true;

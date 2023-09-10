@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BasicBullet
   m_EditorClassIdentifier: 
   projectileName: Bullet
-  hitTargetTag: 00000000
+  hitTargetTag: 0000000004000000
   skillNames:
   - BulletPunch
   disableTime: 10

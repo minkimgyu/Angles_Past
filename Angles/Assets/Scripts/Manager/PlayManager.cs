@@ -8,26 +8,30 @@ using TMPro;
 
 public class PlayManager : MonoBehaviour //Singleton<PlayManager>
 {
-    Transform playerTransform;
-    public Transform PlayerTransform
+    Player player;
+    public Player Player
     {
-        get { return playerTransform; }
+        get { return player; }
         set 
-        { 
-            playerTransform = value;
-            virtualCamera.Follow = value;
+        {
+            player = value;
+            virtualCamera.Follow = value.transform;
         }
     }
 
     public CinemachineVirtualCamera virtualCamera;
 
-    public GameObject gameOverPanel;
     public GameObject pausePanel;
-
     public GameObject gameClearPanel;
 
     [SerializeField]
+    TMP_Text gameClearTxt;
+
+    [SerializeField]
     TMP_Text finalScoreTxt;
+
+    [SerializeField]
+    TMP_Text finalGoldTxt;
 
     [SerializeField]
     TMP_Text scoreTxt;
@@ -51,14 +55,51 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
     int totalScore = 0;
 
     [SerializeField]
+    int goldCount = 0;
+
+    int maxGoldCount = 0;
+
+    [SerializeField]
     bool m_gameClear = false;
     public bool GameClearCheck { get { return m_gameClear; }}
+
+    [SerializeField]
+    CanvasScaler playCanvasScaler;
+
+    [SerializeField]
+    RectTransform move;
+
+    [SerializeField]
+    RectTransform attack;
+
+    bool nowPortrait = true;
 
     // Start is called before the first frame update
     protected void Awake()
     { 
         instance = this; // 이부분은 ObjectPooler와 유사한 싱글톤으로 만들어주기
         Application.targetFrameRate = 60;
+    }
+
+    private void Update() // 화면 해상도 대응
+    {
+        if (Screen.orientation == ScreenOrientation.Portrait && nowPortrait == false)
+        {
+            // 여기에 화면이 돌아가면 변경될 점을 적어주자
+            move.sizeDelta = new Vector2(540, 1920);
+            attack.sizeDelta = new Vector2(540, 1920);
+            playCanvasScaler.referenceResolution = new Vector2(1080, 1920);
+            virtualCamera.m_Lens.OrthographicSize = 12;
+            nowPortrait = true;
+        }
+        else if ((Screen.orientation == ScreenOrientation.LandscapeLeft || Screen.orientation == ScreenOrientation.LandscapeRight) && nowPortrait == true)
+        {
+            move.sizeDelta = new Vector2(960, 1080);
+            attack.sizeDelta = new Vector2(960, 1080);
+            playCanvasScaler.referenceResolution = new Vector2(1920, 1080);
+            virtualCamera.m_Lens.OrthographicSize = 9;
+            nowPortrait = false;
+        }
     }
 
     private void Start()
@@ -68,7 +109,19 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
 
     public void GameOver()
     {
-        gameOverPanel.SetActive(true);
+        gameClearTxt.text = "Game Over";
+        finalScoreTxt.text = totalScore.ToString();
+        finalGoldTxt.text = ((int)totalScore / 2).ToString();
+
+        SaveManager.Instance.ResetGold((int)totalScore / 2);
+        gameClearPanel.SetActive(true);
+    }
+
+    public void GoldUp(int score)
+    {
+        ScoreUp(score);
+        goldCount += 1;
+        //player.AddAdditionalStat(goldCount / maxGoldCount);
     }
 
     public void ScoreUp(int score)
@@ -80,7 +133,11 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
     public void GameClear()
     {
         m_gameClear = true;
+        gameClearTxt.text = "Game Clear";
         finalScoreTxt.text = totalScore.ToString();
+        finalGoldTxt.text = ((int)totalScore / 2).ToString();
+
+        SaveManager.Instance.ResetGold((int)totalScore / 2);
         gameClearPanel.SetActive(true);
     }
 

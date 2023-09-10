@@ -74,8 +74,14 @@ public class EffectSpawnComponent // --> 이거를 BaseMethod에 상속시켜서 스폰 ㄱ�
         if (player == null) return false;
 
         // bool 값으로 판단하기
-        if(m_effectDatas[condition].isFix) player.Init(target, m_effectDatas[condition].disableTime, scale);
+        if(m_effectDatas[condition].isFix)
+        {
+            player.Init(target, m_effectDatas[condition].disableTime, scale);
+            player.RotationEffect(target.eulerAngles.z);
+        }
         else player.Init(target.position, m_effectDatas[condition].disableTime, scale);
+
+        
 
         player.PlayEffect();
 
@@ -135,13 +141,43 @@ public class EffectSpawnComponent // --> 이거를 BaseMethod에 상속시켜서 스폰 ㄱ�
     }
 }
 
+public class RushToTarget : BaseMethod<GameObject>
+{
+    public RushToTarget(EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
+        : base(effectDatas, soundDatas) // 이런 식으로 생성자에서 값을 받아서 Execute 진행
+    {
+    }
+
+    public override void Execute(SkillSupportData supportData)
+    {
+        supportData.Caster.TryGetComponent(out BaseFollowEnemy followEnemy);
+        if (followEnemy == null) return;
+
+        followEnemy.SetState(BaseFollowEnemy.State.Attack);
+    }
+}
+
+public class CreateBarrier : BaseMethod<GameObject>
+{
+    public CreateBarrier(EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
+        : base(effectDatas, soundDatas) // 이런 식으로 생성자에서 값을 받아서 Execute 진행
+    {
+    }
+
+    public override void Execute(SkillSupportData supportData)
+    {
+        supportData.Caster.TryGetComponent(out BarrierComponent barrierComponent);
+        if (barrierComponent == null) return;
+
+        barrierComponent.AddBarrier();
+    }
+}
+
 abstract public class BaseMethod<T> : EffectSpawnComponent
 {
     public BaseMethod(Dictionary<EffectCondition, EffectData> effectDatas, Dictionary<EffectCondition, SoundData> soundDatas) : base(effectDatas, soundDatas)
     {
     }
-
-    //public abstract void AddState(SkillData data); // 데이터 베이스에서 Stat을 카피해서 가져옴
 
     public virtual void Execute(SkillSupportData supportData, T target) { }
 
@@ -594,5 +630,33 @@ public class SpawnObject : Skill<GameObject>
         m_specifyLocation = new LocationToCaster(false);
         m_targetDesignation = new NoFound();
         m_baseMethods = new List<BaseMethod<GameObject>> { new SpawnProjectile(projectileName, isNeedCaster, effectDatas, soundDatas) };
+    }
+}
+
+[System.Serializable]
+public class RushToPlayer : Skill<GameObject>
+{
+    public RushToPlayer(string name, UseConditionType useConditionType, float duration, int tickCount, float preDelay,
+        EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
+        : base(name, useConditionType, OverlapType.None, false, duration, tickCount, preDelay, 1)
+    {
+        m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
+        m_specifyLocation = new LocationToCaster(true);
+        m_targetDesignation = new NoFound();
+        m_baseMethods = new List<BaseMethod<GameObject>> { new RushToTarget(effectDatas, soundDatas) };
+    }
+}
+
+[System.Serializable]
+public class CreateBarrierToPlayer : Skill<GameObject>
+{
+    public CreateBarrierToPlayer(string name, UseConditionType useConditionType, float duration, int tickCount, float preDelay,
+        EffectConditionEffectDataDictionary effectDatas, EffectConditionSoundDataDictionary soundDatas)
+        : base(name, useConditionType, OverlapType.None, true, duration, tickCount, preDelay, 1)
+    {
+        m_predelayEffectSpawner = new EffectSpawnComponent(effectDatas, soundDatas);
+        m_specifyLocation = new LocationToCaster(true);
+        m_targetDesignation = new NoFound();
+        m_baseMethods = new List<BaseMethod<GameObject>> { new CreateBarrier(effectDatas, soundDatas) };
     }
 }

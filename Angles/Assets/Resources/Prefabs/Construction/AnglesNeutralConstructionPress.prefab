@@ -133,7 +133,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 196dc1ae79b52a64d92c8276b3f09062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inheritedTag: 5
+  grantedUtilization:
+    names:
+    - PressPunch
   endTr: {fileID: 1272841662781010041}
 --- !u!61 &1272841663233837065
 BoxCollider2D:
@@ -195,7 +197,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_contactDatas: []
-  m_entityTags: 0100000000000000
 --- !u!114 &7121299216482523189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,6 +209,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_skills: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1272841664212383068
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,7 +361,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21244f1969d8cdf47b8d9b39a7ff9889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inheritedTag: 4
 --- !u!1 &1804917413072575176
 GameObject:
   m_ObjectHideFlags: 0

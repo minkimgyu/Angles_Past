@@ -109,6 +109,9 @@ public class Player : Avatar<Player.State>
     [SerializeField]
     public PlayerActionEventSO dashUIEventSO;
 
+    [SerializeField]
+    public Transform shootDirection;
+
     public enum State
     {      
         Dash,
@@ -129,12 +132,6 @@ public class Player : Avatar<Player.State>
        ShowRushUI,
        HideRushUI,
     }
-
-    //float minJoyVal = 0.25f;
-
-    //스테이트들을 보관
-    //private Dictionary<State, IState<PlayerTransform, Telegram<State>>> m_dicState = new Dictionary<State, IState<PlayerTransform, Telegram<State>>>();
-    //private List<IObserver<ObserverType, PlayerData>> m_observers = new List<IObserver<ObserverType, PlayerData>>();
 
     protected override void Awake()
     {
@@ -180,7 +177,32 @@ public class Player : Avatar<Player.State>
         SetGlobalState(State.Global, global);
     }
 
-    
+    public void AddInitialStat()
+    {
+        // 메인 화면의 데이터를 불러와서 더해줌
+    }
+
+    public void AddAdditionalStat(float goldCountRatio)
+    {
+        float speedAdditionalStat = 100;
+
+        m_readySpeedDecreaseRatio.IntervalValue += 100; // 이런 식으로 계속 추가되게 만들자
+
+    }
+
+    public override void UnderAttack(float damage, Vector2 dir, float thrust)
+    {
+        if (m_barrierComponent.CanBarrierAbsorb(damage) == true) return;
+
+        base.UnderAttack(damage, dir, thrust);
+    }
+
+    public override void Die()
+    {
+        base.Die();
+        PlayManager.Instance.GameOver();
+    }
+
     public void ResetRushRatioToZero() => m_rushRatio = 0;
 
     public bool RestoreRatio(ref float ratio, float recoverRatio)

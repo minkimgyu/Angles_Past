@@ -38,11 +38,20 @@ MonoBehaviour:
     minValue: 0
     originValue: 0
   dieEffectName: HexagonDestroied
-  skillNames: []
+  skillNames:
+  - HexagonAttack
   score:
     maxValue: 30
     minValue: 0
     originValue: 14
+  goldCount:
+    maxValue: 30
+    minValue: 0
+    originValue: 8
+  spawnPercentage:
+    maxValue: 1
+    minValue: 0
+    originValue: 0.5
   skillUseDistance:
     maxValue: 20
     minValue: 0

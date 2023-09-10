@@ -45,6 +45,14 @@ MonoBehaviour:
     maxValue: 10
     minValue: 0
     originValue: 4
+  goldCount:
+    maxValue: 30
+    minValue: 0
+    originValue: 1
+  spawnPercentage:
+    maxValue: 1
+    minValue: 0
+    originValue: 0.2
   skillUseDistance:
     maxValue: 10
     minValue: 0

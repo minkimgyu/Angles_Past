@@ -22,6 +22,9 @@ public class StatePlayerDash : BaseState<Player.State>
 
     public override void OperateEnter()
     {
+        m_loadPlayer.Immortality = true;
+        m_loadPlayer.SpriteRenderer.color = Color.green;
+
         SoundManager.Instance.PlaySFX(m_loadPlayer.transform.position, "Dash", 1.5f);
         m_loadPlayer.DashComponent.PlayDash(m_loadPlayer.MoveVec, m_loadPlayer.DashThrust.IntervalValue, m_loadPlayer.DashDuration.IntervalValue);
         m_loadPlayer.SubtractDashRatio();
@@ -29,6 +32,8 @@ public class StatePlayerDash : BaseState<Player.State>
 
     public override void OperateExit()
     {
+        m_loadPlayer.Immortality = false;
+        m_loadPlayer.SpriteRenderer.color = Color.white;
     }
 
     public override void OperateUpdate()

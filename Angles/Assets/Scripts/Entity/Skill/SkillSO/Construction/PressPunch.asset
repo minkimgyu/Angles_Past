@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be38f2b081f72134bbb8aaab4913b935, type: 3}
+  m_Name: PressPunch
+  m_EditorClassIdentifier: 
+  useConditionType: 0
+  hitTarget: 0000000001000000
+  knockBackThrust: 15
+  damage: 1
+  effectDatas:
+    m_keys: 01000000
+    m_values:
+    - name: PunchEffect
+      isFix: 0
+      disableTime: 1
+  soundDatas:
+    m_keys: 01000000
+    m_values:
+    - name: PunchEffect
+      isLoop: 0
+      volume: 1

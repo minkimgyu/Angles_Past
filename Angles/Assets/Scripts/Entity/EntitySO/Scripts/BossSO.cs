@@ -37,6 +37,9 @@ public class BossSO : BaseEntitySO
     BuffInt score;
 
     [SerializeField]
+    BuffInt goldCount;
+
+    [SerializeField]
     BuffFloat skillUseDistance;
 
     [SerializeField]
@@ -55,7 +58,7 @@ public class BossSO : BaseEntitySO
     {
         BossEnemy enemy = ObjectPooler.SpawnFromPool<BossEnemy>(name);
 
-        enemy.Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames, score,
+        enemy.Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames, score, goldCount,
             skillUseDistance, skillUseOffsetDistance, followDistance, followOffsetDistance, attackDelay);
 
         // 다음과 같이 초기화

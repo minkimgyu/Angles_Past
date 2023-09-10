@@ -30,8 +30,12 @@ abstract public class BasicConstruction : StateMachineEntity<BasicConstruction.S
     {
         m_skillController = GetComponent<SkillController>();
         m_contactComponent = GetComponent<ContactComponent>();
-        grantedUtilization.LootSkillFromDB(m_skillController);
         Init();
+    }
+
+    private void Start()
+    {
+        grantedUtilization.LootSkillFromDB(m_skillController);
     }
 
     public abstract void Init();

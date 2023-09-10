@@ -37,6 +37,12 @@ public class YellowTriangleSO : BaseEntitySO
     BuffInt score;
 
     [SerializeField]
+    BuffInt goldCount;
+
+    [SerializeField]
+    BuffFloat spawnPercentage;
+
+    [SerializeField]
     BuffFloat skillUseDistance;
 
     [SerializeField]
@@ -57,7 +63,7 @@ public class YellowTriangleSO : BaseEntitySO
 
         YellowTriangleEnemy enemy = ObjectPooler.SpawnFromPool<YellowTriangleEnemy>(name);
 
-        enemy.Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames, score, 
+        enemy.Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames, score, goldCount, spawnPercentage,
             skillUseDistance, skillUseOffsetDistance, followDistance, followOffsetDistance, skillEffectName);
 
         // 다음과 같이 초기화

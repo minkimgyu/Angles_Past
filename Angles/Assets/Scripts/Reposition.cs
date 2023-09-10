@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Reposition : MonoBehaviour
 {
-    Transform player;
+    Player player;
     float movePos = 10;
 
     private void Start()
     {
-        player = PlayManager.Instance.PlayerTransform;
+        player = PlayManager.Instance.Player;
     }
 
     public bool CanMove(float diffX, float diffY)

@@ -22,14 +22,22 @@ MonoBehaviour:
   preDelay: 0
   boxRangePerTick:
   - {x: 5, y: 3}
-  skillScalePerTicks: []
-  offsetRangePerTick: []
+  skillScalePerTicks:
+  - 1
+  offsetRangePerTick:
+  - {x: 0, y: 0}
   hitTarget: 01000000
   knockBackThrust: 3
   damage: 5
   effectDatas:
-    m_keys: 
-    m_values: []
+    m_keys: 0100000002000000
+    m_values:
+    - name: PunchEffect
+      isFix: 0
+      disableTime: 2
+    - name: KnockbackEffect
+      isFix: 1
+      disableTime: 3
   soundDatas:
     m_keys: 
     m_values: []

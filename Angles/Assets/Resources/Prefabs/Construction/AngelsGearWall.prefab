@@ -126,7 +126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21244f1969d8cdf47b8d9b39a7ff9889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inheritedTag: 4
 --- !u!50 &3879020322442197397
 Rigidbody2D:
   serializedVersion: 4
@@ -250,10 +249,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68b431e356aa30346891dd78a18b06fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inheritedTag: 5
   grantedUtilization:
     names:
-    - Punch
+    - GearPunch
 --- !u!114 &2253392791329888629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,6 +264,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_skills: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &1671096347527197912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,7 +281,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_contactDatas: []
-  m_entityTags: 0100000000000000
 --- !u!58 &1671096347527197915
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -59,6 +59,8 @@ public class StatePlayerAttack : BaseState<Player.State>
 
     public override void ReceiveCollisionEnter(Collision2D collision) 
     {
+        if (CollisionTask.ContainsKey(collision.transform.tag) == false) return;
+
         CollisionTask[collision.transform.tag](collision);
     }
 
@@ -68,6 +70,9 @@ public class StatePlayerAttack : BaseState<Player.State>
 
     public override void OperateEnter()
     {
+        m_loadPlayer.Immortality = true;
+        m_loadPlayer.SpriteRenderer.color = Color.green;
+
         m_loadPlayer.Animator.SetBool("NowAttack", true);
         m_loadPlayer.DashComponent.PlayDash(savedAttackVec, m_loadPlayer.RushThrust.IntervalValue * m_loadPlayer.RushRatio, m_loadPlayer.RushDuration.IntervalValue);
 
@@ -80,6 +85,9 @@ public class StatePlayerAttack : BaseState<Player.State>
     {
         m_loadPlayer.DashComponent.QuickEndTask(); // 조건에서 탈출할 때, 한번 리셋해줌
         m_loadPlayer.Animator.SetBool("NowAttack", false);
+
+        m_loadPlayer.Immortality = false;
+        m_loadPlayer.SpriteRenderer.color = Color.white;
     }
 
     public override void OperateUpdate()
@@ -104,66 +112,3 @@ public class StatePlayerAttack : BaseState<Player.State>
         }
     }
 }
-
-
-
-//void ContactAct(Collision2D col) // 스킬 사용 + Reflect 채크해서 함수 사용
-//{
-//    col.gameObject.TryGetComponent(out Entity entity);
-//    if (entity == null) return;
-
-
-//    if (entity.InheritedTag == EntityTag.Enemy)
-//    {
-//        m_loadPlayer.BattleComponent.UseSkill(SkillUseConditionType.Contact);
-
-
-
-//        col.gameObject.TryGetComponent(out BaseFollowEnemy followEnemy);
-//        col.gameObject.TryGetComponent(out BaseReflectEnemy reflectEnemy);
-
-//        col.gameObject.TryGetComponent(out Enemy followEnemy);
-
-
-//        if (followEnemy != null)
-//        {
-//            if(followEnemy.HealthData.Weight > m_loadPlayer.HealthData.Weight)
-//            {
-//                if (col != null && col.contacts.Length != 0)
-//                {
-//                    Message<PlayerTransform.State> message = new Message<PlayerTransform.State>();
-//                    message.dir = m_loadPlayer.ReflectComponent.ResetReflectVec(col.contacts[0].normal);
-//                    Telegram<PlayerTransform.State> telegram = new Telegram<PlayerTransform.State>(PlayerTransform.State.Attack, PlayerTransform.State.Reflect, message);
-
-//                    m_loadPlayer.SetState(PlayerTransform.State.Reflect, telegram);
-//                }
-//            }
-//        }
-//        else if(reflectEnemy != null)
-//        {
-//            if (reflectEnemy.HealthData.Weight > m_loadPlayer.HealthData.Weight)
-//            {
-//                if (col != null && col.contacts.Length != 0)
-//                {
-//                    Message<PlayerTransform.State> message = new Message<PlayerTransform.State>();
-//                    message.dir = m_loadPlayer.ReflectComponent.ResetReflectVec(col.contacts[0].normal);
-//                    Telegram<PlayerTransform.State> telegram = new Telegram<PlayerTransform.State>(PlayerTransform.State.Attack, PlayerTransform.State.Reflect, message);
-
-//                    m_loadPlayer.SetState(PlayerTransform.State.Reflect, telegram);
-//                }
-//            }
-//        }
-
-
-//        // 스킬 사용
-//    }
-
-//    if (entity.InheritedTag == EntityTag.Wall)
-//    {
-//        Message<PlayerTransform.State> message = new Message<PlayerTransform.State>();
-//        message.dir = m_loadPlayer.ReflectComponent.ResetReflectVec(col.contacts[0].normal);
-//        Telegram<PlayerTransform.State> telegram = new Telegram<PlayerTransform.State>(PlayerTransform.State.Attack, PlayerTransform.State.Reflect, message);
-
-//        m_loadPlayer.SetState(PlayerTransform.State.Reflect, telegram);
-//    }
-//}

@@ -1,0 +1,142 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1418494538545865408
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1418494538545865410}
+  - component: {fileID: 1418494538545865409}
+  m_Layer: 0
+  m_Name: SaveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1418494538545865410
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418494538545865408}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1418494538545865409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418494538545865408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1d3afe1dace42146804574bf6561b8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameStorageData:
+    totalGold: 0
+    maxSelectCount: 3
+    skillSlotDatas:
+      m_keys: []
+      m_values: []
+    abilitySlotDatas:
+      m_keys: []
+      m_values: []
+  initialGameStorageData:
+    totalGold: 500
+    maxSelectCount: 3
+    skillSlotDatas:
+      m_keys:
+      - Ghost
+      - Barrier
+      - Blade
+      - Shockwave
+      - Knockback
+      - StickyBomo
+      - GravitationalField
+      - SpawnBall
+      - Tornado
+      - Boomerang
+      m_values:
+      - price: 0
+        dataName: "\uC720\uCCB4\uD654"
+        path: Icon/Angles_Special_Icon_Ghost
+        nowUse: 1
+        nowLock: 0
+      - price: 0
+        dataName: "\uBCF4\uD638\uB9C9"
+        path: Icon/Angles_Special_Icon_Barrier
+        nowUse: 1
+        nowLock: 0
+      - price: 500
+        dataName: "\uBE14\uB808\uC774\uB4DC"
+        path: Icon/AnglesSkillBlade
+        nowUse: 0
+        nowLock: 1
+      - price: 500
+        dataName: "\uCDA9\uACA9\uD30C"
+        path: Icon/Angles_Skill_Icon_Shockwave
+        nowUse: 0
+        nowLock: 1
+      - price: 500
+        dataName: "\uB109\uBC31"
+        path: Icon/Angles_Skill_Icon_Knockback
+        nowUse: 0
+        nowLock: 1
+      - price: 500
+        dataName: "\uC811\uCC29\uD3ED\uD0C4"
+        path: Icon/Angles_Skill_Icon_StickyBomb
+        nowUse: 0
+        nowLock: 1
+      - price: 1000
+        dataName: "\uC911\uB825\uC7A5"
+        path: Icon/Angles_Skill_Icon_GravitationalField
+        nowUse: 0
+        nowLock: 1
+      - price: 1000
+        dataName: "\uC18C\uD658\uAD6C"
+        path: Icon/Angles_Skill_Icon_SpawnBall
+        nowUse: 0
+        nowLock: 1
+      - price: 1500
+        dataName: "\uD1A0\uB124\uC774\uB3C4"
+        path: Icon/Angles_Skill_Icon_Tornado
+        nowUse: 0
+        nowLock: 1
+      - price: 1500
+        dataName: "\uBD80\uBA54\uB791"
+        path: Icon/Angles_Skill_Icon_Blade
+        nowUse: 0
+        nowLock: 1
+    abilitySlotDatas:
+      m_keys:
+      - Hp
+      - Rush
+      - Dash
+      m_values:
+      - price: 500
+        dataName: "\uCCB4\uB825"
+        upgradeCount: 1
+        maxUpgradeCount: 5
+        priceUpRatio: 0.5
+      - price: 500
+        dataName: "\uC288\uD305"
+        upgradeCount: 1
+        maxUpgradeCount: 5
+        priceUpRatio: 0.5
+      - price: 500
+        dataName: "\uB300\uC26C"
+        upgradeCount: 1
+        maxUpgradeCount: 5
+        priceUpRatio: 0.5

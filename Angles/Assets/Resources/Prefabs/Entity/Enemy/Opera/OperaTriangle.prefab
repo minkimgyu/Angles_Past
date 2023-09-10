@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingLayerID: 1483472553
   m_SortingLayer: 3
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 34ce132ffd38d1c45b9ced7cc792b101, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d6561152c283c7847af2da2182836ec0, type: 3}
   m_Color: {r: 1, g: 0.2, b: 0.8, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -184,6 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49122f6ccfbf81c42a9832f126b0e7b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: ebbb9369141a0224db3cc286b3ee625c, type: 3}
   skillEffectName: 
 --- !u!114 &9179450015755633462
 MonoBehaviour:
@@ -222,6 +223,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_skills: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &5832707146516969452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,3 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f45982b71a82f43b056b53c3199846, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_buffs: []
+  references:
+    version: 2
+    RefIds: []

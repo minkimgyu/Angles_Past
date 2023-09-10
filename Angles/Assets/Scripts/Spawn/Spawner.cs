@@ -86,13 +86,13 @@ public class Spawner : MonoBehaviour
 
     void SpawnPlayer()
     {
-        Entity player = EntityFactory.Order("Player");
+        Player player = (Player)EntityFactory.Order("Player");
         spawnAssistant = player.GetComponentInChildren<SpawnAssistant>();
 
         RepositionEnemy repositionEnemy = FindObjectOfType<RepositionEnemy>();
         repositionEnemy.Init(player.gameObject);
 
-        PlayManager.Instance.PlayerTransform = player.transform;
+        PlayManager.Instance.Player = player;
     }
 
     // Update is called once per frame

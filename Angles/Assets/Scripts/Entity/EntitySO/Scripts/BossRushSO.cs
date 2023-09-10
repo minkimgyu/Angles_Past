@@ -37,6 +37,12 @@ public class BossRushSO : BaseEntitySO
     BuffInt score;
 
     [SerializeField]
+    BuffInt goldCount;
+
+    [SerializeField]
+    BuffFloat spawnPercentage;
+
+    [SerializeField]
     BuffFloat skillUseDistance;
 
     [SerializeField]
@@ -54,12 +60,15 @@ public class BossRushSO : BaseEntitySO
     [SerializeField]
     BuffFloat attackThrust;
 
+    [SerializeField]
+    BuffFloat attackDuration;
+
     public override Entity Create()
     {
         BossRushEnemy enemy = ObjectPooler.SpawnFromPool<BossRushEnemy>(name);
 
-        enemy.Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames, score,
-            skillUseDistance, skillUseOffsetDistance, followDistance, followOffsetDistance, attackDelay, attackThrust);
+        enemy.Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames, score, goldCount, spawnPercentage,
+            skillUseDistance, skillUseOffsetDistance, followDistance, followOffsetDistance, attackDelay, attackThrust, attackDuration);
 
         // 다음과 같이 초기화
 

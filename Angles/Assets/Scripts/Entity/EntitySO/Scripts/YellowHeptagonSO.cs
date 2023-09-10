@@ -36,10 +36,16 @@ public class YellowHeptagonSO : BaseEntitySO
     [SerializeField]
     BuffInt score;
 
+    [SerializeField]
+    BuffInt goldCount;
+
+    [SerializeField]
+    BuffFloat spawnPercentage;
+
     public override Entity Create()
     {
         BaseReflectEnemy enemy = ObjectPooler.SpawnFromPool<BaseReflectEnemy>(name);
-        enemy.Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames, score);  // 다음과 같이 초기화
+        enemy.Initialize(immortality, hp, speed, stunTime, weight, mass, drag, dieEffectName, skillNames, score, goldCount, spawnPercentage);  // 다음과 같이 초기화
 
         return enemy;
     }

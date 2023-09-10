@@ -45,6 +45,10 @@ MonoBehaviour:
     maxValue: 200
     minValue: 0
     originValue: 100
+  goldCount:
+    maxValue: 30
+    minValue: 0
+    originValue: 12
   skillUseDistance:
     maxValue: 20
     minValue: 0
