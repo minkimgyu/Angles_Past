@@ -73,16 +73,19 @@ public class Menu : MonoBehaviour
     {
         ModeName = modes[index];
         modeSelectPanel.SetActive(false);
+        SoundManager.Instance.PlaySFX("ButtonClick", 0.3f);
     }
 
     public void OnOffUpgradePanel(bool nowOn)
     {
         upgradePanel.SetActive(nowOn);
+        SoundManager.Instance.PlaySFX("ButtonClick", 0.3f);
     }
 
     public void OnOffUpgradePanel(bool nowOn, bool canUpgrade, string upgradeText)
     {
         upgradePanel.SetActive(nowOn);
+        SoundManager.Instance.PlaySFX("ButtonClick", 0.3f);
 
         upgradeCommentTxt.text = upgradeText;
 
@@ -116,6 +119,8 @@ public class Menu : MonoBehaviour
     {
         if (selectedSlot == null) return;
 
+        SoundManager.Instance.PlaySFX("ButtonClick", 0.3f);
+
         OnOffUpgradePanel(false);
 
         TotalGold -= selectedSlot.ReturnUpgradePrice();
@@ -127,6 +132,8 @@ public class Menu : MonoBehaviour
 
     private void Start()
     {
+        SoundManager.Instance.StopBGM();
+
         Screen.orientation = ScreenOrientation.Portrait;
         SaveManager.Instance.ResetSlot(ref totalGold, skillSlots, abilitySlots);
         TotalGold = totalGold; // √ ±‚»≠
@@ -158,11 +165,15 @@ public class Menu : MonoBehaviour
 
     public void OnOffModeSelect(bool nowOn)
     {
+        SoundManager.Instance.PlaySFX("ButtonClick", 0.3f);
+
         modeSelectPanel.SetActive(nowOn);
     }
 
     public void OnOffSetting(bool nowOn)
     {
+        SoundManager.Instance.PlaySFX("ButtonClick", 0.3f);
+
         settingPanel.SetActive(nowOn);
     }
 
@@ -177,6 +188,8 @@ public class Menu : MonoBehaviour
 
     public void OnOffTutorial(bool nowOn)
     {
+        SoundManager.Instance.PlaySFX("ButtonClick", 0.3f);
+
         TutorialPanel.SetActive(nowOn);
         if(nowOn == true)
         {
@@ -189,6 +202,8 @@ public class Menu : MonoBehaviour
 
     public void SwitchTutorialPanel(int tmp)
     {
+        SoundManager.Instance.PlaySFX("ButtonClick", 0.3f);
+
         tutorialIndex += tmp;
 
         if (tutorialIndex == -1)

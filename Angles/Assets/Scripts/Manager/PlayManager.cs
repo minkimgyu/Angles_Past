@@ -28,9 +28,6 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
     TMP_Text gameClearTxt;
 
     [SerializeField]
-    TMP_Text finalScoreTxt;
-
-    [SerializeField]
     TMP_Text finalGoldTxt;
 
     [SerializeField]
@@ -57,7 +54,7 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
     [SerializeField]
     int goldCount = 0;
 
-    int maxGoldCount = 0;
+    int maxGoldCount = 100;
 
     [SerializeField]
     bool m_gameClear = false;
@@ -83,8 +80,10 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
 
     private void Update() // 화면 해상도 대응
     {
-        if (Screen.orientation == ScreenOrientation.Portrait && nowPortrait == false)
+        if (Input.deviceOrientation == DeviceOrientation.Portrait && nowPortrait == false)
         {
+            Screen.orientation = ScreenOrientation.Portrait;
+
             // 여기에 화면이 돌아가면 변경될 점을 적어주자
             move.sizeDelta = new Vector2(540, 1920);
             attack.sizeDelta = new Vector2(540, 1920);
@@ -92,12 +91,22 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
             virtualCamera.m_Lens.OrthographicSize = 12;
             nowPortrait = true;
         }
-        else if ((Screen.orientation == ScreenOrientation.LandscapeLeft || Screen.orientation == ScreenOrientation.LandscapeRight) && nowPortrait == true)
+        else if ((Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight) && nowPortrait == true)
         {
+
+            if(Input.deviceOrientation == DeviceOrientation.LandscapeLeft)
+            {
+                Screen.orientation = ScreenOrientation.LandscapeLeft;
+            }
+            else if(Input.deviceOrientation == DeviceOrientation.LandscapeRight)
+            {
+                Screen.orientation = ScreenOrientation.LandscapeRight;
+            }
+
             move.sizeDelta = new Vector2(960, 1080);
             attack.sizeDelta = new Vector2(960, 1080);
             playCanvasScaler.referenceResolution = new Vector2(1920, 1080);
-            virtualCamera.m_Lens.OrthographicSize = 9;
+            virtualCamera.m_Lens.OrthographicSize = 6;
             nowPortrait = false;
         }
     }
@@ -110,45 +119,47 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
     public void GameOver()
     {
         gameClearTxt.text = "Game Over";
-        finalScoreTxt.text = totalScore.ToString();
-        finalGoldTxt.text = ((int)totalScore / 2).ToString();
+        finalGoldTxt.text = totalScore.ToString();
 
-        SaveManager.Instance.ResetGold((int)totalScore / 2);
+        SaveManager.Instance.ResetGold(totalScore);
         gameClearPanel.SetActive(true);
     }
 
     public void GoldUp(int score)
     {
-        ScoreUp(score);
-        goldCount += 1;
-        //player.AddAdditionalStat(goldCount / maxGoldCount);
-    }
-
-    public void ScoreUp(int score)
-    {
         totalScore += score;
         scoreTxt.text = totalScore.ToString();
+        goldCount += 1;
+        if(goldCount > maxGoldCount && scoreTxt.color != Color.red)
+        {
+            scoreTxt.color = Color.red;
+        }
+
+        player.AddAdditionalStat();
     }
 
     public void GameClear()
     {
         m_gameClear = true;
         gameClearTxt.text = "Game Clear";
-        finalScoreTxt.text = totalScore.ToString();
-        finalGoldTxt.text = ((int)totalScore / 2).ToString();
+        finalGoldTxt.text = totalScore.ToString();
 
-        SaveManager.Instance.ResetGold((int)totalScore / 2);
+        SaveManager.Instance.ResetGold(totalScore);
         gameClearPanel.SetActive(true);
     }
 
     public void RestartGame()
     {
-        SceneManager.LoadScene("PlayScene");
+        SoundManager.Instance.PlaySFX("ButtonClick", 0.3f);
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void ReturnToMenu()
     {
-        SceneManager.LoadScene("MenuScene");
+        SoundManager.Instance.PlaySFX("ButtonClick", 0.3f);
+
+        SceneManager.LoadScene("Menu");
 
         if (Time.timeScale == 0)
         {
@@ -158,6 +169,8 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
 
     public void OnOffBGM()
     {
+        SoundManager.Instance.PlaySFX("ButtonClick", 0.3f);
+
         if (SoundManager.Instance.BgmMasterVolume == 1)
         {
             SoundManager.Instance.BgmMasterVolume = 0;
@@ -175,7 +188,9 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
 
     public void OnOffSFX()
     {
-        if(SoundManager.Instance.SfxMasterVolume == 1)
+        SoundManager.Instance.PlaySFX("ButtonClick", 0.3f);
+
+        if (SoundManager.Instance.SfxMasterVolume == 1)
         {
             SoundManager.Instance.SfxMasterVolume = 0;
             sfxTxt.text = "음소거";
@@ -192,7 +207,9 @@ public class PlayManager : MonoBehaviour //Singleton<PlayManager>
 
     public void ActivePausePanel(bool nowActive)
     {
-        if(nowActive)
+        SoundManager.Instance.PlaySFX("ButtonClick", 0.3f);
+
+        if (nowActive)
         {
             Time.timeScale = 0;
         }

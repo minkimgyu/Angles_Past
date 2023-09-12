@@ -31,4 +31,10 @@ public class BasicBullet : ContactableObject, IProjectile
         Inintialize(disableTime, skillNames);
         this.hitTargetTag = hitTargetTag;
     }
+
+    protected override void OnDisable()
+    {
+        DashComponent.CancelDash();
+        base.OnDisable();
+    }
 }

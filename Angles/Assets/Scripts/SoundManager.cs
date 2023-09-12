@@ -20,28 +20,38 @@ public class Sound
     public AudioClip AudioClip { get { return audioClip; } }
 }
 
-public class SoundManager : MonoBehaviour
+public class SoundManager : Singleton<SoundManager>
 {
-    public static SoundManager instance;
-    public static SoundManager Instance { get { return instance; } }
-
     [SerializeField]
     List<Sound> sounds;
 
     AudioSource bgmPlayer;
 
     [SerializeField]
+    AudioSource[] sfxPlayer;
+
+    [SerializeField]
     float sfxMasterVolume = 1;
-    public float SfxMasterVolume { get { return sfxMasterVolume; } set { sfxMasterVolume = value; } }
+    public float SfxMasterVolume 
+    { 
+        get { return sfxMasterVolume; } 
+        set 
+        { 
+            sfxMasterVolume = value;
+            for (int i = 0; i < sfxPlayer.Length; i++)
+            {
+                sfxPlayer[i].volume = sfxMasterVolume;
+            }
+        } 
+    }
 
     [SerializeField]
     float bgmMasterVolume = 1;
-    public float BgmMasterVolume { get { return bgmPlayer.volume; }  set { bgmPlayer.volume = bgmMasterVolume; } }
+    public float BgmMasterVolume { get { return bgmPlayer.volume; }  set { bgmPlayer.volume = value; } }
 
-
-    private void Awake()
+    protected override void Awake()
     {
-        instance = this;
+        base.Awake();
         bgmPlayer = GetComponent<AudioSource>();
     }
 
@@ -59,6 +69,22 @@ public class SoundManager : MonoBehaviour
 
         bgmPlayer.clip = sound.AudioClip;
         bgmPlayer.Play();
+    }
+
+    public void PlaySFX(string name, float sfxVolume = 1)
+    {
+        Sound sound = sounds.Find(x => x.Name == name);
+        if (sound == null) return;
+
+        for (int i = 0; i < sfxPlayer.Length; i++)
+        {
+            if(sfxPlayer[i].isPlaying == false)
+            {
+                sfxPlayer[i].clip = sound.AudioClip;
+                sfxPlayer[i].Play();
+                break;
+            }
+        }
     }
 
     public void PlaySFX(Vector3 pos, string name, float sfxVolume = 1)

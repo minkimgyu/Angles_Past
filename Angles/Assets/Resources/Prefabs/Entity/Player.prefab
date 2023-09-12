@@ -403,6 +403,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rushUIEventSO: {fileID: 11400000, guid: ea5f883aff722f6429996493debf0f60, type: 2}
   dashUIEventSO: {fileID: 11400000, guid: d29ed707886b93243b50ea236195ace9, type: 2}
+  hpUIEventSO: {fileID: 11400000, guid: cc65b50eff61f774294e136538b2703c, type: 2}
   shootDirection: {fileID: 572487444}
 --- !u!114 &4491371347988923603
 MonoBehaviour:

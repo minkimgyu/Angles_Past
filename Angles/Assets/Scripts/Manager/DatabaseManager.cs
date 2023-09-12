@@ -21,7 +21,7 @@ using UnityEngine;
 //public enum SkillSynthesisType { None, CountUp } // --> 사용 시, 사용 가능 횟수를 1 빼거나 사용 횟수 차감없이 고정시킴
 //// 스킬 획득 시, 횟수 증감 여부
 
-public enum EntityTag { Player, Enemy, Bullet, InnerSprite, Wall, Construction};
+public enum EntityTag { Player, Enemy, Bullet, InnerSprite, Wall, Construction, Spike};
 
 //[System.Serializable]
 //public class DamageMethod

@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 489cf819f57dddd43a9a6f6962a822e7, type: 3}
+  m_Name: Normal
+  m_EditorClassIdentifier: 
+  spawnDatas:
+  - levelUpTime: 3
+    spawnEntityName: YellowTriangle
+    spawnCount: 3
+  - levelUpTime: 10
+    spawnEntityName: YellowSquare
+    spawnCount: 2
+  - levelUpTime: 15
+    spawnEntityName: OrangeTriangle
+    spawnCount: 2
+  - levelUpTime: 25
+    spawnEntityName: OrangeSquare
+    spawnCount: 1
+  - levelUpTime: 30
+    spawnEntityName: YellowPentagon
+    spawnCount: 2
+  - levelUpTime: 45
+    spawnEntityName: YellowHexagon
+    spawnCount: 2
+  - levelUpTime: 55
+    spawnEntityName: RedTriangle
+    spawnCount: 3
+  - levelUpTime: 60
+    spawnEntityName: RedSquare
+    spawnCount: 2
+  - levelUpTime: 65
+    spawnEntityName: OrangePentagon
+    spawnCount: 1
+  - levelUpTime: 70
+    spawnEntityName: OrangeHexagon
+    spawnCount: 2
+  - levelUpTime: 75
+    spawnEntityName: YellowHeptagon
+    spawnCount: 1
+  - levelUpTime: 80
+    spawnEntityName: YellowOctagon
+    spawnCount: 1
+  - levelUpTime: 90
+    spawnEntityName: OperaTriangle
+    spawnCount: 3
+  - levelUpTime: 95
+    spawnEntityName: OperaSquare
+    spawnCount: 2
+  - levelUpTime: 100
+    spawnEntityName: RedPentagon
+    spawnCount: 2
+  - levelUpTime: 110
+    spawnEntityName: RedHexagon
+    spawnCount: 1
+  - levelUpTime: 120
+    spawnEntityName: OrangeHeptagon
+    spawnCount: 2
+  - levelUpTime: 130
+    spawnEntityName: OrangeOctagon
+    spawnCount: 1
+  - levelUpTime: 140
+    spawnEntityName: OperaPentagon
+    spawnCount: 2
+  - levelUpTime: 150
+    spawnEntityName: RedHeptagon
+    spawnCount: 1
+  - levelUpTime: 155
+    spawnEntityName: OperaHexagon
+    spawnCount: 2
+  - levelUpTime: 160
+    spawnEntityName: RedOctagon
+    spawnCount: 1
+  - levelUpTime: 170
+    spawnEntityName: OperaHeptagon
+    spawnCount: 1
+  - levelUpTime: 175
+    spawnEntityName: OperaOctagon
+    spawnCount: 2
+  - levelUpTime: 180
+    spawnEntityName: Boss
+    spawnCount: 1

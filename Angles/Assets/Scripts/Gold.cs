@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Gold : MonoBehaviour
 {
-    int upScore = 5;
+    int upScore = 1;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

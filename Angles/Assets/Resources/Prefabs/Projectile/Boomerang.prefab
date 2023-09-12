@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 5275464112310809127}
   - component: {fileID: 6998204570039686490}
   - component: {fileID: 1030296440783635476}
-  - component: {fileID: 6998204570039686488}
-  - component: {fileID: 8810510124471591994}
   m_Layer: 14
   m_Name: Boomerang
   m_TagString: Untagged
@@ -59,32 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6998204570039686488
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7511195183651302132}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e48c01f279d5824eb11e54c3f75e5ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_contactDatas: []
---- !u!58 &8810510124471591994
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7511195183651302132}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 2
+  m_skills: []
+  references:
+    version: 2
+    RefIds: []

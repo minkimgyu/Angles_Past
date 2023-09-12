@@ -314,7 +314,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 549b18c0f952ce247896c218f78e95e3, type: 3}
-  expectationDirs: []
+  expectationDirs:
+  - {fileID: 8027655685178983441}
+  - {fileID: 2143813141662102094}
+  - {fileID: 5852493065496572472}
   directionCount:
     maxValue: 0
     minValue: 0

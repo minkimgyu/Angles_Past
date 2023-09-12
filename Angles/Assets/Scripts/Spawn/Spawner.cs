@@ -73,6 +73,9 @@ public class Spawner : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI timeTxt;
 
+    [SerializeField]
+    Transform playerPosition;
+
     private void Awake()
     {
         spawnSO.OnActionRequested += Spawn; // 스폰 연결
@@ -87,6 +90,8 @@ public class Spawner : MonoBehaviour
     void SpawnPlayer()
     {
         Player player = (Player)EntityFactory.Order("Player");
+        player.transform.position = playerPosition.position;
+
         spawnAssistant = player.GetComponentInChildren<SpawnAssistant>();
 
         RepositionEnemy repositionEnemy = FindObjectOfType<RepositionEnemy>();
@@ -173,8 +178,8 @@ public class Spawner : MonoBehaviour
 
     Vector3 ReturnRandomPos(Vector2 pos) 
     {
-        int xDistance = Random.Range(0, 4);
-        int yDistance = Random.Range(0, 4);
+        int xDistance = Random.Range(-1, 1);
+        int yDistance = Random.Range(-1, 1);
 
         return new Vector3(pos.x + xDistance, pos.y + yDistance);
     }

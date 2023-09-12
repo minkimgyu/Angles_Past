@@ -54,7 +54,7 @@ MonoBehaviour:
       m_keys: []
       m_values: []
   initialGameStorageData:
-    totalGold: 500
+    totalGold: 0
     maxSelectCount: 3
     skillSlotDatas:
       m_keys:
@@ -79,42 +79,42 @@ MonoBehaviour:
         path: Icon/Angles_Special_Icon_Barrier
         nowUse: 1
         nowLock: 0
-      - price: 500
+      - price: 50
         dataName: "\uBE14\uB808\uC774\uB4DC"
         path: Icon/AnglesSkillBlade
         nowUse: 0
         nowLock: 1
-      - price: 500
+      - price: 50
         dataName: "\uCDA9\uACA9\uD30C"
         path: Icon/Angles_Skill_Icon_Shockwave
         nowUse: 0
         nowLock: 1
-      - price: 500
+      - price: 50
         dataName: "\uB109\uBC31"
         path: Icon/Angles_Skill_Icon_Knockback
         nowUse: 0
         nowLock: 1
-      - price: 500
+      - price: 50
         dataName: "\uC811\uCC29\uD3ED\uD0C4"
         path: Icon/Angles_Skill_Icon_StickyBomb
         nowUse: 0
         nowLock: 1
-      - price: 1000
+      - price: 100
         dataName: "\uC911\uB825\uC7A5"
         path: Icon/Angles_Skill_Icon_GravitationalField
         nowUse: 0
         nowLock: 1
-      - price: 1000
+      - price: 100
         dataName: "\uC18C\uD658\uAD6C"
         path: Icon/Angles_Skill_Icon_SpawnBall
         nowUse: 0
         nowLock: 1
-      - price: 1500
+      - price: 150
         dataName: "\uD1A0\uB124\uC774\uB3C4"
         path: Icon/Angles_Skill_Icon_Tornado
         nowUse: 0
         nowLock: 1
-      - price: 1500
+      - price: 150
         dataName: "\uBD80\uBA54\uB791"
         path: Icon/Angles_Skill_Icon_Blade
         nowUse: 0
@@ -122,21 +122,38 @@ MonoBehaviour:
     abilitySlotDatas:
       m_keys:
       - Hp
-      - Rush
+      - Shooting
       - Dash
       m_values:
-      - price: 500
+      - price: 50
         dataName: "\uCCB4\uB825"
         upgradeCount: 1
-        maxUpgradeCount: 5
+        maxUpgradeCount: 3
         priceUpRatio: 0.5
-      - price: 500
+        upgradeValueRatio:
+        - 1
+        - 2
+        - 3
+      - price: 50
         dataName: "\uC288\uD305"
         upgradeCount: 1
         maxUpgradeCount: 5
         priceUpRatio: 0.5
-      - price: 500
+        upgradeValueRatio:
+        - 1
+        - 1.1
+        - 1.2
+        - 1.4
+        - 1.7
+      - price: 50
         dataName: "\uB300\uC26C"
         upgradeCount: 1
-        maxUpgradeCount: 5
+        maxUpgradeCount: 6
         priceUpRatio: 0.5
+        upgradeValueRatio:
+        - 1
+        - 1.1
+        - 1.2
+        - 1.3
+        - 1.4
+        - 1.5

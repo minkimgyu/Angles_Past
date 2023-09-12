@@ -1,0 +1,253 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8222132245942382254
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8222132245942382257}
+  - component: {fileID: 8222132245942382258}
+  - component: {fileID: 8222132245942382259}
+  - component: {fileID: 8222132245942382252}
+  - component: {fileID: 8222132245942382253}
+  m_Layer: 0
+  m_Name: Factory
+  m_TagString: Factory
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8222132245942382257
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8222132245942382254}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8222132245942382258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8222132245942382254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3967d4431236c2044b3a797d137b1c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storedSkills:
+    m_keys:
+    - StickyBomb
+    - Punch
+    - TornadoExplosion
+    - Shockwave
+    - Knockback
+    - Blade
+    - Boomerang
+    - ApplySlowBuffToPlayer
+    - RemoveSlowBuffToPlayer
+    - SelfDestructionAfterOneSecond
+    - ShootBulletInClockwise
+    - BulletPunch
+    - HexagonAttack
+    - HeptagonAttack
+    - ShootLaserToThreeRandomDirection
+    - BossAttack
+    - ShootBoomerang
+    - BoomerangAttack
+    - SpawnGravitationalField
+    - ShootTornado
+    - ApplySpeedBuffToPlayer
+    - SpawnRotationBallAround
+    - SpawnBallPunch
+    - ApplyBuffToNearEnemy
+    - RemoveBuffToNearEnemy
+    - BossPunch
+    - RushToPlayer
+    - SpikePunch
+    - GearPunch
+    - PressPunch
+    - NoDamagePressPunch
+    - ContactKnockback
+    - CreateBarrier
+    - SelfDestructionAfterTwoSecond
+    - SelfDestructionAfterOneSecondAndSizeDoubleUp
+    - ShootBulletInClockwiseFast
+    - ShootBulletInCounterClockwiseFast
+    - HexagonAttackFast
+    - HexagonAttackFastAndRangeUp
+    - HeptagonAttackWithDamage
+    - ShootLaserToTwoRandomDirection
+    - ShootLaserToTwoRandomDirectionFast
+    m_values:
+    - {fileID: 11400000, guid: 34e34d492e04f594caf186fd6a0d7990, type: 2}
+    - {fileID: 11400000, guid: 8c9b41cc729855d44854588433fb2e98, type: 2}
+    - {fileID: 11400000, guid: 1031a772d8d714f49b80fea9536fcba2, type: 2}
+    - {fileID: 11400000, guid: 9fed0499c5b6ea04cacb02c9a311bac0, type: 2}
+    - {fileID: 11400000, guid: cd24e9d397f889b4798f3302e8bcb9e8, type: 2}
+    - {fileID: 11400000, guid: 025d852fdfd2b9d4b96ddf53272a55f7, type: 2}
+    - {fileID: 11400000, guid: becdd1996bc8dbd47a4ca61213854d13, type: 2}
+    - {fileID: 11400000, guid: f2b972ac97e18e34fa64986a2ef85ad0, type: 2}
+    - {fileID: 11400000, guid: 8400a69a454a5f246af49c750b9c1d6d, type: 2}
+    - {fileID: 11400000, guid: 1b45ed77d6aaf2446a60ce4488672c23, type: 2}
+    - {fileID: 11400000, guid: 0d30bc3d6bb01514094568636c84284c, type: 2}
+    - {fileID: 11400000, guid: 75e8d7b33cf69e147ab23d114e90be57, type: 2}
+    - {fileID: 11400000, guid: 4e979704c0931f149892a48fe2b1b565, type: 2}
+    - {fileID: 11400000, guid: 6c42e9706cc032e4496ecf432ba9f64c, type: 2}
+    - {fileID: 11400000, guid: 9098e06e97250f04ca4dc0f2840b3441, type: 2}
+    - {fileID: 11400000, guid: 2a07c6e9ed89a5c4dae758d37c630337, type: 2}
+    - {fileID: 11400000, guid: 77e7c1c2ab3a79742aa21451a5d26cca, type: 2}
+    - {fileID: 11400000, guid: 645fc9e42545c2d439274e3ca93722e1, type: 2}
+    - {fileID: 11400000, guid: e877c711ec318f343a2ac2fc9b5bff43, type: 2}
+    - {fileID: 11400000, guid: dbb1dcef623867f44ae8b7cebceb228f, type: 2}
+    - {fileID: 11400000, guid: 394f045c5c2c4b14294a66e80c9c1ec3, type: 2}
+    - {fileID: 11400000, guid: df6e42db915d02142a3c3797fb99d297, type: 2}
+    - {fileID: 11400000, guid: a2039800dca9c4d4bb66bb5244b57004, type: 2}
+    - {fileID: 11400000, guid: db0ab27b0a31db8458f6b7b44012ebfe, type: 2}
+    - {fileID: 11400000, guid: 6134fe4ccae13114ab34d064eab46399, type: 2}
+    - {fileID: 11400000, guid: 08414548f4f533948ac8b997abd7acf1, type: 2}
+    - {fileID: 11400000, guid: 48640d52ea832044fa7e8dd080757bb9, type: 2}
+    - {fileID: 11400000, guid: a9e3768ca77a32b42bd3e67bda502f60, type: 2}
+    - {fileID: 11400000, guid: 70d5a3762cbb00f4eb1e2ef600662faa, type: 2}
+    - {fileID: 11400000, guid: 0d6bcc2c9f82b5848aac0df6c8d8781d, type: 2}
+    - {fileID: 11400000, guid: e2712301880a03d4788b5b10dc102174, type: 2}
+    - {fileID: 11400000, guid: 95e03f5b9e943014288b1d7011798f62, type: 2}
+    - {fileID: 11400000, guid: 078a96d591539ee47a5dbf859c1d2d68, type: 2}
+    - {fileID: 11400000, guid: 75e6c24153606ba4ca97eb0c42c74fdf, type: 2}
+    - {fileID: 11400000, guid: 3ef3e880e81e47d43ae459cbe79074c3, type: 2}
+    - {fileID: 11400000, guid: 4b43274c3593b9042b58856a51f960f7, type: 2}
+    - {fileID: 11400000, guid: a6aad75b5c1e1ec40b6caaecc0db1287, type: 2}
+    - {fileID: 11400000, guid: 58dbaf47381aac34f9fd3ca0308f2cb8, type: 2}
+    - {fileID: 11400000, guid: f3ed8349bb277184ebc17925b19aad6a, type: 2}
+    - {fileID: 11400000, guid: 2f296a9351f734b41b9c27722aa14c20, type: 2}
+    - {fileID: 11400000, guid: a151b38558aa58746ad09bb980003721, type: 2}
+    - {fileID: 11400000, guid: 56d6e97d85a7cc045afc5abd1f00b5d8, type: 2}
+--- !u!114 &8222132245942382259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8222132245942382254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0260d9af56d1a254eb3eac16e3ab2516, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storedEntities:
+    m_keys:
+    - Player
+    - YellowTriangle
+    - YellowSquare
+    - YellowPentagon
+    - YellowHexagon
+    - YellowHeptagon
+    - YellowOctagon
+    - OrangeTriangle
+    - OrangeSquare
+    - OrangePentagon
+    - OrangeHexagon
+    - OrangeHeptagon
+    - OrangeOctagon
+    - RedTriangle
+    - RedSquare
+    - RedPentagon
+    - RedHexagon
+    - RedHeptagon
+    - RedOctagon
+    - OperaTriangle
+    - OperaSquare
+    - OperaPentagon
+    - OperaHexagon
+    - OperaHeptagon
+    - OperaOctagon
+    - Boss
+    - BossTriangle
+    - BossRush
+    m_values:
+    - {fileID: 11400000, guid: b2bd954d943059744a19120a4d16bc8c, type: 2}
+    - {fileID: 11400000, guid: cc8c017ddfab3c54abb5eaeb9dac4e85, type: 2}
+    - {fileID: 11400000, guid: e7213f7cd34e983439519f983a82856c, type: 2}
+    - {fileID: 11400000, guid: 8d05ef16962856b4ba377eeb300ac49b, type: 2}
+    - {fileID: 11400000, guid: e888292a170c374418655b8c23bb2d93, type: 2}
+    - {fileID: 11400000, guid: e5dacc68f6e33e946a1d18efb1a8a0b7, type: 2}
+    - {fileID: 11400000, guid: 000c9fd855195ce46bbab045ed093efd, type: 2}
+    - {fileID: 11400000, guid: 11f02ada9b3d3e242ae6409b328caf6e, type: 2}
+    - {fileID: 11400000, guid: ae56275562dc8c74d9906d5e63c4e3e1, type: 2}
+    - {fileID: 11400000, guid: 903651cb54acda343aa6b97c0b1a3113, type: 2}
+    - {fileID: 11400000, guid: 107923481ca6ff1418251c794efe3f66, type: 2}
+    - {fileID: 11400000, guid: d675dc41239886049b7ca57eeba6a76d, type: 2}
+    - {fileID: 11400000, guid: 54c81ab15ceaa63439a8cb46ef17b1a3, type: 2}
+    - {fileID: 11400000, guid: db84d9f1181bac446ad3d055134d1473, type: 2}
+    - {fileID: 11400000, guid: 6d66a62379071cd4f809388862d348e2, type: 2}
+    - {fileID: 11400000, guid: 4846ab22ebc55c241b191f5e14c718d3, type: 2}
+    - {fileID: 11400000, guid: d8c2ab27a87c2dc4a800c21e562ba1bc, type: 2}
+    - {fileID: 11400000, guid: 0dbf01e8e28a2ea4e801f3063e53c04b, type: 2}
+    - {fileID: 11400000, guid: b7e0400fa626943499480a9d2f837c76, type: 2}
+    - {fileID: 11400000, guid: 00fed5fc86e40474c903a5fb10c1ee90, type: 2}
+    - {fileID: 11400000, guid: be6ddd289b9c93644a3135140b331c5b, type: 2}
+    - {fileID: 11400000, guid: 6c4345f4d61c1984085fff1392b02a45, type: 2}
+    - {fileID: 11400000, guid: a83f9c0334ae1d64082bc0e8362500cd, type: 2}
+    - {fileID: 11400000, guid: d5ffd9360661c79448ec4bbb5de2571f, type: 2}
+    - {fileID: 11400000, guid: d9421b8ae69c94b44b4d2903a3be5095, type: 2}
+    - {fileID: 11400000, guid: be5b73dbb9ea5e7448cb7d6ad5132b98, type: 2}
+    - {fileID: 11400000, guid: bfec20112d82ffd4a8e581afb8f743db, type: 2}
+    - {fileID: 11400000, guid: 115876f94e55db64ebb8eaab95905c53, type: 2}
+--- !u!114 &8222132245942382252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8222132245942382254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5f4352137a788546a762dbaa38c8c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storedBuffSO:
+    m_keys:
+    - Slow
+    - Fast
+    - BossSpeedBuff
+    m_values:
+    - {fileID: 11400000, guid: 05e7c67852291ab46815fa8ece5006dc, type: 2}
+    - {fileID: 11400000, guid: 9ce7e6d6cf6d6a74cbaa43d76bc175f2, type: 2}
+    - {fileID: 11400000, guid: 036d4d3558cadc74db955d3434e7c681, type: 2}
+--- !u!114 &8222132245942382253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8222132245942382254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55404f3968591e449a54103238559920, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storedProjectiles:
+    m_keys:
+    - PentagonBullet
+    - BoomerangProjectile
+    - GravitationalField
+    - Tornado
+    - SpawnBall
+    m_values:
+    - {fileID: 11400000, guid: 20a625852ff635b479e27f5701a2a769, type: 2}
+    - {fileID: 11400000, guid: e0b0f42a8039428418e8124c991c6e59, type: 2}
+    - {fileID: 11400000, guid: b0ecf1674e0003c4cb662f203511c48d, type: 2}
+    - {fileID: 11400000, guid: 964d61c89b86bdd498a885b6c9644fd8, type: 2}
+    - {fileID: 11400000, guid: 5274a2b175c65c642bbca8378b8789dc, type: 2}

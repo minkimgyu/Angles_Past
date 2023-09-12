@@ -40,6 +40,8 @@ public class ParticleEffectPlayer : BasicEffectPlayer
         {
             var main = m_particles[i].main;
             main.startLifetime = lifeTime[i];
+
+            if(!m_particles[i].isPlaying) main.duration = lifeTime[i];
         }
     }
 

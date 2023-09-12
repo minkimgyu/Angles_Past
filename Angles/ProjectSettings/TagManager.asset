@@ -17,6 +17,7 @@ TagManager:
   - MoveJoystick
   - AttackJoystick
   - Factory
+  - Spike
   layers:
   - Default
   - TransparentFX

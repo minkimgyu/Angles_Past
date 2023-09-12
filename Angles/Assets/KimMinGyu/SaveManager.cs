@@ -42,6 +42,18 @@ public class SaveManager : Singleton<SaveManager>
         return skillNames;
     }
 
+    public Dictionary<string, float> ReturnAbilityUpgradePoint()
+    {
+        Dictionary<string, float> abilityUpgradePoints = new Dictionary<string, float>();
+
+        foreach (KeyValuePair<string, AbilitySlotData> abilitySlotData in gameStorageData.abilitySlotDatas)
+        {
+            abilityUpgradePoints.Add(abilitySlotData.Key, abilitySlotData.Value.upgradeValueRatio[abilitySlotData.Value.upgradeCount - 1]);
+        }
+
+        return abilityUpgradePoints;
+    }
+
     public void ResetGold(int additionalGold)
     {
         gameStorageData.totalGold += additionalGold;

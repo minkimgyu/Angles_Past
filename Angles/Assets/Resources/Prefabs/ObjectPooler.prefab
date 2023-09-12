@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2636465992467278418
+--- !u!1 &1746209772268423024
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2636465992467278412}
-  - component: {fileID: 2636465992467278419}
+  - component: {fileID: 1746209772268422990}
+  - component: {fileID: 1746209772268423025}
   m_Layer: 0
   m_Name: ObjectPooler
   m_TagString: Untagged
@@ -17,14 +17,14 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2636465992467278412
+--- !u!4 &1746209772268422990
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2636465992467278418}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 1746209772268423024}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -32,57 +32,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2636465992467278419
+--- !u!114 &1746209772268423025
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2636465992467278418}
+  m_GameObject: {fileID: 1746209772268423024}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a63c6ce2b53f394aa693dc6136f5428, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pools:
-  - tag: Shockwave
-    prefab: {fileID: 990536666640814474, guid: 9ae127746cd27e545abb2b1e190dbe1c, type: 3}
-    size: 1
   - tag: ShockwaveEffect
     prefab: {fileID: 535597828046594704, guid: 4b8edb3aa1c14ea4eb6445c3a207fe03, type: 3}
-    size: 1
-  - tag: Knockback
-    prefab: {fileID: 4137328563240184281, guid: 25326d2331f93084aabb63802c3da467, type: 3}
     size: 1
   - tag: KnockbackEffect
     prefab: {fileID: 4875827249908297898, guid: fc9e199ed7e3b594cbb0a50ff5a99c7e, type: 3}
     size: 1
-  - tag: Blade
-    prefab: {fileID: 7396360552975834269, guid: 588b0780a4ff0914fb8a7533146705a1, type: 3}
-    size: 1
   - tag: BladeEffect
     prefab: {fileID: 254138417990548409, guid: 4d60b8feb8389454c99a17f4d12541c3, type: 3}
-    size: 1
-  - tag: StickyBomb
-    prefab: {fileID: 7264547614700072337, guid: 4b3dd6ae94c767d40a18cd96af131058, type: 3}
     size: 1
   - tag: StickyBombEffect
     prefab: {fileID: 4618213703176126269, guid: acea63655471f0d408706fdc2d9c50cb, type: 3}
     size: 1
-  - tag: Punch
-    prefab: {fileID: 7087183545528624674, guid: 268ac42fcaa7ab743a1c316b42102b16, type: 3}
-    size: 1
   - tag: PunchEffect
     prefab: {fileID: 2395108631336689389, guid: 80d2eb4d8a35c08408ca42d196f5553d, type: 3}
-    size: 1
+    size: 15
   - tag: SpawnBall
-    prefab: {fileID: 4963802983030721370, guid: 6557558b6295c864bac3ff5056864b08, type: 3}
-    size: 1
-  - tag: SpawnBallProjectile
     prefab: {fileID: 7058563507912527575, guid: 847fa886d272e7047b5743aa6cc220d4, type: 3}
-    size: 3
-  - tag: SpeedDebuff
-    prefab: {fileID: 6614546646337660726, guid: bdf439ef5e48edc43b5d670886e2b294, type: 3}
     size: 3
   - tag: SlowEffect
     prefab: {fileID: 8618039473673728325, guid: cf010254216ead74397c1503e7da206e, type: 3}
@@ -90,47 +69,23 @@ MonoBehaviour:
   - tag: MakeDebuffEffect
     prefab: {fileID: 8618039473673728325, guid: d93653c8a4bab7a4d8480d8ef842d189, type: 3}
     size: 1
-  - tag: SelfDestruction
-    prefab: {fileID: 7531057920190799952, guid: 192022b146ea4f24e80d862b12afe43d, type: 3}
-    size: 1
-  - tag: SpawnBulletClocwise
-    prefab: {fileID: 5867845248002345287, guid: a63636e942f0d334eae60ed835c7b002, type: 3}
-    size: 1
   - tag: Bullet
     prefab: {fileID: 5294362089191587272, guid: 9d878cc0c450a7a45b03d7081612f017, type: 3}
-    size: 1
-  - tag: HeptagonContactAttack
-    prefab: {fileID: 5562373666600423719, guid: 9b1d2b46b89ceac4ea10201d4f7c4b98, type: 3}
-    size: 1
-  - tag: OctagonLaserAttack
-    prefab: {fileID: 4257374913519630087, guid: 885fe58bf655f7c49a1379a94b21779c, type: 3}
-    size: 1
+    size: 15
   - tag: LaserLineEffect
     prefab: {fileID: 7514558899509810764, guid: a77c8c59833e97540ae0049f818c686c, type: 3}
     size: 1
   - tag: LaserCrashEffect
     prefab: {fileID: 5956445527820835954, guid: 2331da9ad88a0894da1c4ef7c456ae8e, type: 3}
     size: 1
-  - tag: SpawnGravityBall
-    prefab: {fileID: 1593901299955994783, guid: 0f8e1ebc26f89994d8f84b45c3551726, type: 3}
-    size: 1
-  - tag: GravityBall
+  - tag: GravitationalField
     prefab: {fileID: 8096986474827546966, guid: 4756da4f49d775044a65ece3a6048277, type: 3}
     size: 1
-  - tag: SpawnBoomerang
-    prefab: {fileID: 1079598798564028701, guid: bc62122894c905646b9b315bef7d9f1b, type: 3}
-    size: 1
-  - tag: BoomerangProjectile
+  - tag: Boomerang
     prefab: {fileID: 7511195183651302132, guid: 62746ce5d4dbd59498eaf1573638e892, type: 3}
-    size: 1
-  - tag: SpawnTornado
-    prefab: {fileID: 2325733600754478432, guid: deb8b19822e98d140b66f9f4f525223e, type: 3}
     size: 1
   - tag: Tornado
     prefab: {fileID: 4744131029357870603, guid: 6885da367768073439dc2a20b4ec99a5, type: 3}
-    size: 1
-  - tag: TornadoExplosion
-    prefab: {fileID: 8018311469073224629, guid: 8b0a737146edb724daca56b1927d30d4, type: 3}
     size: 1
   - tag: TornadoExplosionEffect
     prefab: {fileID: 5082179799541883765, guid: 61ffe91280177774cb4b86b39bb3d78a, type: 3}
@@ -138,22 +93,22 @@ MonoBehaviour:
   - tag: SpawnBallSpawnEffect
     prefab: {fileID: 6686646155561526803, guid: d419740bb379b0a4e9874743b88126d5, type: 3}
     size: 1
-  - tag: EnemyContactKnockback
-    prefab: {fileID: 672983594304916449, guid: fcf355b42847af24a81c7691ebf0a8f9, type: 3}
-    size: 1
-  - tag: YellowTriangleDestroied
+  - tag: PlayerDestroied
+    prefab: {fileID: 8911484947131607060, guid: b07adf09b369c4a4abc11a4b71af42fe, type: 3}
+    size: 5
+  - tag: TriangleDestroied
     prefab: {fileID: 8911484947131607060, guid: b07adf09b369c4a4abc11a4b71af42fe, type: 3}
     size: 1
-  - tag: YellowRectangleDestroied
+  - tag: SquareDestroied
     prefab: {fileID: 731421665157508658, guid: 80cfc914a4c16f5418a759de146d1ced, type: 3}
     size: 1
-  - tag: YellowPentagonDestroied
+  - tag: PentagonDestroied
     prefab: {fileID: 4289386343364382228, guid: 545d2cfbc504e57488fb265e865c15bb, type: 3}
     size: 1
-  - tag: YellowHexagonDestroied
+  - tag: HexagonDestroied
     prefab: {fileID: 8294906568110233921, guid: baaaabb181173554aba0a853ee671095, type: 3}
     size: 1
-  - tag: YellowHeptaOctaDestroied
+  - tag: HeptaOctaDestroied
     prefab: {fileID: 632875793954618184, guid: aa083f66736ebd549970242d283ba5c0, type: 3}
     size: 1
   - tag: KnockbackItem
@@ -165,7 +120,7 @@ MonoBehaviour:
   - tag: SpawnBallItem
     prefab: {fileID: 6847907494561987540, guid: fd156b1a91b11664795129a14519b735, type: 3}
     size: 1
-  - tag: SpawnGravityBallItem
+  - tag: SpawnGravitationalFieldItem
     prefab: {fileID: 4196777186692155432, guid: 857866e4744025849848e0cc946e9254, type: 3}
     size: 1
   - tag: StickyBombItem
@@ -177,15 +132,6 @@ MonoBehaviour:
   - tag: BigStickyBombEffect
     prefab: {fileID: 759634985886606169, guid: bd43ca6e9796d8747a10ad7f8322c9b3, type: 3}
     size: 1
-  - tag: SpawnBulletFastClocwise
-    prefab: {fileID: 315492588659248003, guid: f09a92e556bfc74468224b093a2a46af, type: 3}
-    size: 1
-  - tag: SpawnBulletReverseClocwise
-    prefab: {fileID: 6123205557525104566, guid: f21f5ee4729f4ce4e9631dff00ab59be, type: 3}
-    size: 1
-  - tag: BigSelfDestruction
-    prefab: {fileID: 6603200448950712339, guid: 1638efa28bce91145bf7b2a27601da91, type: 3}
-    size: 1
   - tag: ShockwaveItem
     prefab: {fileID: 3089455214423656929, guid: 0e75d182593c7b14d96b155372d1f8e1, type: 3}
     size: 1
@@ -195,33 +141,27 @@ MonoBehaviour:
   - tag: SpawnBoomerangItem
     prefab: {fileID: 1062728591193547668, guid: 8fdd177c5b82ad949847f78e9cf19d0c, type: 3}
     size: 1
-  - tag: HexagonAttack
-    prefab: {fileID: 5490441799516402024, guid: 313335cd6a3eecf4bbb9df87bbfc297d, type: 3}
-    size: 1
   - tag: HexagonAttackEffect
     prefab: {fileID: 124399728909152259, guid: 00a27c78169fd1f49a86872f56a7d7f3, type: 3}
-    size: 1
-  - tag: BigHexagonAttack
-    prefab: {fileID: 6210180665415464974, guid: b94e23f89e864884e8d03fbec29a581f, type: 3}
     size: 1
   - tag: BigHexagonAttackEffect
     prefab: {fileID: 1932939891062793227, guid: b6ecd8e264625ae4db45199c1edc0d02, type: 3}
     size: 1
-  - tag: BossAttack
-    prefab: {fileID: 6654063387958354756, guid: ad6dd9d7f07597d4b93f2dc851bd1484, type: 3}
+  - tag: TriangleSkillEffect
+    prefab: {fileID: 8618039473673728325, guid: d93653c8a4bab7a4d8480d8ef842d189, type: 3}
     size: 1
   - tag: YellowTriangle
     prefab: {fileID: 2375395198625037887, guid: 3b50184f7db2b134e84e94284dde5f02, type: 3}
-    size: 1
-  - tag: YellowRectangle
+    size: 5
+  - tag: YellowSquare
     prefab: {fileID: 4160956994482129137, guid: 162f2e699f0a8014c8852959662bc600, type: 3}
-    size: 1
+    size: 5
   - tag: YellowPentagon
     prefab: {fileID: 4878745538717634273, guid: 0af5a723745fa0047959e7e0ef3ce0b8, type: 3}
-    size: 1
+    size: 2
   - tag: YellowHexagon
     prefab: {fileID: 1610933736780651266, guid: 66b370497636cd842a8a1bd037219141, type: 3}
-    size: 1
+    size: 2
   - tag: YellowHeptagon
     prefab: {fileID: 7918802028062063658, guid: a7d9f4d52516c554b9acc3a67a547204, type: 3}
     size: 1
@@ -230,34 +170,34 @@ MonoBehaviour:
     size: 1
   - tag: OrangeTriangle
     prefab: {fileID: 2375395198625037887, guid: 85d47b562d48c3347aa0a5bc9c20a1d9, type: 3}
-    size: 1
-  - tag: OrangeRectangle
+    size: 5
+  - tag: OrangeSquare
     prefab: {fileID: 4160956994482129137, guid: 5bfc81caa62d3f443992904666359049, type: 3}
-    size: 1
+    size: 5
   - tag: OrangePentagon
     prefab: {fileID: 4878745538717634273, guid: 4a7796ec272b06647aa6cf9f952bb726, type: 3}
-    size: 1
+    size: 2
   - tag: OrangeHexagon
     prefab: {fileID: 1610933736780651266, guid: c3785cbf88de7fe4b8eadbffb7f402cc, type: 3}
-    size: 1
+    size: 2
   - tag: OrangeHeptagon
     prefab: {fileID: 7918802028062063658, guid: ff34b1b9bea8c4a4aa7ffecc2185a0ef, type: 3}
-    size: 1
+    size: 2
   - tag: OrangeOctagon
     prefab: {fileID: 6379353961815610340, guid: cd19f99ac4fca4044a568ab9561c3d2b, type: 3}
     size: 1
   - tag: RedTriangle
     prefab: {fileID: 2375395198625037887, guid: 5fe904693bb59a74298382cb1e6d3562, type: 3}
-    size: 1
-  - tag: RedRectangle
+    size: 3
+  - tag: RedSquare
     prefab: {fileID: 4160956994482129137, guid: f389c8562774f0d46aa3498ce619e633, type: 3}
-    size: 1
+    size: 3
   - tag: RedPentagon
     prefab: {fileID: 4878745538717634273, guid: 2660409e85266ba48b8cc48fdb80d58a, type: 3}
-    size: 1
+    size: 2
   - tag: RedHexagon
     prefab: {fileID: 1610933736780651266, guid: 4004380c685ade044b2279b3dd3d7d62, type: 3}
-    size: 1
+    size: 2
   - tag: RedHeptagon
     prefab: {fileID: 7918802028062063658, guid: 350e8d7abb4558a4bb0e35361c27f5c1, type: 3}
     size: 1
@@ -266,16 +206,16 @@ MonoBehaviour:
     size: 1
   - tag: OperaTriangle
     prefab: {fileID: 2375395198625037887, guid: 5369ff9513ee3a74aab67d6c440b7395, type: 3}
-    size: 1
-  - tag: OperaRectangle
+    size: 3
+  - tag: OperaSquare
     prefab: {fileID: 4160956994482129137, guid: cd74b16660da1134f83c666bfdb4b23b, type: 3}
-    size: 1
+    size: 3
   - tag: OperaPentagon
     prefab: {fileID: 4878745538717634273, guid: 8fe4978e98468d340ba6e42f626a6acd, type: 3}
-    size: 1
+    size: 2
   - tag: OperaHexagon
     prefab: {fileID: 1610933736780651266, guid: d3739c15c22c2204fa4051ba3e917101, type: 3}
-    size: 1
+    size: 2
   - tag: OperaHeptagon
     prefab: {fileID: 7918802028062063658, guid: 9c936b47466033b4ab3ae8a1e87c5154, type: 3}
     size: 1
@@ -285,21 +225,69 @@ MonoBehaviour:
   - tag: Boss
     prefab: {fileID: 2587696381156662277, guid: 843d1deccd4ef514d9aaaeb5f01aab16, type: 3}
     size: 1
+  - tag: BossTriangle
+    prefab: {fileID: 21406982190103239, guid: 6c095fe15c8b69b4d9caad5412bb0bd8, type: 3}
+    size: 1
+  - tag: BossRush
+    prefab: {fileID: 5295137893953654060, guid: d3e45824371b83040bb8390fb7972eca, type: 3}
+    size: 1
   - tag: BarrierEffect
     prefab: {fileID: 6662364447478648887, guid: 317cc8f221d6cbc438c49c1b208f4593, type: 3}
-    size: 1
-  - tag: CreateBarrier
-    prefab: {fileID: 5215549754818315974, guid: 6f63a4e7156c5a24ea8854ebfec74edf, type: 3}
     size: 1
   - tag: BarrierItem
     prefab: {fileID: 292738281411512516, guid: 12763fd136622134e93e681d5db3026e, type: 3}
     size: 1
-  - tag: CastGhost
-    prefab: {fileID: 4693810720419136627, guid: f8e3f322c04e4364fa0e1301eaa217c5, type: 3}
-    size: 1
-  - tag: SpeedBuff
-    prefab: {fileID: 6614546646337660726, guid: 1898edf1c52f61e42bf649ea3cf1902e, type: 3}
-    size: 1
   - tag: GhostItem
     prefab: {fileID: 4863381337595433669, guid: 13ca122ae080a2147acd2cacde29ae7a, type: 3}
     size: 1
+  - tag: BossFirstAttackEffect
+    prefab: {fileID: 2302496674427571069, guid: da9557460323d604684fd90dcfc07398, type: 3}
+    size: 1
+  - tag: BossSecondAttakEffect
+    prefab: {fileID: 3276961899014090118, guid: c1dce9f4501460043820e8953be5bc33, type: 3}
+    size: 1
+  - tag: BossThirdAttackEffect
+    prefab: {fileID: 1984144591337929640, guid: 077605306de0d8c488f84ce2300871a6, type: 3}
+    size: 1
+  - tag: SfxPlayer
+    prefab: {fileID: 6240055449802420912, guid: 0451c9705467a1941bd849465ba47dd8, type: 3}
+    size: 10
+  - tag: BoomerangEffect
+    prefab: {fileID: 4532316426493202396, guid: 9d0100ab10ddea04a96aca8ab0d0e3c3, type: 3}
+    size: 1
+  - tag: Player
+    prefab: {fileID: 4491371347988923623, guid: ed0f34b56fc048c4dbee5e180a9d2e71, type: 3}
+    size: 1
+  - tag: ExplosionEffect
+    prefab: {fileID: 758070933015391868, guid: d620b417fc2e92b4f82582f30c09d128, type: 3}
+    size: 1
+  - tag: SquareReadyEffect
+    prefab: {fileID: 6098211759608293323, guid: 425cc9e0cb9957140bb8dbf3cd44437a, type: 3}
+    size: 5
+  - tag: PentagonReadyEffect
+    prefab: {fileID: 7601163881414219, guid: a3b40874e779910479caee1bf4fc1ac4, type: 3}
+    size: 5
+  - tag: HexagonReadyEffect
+    prefab: {fileID: 8010752333338359158, guid: 04dd9e1973ed8684e894940e1af6be2a, type: 3}
+    size: 1
+  - tag: BossReadyEffect
+    prefab: {fileID: 2142543561030558204, guid: e28a77999ba94cd4ba23c29d1735eda1, type: 3}
+    size: 1
+  - tag: BossAttackEffect
+    prefab: {fileID: 6925567370228368913, guid: 2935eab739f37f9418490bb285dbaecc, type: 3}
+    size: 3
+  - tag: ExplosionSignEffect
+    prefab: {fileID: 7054525465167792440, guid: ca82beb7eb6f1674596cbf4edeb2ff7c, type: 3}
+    size: 3
+  - tag: FastBuffEffect
+    prefab: {fileID: 6860059276151857375, guid: e05d5917c2a940c4993828caf3bd02ef, type: 3}
+    size: 3
+  - tag: SlowBuffEffect
+    prefab: {fileID: 439421161656294593, guid: 4ac68cbd11b32e34e97ab5be5f4523ee, type: 3}
+    size: 3
+  - tag: Gold
+    prefab: {fileID: 4831085064418594395, guid: e0c98c06341852f4f9d14911e592592c, type: 3}
+    size: 20
+  - tag: Barrier
+    prefab: {fileID: 6662364447478648887, guid: 317cc8f221d6cbc438c49c1b208f4593, type: 3}
+    size: 3

@@ -58,7 +58,11 @@ abstract public class BaseSlot : MonoBehaviour
 
     public abstract bool NotMaxUpgrade();
 
-    public virtual void DoUpgrade() => upgradeAction(this);
+    public virtual void DoUpgrade()
+    {
+        upgradeAction(this);
+        SoundManager.Instance.PlaySFX("ButtonClick", 0.3f);
+    }
     public abstract void UpgradeTask();
 }
 
@@ -146,8 +150,12 @@ public class SkillSlot : BaseSlot, ISlot<SkillSlotData>
 
     public override void DoUpgrade()
     {
+
+
         if(NowLock == false)
         {
+            SoundManager.Instance.PlaySFX("ButtonClick", 0.3f);
+
             if (NowUse == false && SaveManager.Instance.CanSelectSkill())
             {
                 NowUse = true;

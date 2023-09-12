@@ -12,11 +12,14 @@ public class AbilitySlotData : BaseSlotData
 
     public float priceUpRatio;
 
-    public AbilitySlotData(int price, string dataName, int upgradeCount, int maxUpgradeCount) : base(price)
+    public float[] upgradeValueRatio;
+
+    public AbilitySlotData(int price, string dataName, int upgradeCount, int maxUpgradeCount, float[] upgradeValueRatio) : base(price)
     {
         this.dataName = dataName;
         this.upgradeCount = upgradeCount;
         this.maxUpgradeCount = maxUpgradeCount;
+        this.upgradeValueRatio = upgradeValueRatio;
     }
 
     public void PriceUp() => price += (int)(price * priceUpRatio);

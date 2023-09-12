@@ -9589,9 +9589,8 @@ GameObject:
   - component: {fileID: 4484256661257349646}
   - component: {fileID: 2363303874491838154}
   - component: {fileID: 2363303874491838152}
+  - component: {fileID: 7940493165857653449}
   - component: {fileID: 2363303874491838153}
-  - component: {fileID: -8071368934072371844}
-  - component: {fileID: 362888301596904231}
   - component: {fileID: 6956102311522496740}
   - component: {fileID: 5477276446496725456}
   m_Layer: 0
@@ -14372,13 +14371,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf5b43224fcb379418f83a433da8937d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grantedUtilization:
-    skillNames:
-    - TornadoExplosion
-    buffNames: []
   rigidbodies: []
-  endTime: 4.9
   absorbThrust: 30
+--- !u!114 &7940493165857653449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4744131029357870603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c731c5fa8a9e44d959c987419265e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_skills: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!58 &2363303874491838153
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -14394,37 +14404,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1.5
---- !u!114 &-8071368934072371844
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4744131029357870603}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1638d4b05d9f4e145b75023474c6c5cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_possessingSkills: []
-  m_activeSkills: []
-  m_synthesisComponent:
-    synthesisWays: []
---- !u!114 &362888301596904231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4744131029357870603}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e48c01f279d5824eb11e54c3f75e5ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_contactDatas: []
-  m_entityTags: 01000000
+  m_Radius: 1
 --- !u!114 &6956102311522496740
 MonoBehaviour:
   m_ObjectHideFlags: 0
