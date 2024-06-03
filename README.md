@@ -16,7 +16,7 @@ Unity를 사용하여 개발한 모바일 2D 액션 게임
 ## 기능 설명
 
 * ### 상속을 활용하여 Player, Enemy 구현
-https://github.com/minkimgyu/Angles/blob/f50fdbf2fa503aa119adf5e4b3a27a024b3b28ee/Angles/Assets/Scripts/Entity/Player/Player.cs#L7
+
 
 * ### FSM을 적용하여 Player, AI 기능 구현
 
